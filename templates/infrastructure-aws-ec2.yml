@@ -1,0 +1,42 @@
+meta:
+  environment: (( merge ))
+  dns_root: (( merge ))
+  security_groups: (( merge ))
+  persistent_disk: 4096
+
+  stemcell:
+    name: bosh-aws-xen-ubuntu
+    version: latest
+
+jobs:
+  - name: prometheus_leader_z1
+    instances: 1
+    networks:
+      - name: prometheus1
+    persistent_disk: (( meta.persistent_disk ))
+  - name: prometheus_z1
+    instances: 2
+    networks:
+      - name: prometheus1
+    persistent_disk: (( meta.persistent_disk ))
+    properties:
+      prometheus:
+        leader_address: (( "0.prometheus-leader-z1.prometheus1." meta.environment "." meta.dns_root ))
+
+compilation:
+  cloud_properties:
+    instance_type: m1.small
+
+resource_pools:
+  - name: small_z1
+    cloud_properties:
+      instance_type: m1.small
+
+networks:
+  - name: floating
+    type: vip
+    cloud_properties: {}
+  - name: prometheus1
+    type: dynamic
+    cloud_properties:
+      security_groups: (( meta.security_groups ))

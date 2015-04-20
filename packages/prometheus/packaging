@@ -1,0 +1,15 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+VERSION=0.13.1
+
+apt-get update
+apt-get install -y git
+
+mkdir prometheus-$VERSION
+tar xfv prometheus/prometheus-$VERSION.tgz -C prometheus-$VERSION
+cd prometheus-$VERSION/prometheus
+make
+cp prometheus $BOSH_INSTALL_TARGET
+cp -R consoles $BOSH_INSTALL_TARGET
+cp -R console_libraries $BOSH_INSTALL_TARGET
