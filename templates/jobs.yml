@@ -10,7 +10,19 @@ update:
 
 jobs:
   - name: prometheus_z1
-    template: prometheus
+    templates:
+    - name: prometheus
+      release: prometheus
+    - name: alertmanager
+      release: prometheus
+    - name: statsd_bridge
+      release: prometheus
+    - name: consul_exporter
+      release: prometheus
+    - name: node_exporter
+      release: prometheus
+    - name: pushgateway
+      release: prometheus
     instances: 0
     resource_pool: small_z1
     networks: (( merge ))
