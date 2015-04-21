@@ -1,0 +1,17 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+export HOME=/var/vcap
+
+apt-get update
+apt-get install -y libreadline6 libreadline6-dev
+
+tar xfv promdash/promdash-0.1.0.tar.gz
+cd promdash
+make system/bin/ruby
+mysqlclient_dir=/var/vcap/packages/mysqlclient
+bin/bundle config build.mysql2 \
+  --with-mysql-dir=${mysqlclient_dir} \
+    --with-mysql-include=${mysqlclient_dir}/include/mysql
+#make build
+#cp -a promdash/* $BOSH_INSTALL_TARGET
