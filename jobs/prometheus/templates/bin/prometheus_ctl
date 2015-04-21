@@ -10,11 +10,11 @@ export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 
 
-DATA_DIR=/tmp/prometheus
+DATA_DIR=/var/vcap/store/prometheus
 PKG=/var/vcap/packages/prometheus
 PROMETHEUS=$PKG/prometheus
 CONFIG=/var/vcap/jobs/prometheus/config/prometheus.conf
-PROM_OPTS="-logtostderr -config.file=$CONFIG -storage.local.path=$DATA_DIR -web.console.libraries=$PKG/console_libraries -web.console.templates=$PKG/consoles"
+PROM_OPTS="-logtostderr -config.file=$CONFIG -storage.local.path=$DATA_DIR -web.console.libraries=$PKG/console_libraries -web.console.templates=$PKG/consoles -alertmanager.url=http://localhost:9093"
 
 case $1 in
 

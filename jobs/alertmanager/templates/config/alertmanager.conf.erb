@@ -1,0 +1,26 @@
+notification_config {
+  name: "alertmanager_test"
+  pagerduty_config {
+    service_key: "supersecretapikey"
+  }
+  email_config {
+    email: "geoff@starkandwayne.com"
+  }
+  pushover_config {
+    token: "mypushovertoken"
+    user_key: "mypushoverkey"
+  }
+  hipchat_config {
+    auth_token: "hipchatauthtoken"
+    room_id: 123456
+  }
+}
+
+aggregation_rule {
+  filter {
+    name_re: "service"
+    value_re: "test"
+  }
+  repeat_rate_seconds: 3600
+  notification_config_name: "alertmanager_test"
+}

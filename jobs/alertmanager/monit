@@ -1,0 +1,5 @@
+check process alertmanager
+  with pidfile /var/vcap/sys/run/alertmanager/alertmanager.pid
+  start program "/var/vcap/jobs/alertmanager/bin/monit_debugger alertmanager_ctl '/var/vcap/jobs/alertmanager/bin/alertmanager_ctl start'"
+  stop program "/var/vcap/jobs/alertmanager/bin/monit_debugger alertmanager_ctl '/var/vcap/jobs/alertmanager/bin/alertmanager_ctl stop'"
+  group vcap

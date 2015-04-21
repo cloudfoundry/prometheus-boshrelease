@@ -1,0 +1,16 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+VERSION=0.8.0
+
+dpkg-divert --local --rename --add /sbin/initctl
+ln -s /bin/true /sbin/initctl
+
+apt-get update
+apt-get install mercurial git -y
+
+tar xfzv node_exporter/node_exporter-$VERSION.tar.gz
+ls
+cd node_exporter-$VERSION
+make
+cp node_exporter $BOSH_INSTALL_TARGET

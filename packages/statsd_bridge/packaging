@@ -1,0 +1,17 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+VERSION=0.1.0
+
+dpkg-divert --local --rename --add /sbin/initctl
+ln -s /bin/true /sbin/initctl
+
+apt-get update
+apt-get install mercurial git -y
+
+mkdir statsd_bridge-$VERSION
+tar xfzv statsd_bridge/statsd_bridge-$VERSION.tar.gz -C statsd_bridge-$VERSION
+cd statsd_bridge-$VERSION/statsd_bridge
+ls
+make
+cp statsd_bridge $BOSH_INSTALL_TARGET
