@@ -2,9 +2,39 @@
 name: alertmanager
 packages: [ "alertmanager" ]
 templates:
-  bin/alertmanager_ctl: bin/alertmanager_ctl
-  bin/monit_debugger: bin/monit_debugger
-  data/properties.sh.erb: data/properties.sh
-  helpers/ctl_setup.sh: helpers/ctl_setup.sh
-  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  bin/alertmanager_ctl.erb:     bin/alertmanager_ctl
+  bin/monit_debugger:           bin/monit_debugger
   config/alertmanager.conf.erb: config/alertmanager.conf
+  data/properties.sh.erb:       data/properties.sh
+  helpers/ctl_setup.sh:         helpers/ctl_setup.sh
+  helpers/ctl_utils.sh:         helpers/ctl_utils.sh
+properties:
+  alertmanager.notifications:
+    description: "List of notification definitions"
+  alertmanager.aggregations:
+    description: "List of alert aggregation definitions"
+
+  alertmanager.port:
+    description: "Listening port for alertmanager"
+    default:     9093
+  alertmanager.min-refresh:
+    description: Minimum required alert refresh period before an alert is purged.
+    default:     5m0s
+  alertmanager.buffer-size:
+    description: Size of buffer for pending notifications
+    default:     1000
+  alertmanager.hipchat-url:
+    description: HipChat API V2 URL
+    default:     https://api.hipchat.com/v2
+  alertmanager.pagerduty-url:
+    description: PagerDuty API URL
+    default:     https://events.pagerduty.com/generic/2010-04-15/create_event.json
+  alertmanager.smtp-sender:
+    description: Sender email address to use in email notifications
+    default: ""
+  alertmanager.smtp-smarthost:
+    description: Address of the smarthost to which tosend all email notifications
+    default: ""
+  alertmanager.log-level:
+    description: Logs at or above this threshold go to stderr
+    default: 0
