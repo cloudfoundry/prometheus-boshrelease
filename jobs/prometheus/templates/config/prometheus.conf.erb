@@ -28,3 +28,27 @@ job: {
     target: "http://localhost:9090/metrics"
   }
 }
+
+job: {
+	name: "consul"
+	scrape_interval: "15s"
+	target_group: {
+		target: "http://localhost:9107/metrics"
+	}
+}
+
+job: {
+	name: "statsd"
+	scrape_interval: "15s"
+	target_group: {
+		target: "http://localhost:9102/metrics"
+	}
+}
+
+job: {
+	name: "nodes"
+	scrape_interval: "30s"
+	target_group: {
+		target: "http://localhost:9100/metrics"
+	}
+}

@@ -1,0 +1,15 @@
+ALERT consul-service-health
+  IF consul_catalog_service_nodes - consul_catalog_service_node_healthy > 0
+  WITH {
+     severity="warning"
+  }
+  SUMMARY "Consul Service {{$labels.service}} is degraded""
+  DESCRIPTION "{{$labels.service}} only has {{$value}} healthy nodes""
+
+ALERT consul-service-health
+  IF consul_catalog_service_nodes - consul_catalog_service_node_healthy > 1
+  WITH {
+     severity="warning"
+  }
+  SUMMARY "Consul Service {{$labels.service}} is degraded""
+  DESCRIPTION "{{$labels.service}} only has {{$value}} healthy nodes""
