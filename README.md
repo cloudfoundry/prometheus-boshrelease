@@ -1,51 +1,48 @@
-# BOSH Release for prometheus
+# Prometheus BOSH Release
+
+This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io/).
+
+It includes the following [Prometheus Exporters](https://prometheus.io/docs/instrumenting/exporters/):
+* [Blackbox](https://github.com/prometheus/blackbox_exporter)
+* [Collectd](https://github.com/prometheus/collectd_exporter)
+* [Consul](https://github.com/prometheus/consul_exporter)
+* [Cloud Foundry Firehose](https://github.com/frodenas/firehose_exporter)
+* [Github](https://github.com/infinityworksltd/github-exporter)
+* [Graphite](https://github.com/prometheus/graphite_exporter)
+* [HAProxy](https://github.com/prometheus/haproxy_exporter)
+* [MySQL](https://github.com/prometheus/mysqld_exporter)
+* [Node](https://github.com/prometheus/node_exporter)
+* [PushGateway](https://github.com/prometheus/pushgateway)
+* [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter)
+* [Redis](https://github.com/oliver006/redis_exporter)
+* [Statsd](https://github.com/prometheus/statsd_exporter)
 
 ## Usage
 
-To use this bosh release, first upload it to your bosh:
+### Upload the BOSH release
+
+To use this BOSH release, first upload it to your BOSH:
 
 ```
 bosh target BOSH_HOST
 git clone https://github.com/cloudfoundry-community/prometheus-boshrelease.git
 cd prometheus-boshrelease
-bosh upload release releases/prometheus-1.yml
+bosh upload release releases/prometheus/prometheus-1.yml
 ```
 
-For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest & deploy a cluster:
+### Create a BOSH deployment manifest
+
+Now create a deployment file (using the files at the [examples](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/) directory as a starting point).
+
+### Deploy using the BOSH deployment manifest
+
+Using the previous created deployment manifest, now we can deploy it:
 
 ```
-templates/make_manifest warden
+bosh deployment path/to/deployment.yml
 bosh -n deploy
 ```
 
-For AWS EC2, create a single VM:
+## Copyright
 
-```
-templates/make_manifest aws-ec2
-bosh -n deploy
-```
-
-### Override security groups
-
-For AWS & Openstack, the default deployment assumes there is a `default` security group. If you wish to use a different security group(s) then you can pass in additional configuration when running `make_manifest` above.
-
-Create a file `my-networking.yml`:
-
-``` yaml
----
-networks:
-  - name: prometheus1
-    type: dynamic
-    cloud_properties:
-      security_groups:
-        - prometheus
-```
-
-Where `- prometheus` means you wish to use an existing security group called `prometheus`.
-
-You now suffix this file path to the `make_manifest` command:
-
-```
-templates/make_manifest openstack-nova my-networking.yml
-bosh -n deploy
-```
+Copyright (c) 2016 Ferran Rodenas. See [LICENSE](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/LICENSE) for details.
