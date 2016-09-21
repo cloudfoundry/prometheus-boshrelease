@@ -1,0 +1,29 @@
+azs:
+  - name: default
+    cloud_properties: {}
+
+vm_types:
+  - name: default
+    cloud_properties: {}
+
+disk_types:
+  - name: default
+    disk_size: 1024
+    cloud_properties: {}
+
+networks:
+  - name: default
+    type: manual
+    subnets:
+      - range: 10.244.0.0/24
+        az: default
+        reserved:
+          - 10.244.0.1
+        cloud_properties: {}
+
+compilation:
+  workers: 5
+  az: default
+  vm_type: default
+  network: default
+  reuse_compilation_vms: true
