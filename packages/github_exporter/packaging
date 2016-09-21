@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Copy github_exporter package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+cp -a ${BOSH_COMPILE_TARGET}/github.com/infinityworksltd/github-exporter/* ${BOSH_INSTALL_TARGET}/bin
+
+# Install python package
+tar xzvf ${BOSH_COMPILE_TARGET}/python/Python-3.5.2.tgz
+pushd Python-3.5.2
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Install setuptools package
+tar xzvf ${BOSH_COMPILE_TARGET}/python/setuptools-27.3.0.tar.gz
+pushd setuptools-27.3.0
+${BOSH_INSTALL_TARGET}/bin/python3 setup.py install --prefix=${BOSH_INSTALL_TARGET}
+popd
+
+# Install pip package
+tar xzvf ${BOSH_COMPILE_TARGET}/python/pip-8.1.2.tar.gz
+pushd pip-8.1.2
+${BOSH_INSTALL_TARGET}/bin/python3 setup.py install --prefix=${BOSH_INSTALL_TARGET}
+popd
+
+# Install github_exporter dependency packages
+${BOSH_INSTALL_TARGET}/bin/pip3 install ${BOSH_COMPILE_TARGET}/python/prometheus_client-0.0.14.tar.gz
+${BOSH_INSTALL_TARGET}/bin/pip3 install ${BOSH_COMPILE_TARGET}/python/requests-2.11.1.tar.gz

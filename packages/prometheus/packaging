@@ -1,16 +1,12 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+#!/bin/bash
 
-VERSION=0.13.1
+set -eux
 
-apt-get update
-apt-get install -y git
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-mkdir prometheus-$VERSION
-tar xfv prometheus/prometheus-$VERSION.tgz -C prometheus-$VERSION
-cd prometheus-$VERSION/prometheus
-
-make
-cp prometheus $BOSH_INSTALL_TARGET
-cp -R consoles $BOSH_INSTALL_TARGET
-cp -R console_libraries $BOSH_INSTALL_TARGET
+# Extract prometheus package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/prometheus/prometheus-1.1.3.linux-amd64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/prometheus-1.1.3.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin

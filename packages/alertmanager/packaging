@@ -1,16 +1,12 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+#!/bin/bash
 
-VERSION=0.1.0
+set -eux
 
-dpkg-divert --local --rename --add /sbin/initctl
-ln -s /bin/true /sbin/initctl
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-apt-get update
-apt-get install mercurial git -y
-
-mkdir alertmanager-$VERSION
-tar xfzv alertmanager/alertmanager-$VERSION.tar.gz -C alertmanager-$VERSION
-cd alertmanager-$VERSION/alertmanager
-make
-cp alertmanager $BOSH_INSTALL_TARGET
+# Extract alertmanager package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/alertmanager/alertmanager-0.5.0-alpha.0.linux-amd64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/alertmanager-0.5.0-alpha.0.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin

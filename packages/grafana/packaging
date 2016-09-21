@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Extract grafana package
+tar xzvf ${BOSH_COMPILE_TARGET}/grafana/grafana-3.1.1-1470047149.linux-x64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/grafana-3.1.1-1470047149/* ${BOSH_INSTALL_TARGET}
