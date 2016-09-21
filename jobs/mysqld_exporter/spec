@@ -1,0 +1,87 @@
+---
+name: mysqld_exporter
+
+packages:
+  - mysqld_exporter
+
+templates:
+  bin/mysqld_exporter_ctl: bin/mysqld_exporter_ctl
+
+properties:
+  mysqld_exporter.collect.auto_increment_columns:
+    description: "Collect auto_increment columns and max values from information_schema"
+  mysqld_exporter.collect.binlog_size:
+    description: "Collect the current size of all registered binlog files"
+  mysqld_exporter.collect.engine_tokudb_status:
+    description: "Collect from SHOW ENGINE TOKUDB STATUS"
+  mysqld_exporter.collect.global_status:
+    description: "Collect from SHOW GLOBAL STATUS"
+  mysqld_exporter.collect.global_variables:
+    description: "Collect from SHOW GLOBAL VARIABLES"
+  mysqld_exporter.collect.info_schema.innodb_metrics:
+    description: "Collect metrics from information_schema.innodb_metrics"
+  mysqld_exporter.collect.info_schema.innodb_tablespaces:
+    description: "Collect metrics from information_schema.innodb_sys_tablespaces"
+  mysqld_exporter.collect.info_schema.processlist:
+    description: "Collect current thread state counts from the information_schema.processlist"
+  mysqld_exporter.collect.info_schema.processlist_min_time:
+    description: "Minimum time a thread must be in each state to be counted"
+  mysqld_exporter.collect.info_schema.query_response_time:
+    description: "Collect query response time distribution if query_response_time_stats is ON"
+  mysqld_exporter.collect.info_schema.tables:
+    description: "Collect metrics from information_schema.tables"
+  mysqld_exporter.collect.info_schema.tables_databases:
+    description: "The list of databases to collect table stats for, or '*' for all"
+  mysqld_exporter.collect.info_schema.tablestats:
+    description: "If running with userstat=1, set to true to collect table statistics"
+  mysqld_exporter.collect.info_schema.userstats:
+    description: "If running with userstat=1, set to true to collect user statistics"
+  mysqld_exporter.collect.perf_schema.eventsstatements:
+    description: "Collect metrics from performance_schema.events_statements_summary_by_digest"
+  mysqld_exporter.collect.perf_schema.eventsstatements_digest_text_limit:
+    description: "Maximum length of the normalized statement text"
+  mysqld_exporter.collect.perf_schema.eventsstatements_limit:
+    description: "Limit the number of events statements digests by response time"
+  mysqld_exporter.collect.perf_schema.eventsstatements_timelimit:
+    description: "Limit how old the 'last_seen' events statements can be, in seconds"
+  mysqld_exporter.collect.perf_schema.eventswaits:
+    description: "Collect metrics from performance_schema.events_waits_summary_global_by_event_name"
+  mysqld_exporter.collect.perf_schema.file_events:
+    description: "Collect metrics from performance_schema.file_summary_by_event_name"
+  mysqld_exporter.collect.perf_schema.indexiowaits:
+    description: "Collect metrics from performance_schema.table_io_waits_summary_by_index_usage"
+  mysqld_exporter.collect.perf_schema.tableiowaits:
+    description: "Collect metrics from performance_schema.table_io_waits_summary_by_table"
+  mysqld_exporter.collect.perf_schema.tablelocks:
+    description: "Collect metrics from performance_schema.table_lock_waits_summary_by_table"
+  mysqld_exporter.collect.slave_status:
+   description: "Collect from SHOW SLAVE STATUS"
+  mysqld_exporter.my_cnf:
+    description: "Path to .my.cnf file to read MySQL credentials from (default '/root/.my.cnf')"
+  mysqld_exporter.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  mysqld_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  mysqld_exporter.log_slow_filter:
+    description: "Add a log_slow_filter to avoid exessive MySQL slow logging"
+  mysqld_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9104"
+  mysqld_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"
+
+
+  mysqld_exporter.mysql.protocol:
+    description: "MySQL protocol"
+    default: "tcp"
+  mysqld_exporter.mysql.address:
+    description: "MySQL address"
+  mysqld_exporter.mysql.port:
+    description: "MySQL port"
+    default: 3306
+  mysqld_exporter.mysql.dbname:
+    description: "MySQL database name"
+  mysqld_exporter.mysql.username:
+    description: "MySQL username"
+  mysqld_exporter.mysql.password:
+    description: "MySQL password"

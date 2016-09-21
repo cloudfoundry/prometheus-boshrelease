@@ -1,0 +1,29 @@
+---
+name: collectd_exporter
+
+packages:
+  - collectd_exporter
+
+templates:
+  bin/collectd_exporter_ctl: bin/collectd_exporter_ctl
+  config/collectd_auth.conf: config/collectd_auth.conf
+
+properties:
+  collectd_exporter.collectd.auth:
+    description: "Mapping user names to pre-shared keys (passwords)"
+  collectd_exporter.collectd.port:
+    description: "Port on which to accept collectd binary network packets"
+    default: 25826
+  collectd_exporter.collectd.security_level:
+    description: "Minimum required security level for accepted packets. Must be one of 'None', 'Sign' and 'Encrypt'"
+  collectd_exporter.collectord.push_path:
+    description: "Path under which to accept POST requests from collectd"
+  collectd_exporter.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  collectd_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  collectd_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9103"
+  collectd_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"

@@ -1,38 +1,50 @@
 #!/bin/bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+set -eu
 
-# Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/pushgateway/helpers/ctl_setup.sh 'pushgateway'
+RUN_DIR=/var/vcap/sys/run/pushgateway
+LOG_DIR=/var/vcap/sys/log/pushgateway
+TMP_DIR=/var/vcap/sys/tmp/pushgateway
+STORE_DIR=/var/vcap/store/pushgateway
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
-export PORT=${PORT:-5000}
-export LANG=en_US.UTF-8
+PIDFILE=${RUN_DIR}/pushgateway.pid
 
-BIN=/var/vcap/packages/pushgateway/pushgateway
-OPTIONS="-addr=:9091 -persistence.file=/var/vcap/store/pushgateway/pushgateway.persist"
+source /var/vcap/packages/pushgateway/common/utils.sh
+
+export PATH=/var/vcap/packages/pushgateway/bin:${PATH}
 
 case $1 in
-
   start)
-    pid_guard $PIDFILE $JOB_NAME
+    pid_guard ${PIDFILE} "pushgateway"
+    echo $$ > ${PIDFILE}
 
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
-    exec chpst -u vcap:vcap $BIN $OPTIONS \
-         >>$LOG_DIR/$JOB_NAME.stdout.log \
-         2>>$LOG_DIR/$JOB_NAME.stderr.log
-
+    exec pushgateway \
+      <% if_p('pushgateway.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('pushgateway.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -persistence.file="${STORE_DIR}/pushgateway.metrics" \
+      <% if_p('pushgateway.persistence_interval') do |persistence_interval| %> \
+      -persistence.interval="<%= persistence_interval %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('pushgateway.web.port') %>" \
+      <% if_p('pushgateway.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/pushgateway.stdout.log \
+      2>> ${LOG_DIR}/pushgateway.stderr.log
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
-
+    kill_and_wait ${PIDFILE}
     ;;
-  *)
-    echo "Usage: pushgateway_ctl {start|stop}"
 
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
     ;;
 
 esac

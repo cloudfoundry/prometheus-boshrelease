@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/statsd_exporter
+LOG_DIR=/var/vcap/sys/log/statsd_exporter
+TMP_DIR=/var/vcap/sys/tmp/statsd_exporter
+STORE_DIR=/var/vcap/store/statsd_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/statsd_exporter.pid
+
+source /var/vcap/packages/statsd_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/statsd_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "statsd_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec statsd_exporter \
+      <% if_p('statsd_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.add_suffix') do |add_suffix| %> \
+      -statsd.add-suffix="<%= add_suffix %>" \
+      <% end %> \
+      -statsd.listen-address=":<%= p('statsd_exporter.statsd.port') %>" \
+      -statsd.mapping-config="/var/vcap/jobs/statsd_exporter/config/statsd_mapping.conf" \
+      <% if_p('statsd_exporter.statsd.read_buffer') do |read_buffer| %> \
+      -statsd.read-buffer="<%= read_buffer %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('statsd_exporter.web.port') %>" \
+      <% if_p('statsd_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/statsd_exporter.stdout.log \
+      2>> ${LOG_DIR}/statsd_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

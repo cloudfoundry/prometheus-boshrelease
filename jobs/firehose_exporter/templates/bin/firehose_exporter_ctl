@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/firehose_exporter
+LOG_DIR=/var/vcap/sys/log/firehose_exporter
+TMP_DIR=/var/vcap/sys/tmp/firehose_exporter
+STORE_DIR=/var/vcap/store/firehose_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/firehose_exporter.pid
+
+source /var/vcap/packages/firehose_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/firehose_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "firehose_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec firehose_exporter \
+      -uaa.url="<%= p('firehose_exporter.uaa.url') %>" \
+      -uaa.client-id="<%= p('firehose_exporter.uaa.client_id') %>" \
+      -uaa.client-secret="<%= p('firehose_exporter.uaa.client_secret') %>" \
+      -doppler.url="<%= p('firehose_exporter.doppler.url') %>" \
+      <% if_p('firehose_exporter.doppler.subscription_id') do |subscription_id| %> \
+      -doppler.subscription-id="<%= subscription_id %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.doppler.idle_timeout_seconds') do |idle_timeout_seconds| %> \
+      -doppler.idle-timeout-seconds="<%= idle_timeout_seconds %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
+      -skip-ssl-verify="<%= skip_ssl_verify %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('firehose_exporter.web.port') %>" \
+      <% if_p('firehose_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/firehose_exporter.stdout.log \
+      2>> ${LOG_DIR}/firehose_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

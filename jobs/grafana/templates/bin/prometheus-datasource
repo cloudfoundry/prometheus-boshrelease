@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -eu
+
+<% if_link('prometheus') do |prometheus| %>
+GRAFANA_DATASOURCES_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.address %>:<%= p('grafana.server.http_port') %>/api/datasources"
+GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
+
+PROMETHEUS_URL="http://<%= prometheus.instances.first.address %>:<%= link('prometheus').p('prometheus.web.port') %>"
+
+DATASOURCE_NAME="<%= p('grafana.prometheus.datasource_name') %>"
+DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"prometheus\",\"access\":\"proxy\",\"url\":\"${PROMETHEUS_URL}\",\"password\":\"\",\"user\":\"\",\"database\":\"\",\"basicAuth\":false,\"basicAuthUser\":\"\",\"basicAuthPassword\":\"\",\"isDefault\":true,\"jsonData\":null}"
+
+DATASOURCE_ID=$(curl -u ${GRAFANA_CREDENTIALS} -ks ${GRAFANA_DATASOURCES_API} | sed -n 's/^.*"id":\([0-9]*\)[^}]*"name":"'${DATASOURCE_NAME}'".*$/\1/p' )
+
+if [ -n "${DATASOURCE_ID}" ]; then
+  if curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT ${GRAFANA_DATASOURCES_API}/${DATASOURCE_ID} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
+    echo -e "\nUpdated datasource ${DATASOURCE_NAME} at $(date)"
+  fi
+else
+  if curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST ${GRAFANA_DATASOURCES_API} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
+    echo -e "\nCreated datasource ${DATASOURCE_NAME} at $(date)"
+  fi
+fi
+
+<% end %>
+
+exit 0

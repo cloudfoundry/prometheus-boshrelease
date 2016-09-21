@@ -1,0 +1,93 @@
+global:
+  <% if_p('alertmanager.resolve_timeout') do |resolve_timeout| %>
+  resolve_timeout: <%= resolve_timeout %>
+  <% end %>
+
+  <% if_p('alertmanager.smtp.from') do |from| %>
+  smtp_from: <%= from %>
+  <% end %>
+
+  <% if_p('alertmanager.smtp.smarthost') do |smarthost| %>
+  smtp_smarthost: <%= smarthost %>
+  <% end %>
+
+  <% if_p('alertmanager.smtp.auth_username') do |auth_username| %>
+  smtp_auth_username: <%= auth_username %>
+  <% end %>
+
+  <% if_p('alertmanager.smtp.auth_password') do |auth_password| %>
+  smtp_auth_password: <%= retention %>
+  <% end %>
+
+  <% if_p('alertmanager.smtp.auth_secret') do |auth_secret| %>
+  smtp_auth_secret: <%= auth_secret %>
+  <% end %>
+
+  <% if_p('alertmanager.slack.api_url') do |api_url| %>
+  slack_api_url: <%= api_url %>
+  <% end %>
+
+  <% if_p('alertmanager.pagerduty.url') do |url| %>
+  pagerduty_url: <%= url %>
+  <% end %>
+
+  <% if_p('alertmanager.opsgenie.api_host') do |api_host| %>
+  opsgenie_api_host: <%= api_host %>
+  <% end %>
+
+  <% if_p('alertmanager.hipchat.url') do |url| %>
+  hipchat_url: <%= url %>
+  <% end %>
+
+  <% if_p('alertmanager.hipchat.auth_token') do |auth_token| %>
+  hipchat_auth_token: <%= auth_token %>
+  <% end %>
+
+# The directory from which notification templates are read.
+templates:
+  <% p('alertmanager.templates', []).each do |template_path| %>
+  <%= "- #{template_path}" %>
+  <% end %>
+
+# The root node of the routing tree
+route:
+  receiver: <%= p('alertmanager.route.receiver') %>
+
+  <% if_p('alertmanager.route.continue') do |continue| %>
+  continue: <%= continue %>
+  <% end %>
+
+  <% if_p('alertmanager.route.group_by') do |group_by| %>
+  group_by: <%= group_by %>
+  <% end %>
+
+  <% if_p('alertmanager.route.group_wait') do |group_by| %>
+  group_wait: <%= group_by %>
+  <% end %>
+
+  <% if_p('alertmanager.route.group_interval') do |group_interval| %>
+  group_interval: <%= group_interval %>
+  <% end %>
+
+  <% if_p('alertmanager.route.repeat_interval') do |repeat_interval| %>
+  repeat_interval: <%= repeat_interval %>
+  <% end %>
+
+  <% if_p('alertmanager.route.match') do |match| %>
+  match: <%= match %>
+  <% end %>
+
+  <% if_p('alertmanager.route.match_re') do |match_re| %>
+  match_re: <%= match_re %>
+  <% end %>
+
+  # Child routes
+  routes: <%= p('alertmanager.route.routes', []).to_json %>
+
+# A list of notification receivers
+receivers: <%= p('alertmanager.receivers').to_json %>
+
+<% if_p('alertmanager.inhibit_rules') do |inhibit_rules| %>
+# A list of inhibition rules
+inhibit_rules: <%= inhibit_rules.to_json %>
+<% end %>

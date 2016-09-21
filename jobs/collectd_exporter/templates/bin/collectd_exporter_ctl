@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/collectd_exporter
+LOG_DIR=/var/vcap/sys/log/collectd_exporter
+TMP_DIR=/var/vcap/sys/tmp/collectd_exporter
+STORE_DIR=/var/vcap/store/collectd_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/collectd_exporter.pid
+
+source /var/vcap/packages/collectd_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/collectd_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "collectd_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec collectd_exporter \
+      -collectd.auth-file="/var/vcap/jobs/collectd_exporter/config/collectd_auth.conf" \
+      -collectd.listen-address=":<%= p('collectd_exporter.collectd.port') %>" \
+      <% if_p('collectd_exporter.collectd.security_level') do |security_level| %> \
+      -collectd.security-level="<%= security_level %>" \
+      <% end %> \
+      <% if_p('collectd_exporter.collectord.push_path') do |push_path| %> \
+      -web.collectd-push-path="<%= push_path %>" \
+      <% end %> \
+      <% if_p('collectd_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('collectd_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('collectd_exporter.web.port') %>" \
+      <% if_p('collectd_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/collectd_exporter.stdout.log \
+      2>> ${LOG_DIR}/collectd_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

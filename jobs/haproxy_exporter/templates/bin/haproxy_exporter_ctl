@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/haproxy_exporter
+LOG_DIR=/var/vcap/sys/log/haproxy_exporter
+TMP_DIR=/var/vcap/sys/tmp/haproxy_exporter
+STORE_DIR=/var/vcap/store/haproxy_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/haproxy_exporter.pid
+
+source /var/vcap/packages/haproxy_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/haproxy_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "haproxy_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec haproxy_exporter \
+      <% if_p('haproxy_exporter.haproxy.pid_file') do |pid_file| %> \
+      -haproxy.pid-file="<%= pid_file %>" \
+      <% end %> \
+      <% if_p('haproxy_exporter.haproxy.scrape_uri') do |scrape_uri| %> \
+      -haproxy.scrape-uri="<%= scrape_uri %>" \
+      <% end %> \
+      <% if_p('haproxy_exporter.haproxy.server_metric_fields') do |server_metric_fields| %> \
+      -haproxy.server-metric-fields="<%= server_metric_fields %>" \
+      <% end %> \
+      <% if_p('haproxy_exporter.haproxy.timeout') do |timeout| %> \
+      -haproxy.timeout="<%= timeout %>" \
+      <% end %> \
+      <% if_p('haproxy_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('haproxy_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('haproxy_exporter.web.port') %>" \
+      <% if_p('haproxy_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/haproxy_exporter.stdout.log \
+      2>> ${LOG_DIR}/haproxy_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

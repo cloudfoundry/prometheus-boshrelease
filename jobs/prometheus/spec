@@ -1,12 +1,121 @@
 ---
 name: prometheus
-packages: [ "prometheus" ]
+
+packages:
+  - prometheus
+
 templates:
-  bin/monit_debugger: bin/monit_debugger
   bin/prometheus_ctl: bin/prometheus_ctl
-  config/prometheus.conf.erb: config/prometheus.conf
-  config/consul.rules: config/consul.rules
-  data/properties.sh.erb: data/properties.sh
-  helpers/ctl_setup.sh: helpers/ctl_setup.sh
-  helpers/ctl_utils.sh: helpers/ctl_utils.sh
-properties: {}
+  config/prometheus.yml: config/prometheus.yml
+
+provides:
+  - name: prometheus
+    type: prometheus
+    properties:
+      - prometheus.web.port
+
+consumes:
+  - name: alertmanager
+    type: alertmanager
+    optional: true
+
+properties:
+  prometheus.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  prometheus.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  prometheus.scrape_interval:
+    description: "How frequently to scrape targets by default"
+  prometheus.scrape_timeout:
+    description: "How long until a scrape request times out"
+  prometheus.evaluation_interval:
+    description: "How frequently to evaluate rules by default"
+  prometheus.external_labels:
+    description: "Attach these labels to any time series or alerts when communicating with external systems"
+  prometheus.rule_files:
+    description: "Array of paths to Prometheus rule files"
+  prometheus.scrape_configs:
+    description: "Array of scrape configurations"
+
+  prometheus.alertmanager.notification_queue_capacity:
+    description: "The capacity of the queue for pending alert manager notifications"
+  prometheus.alertmanager.timeout:
+    description: "Alert manager HTTP API timeout"
+
+  prometheus.query.max_concurrency:
+    description: "Maximum number of queries executed concurrently"
+  prometheus.query.staleness_delta:
+    description: "Staleness delta allowance during expression evaluations"
+  prometheus.query.timeout:
+    description: "Maximum time a query may take before being aborted"
+
+  prometheus.storage.local.checkpoint_dirty_series_limit:
+    description: "If approx. that many time series are in a state that would require a recovery operation after a crash, a checkpoint is triggered, even if the checkpoint interval hasn't passed yet"
+  prometheus.storage.local.checkpoint_interval:
+    description: "The period at which the in-memory metrics and the chunks not yet persisted to series files are checkpointed"
+  prometheus.storage.local.chunk_encoding_version:
+    description: "Which chunk encoding version to use for newly created chunks"
+  prometheus.storage.local.dirty:
+    description: "If set, the local storage layer will perform crash recovery even if the last shutdown appears to be clean"
+  prometheus.storage.local.index_cache_size.fingerprint_to_metric:
+    description: "The size in bytes for the fingerprint to metric index cache"
+  prometheus.storage.local.index_cache_size.fingerprint_to_timerange:
+    description: "The size in bytes for the metric time range index cache"
+  prometheus.storage.local.index_cache_size.label_name_to_label_values:
+    description: "The size in bytes for the label name to label values index cache"
+  prometheus.storage.local.index_cache_size.label_pair_to_fingerprints:
+    description: "The size in bytes for the label pair to fingerprints index cache"
+  prometheus.storage.local.max_chunks_to_persist:
+    description: "How many chunks can be waiting for persistence before sample ingestion will be throttled "
+  prometheus.storage.local.memory_chunks:
+    description: "How many chunks to keep in memory"
+  prometheus.storage.local.num_fingerprint_mutexes:
+    description: "The number of mutexes used for fingerprint locking"
+  prometheus.storage.local.pedantic_checks:
+    description: "If set, a crash recovery will perform checks on each series file"
+  prometheus.storage.local.retention:
+    description: "How long to retain samples in the local storage"
+  prometheus.storage.local.series_file_shrink_ratio:
+    description: "If 0 or smaller, truncation will be performed even for a single dropped chunk, while 1 or larger will effectively prevent any truncation"
+  prometheus.storage.local.series_sync_strategy:
+    description: "When to sync series files after modification"
+  prometheus.storage.remote.graphite.address:
+    description: "The host:port of the remote Graphite server to send samples to. None, if empty"
+  prometheus.storage.remote.graphite.prefix:
+    description: "The prefix to prepend to all metrics exported to Graphite. None, if empty"
+  prometheus.storage.remote.graphite.transport:
+    description: "Transport protocol to use to communicate with Graphite"
+  prometheus.storage.remote.influxdb.url:
+    description: "The URL of the remote InfluxDB server to send samples to. None, if empty"
+  prometheus.storage.remote.influxdb.database:
+    description: "The name of the database to use for storing samples in InfluxDB"
+  prometheus.storage.remote.influxdb.retention_policy:
+    description: "The InfluxDB retention policy to use"
+  prometheus.storage.remote.influxdb.username:
+    description: "The username to use when sending samples to InfluxDB"
+  prometheus.storage.remote.influxdb.password:
+    description: "The password to use when sending samples to InfluxDB"
+  prometheus.storage.remote.opentsdb.url:
+    description: "The URL of the remote OpenTSDB server to send samples to. None, if empty"
+  prometheus.storage.remote.timeout:
+    description: "The timeout to use when sending samples to the remote storage"
+
+  prometheus.web.console.libraries:
+    description: "Path to the console library directory"
+    default: "/var/vcap/packages/prometheus/bin/console_libraries"
+  prometheus.web.console.templates:
+    description: "Path to the console template directory, available at /consoles"
+    default: "/var/vcap/packages/prometheus/bin/consoles"
+  prometheus.web.enable_remote_shutdown:
+    description: "Enable remote service shutdown"
+  prometheus.web.external_url:
+    description: "The URL under which Prometheus is externally reachable"
+  prometheus.web.port:
+    description: "Port to listen on for the web interface, API, and telemetry"
+    default: "9090"
+  prometheus.web.route_prefix:
+    description: "Prefix for the internal routes of web endpoints"
+  prometheus.web.telemetry_path:
+    description: "Path under which to expose metric"
+  prometheus.web.user_assets:
+    description: "Path to static asset directory, available at /user"

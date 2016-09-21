@@ -1,0 +1,29 @@
+---
+name: statsd_exporter
+
+packages:
+  - statsd_exporter
+
+templates:
+  bin/statsd_exporter_ctl: bin/statsd_exporter_ctl
+  config/statsd_mapping.conf: config/statsd_mapping.conf
+
+properties:
+  statsd_exporter.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  statsd_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  statsd_exporter.statsd.add_suffix:
+    description: "Add the metric type (counter/gauge/timer) as suffix to the generated Prometheus metric"
+  statsd_exporter.statsd.port:
+    description: "The UDP port on which to receive statsd metric lines"
+    default: 9125
+  statsd_exporter.statsd.mapping_config:
+    description: "Metric mapping configuration"
+  statsd_exporter.statsd.read_buffer:
+    description: "Size (in bytes) of the operating system's transmit read buffer associated with the UDP connection"
+  statsd_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9102"
+  statsd_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"

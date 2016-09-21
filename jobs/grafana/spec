@@ -1,0 +1,264 @@
+---
+name: grafana
+
+packages:
+  - grafana
+
+templates:
+  bin/grafana_ctl: bin/grafana_ctl
+  bin/post-start: bin/post-start
+  bin/prometheus-datasource: bin/prometheus-datasource
+  config/grafana.ini: config/grafana.ini
+  config/ldap.toml: config/ldap.toml
+  config/ssl_cert.pem: config/ssl_cert.pem
+  config/ssl_key.pem: config/ssl_key.pem
+  config/smtp_cert.pem: config/smtp_cert.pem
+  config/smtp_key.pem: config/smtp_key.pem
+
+consumes:
+  - name: prometheus
+    type: prometheus
+    optional: true
+
+properties:
+  grafana.app_mode:
+    description: "possible values : production, development"
+
+  grafana.server.protocol:
+    description: "Protocol (http or https)"
+  grafana.server.http_port:
+    description: "The http port to bind to"
+    default: 3000
+  grafana.server.domain:
+    description: "The public facing domain name used to access grafana from a browser"
+  grafana.server.enforce_domain:
+    description: "Redirect to correct domain if host header does not match domain"
+  grafana.server.root_url:
+    description: "The full public facing url"
+  grafana.server.router_logging:
+    description: "Log web requests"
+  grafana.server.static_root_path:
+    description: "The relative working path"
+  grafana.server.enable_gzip:
+    description: "Enable gzip"
+  grafana.server.ssl_cert:
+    description: "SSL certificate (PEM encoded)"
+  grafana.server.ssl_key:
+    description: "SSL private key (PEM encoded)"
+
+  grafana.database.type:
+    description: "Database Type, either 'mysql', 'postgres' or 'sqlite3'"
+  grafana.database.host:
+    description: "Database Host"
+  grafana.database.name:
+    description: "Database Name"
+  grafana.database.user:
+    description: "Database User"
+  grafana.database.password:
+    description: "Database Password"
+  grafana.database.ssl_mode:
+    description: "For 'postgres' only, either 'disable', 'require' or 'verify-full'"
+  grafana.database.path:
+    description: "For 'sqlite3' only, path relative to data_path setting"
+
+  grafana.session.provider:
+    description: "Either 'memory', 'file', 'redis', 'mysql', 'postgres'"
+  grafana.session.provider_config:
+    description: "Provider config options"
+  grafana.session.cookie_name:
+    description: "Session cookie name"
+  grafana.session.cookie_secure:
+    description: "If you use session in https only"
+  grafana.session.session_life_time:
+    description: "Session life time"
+
+  grafana.analytics.reporting_enabled:
+    description: "Change this option to false to disable reporting."
+  grafana.analytics.check_for_updates:
+    description: "Set to false to disable all checks to https://grafana.net"
+  grafana.analytics.google_analytics_ua_id:
+    description: "Google Analytics universal tracking code, only enabled if you specify an id here"
+
+  grafana.security.admin_user:
+    description: "default admin user"
+    default: admin
+  grafana.security.admin_password:
+    description: "default admin password"
+    default: admin
+  grafana.security.secret_key:
+    description: "used for signing"
+  grafana.security.login_remember_days:
+    description: "Auto-login remember days"
+  grafana.security.cookie_username:
+    description: "Auto-login cookie username"
+  grafana.security.cookie_remember_name:
+    description: "Auto-login cookie remember name"
+  grafana.security.disable_gravatar:
+    description: "disable gravatar profile images"
+  grafana.security.data_source_proxy_whitelist:
+    description: "data source proxy whitelist (ip_or_domain:port separated by spaces)"
+
+  grafana.snapshots.external_enabled:
+    description: "Extenal snaphot enabled"
+  grafana.snapshots.external_snapshot_url:
+    description: "External snapshot URL"
+  grafana.snapshots.external_snapshot_name:
+    description: "External snapshot name"
+
+  grafana.users.allow_sign_up:
+    description: "disable user signup / registration"
+  grafana.users.allow_org_create:
+    description: "Allow non admin users to create organizations"
+  grafana.users.auto_assign_org:
+    description: "Set to true to automatically assign new users to the default organization (id 1)"
+  grafana.users.auto_assign_org_role:
+    description: "Default role new users will be automatically assigned (if disabled above is set to true)"
+  grafana.users.login_hint:
+    description: "Background text for the user field on the login page"
+  grafana.users.default_theme:
+    description: "Default UI theme ('dark' or 'light')"
+
+  grafana.auth.anonymous.enabled:
+    description: "enable anonymous access"
+  grafana.auth.anonymous.org_name:
+    description: "specify organization name that should be used for unauthenticated users"
+  grafana.auth.anonymous.org_role:
+    description: "specify role for unauthenticated users"
+
+  grafana.auth.github.enabled:
+    description: "Github auth enabled"
+  grafana.auth.github.allow_sign_up:
+    description: "Github auth allow sign up"
+  grafana.auth.github.client_id:
+    description: "Github auth client id"
+  grafana.auth.github.client_secret:
+    description: "Github auth client secret"
+  grafana.auth.github.scopes:
+    description: "Github auth scopes"
+  grafana.auth.github.auth_url:
+    description: "Github auth url"
+  grafana.auth.github.token_url:
+    description: "Github auth token url"
+  grafana.auth.github.api_url:
+    description: "Github auth api url"
+  grafana.auth.github.team_ids:
+    description: "Github auth tema ids"
+  grafana.auth.github.allowed_organizations:
+    description: "Github auth allowed organizations"
+
+  grafana.auth.google.enabled:
+    description: "Google auth enabled"
+  grafana.auth.google.allow_sign_up:
+    description: "Google auth allow sign up"
+  grafana.auth.google.client_id:
+    description: "Google auth client id"
+  grafana.auth.google.client_secret:
+    description: "Google auth client secret"
+  grafana.auth.google.scopes:
+    description: "Google auth scopes"
+  grafana.auth.google.auth_url:
+    description: "Google auth url"
+  grafana.auth.google.token_url:
+    description: "Google auth token url"
+  grafana.auth.google.api_url:
+    description: "Google auth api url"
+  grafana.auth.google.allowed_domains:
+    description: "Google auth allowed organizations"
+
+  grafana.auth.proxy.enabled:
+    description: "Auth proxy enabled"
+  grafana.auth.proxy.header_name:
+    description: "Auth proxy header name"
+  grafana.auth.proxy.header_property:
+    description: "Auth proxy header property"
+  grafana.auth.proxy.auto_sign_up:
+    description: "Auth proxy auto sign up"
+
+  grafana.auth.basic.enabled:
+    description: "Auth basic enabled"
+
+  grafana.auth.ldap.enabled:
+    description: "Auth LDAP enable"
+  grafana.auth.ldap.config:
+    description: "LDAP configuration (toml)"
+
+  grafana.smtp.enabled:
+    description: "SMTP enabled"
+  grafana.smtp.host:
+    description: "SMTP host"
+  grafana.smtp.user:
+    description: "SMTP user"
+  grafana.smtp.password:
+    description: "SMTP password"
+  grafana.smtp.ssl_cert:
+    description: "SMTP SSL certificate"
+  grafana.smtp.ssl_key:
+    description: "SMTP SSL private key"
+  grafana.smtp.skip_verify:
+    description: "SMTP skip SSL verification"
+  grafana.smtp.from_address:
+    description: "SMTP from address"
+
+  grafana.emails.welcome_email_on_sign_up:
+    description: "Welcome email on sign up"
+
+  grafana.log.mode:
+    description: "Either 'console', 'file', 'syslog'. Use space to separate multiple modes"
+  grafana.log.level:
+    description: "log level. Either 'trace', 'debug', 'info', 'warn', 'error', 'critical'"
+
+  grafana.log.console.level:
+    description: "log level"
+  grafana.log.console.format:
+    description: "log line format, valid options are text, console and json"
+
+  grafana.log.file.level:
+    description: "log level"
+  grafana.log.file.format:
+    description: "log line format, valid options are text, console and json"
+  grafana.log.file.log_rotate:
+    description: "This enables automated log rotate(switch of following options)"
+  grafana.log.file.max_lines:
+    description: "Max line number of single file"
+  grafana.log.file.max_size_shift:
+    description: "Max size shift of single file"
+  grafana.log.file.daily_rotate:
+    description: "Segment log daily"
+  grafana.log.file.max_days:
+    description: "Expired days of log file(delete after max days)"
+
+  grafana.log.syslog.level:
+    description: "log level"
+  grafana.log.syslog.format:
+    description: "log line format, valid options are text, console and json"
+  grafana.log.syslog.network:
+    description: "Syslog network type. This can be udp, tcp, or unix"
+  grafana.log.syslog.address:
+    description: "Syslog address"
+  grafana.log.syslog.facility:
+    description: "Syslog facility. user, daemon and local0 through local7 are valid."
+  grafana.log.syslog.tag:
+    description: "Syslog tag"
+
+  grafana.event_publisher.enabled:
+    description: "Event publisher enabled"
+  grafana.event_publisher.rabbitmq_url:
+    description: "RabbitMQ URL"
+  grafana.event_publisher.exchange:
+    description: "Exchange topic"
+
+  grafana.metrics.enabled:
+    description: "Enable internal metrics"
+  grafana.metrics.interval_seconds:
+    description: "Publish interval"
+  grafana.metrics.graphite.address:
+    description: "Graphite address"
+  grafana.metrics.graphite.prefix:
+    description: "Graphite prefix"
+
+  grafana.grafana_net.url:
+    description: "Url used to to import dashboards directly from Grafana.net"
+
+  grafana.prometheus.datasource_name:
+    description: "Name of the Prometheus datasource"
+    default: prometheus

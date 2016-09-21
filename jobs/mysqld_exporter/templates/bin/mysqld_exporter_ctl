@@ -1,0 +1,133 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/mysqld_exporter
+LOG_DIR=/var/vcap/sys/log/mysqld_exporter
+TMP_DIR=/var/vcap/sys/tmp/mysqld_exporter
+STORE_DIR=/var/vcap/store/mysqld_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/mysqld_exporter.pid
+
+source /var/vcap/packages/mysqld_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/mysqld_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "mysqld_exporter"
+    echo $$ > ${PIDFILE}
+
+    <% if_p('mysqld_exporter.mysql.username', 'mysqld_exporter.mysql.password') do |mysql_username, mysql_password| %>
+    export CREDENTIALS="<%= "#{mysql_username}:#{mysql_password}@" %>"
+    <% end %>
+
+    <% if_p('mysqld_exporter.mysql.protocol', 'mysqld_exporter.mysql.address', 'mysqld_exporter.mysql.port', 'mysqld_exporter.mysql.dbname') do |mysql_protocol, mysql_address, mysql_port, mysql_dbname| %>
+    export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{mysql_protocol}(#{mysql_address}:#{mysql_port})/#{mysql_dbname}" %>"
+    <% end %>
+
+    exec mysqld_exporter \
+      <% if_p('mysqld_exporter.collect.auto_increment_columns') do |auto_increment_columns| %> \
+      -collect.auto_increment.columns="<%= auto_increment_columns %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.binlog_size') do |binlog_size| %> \
+      -collect.binlog_size="<%= binlog_size %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.engine_tokudb_status') do |engine_tokudb_status| %> \
+      -collect.engine_tokudb_status="<%= engine_tokudb_status %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.global_status') do |global_status| %> \
+      -collect.global_status="<%= global_status %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.global_variables') do |global_variables| %> \
+      -collect.global_variables="<%= global_variables %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_metrics') do |innodb_metrics| %> \
+      -collect.info_schema.innodb_metrics="<%= innodb_metrics %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_tablespaces') do |innodb_tablespaces| %> \
+      -collect.info_schema.innodb_tablespaces="<%= innodb_tablespaces %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.processlist') do |processlist| %> \
+      -collect.info_schema.processlist="<%= processlist %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.processlist_min_time') do |processlist_min_time| %> \
+      -collect.info_schema.processlist.min_time="<%= processlist_min_time %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.query_response_time') do |query_response_time| %> \
+      -collect.info_schema.query_response_time="<%= query_response_time %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.tables') do |tables| %> \
+      -collect.info_schema.tables="<%= tables %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.tables_databases') do |tables_databases| %> \
+      -collect.info_schema.tables.databases="<%= tables_databases %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.tablestats') do |tablestats| %> \
+      -collect.info_schema.tablestats="<%= tablestats %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.userstats') do |userstats| %> \
+      -collect.info_schema.userstats="<%= userstats %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements') do |eventsstatements| %> \
+      -collect.perf_schema.eventsstatements="<%= eventsstatements %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements_digest_text_limit') do |eventsstatements_digest_text_limit| %> \
+      -collect.perf_schema.eventsstatements.digest_text_limit="<%= eventsstatements_digest_text_limit %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements_limit') do |eventsstatements_limit| %> \
+      -collect.perf_schema.eventsstatements.limit="<%= eventsstatements_limit %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements_timelimit') do |eventsstatements_timelimit| %> \
+      -collect.perf_schema.eventsstatements.timelimit="<%= eventsstatements_timelimit %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventswaits') do |eventswaits| %> \
+      -collect.perf_schema.eventswaits="<%= eventswaits %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.file_events') do |file_events| %> \
+      -collect.perf_schema.file_events="<%= file_events %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.indexiowaits') do |indexiowaits| %> \
+      -collect.perf_schema.indexiowaits="<%= indexiowaits %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.tableiowaits') do |tableiowaits| %> \
+      -collect.perf_schema.tableiowaits="<%= tableiowaits %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.perf_schema.tablelocks') do |tablelocks| %> \
+      -collect.perf_schema.tablelocks="<%= tablelocks %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.slave_status') do |slave_status| %> \
+      -collect.slave_status="<%= slave_status %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.my_cnf') do |my_cnf| %> \
+      -config.my-cnf="<%= my_cnf %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.log_slow_filter') do |log_slow_filter| %> \
+      -log_slow_filter="<%= log_slow_filter %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('mysqld_exporter.web.port') %>" \
+      <% if_p('mysqld_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/mysqld_exporter.stdout.log \
+      2>> ${LOG_DIR}/mysqld_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/rabbitmq_exporter
+LOG_DIR=/var/vcap/sys/log/rabbitmq_exporter
+TMP_DIR=/var/vcap/sys/tmp/rabbitmq_exporter
+STORE_DIR=/var/vcap/store/rabbitmq_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/rabbitmq_exporter.pid
+
+source /var/vcap/packages/rabbitmq_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/rabbitmq_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "rabbitmq_exporter"
+    echo $$ > ${PIDFILE}
+
+    <% if_p('rabbitmq_exporter.log_level') do |log_level| %>
+    export LOG_LEVEL="<%= log_level %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.url') do |rabbitmq_url| %>
+    export RABBIT_URL="<%= rabbitmq_url %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.user') do |rabbitmq_user| %>
+    export RABBIT_USER="<%= rabbitmq_user %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.password') do |rabbitmq_password| %>
+    export RABBIT_PASSWORD="<%= rabbitmq_password %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.output_format') do |output_format| %>
+    export OUTPUT_FORMAT="<%= output_format %>" \
+    <% end %> \
+
+    export PUBLISH_PORT="<%= p('rabbitmq_exporter.web.port') %>"
+
+    exec rabbitmq_exporter \
+      >>  ${LOG_DIR}/rabbitmq_exporter.stdout.log \
+      2>> ${LOG_DIR}/rabbitmq_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

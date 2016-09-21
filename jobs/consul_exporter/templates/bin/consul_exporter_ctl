@@ -1,38 +1,52 @@
 #!/bin/bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+set -eu
 
-# Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/consul_exporter/helpers/ctl_setup.sh 'consul_exporter'
+RUN_DIR=/var/vcap/sys/run/consul_exporter
+LOG_DIR=/var/vcap/sys/log/consul_exporter
+TMP_DIR=/var/vcap/sys/tmp/consul_exporter
+STORE_DIR=/var/vcap/store/consul_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
-export PORT=${PORT:-5000}
-export LANG=en_US.UTF-8
+PIDFILE=${RUN_DIR}/consul_exporter.pid
 
-BIN=/var/vcap/packages/consul_exporter/consul_exporter
-OPTIONS="-consul.server=10.244.4.10:8500 -web.listen-address=:9107"
+source /var/vcap/packages/consul_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/consul_exporter/bin:${PATH}
 
 case $1 in
-
   start)
-    pid_guard $PIDFILE $JOB_NAME
+    pid_guard ${PIDFILE} "consul_exporter"
+    echo $$ > ${PIDFILE}
 
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
-    exec chpst -u vcap:vcap $BIN $OPTIONS \
-         >>$LOG_DIR/$JOB_NAME.stdout.log \
-         2>>$LOG_DIR/$JOB_NAME.stderr.log
-
+    exec consul_exporter \
+      <% if_p('consul_exporter.consul_server') do |consul_server| %> \
+      -consul.server="<%= consul_server %>" \
+      <% end %> \
+      <% if_p('consul_exporter.kv_filter') do |kv_filter| %> \
+      -kv.filter="<%= kv_filter %>" \
+      <% end %> \
+      <% if_p('consul_exporter.kv_prefix') do |kv_prefix| %> \
+      -kv.prefix="<%= kv_prefix %>" \
+      <% end %> \
+      <% if_p('consul_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('consul_exporter.web.port') %>" \
+      <% if_p('consul_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/consul_exporter.stdout.log \
+      2>> ${LOG_DIR}/consul_exporter.stderr.log
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
-
+    kill_and_wait ${PIDFILE}
     ;;
-  *)
-    echo "Usage: consul_exporter_ctl {start|stop}"
 
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
     ;;
 
 esac

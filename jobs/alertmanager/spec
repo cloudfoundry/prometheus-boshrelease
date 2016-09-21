@@ -1,40 +1,94 @@
 ---
 name: alertmanager
-packages: [ "alertmanager" ]
-templates:
-  bin/alertmanager_ctl.erb:     bin/alertmanager_ctl
-  bin/monit_debugger:           bin/monit_debugger
-  config/alertmanager.conf.erb: config/alertmanager.conf
-  data/properties.sh.erb:       data/properties.sh
-  helpers/ctl_setup.sh:         helpers/ctl_setup.sh
-  helpers/ctl_utils.sh:         helpers/ctl_utils.sh
-properties:
-  alertmanager.notifications:
-    description: "List of notification definitions"
-  alertmanager.aggregations:
-    description: "List of alert aggregation definitions"
 
-  alertmanager.port:
-    description: "Listening port for alertmanager"
-    default:     9093
-  alertmanager.min-refresh:
-    description: Minimum required alert refresh period before an alert is purged.
-    default:     5m0s
-  alertmanager.buffer-size:
-    description: Size of buffer for pending notifications
-    default:     1000
-  alertmanager.hipchat-url:
-    description: HipChat API V2 URL
-    default:     https://api.hipchat.com/v2
-  alertmanager.pagerduty-url:
-    description: PagerDuty API URL
-    default:     https://events.pagerduty.com/generic/2010-04-15/create_event.json
-  alertmanager.smtp-sender:
-    description: Sender email address to use in email notifications
-    default: ""
-  alertmanager.smtp-smarthost:
-    description: Address of the smarthost to which tosend all email notifications
-    default: ""
-  alertmanager.log-level:
-    description: Logs at or above this threshold go to stderr
-    default: 0
+packages:
+  - alertmanager
+
+templates:
+  bin/alertmanager_ctl: bin/alertmanager_ctl
+  config/alertmanager.yml: config/alertmanager.yml
+
+provides:
+  - name: alertmanager
+    type: alertmanager
+    properties:
+      - alertmanager.mesh.port
+      - alertmanager.web.port
+
+consumes:
+  - name: alertmanager
+    type: alertmanager
+
+properties:
+  alertmanager.data.retention:
+    description: "How long to keep data for"
+  alertmanager.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  alertmanager.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  alertmanager.mesh.port:
+    description: "mesh listen port"
+    default: 6783
+  alertmanager.mesh.peer:
+    description: "initial peers"
+  alertmanager.web.external_url:
+    description: "The URL under which Alertmanager is externally reachable"
+  alertmanager.web.port:
+    description: "Port to listen on for the web interface and API"
+    default: "9093"
+
+  alertmanager.resolve_timeout:
+    description: "ResolveTimeout is the time after which an alert is declared resolved if it has not been updated"
+
+  alertmanager.smtp.from:
+    description: "The default SMTP From header field"
+  alertmanager.smtp.smarthost:
+    description: "The default SMTP smarthost used for sending emails"
+  alertmanager.smtp.auth_username:
+    description: "SMTP authentication username"
+  alertmanager.smtp.auth_password:
+    description: "SMTP authentication password"
+  alertmanager.smtp.auth_secret:
+    description: "SMTP authentication secret"
+
+  alertmanager.slack.api_url:
+    description: "The API URL to use for Slack notifications"
+
+  alertmanager.pagerduty.url:
+    description: "The URL to use for PagerDuty notifications"
+
+  alertmanager.opsgenie.api_host:
+    description: "The API Host to use for OpsGenie notifications"
+
+  alertmanager.hipchat.url:
+    description: "The URL to use for Hipchat notifications"
+  alertmanager.hipchat.auth_token:
+    description: "The AuthToken to use for Hipchat notifications"
+
+  alertmanager.templates:
+    description: "Array of file paths from which custom notification template definitions are read"
+
+  alertmanager.route.receiver:
+    description: "default receiver"
+  alertmanager.route.continue:
+    description: "Whether an alert should continue matching subsequent sibling nodes"
+  alertmanager.route.group_by:
+    description: "The labels by which incoming alerts are grouped together"
+  alertmanager.route.group_wait:
+    description: "How long to initially wait to send a notification for a group of alerts"
+  alertmanager.route.group_interval:
+    description: "How long to wait before sending notification about new alerts that are in are added to a group of alerts for which an initial notification has already been sent"
+  alertmanager.route.repeat_interval:
+    description: "How long to wait before sending a notification again if it has already been sent successfully for an alert"
+  alertmanager.route.match:
+    description: "A set of equality matchers an alert has to fulfill to match the node"
+  alertmanager.route.match_re:
+    description: A set of regex-matchers an alert has to fulfill to match the node
+  alertmanager.route.routes:
+    description: "Child routes"
+
+  alertmanager.receivers:
+    description: "Receivers"
+
+  alertmanager.inhibit_rules:
+    description: "Inhibition rules"

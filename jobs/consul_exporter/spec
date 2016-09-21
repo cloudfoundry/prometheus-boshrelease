@@ -1,10 +1,23 @@
 ---
 name: consul_exporter
-packages: [ "consul_exporter" ]
+
+packages:
+  - consul_exporter
+
 templates:
   bin/consul_exporter_ctl: bin/consul_exporter_ctl
-  bin/monit_debugger: bin/monit_debugger
-  data/properties.sh.erb: data/properties.sh
-  helpers/ctl_setup.sh: helpers/ctl_setup.sh
-  helpers/ctl_utils.sh: helpers/ctl_utils.sh
-properties: {}
+
+properties:
+  consul_exporter.consul_server:
+    description: "HTTP API address of a Consul server or agent"
+  consul_exporter.kv_filter:
+    description: "Regex that determines which keys to expose"
+  consul_exporter.kv_prefix:
+    description: "Prefix from which to expose key/value pairs"
+  consul_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  consul_exporter.web.port:
+    description: "Port on which to exposeweb interface and telemetry"
+    default: "9107"
+  consul_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"

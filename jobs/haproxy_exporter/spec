@@ -1,0 +1,27 @@
+---
+name: haproxy_exporter
+
+packages:
+  - haproxy_exporter
+
+templates:
+  bin/haproxy_exporter_ctl: bin/haproxy_exporter_ctl
+
+properties:
+  haproxy_exporter.haproxy.pid_file:
+    description: "Path to haproxy's pid file"
+  haproxy_exporter.haproxy.scrape_uri:
+    description: "URI on which to scrape HAProxy"
+  haproxy_exporter.haproxy.server_metric_fields:
+    description: "Comma-seperated list of exported server metrics"
+  haproxy_exporter.haproxy.timeout:
+    description: "Timeout for trying to get stats from HAProxy"
+  haproxy_exporter.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  haproxy_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  haproxy_exporter.web.port:
+    description: "Port on which to expose metrics and web interface"
+    default: "9101"
+  haproxy_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"

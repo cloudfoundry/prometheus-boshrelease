@@ -1,38 +1,75 @@
 #!/bin/bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+set -eu
 
-# Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/node_exporter/helpers/ctl_setup.sh 'node_exporter'
+RUN_DIR=/var/vcap/sys/run/node_exporter
+LOG_DIR=/var/vcap/sys/log/node_exporter
+TMP_DIR=/var/vcap/sys/tmp/node_exporter
+STORE_DIR=/var/vcap/store/node_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
-export PORT=${PORT:-5000}
-export LANG=en_US.UTF-8
+PIDFILE=${RUN_DIR}/node_exporter.pid
 
-BIN=/var/vcap/packages/node_exporter/node_exporter
-OPTIONS="-logtostderr -web.listen-address=:9100"
+source /var/vcap/packages/node_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/node_exporter/bin:${PATH}
 
 case $1 in
-
   start)
-    pid_guard $PIDFILE $JOB_NAME
+    pid_guard ${PIDFILE} "node_exporter"
+    echo $$ > ${PIDFILE}
 
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
-    exec chpst -u vcap:vcap $BIN $OPTIONS \
-         >>$LOG_DIR/$JOB_NAME.stdout.log \
-         2>>$LOG_DIR/$JOB_NAME.stderr.log
-
+    exec node_exporter \
+      <% if_p('node_exporter.collector.diskstats_ignored_devices') do |diskstats_ignored_devices| %> \
+      -collector.diskstats.ignored-devices="<%= diskstats_ignored_devices %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.filesystem_ignored_mount_points') do |filesystem_ignored_mount_points| %> \
+      -collector.filesystem.ignored-mount-points="<%= filesystem_ignored_mount_points %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.netdev_ignored_devices') do |netdev_ignored_devices| %> \
+      -collector.netdev.ignored-devices="<%= netdev_ignored_devices %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.ntp_version') do |ntp_version| %> \
+      -collector.ntp.protocol-version=<%=  %> \
+      <% end %> \
+      <% if_p('node_exporter.collector.ntp_server') do |ntp_server| %> \
+      -collector.ntp.server="<%= ntp_server %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.procfs') do |procfs| %> \
+      -collector.procfs="<%= procfs %>" \
+      <% end %> \
+      -collector.supervisord.url="http://localhost:<%= p('node_exporter.web.port') %>/RPC2" \
+      <% if_p('node_exporter.collector.sysfs') do |sysfs| %> \
+      -collector.sysfs="<%= sysfs %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.systemd_private') do |systemd_private| %> \
+      -collector.systemd.private="<%= systemd_private %>" \
+      <% end %> \
+      -collector.textfile.directory=/var/vcap/jobs/node_exporter/config \
+      <% if_p('node_exporter.collectors.enabled') do |enabled| %> \
+      -collectors.enabled="<%= enabled%>" \
+      <% end %> \
+      <% if_p('node_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('node_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('node_exporter.web.port') %>" \
+      <% if_p('node_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/node_exporter.stdout.log \
+      2>> ${LOG_DIR}/node_exporter.stderr.log
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
-
+    kill_and_wait ${PIDFILE}
     ;;
-  *)
-    echo "Usage: node_exporter_ctl {start|stop}"
 
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
     ;;
 
 esac
