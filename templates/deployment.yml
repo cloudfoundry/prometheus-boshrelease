@@ -1,0 +1,30 @@
+meta:
+  environment: (( param "please set environment" ))
+  stemcell: (( param "please set stemcell" ))
+
+name: (( grab meta.environment ))
+
+director_uuid: (( param "please set director_uuid" ))
+
+releases: (( param "please set release" ))
+
+jobs: (( param "please set jobs" ))
+
+compilation:
+  workers: 6
+  network: prometheus1
+  reuse_compilation_vms: true
+  cloud_properties: (( param "please set compilation cloud properties" ))
+
+update:
+  canaries: 1
+  max_in_flight: 32
+  canary_watch_time: 1000-30000
+  update_watch_time: 1000-30000
+  serial: false
+
+resource_pools:
+  - name: small_z1
+    network: prometheus1
+    stemcell: (( grab meta.stemcell ))
+    cloud_properties: (( param "please set resource_pool cloud properties" ))
