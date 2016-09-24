@@ -1,0 +1,244 @@
+---
+#
+# ci/pipeline.yml
+#
+# Pipeline structure file for a BOSH Release pipeline
+#
+# DO NOT MAKE CHANGES TO THIS FILE.  Instead, modify
+# ci/settings.yml and override what needs overridden.
+# This uses spruce, so you have some options there.
+#
+# author:  James Hunt <james@niftylogic.com>
+# created: 2016-03-30
+
+meta:
+  name:     (( param "Please name your pipeline" ))
+  release:  (( grab meta.name ))
+  target:   (( param "Please identify the name of the target Concourse CI" ))
+  url:      (( param "Please specify the full url of the target Concourse CI" ))
+  pipeline: (( concat meta.name "-boshrelease" ))
+
+  aws:
+    bucket:     (( concat meta.pipeline "-pipeline" ))
+    access_key: (( param "Please set your AWS Access Key ID for your pipeline S3 Bucket" ))
+    secret_key: (( param "Please set your AWS Secret Key ID for your pipeline S3 Bucket" ))
+
+  github:
+    uri:          (( concat "git@github.com:" meta.github.owner "/" meta.github.repo ))
+    owner:        (( param "Please specify the name of the user / organization that owns the Github repository" ))
+    repo:         (( param "Please specify the name of the Github repository" ))
+    branch:       master
+    private_key:  (( param "Please generate an SSH Deployment Key for this repo and specify it here" ))
+    access_token: (( param "Please generate a Personal Access Token to be used for creating github releases (do you have a ci-bot?)" ))
+
+  bosh-lite:
+    target:     (( param "Please specify the BOSH target URI for the bosh-lite to run test deployments against" ))
+    deployment: (( param "Please specify the name of the local bosh-lite (warden) deployment" ))
+    username:   admin
+    password:   admin
+
+  slack:
+    webhook:       (( param "Please specify your Slack Incoming Webhook Integration URL" ))
+    success_moji:  ":airplane_departure:"
+    fail_moji:     ":airplane_arriving:"
+    upset_moji:    ":sad_panda:"
+    channel:       (( param "Please specify the channel (#name) or user (@user) to send messages to" ))
+    username:      concourse
+    icon:          http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
+    fail_url: '(( concat "<" meta.url "/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Failure! " meta.slack.upset_moji ">" ))'
+
+groups:
+  - name: (( grab meta.pipeline ))
+    jobs:
+      - testflight
+      - rc
+      - shipit
+      - major
+      - minor
+
+jobs:
+  - name: testflight
+    public: true
+    serial: true
+    plan:
+    - do:
+      - aggregate:
+        - { get: git, trigger: true }
+      - task: testflight
+        config:
+          platform: linux
+          image: docker:///starkandwayne/concourse
+          inputs:
+            - { name: git }
+          run:
+            path: ./git/ci/scripts/testflight
+            args: []
+          params:
+            REPO_ROOT:            git
+            BOSH_LITE_TARGET:     (( grab meta.bosh-lite.target ))
+            BOSH_LITE_USERNAME:   (( grab meta.bosh-lite.username ))
+            BOSH_LITE_PASSWORD:   (( grab meta.bosh-lite.password ))
+            BOSH_LITE_DEPLOYMENT: (( grab meta.bosh-lite.deployment ))
+      on_failure:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": test job failed" ))'
+
+  - name: rc
+    public: true
+    plan:
+    - do:
+      - aggregate:
+          - { get: git,     trigger: true,  passed: [testflight] }
+          - { get: version, trigger: true, params: {pre: rc} }
+      - put: version
+        params: {file: version/number}
+      on_failure:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": rc job failed" ))'
+
+  - name: minor
+    public: true
+    plan:
+    - do:
+      - { get: version, trigger: false, params: {bump: minor} }
+      - { put: version,                 params: {file: version/number} }
+      on_failure:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": minor job failed" ))'
+
+  - name: major
+    public: true
+    plan:
+    - do:
+      - { get: version, trigger: false, params: {bump: major} }
+      - { put: version,                 params: {file: version/number} }
+      on_failure:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": major job failed" ))'
+
+  - name: shipit
+    public: true
+    serial: true
+    plan:
+    - do:
+      - name: inputs
+        aggregate:
+          - { get: version, passed: [rc], params: {bump: final} }
+          - { get: git,     passed: [rc] }
+      - name: release
+        task: release
+        config:
+          image: docker:///starkandwayne/concourse
+          platform: linux
+          inputs:
+            - name: version
+            - name: git
+          outputs:
+            - name: gh
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/shipit
+            args: []
+          params:
+            REPO_ROOT:    git
+            VERSION_FROM: version/number
+            RELEASE_NAME: (( concat meta.release " BOSH Release" ))
+            RELEASE_ROOT: gh
+            REPO_OUT:     pushme
+            BRANCH:       (( grab meta.github.branch ))
+
+            BOSH_LITE_TARGET:     (( grab meta.bosh-lite.target ))
+            BOSH_LITE_USERNAME:   (( grab meta.bosh-lite.username ))
+            BOSH_LITE_PASSWORD:   (( grab meta.bosh-lite.password ))
+            BOSH_LITE_DEPLOYMENT: (( grab meta.bosh-lite.deployment ))
+
+            AWS_ACCESS_KEY:       (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:       (( grab meta.aws.secret_key ))
+
+      - name: upload-git
+        put: git
+        params:
+          rebase: true
+          repository: pushme/git
+      - name: tarball
+        put: s3
+        params:
+          file:  (( concat "gh/artifacts/" meta.name "-*.tgz" ))
+      - name: github-release
+        put: github
+        params:
+          name:   gh/name
+          tag:    gh/tag
+          body:   gh/notes.md
+          globs: [gh/artifacts/*]
+      - name: version-bump
+        put: version
+        params:
+          bump: patch
+      on_failure:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": shipit job failed" ))'
+
+resource_types:
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
+
+resources:
+  - name: git
+    type: git
+    source:
+      uri:         (( grab meta.github.uri ))
+      branch:      (( grab meta.github.branch ))
+      private_key: (( grab meta.github.private_key ))
+
+  - name: version
+    type: semver
+    source :
+      driver:            s3
+      bucket:            (( grab meta.aws.bucket ))
+      key:               version
+      access_key_id:     (( grab meta.aws.access_key ))
+      secret_access_key: (( grab meta.aws.secret_key ))
+      initial_version:   (( grab meta.initial_version || "0.0.1" ))
+
+  - name: notify
+    type: slack-notification
+    source:
+      url: (( grab meta.slack.webhook ))
+
+  - name: github
+    type: github-release
+    source:
+      user:         (( grab meta.github.owner ))
+      repository:   (( grab meta.github.repo ))
+      access_token: (( grab meta.github.access_token ))
+
+  - name: s3
+    type: s3
+    source:
+      bucket:            (( grab meta.aws.bucket ))
+      regexp:            (( concat meta.name "-(.*).tgz" ))
+      access_key_id:     (( grab meta.aws.access_key ))
+      secret_access_key: (( grab meta.aws.secret_key ))

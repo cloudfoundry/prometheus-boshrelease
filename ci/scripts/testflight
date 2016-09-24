@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# ci/scripts/create-release-and-deploy
+#
+# Script for generating Github release / tag assets
+# and managing release notes for a BOSH Release pipeline
+#
+# author:  James Hunt <james@niftylogic.com>
+# created: 2016-03-30
+
+header() {
+	echo
+	echo "###############################################"
+	echo
+	echo $*
+	echo
+}
+
+header "Setting up ~/.bosh_config..."
+cat > ~/.bosh_config << EOF
+---
+aliases:
+  target:
+    bosh-lite: ${BOSH_LITE_TARGET}
+auth:
+  ${BOSH_LITE_TARGET}:
+    username: ${BOSH_LITE_USERNAME}
+    password: ${BOSH_LITE_PASSWORD}
+EOF
+
+set -e
+cd ${REPO_ROOT}
+header "Pulling in any git submodules..."
+git submodule update --init --recursive --force
+
+header "Cleaning up from any previous deployments..."
+bosh target ${BOSH_LITE_TARGET}
+bosh -n delete deployment ${BOSH_LITE_DEPLOYMENT} --force || echo "continuing on..."
+
+header "Creating candidate BOSH release..."
+bosh -n create release
+bosh -n upload release --rebase || echo "Continuing..."
+
+header "Deploying to BOSH-lite..."
+./templates/make_manifest warden
+bosh -n deploy
+
+header "Cleaning up..."
+bosh -n delete deployment ${BOSH_LITE_DEPLOYMENT} --force || echo "continuing on..."
+bosh -n cleanup || echo "continuing on..."
+
+echo
+echo "SUCCESS"
+exit 0
