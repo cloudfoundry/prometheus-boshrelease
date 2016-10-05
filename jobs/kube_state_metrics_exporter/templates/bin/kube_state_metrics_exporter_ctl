@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/kube_state_metrics_exporter
+LOG_DIR=/var/vcap/sys/log/kube_state_metrics_exporter
+TMP_DIR=/var/vcap/sys/tmp/kube_state_metrics_exporter
+STORE_DIR=/var/vcap/store/kube_state_metrics_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/kube_state_metrics_exporter.pid
+
+source /var/vcap/packages/kube_state_metrics_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/kube_state_metrics_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "kube_state_metrics_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec kube-state-metrics \
+      <% if_p('kube_state_metrics_exporter.apiserver') do |apiserver| %> \
+      --apiserver="<%= apiserver %>" \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.kubeconfig') do %> \
+      --kubeconfig=/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig \
+      <% end %> \
+      --port=<%= p('kube_state_metrics_exporter.port') %> \
+      >>  ${LOG_DIR}/kube_state_metrics_exporter.stdout.log \
+      2>> ${LOG_DIR}/kube_state_metrics_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

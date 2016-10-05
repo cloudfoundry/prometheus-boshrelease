@@ -10,6 +10,7 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [Github](https://github.com/infinityworksltd/github-exporter)
 * [Graphite](https://github.com/prometheus/graphite_exporter)
 * [HAProxy](https://github.com/prometheus/haproxy_exporter)
+* [Kubernetes](https://github.com/kubernetes/kube-state-metrics)
 * [MySQL](https://github.com/prometheus/mysqld_exporter)
 * [Node](https://github.com/prometheus/node_exporter)
 * [PushGateway](https://github.com/prometheus/pushgateway)
