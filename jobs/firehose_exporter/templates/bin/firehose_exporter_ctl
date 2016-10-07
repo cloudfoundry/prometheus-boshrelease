@@ -20,6 +20,12 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec firehose_exporter \
+      <% if_p('firehose_exporter.metrics.namespace') do |namespace| %> \
+      -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.metrics.garbage') do |garbage| %> \
+      -metrics.garbage="<%= garbage %>" \
+      <% end %> \
       -uaa.url="<%= p('firehose_exporter.uaa.url') %>" \
       -uaa.client-id="<%= p('firehose_exporter.uaa.client_id') %>" \
       -uaa.client-secret="<%= p('firehose_exporter.uaa.client_secret') %>" \
@@ -29,6 +35,9 @@ case $1 in
       <% end %> \
       <% if_p('firehose_exporter.doppler.idle_timeout_seconds') do |idle_timeout_seconds| %> \
       -doppler.idle-timeout-seconds="<%= idle_timeout_seconds %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.doppler.metric_expiry') do |metric_expiry| %> \
+      -doppler.metric-expiry="<%= metric_expiry %>" \
       <% end %> \
       <% if_p('firehose_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
       -skip-ssl-verify="<%= skip_ssl_verify %>" \
