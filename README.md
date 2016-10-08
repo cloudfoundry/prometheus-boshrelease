@@ -4,9 +4,10 @@ This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io
 
 It includes the following [Prometheus Exporters](https://prometheus.io/docs/instrumenting/exporters/):
 * [Blackbox](https://github.com/prometheus/blackbox_exporter)
+* [BOSH](https://github.com/cloudfoundry-community/bosh_exporter)
 * [Collectd](https://github.com/prometheus/collectd_exporter)
 * [Consul](https://github.com/prometheus/consul_exporter)
-* [Cloud Foundry Firehose](https://github.com/frodenas/firehose_exporter)
+* [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter)
 * [Github](https://github.com/infinityworksltd/github-exporter)
 * [Graphite](https://github.com/prometheus/graphite_exporter)
 * [HAProxy](https://github.com/prometheus/haproxy_exporter)

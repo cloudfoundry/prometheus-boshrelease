@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/bosh_exporter
+LOG_DIR=/var/vcap/sys/log/bosh_exporter
+TMP_DIR=/var/vcap/sys/tmp/bosh_exporter
+STORE_DIR=/var/vcap/store/bosh_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/bosh_exporter.pid
+
+source /var/vcap/packages/bosh_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/bosh_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "bosh_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec bosh_exporter \
+      -bosh.url="<%= p('bosh_exporter.bosh.url') %>" \
+      <% if_p('bosh_exporter.bosh.username') do |username| %> \
+      -bosh.username="<%= username %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.bosh.password') do |password| %> \
+      -bosh.password="<%= password %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.bosh.log_level') do |log_level| %> \
+      -bosh.log-level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.bosh.ca_cert') do %> \
+      -bosh.ca-cert-file="/var/vcap/jobs/bosh_exporter/config/bosh_ca_cert.pem" \
+      <% end %> \
+      <% p('bosh_exporter.bosh.deployments', []).each do |deployment| %> \
+      -bosh.deployment=<%= deployment %> \
+      <% end %> \
+      <% if_p('bosh_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.metrics.namespace') do |namespace| %> \
+      -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('bosh_exporter.web.port') %>" \
+      <% if_p('bosh_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/bosh_exporter.stdout.log \
+      2>> ${LOG_DIR}/bosh_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

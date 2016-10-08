@@ -1,0 +1,40 @@
+---
+name: bosh_exporter
+
+packages:
+  - bosh_exporter
+
+templates:
+  bin/bosh_exporter_ctl: bin/bosh_exporter_ctl
+  config/bosh_ca_cert.pem: config/bosh_ca_cert.pem
+
+properties:
+  bosh_exporter.bosh.url:
+    description: "BOSH URL"
+  bosh_exporter.bosh.username:
+    description: "BOSH Username"
+  bosh_exporter.bosh.password:
+    description: "BOSH Password"
+  bosh_exporter.bosh.log_level:
+    description: "BOSH Log Level ('DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE')"
+  bosh_exporter.bosh.ca_cert:
+    description: "BOSH CA Certificate"
+  bosh_exporter.bosh.deployments:
+    description: "Array of BOSH deployments to filter metrics"
+  bosh_exporter.uaa.url:
+    description: "BOSH UAA URL"
+  bosh_exporter.uaa.client_id:
+    description: "BOSH UAA Client ID"
+  bosh_exporter.uaa.client_secret:
+    description: "BOSH UAA Client Secret"
+  bosh_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  bosh_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  bosh_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  bosh_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9190"
+  bosh_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
