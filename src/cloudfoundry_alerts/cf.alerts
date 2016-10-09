@@ -1,0 +1,7 @@
+ALERT CFRoutesNotRegistered
+  IF avg(firehose_exporter_value_metric_gorouter_ms_since_last_registry_update) > 3000
+  FOR 15m
+  ANNOTATIONS {
+    summary = "CF: routes not being registered",
+    description = "It's been at least 30 seconds since a router received a 'router.register' message from an app: {{$value}}%",
+  }
