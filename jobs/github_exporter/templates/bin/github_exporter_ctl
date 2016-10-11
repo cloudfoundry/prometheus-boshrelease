@@ -22,7 +22,12 @@ case $1 in
 
     export BIND_PORT="<%= p('github_exporter.web.port') %>"
     export INTERVAL="<%= p('github_exporter.interval') %>"
-    export REPOS="<%= p('github_exporter.github.repos') %>"
+    <% if_p('github_exporter.github.repos') do |repos| %>
+    export REPOS="<%= repos %>"
+    <% end %>
+    <% if_p('github_exporter.github.orgs') do |orgs| %>
+    export ORGS="<%= orgs %>"
+    <% end %>
     <% if_p('github_exporter.github.token') do |token| %>
     export GITHUB_TOKEN="<%= token %>"
     <% end %>
