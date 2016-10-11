@@ -8,10 +8,6 @@ templates:
   bin/firehose_exporter_ctl: bin/firehose_exporter_ctl
 
 properties:
-  firehose_exporter.metrics.namespace:
-    description: "Metrics Namespace"
-  firehose_exporter.metrics.garbage:
-    description: "How long to run the metrics garbage"
   firehose_exporter.uaa.url:
     description: "Cloud Foundry UAA URL"
   firehose_exporter.uaa.client_id:
@@ -26,12 +22,18 @@ properties:
     description: "Cloud Foundry Doppler Idle Timeout (in seconds)"
   firehose_exporter.doppler.metric_expiry:
     description: "How long a Cloud Foundry Doppler metric is valid"
+  firehose_exporter.doppler.deployments:
+    description: "Array of BOSH deployments to filter metrics"
   firehose_exporter.skip_ssl_verify:
     description: "Disable SSL Verify"
   firehose_exporter.log_format:
     description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
   firehose_exporter.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  firehose_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  firehose_exporter.metrics.garbage:
+    description: "How long to run the metrics garbage"
   firehose_exporter.web.port:
     description: "Port on which to expose web interface and telemetry"
     default: "9186"
