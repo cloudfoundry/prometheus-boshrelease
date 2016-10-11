@@ -34,6 +34,9 @@ case $1 in
       <% if_p('mysqld_exporter.collect.binlog_size') do |binlog_size| %> \
       -collect.binlog_size="<%= binlog_size %>" \
       <% end %> \
+      <% if_p('mysqld_exporter.collect.engine_innodb_status') do |engine_innodb_status| %> \
+      -collect.engine_innodb_status="<%= engine_innodb_status %>" \
+      <% end %> \
       <% if_p('mysqld_exporter.collect.engine_tokudb_status') do |engine_tokudb_status| %> \
       -collect.engine_tokudb_status="<%= engine_tokudb_status %>" \
       <% end %> \
@@ -42,6 +45,9 @@ case $1 in
       <% end %> \
       <% if_p('mysqld_exporter.collect.global_variables') do |global_variables| %> \
       -collect.global_variables="<%= global_variables %>" \
+      <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.clientstats') do |clientstats| %> \
+      -collect.info_schema.clientstats="<%= clientstats %>" \
       <% end %> \
       <% if_p('mysqld_exporter.collect.info_schema.innodb_metrics') do |innodb_metrics| %> \
       -collect.info_schema.innodb_metrics="<%= innodb_metrics %>" \
