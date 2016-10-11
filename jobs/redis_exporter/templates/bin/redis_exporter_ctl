@@ -20,6 +20,9 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec redis_exporter \
+      <% if_p('redis_exporter.redis.check_keys') do |check_keys| %> \
+      -check-keys="<%= check_keys %>" \
+      <% end %> \
       <% if_p('redis_exporter.namespace') do |namespace| %> \
       -namespace="<%= namespace %>" \
       <% end %> \
@@ -28,6 +31,9 @@ case $1 in
       <% end %> \
       <% if_p('redis_exporter.redis.password') do |password| %> \
       -redis.password="<%= password %>" \
+      <% end %> \
+      <% if_p('redis_exporter.redis.separator') do |separator| %> \
+      -check-keys="<%= separator %>" \
       <% end %> \
       -web.listen-address=":<%= p('redis_exporter.web.port') %>" \
       <% if_p('redis_exporter.web.telemetry_path') do |telemetry_path| %> \
