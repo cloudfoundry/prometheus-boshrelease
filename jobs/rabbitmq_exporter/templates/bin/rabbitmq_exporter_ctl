@@ -31,9 +31,15 @@ case $1 in
     <% if_p('rabbitmq_exporter.rabbitmq.password') do |rabbitmq_password| %>
     export RABBIT_PASSWORD="<%= rabbitmq_password %>"
     <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.ca_cert') do %>
+    export CAFILE="/var/vcap/jobs/rabbitmq_exporter/config/ca_cert.pem"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.skip_tls_verify') do |skip_tls_verify| %>
+    export SKIPVERIFY="<%= skip_tls_verify %>"
+    <% end %>
     <% if_p('rabbitmq_exporter.output_format') do |output_format| %>
-    export OUTPUT_FORMAT="<%= output_format %>" \
-    <% end %> \
+    export OUTPUT_FORMAT="<%= output_format %>"
+    <% end %>
 
     export PUBLISH_PORT="<%= p('rabbitmq_exporter.web.port') %>"
 
