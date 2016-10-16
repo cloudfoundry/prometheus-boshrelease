@@ -30,8 +30,8 @@ case $1 in
       <% if_p('firehose_exporter.doppler.idle_timeout_seconds') do |idle_timeout_seconds| %> \
       -doppler.idle-timeout-seconds="<%= idle_timeout_seconds %>" \
       <% end %> \
-      <% if_p('firehose_exporter.doppler.metric_expiry') do |metric_expiry| %> \
-      -doppler.metric-expiry="<%= metric_expiry %>" \
+      <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
+      -doppler.metric-expiration="<%= metric_expiration %>" \
       <% end %> \
       <% p('firehose_exporter.doppler.deployments', []).each do |deployment| %> \
       -doppler.deployment=<%= deployment %> \
@@ -48,8 +48,8 @@ case $1 in
       <% if_p('firehose_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
       <% end %> \
-      <% if_p('firehose_exporter.metrics.garbage') do |garbage| %> \
-      -metrics.garbage="<%= garbage %>" \
+      <% if_p('firehose_exporter.metrics.cleanup_interval') do |cleanup_interval| %> \
+      -metrics.cleanup-interval="<%= cleanup_interval %>" \
       <% end %> \
       -web.listen-address=":<%= p('firehose_exporter.web.port') %>" \
       <% if_p('firehose_exporter.web.telemetry_path') do |telemetry_path| %> \
