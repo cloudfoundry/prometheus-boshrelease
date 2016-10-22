@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/postgres_exporter
+LOG_DIR=/var/vcap/sys/log/postgres_exporter
+TMP_DIR=/var/vcap/sys/tmp/postgres_exporter
+STORE_DIR=/var/vcap/store/postgres_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/postgres_exporter.pid
+
+source /var/vcap/packages/postgres_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/postgres_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "postgres_exporter"
+    echo $$ > ${PIDFILE}
+
+    export DATA_SOURCE_NAME="<%= p('postgres_exporter.datasource_name') %>"
+
+    exec postgres_exporter \
+      <% if_p('postgres_exporter.custom_queries') do %> \
+      -extend.query-path="/var/vcap/jobs/postgres_exporter/config/custom_queries.sql" \
+      <% end %> \
+      <% if_p('postgres_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('postgres_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('postgres_exporter.web.port') %>" \
+      <% if_p('postgres_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/postgres_exporter.stdout.log \
+      2>> ${LOG_DIR}/postgres_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

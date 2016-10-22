@@ -1,0 +1,24 @@
+---
+name: postgres_exporter
+
+packages:
+  - postgres_exporter
+
+templates:
+  bin/postgres_exporter_ctl: bin/postgres_exporter_ctl
+  config/custom_queries.sql: config/custom_queries.sql
+
+properties:
+  postgres_exporter.datasource_name:
+    description: "The PostgresSQL server's data source name"
+  postgres_exporter.custom_queries:
+    description "Custom queries to run"
+  postgres_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  postgres_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  postgres_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9113"
+  postgres_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
