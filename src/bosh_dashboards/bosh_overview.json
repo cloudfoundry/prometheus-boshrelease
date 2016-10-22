@@ -94,7 +94,7 @@
               "to": "null"
             }
           ],
-          "span": 6,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -103,7 +103,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_exporter_job_healthy)",
+              "expr": "min(bosh_exporter_job_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -180,7 +180,7 @@
               "to": "null"
             }
           ],
-          "span": 6,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -189,7 +189,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_exporter_job_process_healthy)",
+              "expr": "min(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -214,6 +214,87 @@
             }
           ],
           "valueName": "min"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "format": "s",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "hideTimeOverride": true,
+          "id": 14,
+          "interval": null,
+          "isNew": true,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "targets": [
+            {
+              "expr": "time() - bosh_exporter_last_jobs_scrape_timestamp",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "thresholds": "300,600",
+          "timeFrom": "1s",
+          "timeShift": null,
+          "title": "Last Metrics Scrape",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "150%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
         }
       ],
       "title": "Health"
@@ -281,7 +362,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_mem_percent)",
+              "expr": "max(bosh_exporter_job_mem_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -359,7 +440,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_swap_percent)",
+              "expr": "max(bosh_exporter_job_swap_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -445,7 +526,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_cpu_sys)",
+              "expr": "max(bosh_exporter_job_cpu_sys{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -523,7 +604,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_cpu_user)",
+              "expr": "max(bosh_exporter_job_cpu_user{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -602,7 +683,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_cpu_wait)",
+              "expr": "max(bosh_exporter_job_cpu_wait{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -688,7 +769,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_load_avg01)",
+              "expr": "max(bosh_exporter_job_load_avg01{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -766,7 +847,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_load_avg05)",
+              "expr": "max(bosh_exporter_job_load_avg05{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -844,7 +925,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_load_avg15)",
+              "expr": "max(bosh_exporter_job_load_avg15{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -930,7 +1011,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_system_disk_percent)",
+              "expr": "max(bosh_exporter_job_system_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1008,7 +1089,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_ephemeral_disk_percent)",
+              "expr": "max(bosh_exporter_job_ephemeral_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1086,7 +1167,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_exporter_job_persistent_disk_percent)",
+              "expr": "max(bosh_exporter_job_persistent_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1140,7 +1221,34 @@
     ]
   },
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_exporter_job_healthy, bosh_deployment)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job",
+        "options": [],
+        "query": "label_values(bosh_exporter_job_healthy, bosh_job)",
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
   },
   "annotations": {
     "list": []
