@@ -42,11 +42,16 @@ jobs:
         release: prometheus
       - name: haproxy_exporter
         release: prometheus
+      #- name: kube_state_metrics_exporter
+      #  release: prometheus
       #- name: mysqld_exporter
       #  release: prometheus
       - name: node_exporter
         release: prometheus
+      #- name: postgres_exporter
+      #  release: prometheus
       - name: prometheus
+        release: prometheus
       - name: pushgateway
         release: prometheus
       - name: rabbitmq_exporter
@@ -94,6 +99,12 @@ jobs:
                 regex: .*
                 target_label: __address__
                 replacement: localhost:9115
+          - job_name: bosh
+            scrape_interval: 1m
+            scrape_timeout: 1m
+            static_configs:
+              - targets:
+                - localhost:9190
           - job_name: collectd
             static_configs:
               - targets:
@@ -118,6 +129,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9101
+          - job_name: kube_state_metrics_exporter
+            static_configs:
+              - targets:
+                - localhost:9188
           - job_name: mysql
             static_configs:
               - targets:
@@ -126,6 +141,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9100
+          - job_name: postgres_exporter
+            static_configs:
+              - targets:
+                - localhost:9113
           - job_name: prometheus
             static_configs:
               - targets:
