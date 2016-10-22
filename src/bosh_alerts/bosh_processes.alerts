@@ -1,5 +1,5 @@
 ALERT BOSHProcessUnhealthy
-  IF max(bosh_exporter_bosh_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
+  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
   FOR 5m
   ANNOTATIONS {
     summary = "BOSH: A job process is unhealthy",
@@ -7,7 +7,7 @@ ALERT BOSHProcessUnhealthy
   }
 
 ALERT BOSHProcessExtentedUnhealthy
-  IF max(bosh_exporter_bosh_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
+  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job process has been unhealthy for a long time",
@@ -15,7 +15,7 @@ ALERT BOSHProcessExtentedUnhealthy
   }
 
 ALERT BOSHProcessLowFreeRAM
-  IF avg(bosh_exporter_bosh_job_process_mem_percent) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) > 90
+  IF avg(bosh_exporter_job_process_mem_percent) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) > 90
   FOR 10m
   ANNOTATIONS {
     summary = "BOSH: A job process is reporting low free RAM",
