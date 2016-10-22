@@ -33,8 +33,8 @@ case $1 in
       <% if_p('bosh_exporter.bosh.ca_cert') do %> \
       -bosh.ca-cert-file="/var/vcap/jobs/bosh_exporter/config/bosh_ca_cert.pem" \
       <% end %> \
-      <% p('bosh_exporter.bosh.deployments', []).each do |deployment| %> \
-      -bosh.deployment=<%= deployment %> \
+      <% if_p('bosh_exporter.bosh.deployments') do |deployments| %> \
+      -bosh.deployments="<%= deployments %>" \
       <% end %> \
       <% if_p('bosh_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
