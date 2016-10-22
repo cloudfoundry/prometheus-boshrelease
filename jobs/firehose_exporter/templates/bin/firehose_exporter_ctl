@@ -33,8 +33,11 @@ case $1 in
       <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
       -doppler.metric-expiration="<%= metric_expiration %>" \
       <% end %> \
-      <% p('firehose_exporter.doppler.deployments', []).each do |deployment| %> \
-      -doppler.deployment=<%= deployment %> \
+      <% if_p('firehose_exporter.doppler.deployments') do |deployments| %> \
+      -doppler.deployments="<%= deployments %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.doppler.events') do |events| %> \
+      -doppler.events="<%= events %>" \
       <% end %> \
       <% if_p('firehose_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
       -skip-ssl-verify="<%= skip_ssl_verify %>" \
