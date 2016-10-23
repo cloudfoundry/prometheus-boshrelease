@@ -46,6 +46,8 @@ jobs:
       #  release: prometheus
       #- name: mysqld_exporter
       #  release: prometheus
+      - name: nats_exporter
+        release: prometheus
       - name: node_exporter
         release: prometheus
       #- name: postgres_exporter
@@ -137,6 +139,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9104
+          - job_name: nats
+            static_configs:
+              - targets:
+                - localhost:9118
           - job_name: node
             static_configs:
               - targets:
