@@ -1,23 +1,23 @@
 ALERT BOSHProcessUnhealthy
-  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
+  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_process) < 1
   FOR 5m
   ANNOTATIONS {
     summary = "BOSH: A job process is unhealthy",
-    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` at AZ `{{$labels.bosh_az}}` is being reported unhealthy",
+    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` is being reported unhealthy",
   }
 
 ALERT BOSHProcessExtentedUnhealthy
-  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) < 1
+  IF max(bosh_exporter_job_process_healthy) by(bosh_deployment, bosh_job, bosh_index, bosh_process) < 1
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job process has been unhealthy for a long time",
-    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` at AZ `{{$labels.bosh_az}}` has been reported unhealthy for more than 30 minutes",
+    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` has been reported unhealthy for more than 30 minutes",
   }
 
 ALERT BOSHProcessLowFreeRAM
-  IF avg(bosh_exporter_job_process_mem_percent) by(bosh_deployment, bosh_job, bosh_index, bosh_az, bosh_process) > 90
+  IF avg(bosh_exporter_job_process_mem_percent) by(bosh_deployment, bosh_job, bosh_index, bosh_process) > 90
   FOR 10m
   ANNOTATIONS {
     summary = "BOSH: A job process is reporting low free RAM",
-    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` at AZ `{{$labels.bosh_az}}` has used more than 90% of its RAM for 10 minutes: {{$value}}%",
+    description = "BOSH process `{{$labels.bosh_process}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job}}/{{$labels.bosh_index}}` has used more than 90% of its RAM for 10 minutes: {{$value}}%",
   }
