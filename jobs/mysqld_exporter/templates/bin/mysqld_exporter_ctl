@@ -23,9 +23,7 @@ case $1 in
     export CREDENTIALS="<%= "#{mysql_username}:#{mysql_password}@" %>"
     <% end %>
 
-    <% if_p('mysqld_exporter.mysql.protocol', 'mysqld_exporter.mysql.address', 'mysqld_exporter.mysql.port', 'mysqld_exporter.mysql.dbname') do |mysql_protocol, mysql_address, mysql_port, mysql_dbname| %>
-    export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{mysql_protocol}(#{mysql_address}:#{mysql_port})/#{mysql_dbname}" %>"
-    <% end %>
+    export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{p('mysqld_exporter.mysql.protocol')}(#{p('mysqld_exporter.mysql.address')}:#{p('mysqld_exporter.mysql.port')})/" %>"
 
     exec mysqld_exporter \
       <% if_p('mysqld_exporter.collect.auto_increment_columns') do |auto_increment_columns| %> \
