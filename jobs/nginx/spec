@@ -1,0 +1,87 @@
+---
+name: nginx
+
+packages:
+  - nginx
+
+templates:
+  bin/nginx_ctl: bin/nginx_ctl
+  config/alertmanager_location.conf: config/alertmanager_location.conf
+  config/nginx.conf: config/nginx.conf
+  config/prometheus_location.conf: config/prometheus_location.conf
+  config/ssl_cert.pem: config/ssl_cert.pem
+  config/ssl_key.pem: config/ssl_key.pem
+
+consumes:
+  - name: alertmanager
+    type: alertmanager
+    optional: true
+  - name: prometheus
+    type: prometheus
+    optional: true
+
+properties:
+  nginx.worker_processes:
+    description: "Number of Nginx workers"
+    default: 2
+  nginx.worker_connections:
+    description: "Number of Nginx connections per worker"
+    default: 8192
+  nginx.max_upload_size:
+    description: "File upload maximum size"
+    default: 5000m
+  nginx.keepalive_timeout:
+    description: "Timeout for keep-alive connections"
+    default: 7200
+  nginx.auth_username:
+    description: "Auth username"
+  nginx.auth_password:
+    description: "Auth password"
+  nginx.ssl_only:
+    description: "Enable only HTTPS requests"
+    default: false
+  nginx.ssl_cert:
+    description: "SSL Certificate (PEM encoded)"
+  nginx.ssl_key:
+    description: "SSL private key (PEM encoded)"
+  nginx.ssl_protocols:
+    description: "Enable protocols"
+    default: "TLSv1 TLSv1.1 TLSv1.2"
+  nginx.ssl_ciphers:
+    description: "Enable ciphers"
+    default: "ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:HIGH:!MD5:!aNULL:!EDH"
+  nginx.ssl_session_cache:
+    description: "Types and sizes of caches that store session parameters"
+    default: "shared:SSL:10m"
+  nginx.ssl_session_timeout:
+    description: "Timeout for reusing the previously negotiated cryptographic parameters"
+    default: 7200
+  nginx.proxy_connect_timeout:
+    description: "Timeout for the connection to the upstream server"
+    default: 300
+  nginx.proxy_read_timeout:
+    description: "Timeout for read queries to the upstream server"
+    default: 120
+  nginx.proxy_send_timeout:
+    description: "Timeout for send queries to the upstream server"
+    default: 120
+
+  nginx.alertmanager.path:
+    description: "Alertmanager path"
+    default: "/"
+  nginx.alertmanager.http_port:
+    description: "Port that proxy will listen on for Alertmanager HTTP connections"
+    default: 9093
+  nginx.alertmanager.https_port:
+    description: "Port that proxy will listen on for AlertmanagerHTTPS connections"
+    default: 19093
+
+  nginx.prometheus.path:
+    description: "Prometheus path"
+    default: "/"
+  nginx.prometheus.http_port:
+    description: "Port that proxy will listen on for Prometheus HTTP connections"
+    default: 9090
+  nginx.prometheus.https_port:
+    description: "Port that proxy will listen on for Prometheus HTTPS connections"
+    default: 19090
