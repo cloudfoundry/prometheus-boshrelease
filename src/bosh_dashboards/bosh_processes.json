@@ -18,6 +18,12 @@
     },
     {
       "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "graph",
       "name": "Graph",
       "version": ""
@@ -75,7 +81,7 @@
           "interval": null,
           "isNew": true,
           "links": [],
-          "mappingType": 1,
+          "mappingType": 2,
           "mappingTypes": [
             {
               "name": "value to text",
@@ -95,9 +101,14 @@
           "prefixFontSize": "50%",
           "rangeMaps": [
             {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
+              "from": "0",
+              "text": "Failing",
+              "to": "0.99"
+            },
+            {
+              "from": "1",
+              "to": "1",
+              "text": "Running"
             }
           ],
           "span": 6,
@@ -134,86 +145,62 @@
               "value": "0"
             }
           ],
-          "valueName": "avg"
+          "valueName": "min"
         },
         {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
+          "title": "Failing Processes",
           "error": false,
-          "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "id": 5,
-          "isNew": true,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
           "span": 6,
-          "stack": false,
-          "steppedLine": false,
+          "editable": true,
+          "type": "table",
+          "isNew": true,
+          "id": 6,
           "targets": [
             {
-              "expr": "min(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Status",
+              "expr": "bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"} < 1",
+              "intervalFactor": 1,
               "refId": "A",
-              "step": 10
+              "step": 5,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job }}/{{ bosh_index }}: {{ bosh_process }}",
+              "interval": ""
             }
           ],
+          "styles": [
+            {
+              "unit": "short",
+              "type": "number",
+              "decimals": 0,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "colorMode": null,
+              "pattern": "/.*/",
+              "thresholds": []
+            }
+          ],
+          "transform": "timeseries_aggregations",
+          "pageSize": null,
+          "showHeader": true,
+          "columns": [
+            {
+              "text": "Count",
+              "value": "count"
+            }
+          ],
+          "scroll": true,
+          "fontSize": "100%",
+          "sort": {
+            "col": null,
+            "desc": false
+          },
+          "datasource": "${DS_PROMETHEUS}",
+          "links": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Processes Halth",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
           "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": 1,
-              "min": 0,
-              "show": false
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "hideTimeOverride": false
         }
       ],
       "title": "Health"
