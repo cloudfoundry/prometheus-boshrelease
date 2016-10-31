@@ -442,7 +442,7 @@
         "multi": false,
         "name": "bosh_job",
         "options": [],
-        "query": "label_values(bosh_exporter_job_process_healthy, bosh_job)",
+        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job)",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -456,7 +456,7 @@
         "multi": false,
         "name": "bosh_process",
         "options": [],
-        "query": "label_values(bosh_exporter_job_process_healthy, bosh_process)",
+        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"}, bosh_process)",
         "refresh": 1,
         "type": "query"
       }
@@ -469,6 +469,18 @@
   "schemaVersion": 12,
   "version": 1,
   "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "bosh"
+      ],
+      "targetBlank": true,
+      "title": "BOSH Dashboards",
+      "type": "dashboards"
+    },
     {
       "type": "link",
       "icon": "external link",

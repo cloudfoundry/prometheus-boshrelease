@@ -1246,7 +1246,7 @@
         "multi": false,
         "name": "bosh_job",
         "options": [],
-        "query": "label_values(bosh_exporter_job_healthy, bosh_job)",
+        "query": "label_values(bosh_exporter_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job)",
         "refresh": 1,
         "type": "query"
       }
@@ -1260,12 +1260,24 @@
   "version": 1,
   "links": [
     {
-      "type": "link",
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "bosh"
+      ],
+      "targetBlank": true,
+      "title": "BOSH Dashboards",
+      "type": "dashboards"
+    },
+    {
       "icon": "external link",
       "tags": [],
-      "url": "http://bosh.io/docs",
+      "targetBlank": true,
       "title": "BOSH Docs",
-      "targetBlank": true
+      "type": "link",
+      "url": "http://bosh.io/docs"
     }
   ],
   "gnetId": null
