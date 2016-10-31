@@ -6,13 +6,11 @@ shopt -s nullglob
 STORE_DIR=/var/vcap/store/grafana
 
 <% if_link('prometheus') do |prometheus| %>
-<% p('grafana.prometheus.dashboard_dirs', []).each do |dashboard_dir| %>
-dashboard_files=(<%= dashboard_dir %>/*.json)
-for dashboard_file in "${dashboard_files[@]}"; do
-  filename=$(basename "${dashboard_file}")
-  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${STORE_DIR}/dashboards/${filename}"
-  echo -e "Updated dashboard ${dashboard_file} at $(date)"
-done
+<% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
+dashboard_file="<%= dashboard_file %>"
+filename=$(basename "${dashboard_file}")
+echo -e "Updating dashboard ${dashboard_file} at $(date)"
+sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${STORE_DIR}/dashboards/${filename}"
 <% end %>
 <% end %>
 
