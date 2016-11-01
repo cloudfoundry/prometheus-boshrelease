@@ -9,3 +9,10 @@ cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 # Extract grafana package
 tar xzvf ${BOSH_COMPILE_TARGET}/grafana/grafana-3.1.1-1470047149.linux-x64.tar.gz
 cp -a ${BOSH_COMPILE_TARGET}/grafana-3.1.1-1470047149/* ${BOSH_INSTALL_TARGET}
+
+# Apply fix (https://github.com/percona/grafana-app/issues/3)
+sed -i 's/expr=\(.\)\.replace(\(.\)\.expr,\(.\)\.scopedVars\(.*\)var \(.\)=\(.\)\.interval/expr=\1.replace(\2.expr,\3.scopedVars\4var \5=\1.replace(\6.interval, \3.scopedVars)/' ${BOSH_INSTALL_TARGET}/public/app/plugins/datasource/prometheus/datasource.js
+
+# Apply fix (https://github.com/grafana/grafana/pull/5839)
+sed -i 's/var interval = target.interval || options.interval;/var interval = templateSrv.replace(target.interval, options.scopedVars) || options.interval;/' ${BOSH_INSTALL_TARGET}/public/app/plugins/datasource/prometheus/datasource.ts
+sed -i 's/step_input: '\'''\'',/step_input: this.target.step,/' ${BOSH_INSTALL_TARGET}/public/app/plugins/datasource/prometheus/query_ctrl.ts
