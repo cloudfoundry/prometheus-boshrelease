@@ -3,14 +3,15 @@
 set -eu
 shopt -s nullglob
 
-STORE_DIR=/var/vcap/store/grafana
+DASHBOARDS_DIR=/var/vcap/store/grafana/dashboards/
+rm -fr ${DASHBOARDS_DIR}/*
 
 <% if_link('prometheus') do |prometheus| %>
 <% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
 dashboard_file="<%= dashboard_file %>"
 filename=$(basename "${dashboard_file}")
 echo -e "Updating dashboard ${dashboard_file} at $(date)"
-sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${STORE_DIR}/dashboards/${filename}"
+sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
 <% end %>
 <% end %>
 
