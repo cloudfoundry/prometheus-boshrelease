@@ -36,6 +36,9 @@ case $1 in
       <% if_p('bosh_exporter.bosh.deployments') do |deployments| %> \
       -bosh.deployments="<%= deployments %>" \
       <% end %> \
+      <% if_p('bosh_exporter.bosh.collectors') do |collectors| %> \
+      -bosh.collectors="<%= collectors %>" \
+      <% end %> \
       <% if_p('bosh_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
       <% end %> \
