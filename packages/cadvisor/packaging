@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Extract cadvisor package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/cadvisor/cadvisor-0.24.1.tar.gz -C ${BOSH_INSTALL_TARGET}/bin

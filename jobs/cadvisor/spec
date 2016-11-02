@@ -1,0 +1,125 @@
+---
+name: cadvisor
+
+packages:
+  - cadvisor
+
+templates:
+  bin/cadvisor_ctl: bin/cadvisor_ctl
+  config/bq_credentials.pem: config/bq_credentials.pem
+  config/http_auth: config/http_auth
+  config/http_digest: config/http_digest
+  config/kafka_ssl_ca.pem: config/kafka_ssl_ca.pem
+  config/kafka_ssl_cert.pem: config/kafka_ssl_cert.pem
+  config/kafka_ssl_key.pem: config/kafka_ssl_key.pem
+
+properties:
+  cadvisor.allow_dynamic_housekeeping:
+    description: "Whether to allow the housekeeping interval to be dynamic"
+  cadvisor.application_metrics_count_limit:
+    description: "Max number of application metrics to store (per container)"
+  cadvisor.boot_id_file:
+    description: "Comma-separated list of files to check for boot-id. Use the first one that exists"
+  cadvisor.bq_account:
+    description: "Service account email"
+  cadvisor.bq_credentials:
+    description: "Credential Key (pem)"
+  cadvisor.bq_id:
+    description: "Client ID"
+  cadvisor.bq_project_id:
+    description: "Bigquery project ID"
+  cadvisor.bq_secret:
+    description: "Client Secret"
+  cadvisor.collector_cert:
+    description: "Collector's certificate, exposed to endpoints for certificate based authentication"
+  cadvisor.collector_key:
+    description: "Key for the collector's certificate"
+  cadvisor.container_hints:
+    description: "Location of the container hints file"
+  cadvisor.disable_metrics:
+    description: "comma-separated list of metrics to be disabled. Options are 'disk', 'network', 'tcp'"
+  cadvisor.docker:
+    description: "docker endpoint"
+  cadvisor.docker_env_metadata_whitelist:
+    description: "a comma-separated list of environment variable keys that needs to be collected for docker containers"
+  cadvisor.docker_only:
+    description: "Only report docker containers in addition to root stats"
+  cadvisor.enable_load_reader:
+    description: "Whether to enable cpu load reader"
+  cadvisor.event_storage_age_limit:
+    description: "Max length of time for which to store events (per type)"
+  cadvisor.event_storage_event_limit:
+    description: "Max number of events to store (per type)"
+  cadvisor.global_housekeeping_interval:
+    description: "Interval between global housekeepings"
+  cadvisor.housekeeping_interval:
+    description: "Interval between container housekeepings"
+  cadvisor.http_auth:
+    description: "HTTP auth for the web UI"
+  cadvisor.http_auth_realm:
+    description: "HTTP auth realm for the web UI"
+  cadvisor.http_digest:
+    description: "HTTP digest for the web UI"
+  cadvisor.http_digest_realm:
+    description: "HTTP digest file for the web UI"
+  cadvisor.log_backtrace_at:
+    description: "when logging hits line file:N, emit a stack trace (default :0)"
+  cadvisor.log_cadvisor_usage:
+    description: "Whether to log the usage of the cAdvisor container"
+  cadvisor.machine_id_file:
+    description: "Comma-separated list of files to check for machine-id. Use the first one that exists."
+  cadvisor.max_housekeeping_interval:
+    description: "Largest interval to allow between container housekeepings"
+  cadvisor.max_procs:
+    description: "max number of CPUs that can be used simultaneously"
+  cadvisor.port:
+    description: "port to listen"
+    default: 8080
+  cadvisor.profiling:
+    description: "Enable profiling via web interface host:port/debug/pprof/"
+  cadvisor.prometheus_endpoint:
+    description: "Endpoint to expose Prometheus metrics on"
+  cadvisor.stderrthreshold:
+    description: "logs at or above this threshold go to stderr"
+  cadvisor.storage_driver:
+    description: "Storage driver to use. Data is always cached shortly in memory, this controls where data is pushed besides the local cache. Empty means none"
+  cadvisor.storage_driver_buffer_duration:
+    description: "Writes in the storage driver will be buffered for this duration, and committed to the non memory backends as a single transaction"
+  cadvisor.storage_driver_db:
+    description: "database name"
+  cadvisor.storage_driver_es_enable_sniffer:
+    description: "ElasticSearch uses a sniffing process to find all nodes of your cluster by default, automatically"
+  cadvisor.storage_driver_es_host:
+    description: "ElasticSearch host:port"
+  cadvisor.storage_driver_es_index:
+    description: "ElasticSearch index name"
+  cadvisor.storage_driver_es_type:
+    description: "ElasticSearch type name"
+  cadvisor.storage_driver_host:
+    description: "database host:port"
+  cadvisor.storage_driver_kafka_broker_list:
+    description: "kafka broker(s) csv"
+  cadvisor.storage_driver_kafka_ssl_ca:
+    description: "optional certificate authority for TLS client authentication"
+  cadvisor.storage_driver_kafka_ssl_cert:
+    description: "optional certificate for TLS client authentication"
+  cadvisor.storage_driver_kafka_ssl_key:
+    description: "optional key for TLS client authentication"
+  cadvisor.storage_driver_kafka_ssl_verify:
+    description: "verify ssl certificate chain"
+  cadvisor.storage_driver_kafka_topic:
+    description: "kafka topic"
+  cadvisor.storage_driver_password:
+    description: "database password"
+  cadvisor.storage_driver_secure:
+    description: "use secure connection with database"
+  cadvisor.storage_driver_table:
+    description: "table name"
+  cadvisor.storage_driver_user:
+    description: "database username"
+  cadvisor.storage_duration:
+    description: "How long to keep data stored"
+  cadvisor.v:
+    description: "log level for V logs"
+  cadvisor.vmodule:
+    description: "comma-separated list of pattern=N settings for file-filtered logging"

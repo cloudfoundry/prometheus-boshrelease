@@ -1,0 +1,198 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/cadvisor
+LOG_DIR=/var/vcap/sys/log/cadvisor
+TMP_DIR=/var/vcap/sys/tmp/cadvisor
+STORE_DIR=/var/vcap/store/cadvisor
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/cadvisor.pid
+
+source /var/vcap/packages/cadvisor/common/utils.sh
+
+export PATH=/var/vcap/packages/cadvisor/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "cadvisor"
+    echo $$ > ${PIDFILE}
+
+    exec cadvisor \
+      <% if_p('cadvisor.allow_dynamic_housekeeping') do |allow_dynamic_housekeeping| %> \
+      -allow_dynamic_housekeeping="<%= allow_dynamic_housekeeping %>" \
+      <% end %> \
+      <% if_p('cadvisor.application_metrics_count_limit') do |application_metrics_count_limit| %> \
+      -application_metrics_count_limit="<%= application_metrics_count_limit %>" \
+      <% end %> \
+      <% if_p('cadvisor.boot_id_file') do |boot_id_file| %> \
+      -boot_id_file="<%= boot_id_file %>" \
+      <% end %> \
+      <% if_p('cadvisor.bq_account') do |bq_account| %> \
+      -bq_account="<%= bq_account %>" \
+      <% end %> \
+      <% if_p('cadvisor.bq_credentials') do %> \
+      -bq_credentials_file=/var/vcap/jobs/cadvisor/config/bq_credentials.pem \
+      <% end %> \
+      <% if_p('cadvisor.bq_id') do |bq_id| %> \
+      -bq_id="<%= bq_id %>" \
+      <% end %> \
+      <% if_p('cadvisor.bq_project_id') do |bq_project_id| %> \
+      -bq_project_id="<%= bq_project_id %>" \
+      <% end %> \
+      <% if_p('cadvisor.bq_secret') do |bq_secret| %> \
+      -bq_secret="<%= bq_secret %>" \
+      <% end %> \
+      <% if_p('cadvisor.collector_cert') do |collector_cert| %> \
+      -collector_cert="<%= collector_cert %>" \
+      <% end %> \
+      <% if_p('cadvisor.collector_key') do |collector_key| %> \
+      -collector_key="<%= collector_key %>" \
+      <% end %> \
+      <% if_p('cadvisor.container_hints') do |container_hints| %> \
+      -container_hints="<%= container_hints %>" \
+      <% end %> \
+      <% if_p('cadvisor.disable_metrics') do |disable_metrics| %> \
+      -disable_metrics="<%= disable_metrics %>" \
+      <% end %> \
+      <% if_p('cadvisor.docker') do |docker| %> \
+      -docker="<%= docker %>" \
+      <% end %> \
+      <% if_p('cadvisor.docker_env_metadata_whitelist') do |docker_env_metadata_whitelist| %> \
+      -docker_env_metadata_whitelist="<%= docker_env_metadata_whitelist %>" \
+      <% end %> \
+      <% if_p('cadvisor.docker_only') do |docker_only| %> \
+      -docker_only="<%= docker_only %>" \
+      <% end %> \
+      <% if_p('cadvisor.enable_load_reader') do |enable_load_reader| %> \
+      -enable_load_reader="<%= enable_load_reader %>" \
+      <% end %> \
+      <% if_p('cadvisor.event_storage_age_limit') do |event_storage_age_limit| %> \
+      -event_storage_age_limit="<%= event_storage_age_limit %>" \
+      <% end %> \
+      <% if_p('cadvisor.event_storage_event_limit') do |event_storage_event_limit| %> \
+      -event_storage_event_limit="<%= event_storage_event_limit %>" \
+      <% end %> \
+      <% if_p('cadvisor.global_housekeeping_interval') do |global_housekeeping_interval| %> \
+      -global_housekeeping_interval="<%= global_housekeeping_interval %>" \
+      <% end %> \
+      <% if_p('cadvisor.housekeeping_interval') do |housekeeping_interval| %> \
+      -housekeeping_interval="<%= housekeeping_interval %>" \
+      <% end %> \
+      <% if_p('cadvisor.http_auth') do %> \
+      -http_auth_file=/var/vcap/jobs/cadvisor/config/http_auth \
+      <% end %> \
+      <% if_p('cadvisor.http_auth_realm') do |http_auth_realm| %> \
+      -http_auth_realm="<%= http_auth_realm %>" \
+      <% end %> \
+      <% if_p('cadvisor.http_digest') do %> \
+      -http_digest_file=/var/vcap/jobs/cadvisor/config/http_digest \
+      <% end %> \
+      <% if_p('cadvisor.http_digest_realm') do |http_digest_realm| %> \
+      -http_digest_realm="<%= http_digest_realm %>" \
+      <% end %> \
+      <% if_p('cadvisor.log_backtrace_at') do |log_backtrace_at| %> \
+      -log_backtrace_at="<%= log_backtrace_at %>" \
+      <% end %> \
+      <% if_p('cadvisor.log_cadvisor_usage') do |log_cadvisor_usage| %> \
+      -log_cadvisor_usage="<%= log_cadvisor_usage %>" \
+      <% end %> \
+      -log_dir=${LOG_DIR} \
+      <% if_p('cadvisor.machine_id_file') do |machine_id_file| %> \
+      -machine_id_file="<%= machine_id_file %>" \
+      <% end %> \
+      <% if_p('cadvisor.max_housekeeping_interval') do |max_housekeeping_interval| %> \
+      -max_housekeeping_interval="<%= max_housekeeping_interval %>" \
+      <% end %> \
+      <% if_p('cadvisor.max_procs') do |max_procs| %> \
+      -max_procs="<%= max_procs %>" \
+      <% end %> \
+      -port="<%= p('cadvisor.port') %>" \
+      <% if_p('cadvisor.profiling') do |profiling| %> \
+      -profiling="<%= profiling %>" \
+      <% end %> \
+      <% if_p('cadvisor.prometheus_endpoint') do |prometheus_endpoint| %> \
+      -prometheus_endpoint="<%= prometheus_endpoint %>" \
+      <% end %> \
+      <% if_p('cadvisor.stderrthreshold') do |stderrthreshold| %> \
+      -stderrthreshold="<%= stderrthreshold %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver') do |storage_driver| %> \
+      -storage_driver="<%= storage_driver %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_buffer_duration') do |storage_driver_buffer_duration| %> \
+      -storage_driver_buffer_duration="<%= storage_driver_buffer_duration %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_db') do |storage_driver_db| %> \
+      -storage_driver_db="<%= storage_driver_db %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_es_enable_sniffer') do |storage_driver_es_enable_sniffer| %> \
+      -storage_driver_es_enable_sniffer="<%= storage_driver_es_enable_sniffer %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_es_host') do |storage_driver_es_host| %> \
+      -storage_driver_es_host="<%= storage_driver_es_host %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_es_index') do |storage_driver_es_index| %> \
+      -storage_driver_es_index="<%= storage_driver_es_index %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_es_type') do |storage_driver_es_type| %> \
+      -storage_driver_es_type="<%= storage_driver_es_type %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_host') do |storage_driver_host| %> \
+      -storage_driver_host="<%= storage_driver_host %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_broker_list') do |storage_driver_kafka_broker_list| %> \
+      -storage_driver_kafka_broker_list="<%= storage_driver_kafka_broker_list %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_ssl_ca') do %> \
+      -storage_driver_kafka_ssl_ca=/var/vcap/jobs/cadvisor/config/kafka_ssl_ca.pem \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_ssl_cert') do %> \
+      -storage_driver_kafka_ssl_cert=/var/vcap/jobs/cadvisor/config/kafka_ssl_cert.pem \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_ssl_key') do %> \
+      -storage_driver_kafka_ssl_key=/var/vcap/jobs/cadvisor/config/kafka_ssl_key.pem \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_ssl_verify') do |storage_driver_kafka_ssl_verify| %> \
+      -storage_driver_kafka_ssl_verify="<%= storage_driver_kafka_ssl_verify %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_kafka_topic') do |storage_driver_kafka_topic| %> \
+      -storage_driver_kafka_topic="<%= storage_driver_kafka_topic %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_password') do |storage_driver_password| %> \
+      -storage_driver_password="<%= storage_driver_password %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_secure') do |storage_driver_secure| %> \
+      -storage_driver_secure="<%= storage_driver_secure %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_table') do |storage_driver_table| %> \
+      -storage_driver_table="<%= storage_driver_table %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_user') do |storage_driver_user| %> \
+      -storage_driver_user="<%= storage_driver_user %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_duration') do |storage_duration| %> \
+      -storage_duration="<%= storage_duration %>" \
+      <% end %> \
+      <% if_p('cadvisor.v') do |v| %> \
+      -v="<%= v %>" \
+      <% end %> \
+      <% if_p('cadvisor.vmodule') do |vmodule| %> \
+      -vmodule="<%= vmodule %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/cadvisor.stdout.log \
+      2>> ${LOG_DIR}/cadvisor.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+
+esac
+exit 0
