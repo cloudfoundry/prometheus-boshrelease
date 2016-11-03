@@ -27,6 +27,15 @@ case $1 in
       <% if_p('bosh_exporter.bosh.password') do |password| %> \
       -bosh.password="<%= password %>" \
       <% end %> \
+      <% if_p('bosh_exporter.uaa.url') do |url| %> \
+      -uaa.url="<%= url %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.uaa.client_id') do |client_id| %> \
+      -uaa.client-id="<%= client_id %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.uaa.client_secret') do |client_secret| %> \
+      -uaa.client-secret="<%= client_secret %>" \
+      <% end %> \
       <% if_p('bosh_exporter.bosh.log_level') do |log_level| %> \
       -bosh.log-level="<%= log_level %>" \
       <% end %> \
