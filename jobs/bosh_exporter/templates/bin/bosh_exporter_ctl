@@ -27,14 +27,14 @@ case $1 in
       <% if_p('bosh_exporter.bosh.password') do |password| %> \
       -bosh.password="<%= password %>" \
       <% end %> \
-      <% if_p('bosh_exporter.uaa.url') do |url| %> \
-      -uaa.url="<%= url %>" \
+      <% if_p('bosh_exporter.bosh.uaa.url') do |url| %> \
+      -bosh.uaa.url="<%= url %>" \
       <% end %> \
-      <% if_p('bosh_exporter.uaa.client_id') do |client_id| %> \
-      -uaa.client-id="<%= client_id %>" \
+      <% if_p('bosh_exporter.bosh.uaa.client_id') do |client_id| %> \
+      -bosh.uaa.client-id="<%= client_id %>" \
       <% end %> \
-      <% if_p('bosh_exporter.uaa.client_secret') do |client_secret| %> \
-      -uaa.client-secret="<%= client_secret %>" \
+      <% if_p('bosh_exporter.bosh.uaa.client_secret') do |client_secret| %> \
+      -bosh.uaa.client-secret="<%= client_secret %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.log_level') do |log_level| %> \
       -bosh.log-level="<%= log_level %>" \
@@ -56,6 +56,10 @@ case $1 in
       <% end %> \
       <% if_p('bosh_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      -sd.filename="${STORE_DIR}/bosh_target_groups.json" \
+      <% if_p('bosh_exporter.sd.processes_regexp') do |processes_regexp| %> \
+      -sd.processes_regexp="<%= namespace %>" \
       <% end %> \
       -web.listen-address=":<%= p('bosh_exporter.web.port') %>" \
       <% if_p('bosh_exporter.web.telemetry_path') do |telemetry_path| %> \
