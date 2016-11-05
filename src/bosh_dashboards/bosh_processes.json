@@ -120,7 +120,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"})",
+              "expr": "min(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -157,11 +157,11 @@
           "id": 6,
           "targets": [
             {
-              "expr": "bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"} < 1",
+              "expr": "bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"} < 1",
               "intervalFactor": 1,
               "refId": "A",
               "step": 5,
-              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job }}/{{ bosh_index }}: {{ bosh_process }}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}: {{ bosh_job_process_name }}",
               "interval": ""
             }
           ],
@@ -248,10 +248,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_exporter_job_process_cpu_total{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"}",
+              "expr": "bosh_exporter_job_process_cpu_total{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"}",
               "hide": false,
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}/{{bosh_process}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}/{{bosh_job_process_name}}",
               "metric": "bosh_exporter_job_process_cpu_total",
               "refId": "A",
               "step": 10
@@ -328,9 +328,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_exporter_job_process_mem_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\",bosh_process=~\"$bosh_process\"}",
+              "expr": "bosh_exporter_job_process_mem_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}/{{bosh_process}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}/{{bosh_job_process_name}}",
               "refId": "A",
               "step": 10
             }
@@ -427,9 +427,9 @@
         "includeAll": true,
         "label": "Job",
         "multi": false,
-        "name": "bosh_job",
+        "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job)",
+        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "type": "query"
@@ -441,9 +441,9 @@
         "includeAll": true,
         "label": "Process",
         "multi": false,
-        "name": "bosh_process",
+        "name": "bosh_job_process_name",
         "options": [],
-        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job=~\"$bosh_job\"}, bosh_process)",
+        "query": "label_values(bosh_exporter_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_process_name)",
         "refresh": 1,
         "type": "query"
       }
