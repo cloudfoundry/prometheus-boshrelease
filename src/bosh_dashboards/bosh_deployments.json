@@ -12,9 +12,9 @@
   "__requires": [
     {
       "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
+      "id": "grafana-piechart-panel",
+      "name": "Pie Chart",
+      "version": "1.1.4"
     },
     {
       "type": "panel",
@@ -52,56 +52,44 @@
       "height": "250px",
       "panels": [
         {
-          "columns": [
-            {
-              "text": "Current",
-              "value": "current"
-            }
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
+          "title": "Stemcells In Use",
           "error": false,
-          "fontSize": "100%",
-          "id": 1,
-          "isNew": true,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": true
-          },
           "span": 6,
-          "styles": [
-            {
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 0,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
+          "editable": true,
+          "type": "grafana-piechart-panel",
+          "isNew": true,
+          "id": 5,
           "targets": [
             {
               "expr": "count_values(\"stemcell\", bosh_exporter_deployment_stemcell_info{bosh_deployment=~\"$bosh_deployment\"})  by(bosh_stemcell_name, bosh_stemcell_version)",
-              "interval": "",
               "intervalFactor": 10,
-              "legendFormat": "{{ bosh_stemcell_name }}/{{ bosh_stemcell_version }}",
               "refId": "A",
-              "step": 10
+              "step": 200,
+              "legendFormat": "{{ bosh_stemcell_name }}/{{ bosh_stemcell_version }}"
             }
           ],
-          "title": "Stemcells In Use",
-          "transform": "timeseries_aggregations",
+          "pieType": "pie",
+          "legend": {
+            "show": true,
+            "values": true
+          },
+          "links": [],
+          "datasource": "${DS_PROMETHEUS}",
+          "maxDataPoints": 3,
+          "interval": null,
+          "cacheTimeout": null,
+          "nullPointMode": "connected",
+          "legendType": "Under graph",
+          "aliasColors": {},
+          "format": "short",
+          "valueName": "current",
+          "strokeWidth": 1,
+          "fontSize": "80%",
+          "combine": {
+            "threshold": 0,
+            "label": "Others"
+          },
           "transparent": true,
-          "type": "table",
           "timeFrom": "1m",
           "timeShift": null
         },
@@ -194,57 +182,45 @@
       "height": "250px",
       "panels": [
         {
-          "columns": [
-            {
-              "text": "Current",
-              "value": "current"
-            }
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
+          "title": "Releases In Use",
           "error": false,
-          "fontSize": "100%",
-          "id": 4,
-          "isNew": true,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": true
-          },
           "span": 6,
-          "styles": [
-            {
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 0,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
+          "editable": true,
+          "type": "grafana-piechart-panel",
+          "isNew": true,
+          "id": 6,
           "targets": [
             {
               "expr": "count_values(\"release\", bosh_exporter_deployment_release_info{bosh_deployment=~\"$bosh_deployment\"})  by(bosh_release_name, bosh_release_version)",
               "intervalFactor": 10,
-              "legendFormat": "{{ bosh_release_name }}/{{ bosh_release_version }}",
               "refId": "A",
-              "step": 10
+              "step": 200,
+              "legendFormat": "{{ bosh_release_name }}/{{ bosh_release_version }}"
             }
           ],
-          "title": "Releases In Use",
-          "transform": "timeseries_aggregations",
+          "pieType": "pie",
+          "legend": {
+            "show": true,
+            "values": true
+          },
+          "links": [],
+          "datasource": "${DS_PROMETHEUS}",
+          "maxDataPoints": 3,
+          "interval": null,
+          "cacheTimeout": null,
+          "nullPointMode": "connected",
+          "legendType": "Under graph",
+          "aliasColors": {},
+          "format": "short",
+          "valueName": "current",
+          "strokeWidth": 1,
+          "fontSize": "80%",
+          "combine": {
+            "threshold": 0,
+            "label": "Others"
+          },
           "transparent": true,
-          "type": "table",
-          "timeFrom": "1m",
-          "timeShift": null
+          "timeFrom": "1m"
         },
         {
           "aliasColors": {},
