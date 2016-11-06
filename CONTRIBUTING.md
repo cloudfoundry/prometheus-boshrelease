@@ -25,3 +25,8 @@ We use the [GitHub issue tracker](https://github.com/cloudfoundry-community/prom
 3. Implement your feature or bug fix.
 4. Commit and push your changes.
 5. Submit a pull request.
+
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

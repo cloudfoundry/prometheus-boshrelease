@@ -49,6 +49,10 @@ cd prometheus-boshrelease
 bosh -n deploy
 ```
 
-## Copyright
+## Contributing
 
-Copyright (c) 2016 Ferran Rodenas. See [LICENSE](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/LICENSE) for details.
+Refer to [CONTRIBUTING.md](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/CONTRIBUTING.md).
+
+## License
+
+Apache License 2.0, see [LICENSE](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/LICENSE).
