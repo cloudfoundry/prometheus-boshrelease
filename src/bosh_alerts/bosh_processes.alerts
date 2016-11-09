@@ -1,5 +1,5 @@
 ALERT BOSHProcessUnhealthy
-  IF max(bosh_exporter_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
+  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
   FOR 5m
   ANNOTATIONS {
     summary = "BOSH: A job process is unhealthy",
@@ -7,7 +7,7 @@ ALERT BOSHProcessUnhealthy
   }
 
 ALERT BOSHProcessExtentedUnhealthy
-  IF max(bosh_exporter_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
+  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job process has been unhealthy for a long time",
