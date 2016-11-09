@@ -61,6 +61,9 @@ case $1 in
       <% if_p('prometheus.storage.local.dirty') do |dirty| %> \
       -storage.local.dirty="<%= dirty %>" \
       <% end %> \
+      <% if_p('prometheus.storage.local.engine') do |engine| %> \
+      -storage.local.engine="<%= engine %>" \
+      <% end %> \
       <% if_p('prometheus.storage.local.index_cache_size.fingerprint_to_metric') do |fingerprint_to_metric| %> \
        -storage.local.index-cache-size.fingerprint-to-metric="<%= fingerprint_to_metric %>" \
       <% end %> \
