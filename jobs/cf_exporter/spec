@@ -1,0 +1,31 @@
+---
+name: cf_exporter
+
+packages:
+  - cf_exporter
+
+templates:
+  bin/cf_exporter_ctl: bin/cf_exporter_ctl
+
+properties:
+  cf_exporter.cf.api_url:
+    description: "Cloud Foundry API URL"
+  cf_exporter.cf.username:
+    description: "Cloud Foundry Username"
+  cf_exporter.cf.password:
+    description: "Cloud Foundry Password"
+  cf_exporter.filter.collectors:
+    description: "Comma separated collectors to filter ('Applications', 'Organizations', 'Services', 'Spaces')"
+  cf_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  cf_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  cf_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  cf_exporter.skip_ssl_verify:
+    description: "Disable SSL Verify"
+  cf_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9193"
+  cf_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"

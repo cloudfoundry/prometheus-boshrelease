@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/cf_exporter
+LOG_DIR=/var/vcap/sys/log/cf_exporter
+TMP_DIR=/var/vcap/sys/tmp/cf_exporter
+STORE_DIR=/var/vcap/store/cf_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/cf_exporter.pid
+
+source /var/vcap/packages/cf_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/cf_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "cf_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec cf_exporter \
+      -cf.api_url="<%= p('cf_exporter.cf.api_url') %>" \
+      -cf.username="<%= p('cf_exporter.cf.username') %>" \
+      -cf.password="<%= p('cf_exporter.cf.password') %>" \
+      <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
+      -filter.collectors="<%= collectors %>" \
+      <% end %> \
+      <% if_p('cf_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('cf_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('cf_exporter.metrics.namespace') do |namespace| %> \
+      -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      <% if_p('cf_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
+      -skip-ssl-verify="<%= skip_ssl_verify %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('cf_exporter.web.port') %>" \
+      <% if_p('cf_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/cf_exporter.stdout.log \
+      2>> ${LOG_DIR}/cf_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
