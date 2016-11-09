@@ -42,11 +42,11 @@ case $1 in
       <% if_p('bosh_exporter.bosh.ca_cert') do %> \
       -bosh.ca-cert-file="/var/vcap/jobs/bosh_exporter/config/bosh_ca_cert.pem" \
       <% end %> \
-      <% if_p('bosh_exporter.bosh.deployments') do |deployments| %> \
-      -bosh.deployments="<%= deployments %>" \
+      <% if_p('bosh_exporter.filter.deployments') do |deployments| %> \
+      -filter.deployments="<%= deployments %>" \
       <% end %> \
-      <% if_p('bosh_exporter.bosh.collectors') do |collectors| %> \
-      -bosh.collectors="<%= collectors %>" \
+      <% if_p('bosh_exporter.filter.collectors') do |collectors| %> \
+      -filter.collectors="<%= collectors %>" \
       <% end %> \
       <% if_p('bosh_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
