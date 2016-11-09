@@ -112,6 +112,10 @@ properties:
     description: "External snapshot URL"
   grafana.snapshots.external_snapshot_name:
     description: "External snapshot name"
+  grafana.snapshots.remove_expired:
+    description: "Remove expired snapshots"
+  grafana.snapshots.ttl_days:
+    description: "Snapshots TTL days"
 
   grafana.users.allow_sign_up:
     description: "disable user signup / registration"
@@ -125,6 +129,9 @@ properties:
     description: "Background text for the user field on the login page"
   grafana.users.default_theme:
     description: "Default UI theme ('dark' or 'light')"
+
+  grafana.auth.disable_login_form:
+    description: "Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false"
 
   grafana.auth.anonymous.enabled:
     description: "enable anonymous access"
@@ -173,6 +180,40 @@ properties:
   grafana.auth.google.allowed_domains:
     description: "Google auth allowed organizations"
 
+  grafana.auth.generic_oauth.enabled:
+    description: "Generic OAuth enabled"
+  grafana.auth.generic_oauth.allow_sign_up:
+    description: "Generic OAuth allow sign up"
+  grafana.auth.generic_oauth.client_id:
+    description: "Generic OAuth client id"
+  grafana.auth.generic_oauth.client_secret:
+    description: "Generic OAuth client secret"
+  grafana.auth.generic_oauth.scopes:
+    description: "Generic OAuth scopes"
+  grafana.auth.generic_oauth.auth_url:
+    description: "Generic OAuth url"
+  grafana.auth.generic_oauth.token_url:
+    description: "Generic OAuth token url"
+  grafana.auth.generic_oauth.api_url:
+    description: "Generic OAuth api url"
+  grafana.auth.generic_oauth.team_ids:
+    description: "Generic OAuth team ids"
+  grafana.auth.generic_oauth.allowed_domains:
+    description: "Generic OAuth allowed organizations"
+
+  grafana.auth.grafananet.enabled:
+    description: "Grafana.net auth enabled"
+  grafana.auth.grafananet.allow_sign_up:
+    description: "Grafana.net auth allow sign up"
+  grafana.auth.grafananet.client_id:
+    description: "Grafana.net auth client id"
+  grafana.auth.grafananet.client_secret:
+    description: "Grafana.net auth client secret"
+  grafana.auth.grafananet.scopes:
+    description: "Grafana.net auth scopes"
+  grafana.auth.grafananet.allowed_organizations:
+    description: "Grafana.net auth allowed organizations"
+
   grafana.auth.proxy.enabled:
     description: "Auth proxy enabled"
   grafana.auth.proxy.header_name:
@@ -189,6 +230,8 @@ properties:
     description: "Auth LDAP enable"
   grafana.auth.ldap.config:
     description: "LDAP configuration (toml)"
+  grafana.auth.ldap.allow_sign_up:
+    description: "Auth LDAP allow sign up"
 
   grafana.smtp.enabled:
     description: "SMTP enabled"
@@ -214,6 +257,8 @@ properties:
     description: "Either 'console', 'file', 'syslog'. Use space to separate multiple modes"
   grafana.log.level:
     description: "log level. Either 'trace', 'debug', 'info', 'warn', 'error', 'critical'"
+  grafana.log.filters:
+    description: "Optional settings to set different levels for specific loggers"
 
   grafana.log.console.level:
     description: "log level"
@@ -258,6 +303,9 @@ properties:
   grafana.dashboards.json.enabled:
     description: "Enable Dashboard JSON files"
 
+  grafana.alerting.execute_alerts:
+    description: "Makes it possible to turn off alert rule execution"
+
   grafana.metrics.enabled:
     description: "Enable internal metrics"
   grafana.metrics.interval_seconds:
@@ -269,6 +317,23 @@ properties:
 
   grafana.grafana_net.url:
     description: "Url used to to import dashboards directly from Grafana.net"
+
+  grafana.external_image_storage.provider:
+    description: "Used for uploading images to public servers so they can be included in slack/email messages (s3, webdav)"
+
+  grafana.external_image_storage.s3.bucket_url:
+    description: "S3 Bucket URL"
+  grafana.external_image_storage.s3.access_key:
+    description: "S3 Access Key"
+  grafana.external_image_storage.s3.secret_key:
+    description: "S3 Secret Key"
+
+  grafana.external_image_storage.webdav.url:
+    description: "Webdav URL"
+  grafana.external_image_storage.webdav.username:
+    description: "Webdav Username"
+  grafana.external_image_storage.webdav.password:
+    description: "Webdav Password"
 
   grafana.prometheus.datasource_name:
     description: "Name of the Prometheus datasource"
