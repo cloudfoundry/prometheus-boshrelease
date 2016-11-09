@@ -31,6 +31,9 @@ case $1 in
       -log.level="<%= log_level %>" \
       <% end %> \
       -mesh.listen-address=<%= "#{spec.address}:#{p('alertmanager.mesh.port')}" %> \
+      <% if_p('alertmanager.mesh.password') do |password| %> \
+      -mesh.password="<%= password %>" \
+      <% end %> \
       <% link('alertmanager').instances.each do |instance|  %> \
       -mesh.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port')}" %>" \
       <% end %> \
