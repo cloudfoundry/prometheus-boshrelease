@@ -8,6 +8,7 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [cAdvisor](https://github.com/google/cadvisor)
 * [Collectd](https://github.com/prometheus/collectd_exporter)
 * [Consul](https://github.com/prometheus/consul_exporter)
+* [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter)
 * [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter)
 * [Github](https://github.com/infinityworksltd/github-exporter)
 * [Graphite](https://github.com/prometheus/graphite_exporter)
