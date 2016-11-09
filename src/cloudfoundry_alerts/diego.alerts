@@ -1,5 +1,5 @@
 ALERT DiegoRequestHighLatency
-  IF max(firehose_exporter_value_metric_bbs_request_latency) / 1000000000 > 10
+  IF max(firehose_value_metric_bbs_request_latency) / 1000000000 > 10
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: BBS request latency is too high",
@@ -7,7 +7,7 @@ ALERT DiegoRequestHighLatency
   }
 
 ALERT DiegoDomainLowFreshness
-  IF max(firehose_exporter_value_metric_bbs_domain_cf_apps) < 0.8
+  IF max(firehose_value_metric_bbs_domain_cf_apps) < 0.8
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: domain cf-apps freshness too low",
@@ -15,7 +15,7 @@ ALERT DiegoDomainLowFreshness
   }
 
 ALERT DiegoConvergenceLRPHighDuration
-  IF max(firehose_exporter_value_metric_bbs_convergence_lrp_duration) / 1000000000 > 20
+  IF max(firehose_value_metric_bbs_convergence_lrp_duration) / 1000000000 > 20
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: Convergence LRP duration too high",
@@ -23,7 +23,7 @@ ALERT DiegoConvergenceLRPHighDuration
   }
 
 ALERT DiegoLowRemainingMemory
-  IF avg(firehose_exporter_value_metric_rep_capacity_remaining_memory) by(deployment_ip) / 0.000001024 < 4500000000
+  IF avg(firehose_value_metric_rep_capacity_remaining_memory) by(deployment_ip) / 0.000001024 < 4500000000
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: Min memory available too low",
@@ -31,7 +31,7 @@ ALERT DiegoLowRemainingMemory
   }
 
 ALERT DiegoHighMissingLRPs
-  IF avg(firehose_exporter_value_metric_bbs_lr_ps_missing) > 70
+  IF avg(firehose_value_metric_bbs_lr_ps_missing) > 70
   FOR 5m
   ANNOTATIONS {
     summary = "Diego: Missing LRPs are too high",
@@ -39,7 +39,7 @@ ALERT DiegoHighMissingLRPs
   }
 
 ALERT DiegoNsyncBulkerHighTime
-  IF max(firehose_exporter_value_metric_nsync_bulker_desired_lrp_sync_duration) / 1000000000 > 20
+  IF max(firehose_value_metric_nsync_bulker_desired_lrp_sync_duration) / 1000000000 > 20
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: NSYNC bulker time too high",
@@ -47,7 +47,7 @@ ALERT DiegoNsyncBulkerHighTime
   }
 
 ALERT DiegoRepBulkHighDuration
-  IF max(firehose_exporter_value_metric_rep_rep_bulk_sync_duration) / 1000000000 > 20
+  IF max(firehose_value_metric_rep_rep_bulk_sync_duration) / 1000000000 > 20
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: rep bulk sync duration too high",
@@ -55,7 +55,7 @@ ALERT DiegoRepBulkHighDuration
   }
 
 ALERT DiegoRouterEmitterSyncHighDuration
-  IF max(firehose_exporter_value_metric_route_emitter_route_emitter_sync_duration)/1000000000 > 20
+  IF max(firehose_value_metric_route_emitter_route_emitter_sync_duration)/1000000000 > 20
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: Router emitter sync duration too high",
