@@ -33,14 +33,11 @@ case $1 in
       <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
       -doppler.metric-expiration="<%= metric_expiration %>" \
       <% end %> \
-      <% if_p('firehose_exporter.doppler.deployments') do |deployments| %> \
-      -doppler.deployments="<%= deployments %>" \
+      <% if_p('firehose_exporter.filter.deployments') do |deployments| %> \
+      -filter.deployments="<%= deployments %>" \
       <% end %> \
-      <% if_p('firehose_exporter.doppler.events') do |events| %> \
-      -doppler.events="<%= events %>" \
-      <% end %> \
-      <% if_p('firehose_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
-      -skip-ssl-verify="<%= skip_ssl_verify %>" \
+      <% if_p('firehose_exporter.filter.events') do |events| %> \
+      -filter.events="<%= events %>" \
       <% end %> \
       <% if_p('firehose_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
@@ -53,6 +50,9 @@ case $1 in
       <% end %> \
       <% if_p('firehose_exporter.metrics.cleanup_interval') do |cleanup_interval| %> \
       -metrics.cleanup-interval="<%= cleanup_interval %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
+      -skip-ssl-verify="<%= skip_ssl_verify %>" \
       <% end %> \
       -web.listen-address=":<%= p('firehose_exporter.web.port') %>" \
       <% if_p('firehose_exporter.web.telemetry_path') do |telemetry_path| %> \
