@@ -47,6 +47,8 @@ case $1 in
       <% end %> \
       <% if_p('bosh_exporter.filter.azs') do |azs| %> \
       -filter.azs="<%= azs %>" \
+      <% end.else do %> \
+      -filter.azs="<%= spec.az %>" \
       <% end %> \
       <% if_p('bosh_exporter.filter.collectors') do |collectors| %> \
       -filter.collectors="<%= collectors %>" \
