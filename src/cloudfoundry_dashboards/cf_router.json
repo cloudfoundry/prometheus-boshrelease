@@ -280,9 +280,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_latency{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "firehose_value_metric_gorouter_latency{bosh_deployment=~\"$bosh_deployment\"} * on (bosh_job_id) group_left(bosh_job_index) bosh_job_healthy",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_job_index}}",
               "refId": "A",
               "step": 10
             }
@@ -358,9 +358,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_route_lookup_time{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "firehose_value_metric_gorouter_route_lookup_time{bosh_deployment=~\"$bosh_deployment\"} * on (bosh_job_id) group_left(bosh_job_index) bosh_job_healthy",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_job_index}}",
               "refId": "A",
               "step": 10
             }
