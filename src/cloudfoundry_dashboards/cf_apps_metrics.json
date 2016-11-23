@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -32,8 +32,8 @@
   "id": null,
   "title": "CF: Application Metrics",
   "tags": [
-    "cf",
-    "apps"
+    "apps",
+    "cf"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -76,7 +76,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Organization",
         "multi": false,
         "name": "cf_organization_name",
@@ -94,7 +94,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Space",
         "multi": false,
         "name": "cf_space_name",
@@ -112,7 +112,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Application",
         "multi": false,
         "name": "cf_application_name",
@@ -133,14 +133,23 @@
   "refresh": "30s",
   "schemaVersion": 13,
   "version": 1,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    }
+  ],
   "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
-      "isNew": false,
+      "title": "CPU",
       "panels": [
         {
           "aliasColors": {},
@@ -151,15 +160,16 @@
           "fill": 1,
           "grid": {},
           "id": 1,
-          "isNew": true,
           "legend": {
-            "avg": false,
+            "alignAsTable": true,
+            "avg": true,
             "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 2,
@@ -178,7 +188,7 @@
               "expr": "avg(firehose_container_metric_cpu_percentage) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }}/{{ space_name }}/{{ application_name }}",
+              "legendFormat": "Used",
               "refId": "A",
               "step": 4
             }
@@ -186,7 +196,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "CPU Usage",
+          "title": "CPU",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -221,18 +231,16 @@
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
-      "title": "Row",
-      "titleSize": "h6"
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
-      "isNew": false,
+      "title": "Memory",
       "panels": [
         {
           "aliasColors": {},
@@ -243,15 +251,16 @@
           "fill": 1,
           "grid": {},
           "id": 2,
-          "isNew": true,
           "legend": {
-            "avg": false,
+            "alignAsTable": true,
+            "avg": true,
             "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 2,
@@ -270,15 +279,23 @@
               "expr": "avg(firehose_container_metric_memory_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }}/{{ space_name }}/{{ application_name }}",
+              "legendFormat": "Used",
               "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_container_metric_memory_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\"}",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Quota",
+              "refId": "B",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Memory Usage",
+          "title": "Memory",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -313,18 +330,16 @@
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
-      "title": "New row",
-      "titleSize": "h6"
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
-      "isNew": false,
+      "title": "Disk",
       "panels": [
         {
           "aliasColors": {},
@@ -335,15 +350,16 @@
           "fill": 1,
           "grid": {},
           "id": 3,
-          "isNew": true,
           "legend": {
-            "avg": false,
+            "alignAsTable": true,
+            "avg": true,
             "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 2,
@@ -362,15 +378,22 @@
               "expr": "avg(firehose_container_metric_disk_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }}/{{ space_name }}/{{ application_name }}",
+              "legendFormat": "Used",
               "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_container_metric_disk_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\"}",
+              "intervalFactor": 2,
+              "legendFormat": "Quota",
+              "refId": "B",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Disk Usage",
+          "title": "Disk",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -405,12 +428,13 @@
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
-      "title": "New row",
-      "titleSize": "h6"
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
   ]
 }
