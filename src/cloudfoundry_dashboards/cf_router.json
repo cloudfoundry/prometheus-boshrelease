@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -38,13 +38,90 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_gorouter_total_requests_total, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
+      "title": "Row",
       "panels": [
         {
           "aliasColors": {},
@@ -53,20 +130,15 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
-          "isNew": true,
           "legend": {
+            "alignAsTable": false,
             "avg": false,
             "current": false,
             "max": false,
             "min": false,
-            "show": false,
+            "show": true,
             "total": false,
             "values": false
           },
@@ -87,14 +159,22 @@
               "expr": "sum(firehose_counter_event_gorouter_total_requests_total{bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Requests",
+              "legendFormat": "Total",
               "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "sum(firehose_counter_event_gorouter_rejected_requests_total{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Rejected",
+              "refId": "B",
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Total Requests",
+          "title": "Requests",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -104,7 +184,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -132,14 +215,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -201,6 +278,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Responses",
@@ -213,7 +291,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -235,12 +316,16 @@
           ]
         }
       ],
-      "title": "Row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
+      "title": "New row",
       "panels": [
         {
           "aliasColors": {},
@@ -249,14 +334,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 3,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -280,16 +359,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_latency{bosh_deployment=~\"$bosh_deployment\"} * on (bosh_job_id) group_left(bosh_job_index) bosh_job_healthy",
+              "expr": "firehose_value_metric_gorouter_latency{bosh_deployment=~\"$bosh_deployment\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
               "refId": "A",
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Latency (ms)",
+          "title": "Latency",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -299,7 +379,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -327,14 +410,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 5,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -358,13 +435,15 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_route_lookup_time{bosh_deployment=~\"$bosh_deployment\"} * on (bosh_job_id) group_left(bosh_job_index) bosh_job_healthy",
+              "expr": "firehose_value_metric_gorouter_route_lookup_time{bosh_deployment=~\"$bosh_deployment\"}",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
               "refId": "A",
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Route Lookup time (ns)",
@@ -377,7 +456,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -399,12 +481,16 @@
           ]
         }
       ],
-      "title": "New row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
+      "title": "New row",
       "panels": [
         {
           "aliasColors": {},
@@ -413,14 +499,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 4,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -453,6 +533,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Total Routes",
@@ -465,7 +546,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -493,14 +577,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 1,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -527,11 +605,12 @@
               "expr": "firehose_counter_event_gorouter_registry_message_total{bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}",
+              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
               "refId": "A",
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Register Messages Received",
@@ -544,7 +623,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -566,71 +648,13 @@
           ]
         }
       ],
-      "title": "New row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Deployment",
-        "multi": false,
-        "name": "bosh_deployment",
-        "options": [],
-        "query": "label_values(firehose_counter_event_gorouter_total_requests_total, bosh_deployment)",
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "CF Component Metrics",
-      "type": "link",
-      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
-    }
-  ],
-  "gnetId": null
+  ]
 }
