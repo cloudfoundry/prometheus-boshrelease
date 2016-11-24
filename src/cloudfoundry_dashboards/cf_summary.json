@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -43,13 +43,72 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "150px",
+      "title": "Summary",
       "panels": [
         {
           "cacheTimeout": null,
@@ -73,7 +132,6 @@
           },
           "id": 4,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -151,7 +209,6 @@
           },
           "id": 2,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -229,7 +286,6 @@
           },
           "id": 1,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -307,7 +363,6 @@
           },
           "id": 3,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -364,12 +419,16 @@
           "valueName": "current"
         }
       ],
-      "title": "Row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "150px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Orgs & Spaces",
       "panels": [
         {
           "aliasColors": {},
@@ -378,14 +437,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 5,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -417,6 +470,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Organizations",
@@ -429,7 +483,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -457,14 +514,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -496,6 +547,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Spaces",
@@ -508,7 +560,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -530,12 +585,16 @@
           ]
         }
       ],
-      "title": "New row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Apps & Services",
       "panels": [
         {
           "aliasColors": {},
@@ -544,14 +603,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 7,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -583,6 +636,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Applications",
@@ -595,7 +649,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -623,14 +680,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -662,6 +713,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Services",
@@ -674,7 +726,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -696,47 +751,13 @@
           ]
         }
       ],
-      "title": "New row"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": []
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [],
-  "gnetId": null
+  ]
 }
