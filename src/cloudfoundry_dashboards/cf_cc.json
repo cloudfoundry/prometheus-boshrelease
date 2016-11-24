@@ -1,0 +1,625 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.0.0-beta2"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    }
+  ],
+  "id": null,
+  "title": "CF: Cloud Controller",
+  "tags": [
+    "cf"
+  ],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": false,
+  "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_cc_job_queue_length_total, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    }
+  ],
+  "gnetId": null,
+  "rows": [
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_cc_http_status_1_xx{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "1xx",
+              "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_http_status_2_xx{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "2xx",
+              "refId": "B",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_http_status_3_xx{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "3xx",
+              "refId": "C",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_http_status_4_xx{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "4xx",
+              "refId": "D",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_http_status_5_xx{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "5xx",
+              "refId": "E",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "HTTP Responses",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 1,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "firehose_value_metric_cc_job_queue_length_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Job Queue Length",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 2,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "firehose_value_metric_cc_failed_job_count_total",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Failed jobs",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 5,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_cc_requests_completed)",
+              "intervalFactor": 2,
+              "legendFormat": "Completed",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_requests_outstanding)",
+              "intervalFactor": 2,
+              "legendFormat": "Outstanding",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Requests",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_info{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "info",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_warn{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "warn",
+              "refId": "B",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_debug{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "debug",
+              "refId": "C",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_debug_1{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "debug1",
+              "refId": "D",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_debug_2{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "debug2",
+              "refId": "E",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_error{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "error",
+              "refId": "F",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_fatal{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "fatal",
+              "refId": "G",
+              "step": 10
+            },
+            {
+              "expr": "avg(firehose_value_metric_cc_log_count_off{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "off",
+              "refId": "H",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Log Messages",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    }
+  ]
+}
