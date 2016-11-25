@@ -1,0 +1,15 @@
+ALERT CFRoutesNotBeingRegistered
+  IF avg(firehose_value_metric_gorouter_ms_since_last_registry_update) by(bosh_deployment, bosh_job_name, bosh_job_id) > 30000
+  FOR 5m
+  ANNOTATIONS {
+    summary = "CF: Routes not being registered",
+    description = "It has been at least 30 seconds since a router received a 'router.register' message from an app: {{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}} {{$value}}ms",
+  }
+
+ALERT CFRoutesTooLow
+  IF avg(firehose_value_metric_gorouter_total_routes) < 5
+  FOR 10m
+  ANNOTATIONS {
+    summary = "CF: Number of routes in the router's routing table is too low",
+    description = "The number of routes in the router's routing table is dangerously low: {{$value}}ms",
+  }
