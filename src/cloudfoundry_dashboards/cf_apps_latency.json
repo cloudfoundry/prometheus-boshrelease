@@ -30,10 +30,9 @@
     }
   ],
   "id": null,
-  "title": "CF: Application Metrics",
+  "title": "Apps: Latency",
   "tags": [
-    "apps",
-    "cf"
+    "apps"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -140,30 +139,30 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "cf"
+        "apps"
       ],
-      "title": "CF",
+      "title": "Apps",
       "type": "dashboards"
     }
   ],
   "gnetId": null,
   "rows": [
     {
-      "title": "CPU",
+      "title": "Client Latency",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "decimals": null,
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {},
           "id": 1,
           "legend": {
             "alignAsTable": true,
             "avg": true,
-            "current": false,
+            "current": true,
             "max": true,
             "min": true,
             "rightSide": true,
@@ -172,7 +171,7 @@
             "values": true
           },
           "lines": true,
-          "linewidth": 2,
+          "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
           "percentage": false,
@@ -185,10 +184,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_cpu_percentage) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
               "step": 4
             }
@@ -196,12 +195,12 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "CPU",
+          "title": "Client Latency (quantiles)",
           "tooltip": {
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
@@ -213,7 +212,7 @@
           },
           "yaxes": [
             {
-              "format": "percent",
+              "format": "s",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -240,21 +239,21 @@
       "collapse": false
     },
     {
-      "title": "Memory",
+      "title": "Server Latency",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "decimals": null,
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {},
           "id": 2,
           "legend": {
             "alignAsTable": true,
             "avg": true,
-            "current": false,
+            "current": true,
             "max": true,
             "min": true,
             "rightSide": true,
@@ -263,7 +262,7 @@
             "values": true
           },
           "lines": true,
-          "linewidth": 2,
+          "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
           "percentage": false,
@@ -276,31 +275,22 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_memory_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
-              "interval": "",
+              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Memory",
+          "title": "Server Latency (quantiles)",
           "tooltip": {
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
@@ -312,105 +302,7 @@
           },
           "yaxes": [
             {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
-      "repeat": null,
-      "repeatRowId": null,
-      "repeatIteration": null,
-      "collapse": false
-    },
-    {
-      "title": "Disk",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_container_metric_disk_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Disk",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
+              "format": "s",
               "label": null,
               "logBase": 1,
               "max": null,
