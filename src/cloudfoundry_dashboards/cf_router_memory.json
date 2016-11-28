@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -30,7 +30,7 @@
     }
   ],
   "id": null,
-  "title": "CF: Router Mem",
+  "title": "CF: Router Memory",
   "tags": [
     "cf",
     "router"
@@ -94,13 +94,25 @@
   "annotations": {
     "list": []
   },
-  "refresh": false,
+  "refresh": "30s",
   "schemaVersion": 13,
-  "version": 4,
+  "version": 1,
   "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    },
     {
       "icon": "external link",
       "tags": [],
+      "targetBlank": true,
       "title": "CF Component Metrics",
       "type": "link",
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
@@ -109,9 +121,7 @@
   "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "height": 270,
-      "isNew": false,
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
@@ -124,7 +134,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -144,8 +154,8 @@
             {
               "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated{bosh_deployment=~\"$bosh_deployment\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
-              "metric": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "metric": "",
               "refId": "A",
               "step": 10
             }
@@ -153,7 +163,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Router Memory",
+          "title": "Memory Usage",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -174,7 +184,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -183,7 +193,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         },
@@ -195,13 +205,12 @@
           "error": false,
           "fill": 1,
           "id": 2,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -222,8 +231,8 @@
               "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
-              "metric": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_heap",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "metric": "",
               "refId": "A",
               "step": 10
             }
@@ -231,7 +240,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Router Mem Allocs Stack",
+          "title": "Stack Allocator Memory Usage",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -252,7 +261,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -261,22 +270,21 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "height": 250,
-      "isNew": false,
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
@@ -285,92 +293,13 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 4,
-          "isNew": true,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "firehose_value_metric_gorouter_ms_since_last_registry_update{bosh_deployment=~\"$bosh_deployment\"}",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
-              "metric": "firehose_counter_event_gorouter_",
-              "refId": "A",
-              "step": 10
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Last Route Register (ms)",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "ms",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
           "id": 5,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -390,8 +319,8 @@
             {
               "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"$bosh_deployment\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
-              "metric": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_heap",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "metric": "",
               "refId": "A",
               "step": 10
             }
@@ -399,7 +328,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Router Mem Heap",
+          "title": "Main Heap Memory Usage",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -420,6 +349,245 @@
               "label": null,
               "logBase": 1,
               "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 7,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "firehose_value_metric_gorouter_memory_stats_last_gc_pause_time_ns",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Garbage Collector Pause Duration",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "firehose_value_metric_gorouter_memory_stats_num_mallocs{bosh_deployment=~\"$bosh_deployment\"}",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "# of Memory Allocations",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "firehose_value_metric_gorouter_memory_stats_num_frees{bosh_deployment=~\"$bosh_deployment\"}",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "metric": "",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "# of Memory Deallocations",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
               "min": null,
               "show": true
             },
@@ -434,12 +602,13 @@
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
   ]
 }

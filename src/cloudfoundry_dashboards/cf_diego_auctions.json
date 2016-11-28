@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -30,7 +30,7 @@
     }
   ],
   "id": null,
-  "title": "Diego: Auctions",
+  "title": "CF: Diego Auctions",
   "tags": [
     "cf",
     "diego"
@@ -94,25 +94,44 @@
   "annotations": {
     "list": []
   },
+  "refresh": "30s",
   "schemaVersion": 13,
-  "version": 2,
-  "links": [],
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "title": "CF",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    }
+  ],
   "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "height": "250px",
-      "isNew": false,
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
           "id": 1,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -136,7 +155,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Failed LPRs",
               "metric": "",
@@ -144,7 +163,7 @@
               "step": 10
             },
             {
-              "expr": "firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Started LPRs",
@@ -152,14 +171,14 @@
               "step": 10
             },
             {
-              "expr": "firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Failed Tasks",
               "refId": "C",
               "step": 10
             },
             {
-              "expr": "firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Started Tasks",
               "refId": "D",
@@ -190,7 +209,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -199,7 +218,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         },
@@ -211,7 +230,6 @@
           "error": false,
           "fill": 1,
           "id": 2,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -235,12 +253,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"} [5m])",
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"} [5m]))",
+              "interval": "",
               "intervalFactor": 2,
+              "legendFormat": "LRPs",
               "refId": "A",
-              "step": 10,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job}}/{{bosh_index}}",
-              "interval": ""
+              "step": 10
+            },
+            {
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"} [5m]))",
+              "intervalFactor": 2,
+              "legendFormat": "Tasks",
+              "refId": "B",
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -263,11 +288,11 @@
           },
           "yaxes": [
             {
-              "format": "short",
+              "format": "ops",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -276,17 +301,180 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
       "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
       "title": "Dashboard Row",
-      "titleSize": "h6"
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 3,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Duration",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Fetch States Duration",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_auctioneer_request_latency{bosh_deployment=~\"$bosh_deployment\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Latency",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Request Latency",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
   ]
 }
