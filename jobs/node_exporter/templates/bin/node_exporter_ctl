@@ -23,6 +23,9 @@ case $1 in
       <% if_p('node_exporter.collector.diskstats_ignored_devices') do |diskstats_ignored_devices| %> \
       -collector.diskstats.ignored-devices="<%= diskstats_ignored_devices %>" \
       <% end %> \
+      <% if_p('node_exporter.collector.filesystem_ignored_fs_types') do |filesystem_ignored_fs_types| %> \
+      -collector.filesystem.ignored-fs-types="<%= filesystem_ignored_fs_types %>" \
+      <% end %> \
       <% if_p('node_exporter.collector.filesystem_ignored_mount_points') do |filesystem_ignored_mount_points| %> \
       -collector.filesystem.ignored-mount-points="<%= filesystem_ignored_mount_points %>" \
       <% end %> \
@@ -44,6 +47,12 @@ case $1 in
       <% end %> \
       <% if_p('node_exporter.collector.systemd_private') do |systemd_private| %> \
       -collector.systemd.private="<%= systemd_private %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.systemd_unit_blacklist') do |systemd_unit_blacklist| %> \
+      -collector.systemd.unit-blacklist="<%= systemd_unit_blacklist %>" \
+      <% end %> \
+      <% if_p('node_exporter.collector.systemd_unit_whitelist') do |systemd_unit_whitelist| %> \
+      -collector.systemd.unit-whitelist="<%= systemd_unit_whitelist %>" \
       <% end %> \
       -collector.textfile.directory=/var/vcap/jobs/node_exporter/config \
       <% if_p('node_exporter.collectors.enabled') do |enabled| %> \

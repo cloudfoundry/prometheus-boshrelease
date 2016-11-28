@@ -11,6 +11,8 @@ templates:
 properties:
   node_exporter.collector.diskstats_ignored_devices:
     description: "Regexp of devices to ignore for diskstats"
+  node_exporter.collector.filesystem_ignored_fs_types:
+    description: "Regexp of filesystem types to ignore for filesystem collector"
   node_exporter.collector.filesystem_ignored_mount_points:
     description: "Regexp of mount points to ignore for filesystem collector"
   node_exporter.collector.netdev_ignored_devices:
@@ -25,6 +27,10 @@ properties:
     description: "sysfs mountpoint"
   node_exporter.collector.systemd_private:
     description: "Establish a private, direct connection to systemd without dbus"
+  node_exporter.collector.systemd_unit_blacklist:
+    description: "Regexp of systemd units to blacklist. Units must both match whitelist and not match blacklist to be included"
+  node_exporter.collector.systemd_unit_whitelist:
+    description: "Regexp of systemd units to whitelist. Units must both match whitelist and not match blacklist to be included"
   node_exporter.collectors.enabled:
     description: "Comma-separated list of collectors to use"
   node_exporter.log_format:
