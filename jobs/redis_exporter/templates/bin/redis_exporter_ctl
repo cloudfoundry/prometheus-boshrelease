@@ -23,6 +23,12 @@ case $1 in
       <% if_p('redis_exporter.redis.check_keys') do |check_keys| %> \
       -check-keys="<%= check_keys %>" \
       <% end %> \
+      <% if p('redis_exporter.debug') %> \
+      -debug \
+      <% end %> \
+      <% if_p('redis_exporter.log_format') do |log_format| %> \
+      -log-format="<%= log_format %>" \
+      <% end %> \
       <% if_p('redis_exporter.namespace') do |namespace| %> \
       -namespace="<%= namespace %>" \
       <% end %> \
