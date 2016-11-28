@@ -148,6 +148,103 @@
   "gnetId": null,
   "rows": [
     {
+      "title": "Latency",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum / firehose_http_start_stop_client_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Client",
+              "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum / firehose_http_start_stop_server_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "intervalFactor": 2,
+              "legendFormat": "Server",
+              "refId": "B",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Latency",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
       "title": "Client Latency",
       "panels": [
         {

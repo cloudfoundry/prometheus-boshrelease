@@ -154,7 +154,7 @@
   "gnetId": null,
   "rows": [
     {
-      "title": "Average Response Size",
+      "title": "Response Size",
       "panels": [
         {
           "aliasColors": {},
@@ -163,13 +163,13 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 3,
           "legend": {
             "alignAsTable": true,
             "avg": true,
             "current": true,
             "max": true,
-            "min": false,
+            "min": true,
             "rightSide": true,
             "show": true,
             "total": false,
@@ -189,10 +189,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
-              "interval": "",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes_sum / firehose_http_start_stop_response_size_bytes_count) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{ quantile }}",
+              "legendFormat": "Size",
               "refId": "A",
               "step": 4
             }
@@ -200,7 +199,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Average Response Size (quantiles)",
+          "title": "Response Size",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -244,7 +243,97 @@
       "collapse": false
     },
     {
-      "title": "Median Average Response Size by URI",
+      "title": "Response Size (quantiles)",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 1,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_http_start_stop_response_size_bytes) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ quantile }}",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Response Size (quantiles)",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Median Response Size by URI",
       "panels": [
         {
           "columns": [
@@ -292,7 +381,7 @@
               "step": 4
             }
           ],
-          "title": "Median Average Response Size by URI",
+          "title": "Median Response Size by URI",
           "transform": "timeseries_aggregations",
           "transparent": true,
           "type": "table"
