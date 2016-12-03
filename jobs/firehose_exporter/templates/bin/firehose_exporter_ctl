@@ -27,8 +27,14 @@ case $1 in
       <% if_p('firehose_exporter.doppler.subscription_id') do |subscription_id| %> \
       -doppler.subscription-id="<%= subscription_id %>" \
       <% end %> \
-      <% if_p('firehose_exporter.doppler.idle_timeout_seconds') do |idle_timeout_seconds| %> \
-      -doppler.idle-timeout-seconds="<%= idle_timeout_seconds %>" \
+      <% if_p('firehose_exporter.doppler.idle_timeout') do |idle_timeout| %> \
+      -doppler.idle-timeout="<%= idle_timeout %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.doppler.min_retry_delay') do |min_retry_delay| %> \
+      -doppler.min-retry-delay-timeout="<%= min_retry_delay %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.doppler.max_retry_delay') do |max_retry_delay| %> \
+      -doppler.max-retry-delay-timeout="<%= max_retry_delay %>" \
       <% end %> \
       <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
       -doppler.metric-expiration="<%= metric_expiration %>" \
