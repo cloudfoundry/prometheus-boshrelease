@@ -75,7 +75,26 @@
     ]
   },
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Instance",
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(cf_last_applications_scrape_duration_seconds, instance)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
   },
   "annotations": {
     "list": []
@@ -132,7 +151,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(cf_last_applications_scrape_duration_seconds)",
+              "expr": "avg(cf_last_applications_scrape_duration_seconds{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -233,7 +252,7 @@
           },
           "targets": [
             {
-              "expr": "time() - cf_last_applications_scrape_timestamp",
+              "expr": "time() - max(cf_last_applications_scrape_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -310,7 +329,7 @@
           },
           "targets": [
             {
-              "expr": "cf_last_applications_scrape_error",
+              "expr": "max(cf_last_applications_scrape_error{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -338,7 +357,7 @@
               "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         }
       ],
       "showTitle": false,
@@ -383,7 +402,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(cf_last_services_scrape_duration_seconds)",
+              "expr": "avg(cf_last_services_scrape_duration_seconds{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -484,7 +503,7 @@
           },
           "targets": [
             {
-              "expr": "time() - cf_last_services_scrape_timestamp",
+              "expr": "time() - max(cf_last_services_scrape_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -561,7 +580,7 @@
           },
           "targets": [
             {
-              "expr": "cf_last_services_scrape_error",
+              "expr": "max(cf_last_services_scrape_error{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -588,7 +607,7 @@
               "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         }
       ],
       "showTitle": false,
@@ -633,7 +652,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(cf_last_spaces_scrape_duration_seconds)",
+              "expr": "avg(cf_last_spaces_scrape_duration_seconds{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -734,7 +753,7 @@
           },
           "targets": [
             {
-              "expr": "time() - cf_last_spaces_scrape_timestamp",
+              "expr": "time() - max(cf_last_spaces_scrape_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -811,7 +830,7 @@
           },
           "targets": [
             {
-              "expr": "cf_last_spaces_scrape_error",
+              "expr": "max(cf_last_spaces_scrape_error{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -839,7 +858,7 @@
               "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         }
       ],
       "showTitle": false,
@@ -884,7 +903,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(cf_last_organizations_scrape_duration_seconds)",
+              "expr": "avg(cf_last_organizations_scrape_duration_seconds{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -985,7 +1004,7 @@
           },
           "targets": [
             {
-              "expr": "time() - cf_last_organizations_scrape_timestamp",
+              "expr": "time() - max(cf_last_organizations_scrape_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1062,7 +1081,7 @@
           },
           "targets": [
             {
-              "expr": "cf_last_organizations_scrape_error",
+              "expr": "max(cf_last_organizations_scrape_error{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1089,7 +1108,7 @@
               "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         }
       ],
       "showTitle": false,

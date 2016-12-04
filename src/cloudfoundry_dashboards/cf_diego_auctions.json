@@ -76,9 +76,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total, bosh_deployment)",
@@ -155,7 +155,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Failed LPRs",
               "metric": "",
@@ -163,7 +163,7 @@
               "step": 10
             },
             {
-              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Started LPRs",
@@ -171,14 +171,14 @@
               "step": 10
             },
             {
-              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Failed Tasks",
               "refId": "C",
               "step": 10
             },
             {
-              "expr": "sum(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Started Tasks",
               "refId": "D",
@@ -253,7 +253,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"} [5m]))",
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "LRPs",
@@ -261,7 +261,7 @@
               "step": 10
             },
             {
-              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"} [5m]))",
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
               "intervalFactor": 2,
               "legendFormat": "Tasks",
               "refId": "B",

@@ -76,9 +76,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_garden_linux_backing_stores, bosh_deployment)",
@@ -156,9 +156,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 4
             }
@@ -243,9 +243,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_garden_linux_loop_devices{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_garden_linux_loop_devices{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 4
             }
@@ -330,9 +330,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_garden_linux_depot_dirs{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_garden_linux_depot_dirs{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 4
             }

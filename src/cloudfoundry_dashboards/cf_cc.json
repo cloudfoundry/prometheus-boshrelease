@@ -75,9 +75,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_cc_job_queue_length_total, bosh_deployment)",
@@ -273,10 +273,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_cc_job_queue_length_total{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_cc_job_queue_length_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ bosh_deployment }}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }
@@ -349,10 +349,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_cc_failed_job_count_total",
+              "expr": "avg(firehose_value_metric_cc_failed_job_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ bosh_deployment }}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }
@@ -437,14 +437,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_cc_requests_completed)",
+              "expr": "avg(firehose_value_metric_cc_requests_completed{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Completed",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "avg(firehose_value_metric_cc_requests_outstanding)",
+              "expr": "avg(firehose_value_metric_cc_requests_outstanding{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Outstanding",
               "refId": "B",

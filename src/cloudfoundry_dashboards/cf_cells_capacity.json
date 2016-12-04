@@ -76,9 +76,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_rep_capacity_total_containers, bosh_deployment)",
@@ -157,14 +157,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"$bosh_deployment\"}) - sum(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
@@ -254,7 +254,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"$bosh_deployment\"}) - sum(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -262,7 +262,7 @@
               "step": 4
             },
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
@@ -352,14 +352,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"$bosh_deployment\"}) - sum(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",

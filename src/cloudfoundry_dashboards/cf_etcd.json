@@ -82,9 +82,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_etcd_is_leader, bosh_deployment)",
@@ -186,7 +186,7 @@
           },
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_etcd_is_leader{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_etcd_is_leader{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Leaders",
               "refId": "A",
@@ -264,7 +264,7 @@
           },
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_etcd_followers{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_etcd_followers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Followers",
               "refId": "A",
@@ -317,10 +317,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_watchers{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_watchers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }
@@ -406,10 +406,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_raft_term{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_raft_term{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }
@@ -483,10 +483,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_raft_index{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_raft_index{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }
@@ -591,7 +591,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Bandwidth Rate",
+          "title": "Bandwidth Rate (5 mins)",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -676,7 +676,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Request Rate",
+          "title": "Request Rate (5 mins)",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -753,10 +753,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_latency{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_latency{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 10
             }

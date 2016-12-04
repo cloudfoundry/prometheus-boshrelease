@@ -30,10 +30,9 @@
     }
   ],
   "id": null,
-  "title": "CF: Router Memory",
+  "title": "CF: Component Metrics",
   "tags": [
-    "cf",
-    "router"
+    "cf"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -76,18 +75,135 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_gorouter_memory_stats_num_bytes_allocated, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 0,
         "tagValuesQuery": null,
         "tagsQuery": null,
         "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "auctioneer",
+          "value": "auctioneer"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Component",
+        "multi": false,
+        "name": "cf_component",
+        "options": [
+          {
+            "selected": true,
+            "text": "auctioneer",
+            "value": "auctioneer"
+          },
+          {
+            "selected": false,
+            "text": "bbs",
+            "value": "bbs"
+          },
+          {
+            "selected": false,
+            "text": "cc_uploader",
+            "value": "cc_uploader"
+          },
+          {
+            "selected": false,
+            "text": "doppler_server",
+            "value": "doppler_server"
+          },
+          {
+            "selected": false,
+            "text": "etcd",
+            "value": "etcd"
+          },
+          {
+            "selected": false,
+            "text": "file_server",
+            "value": "file_server"
+          },
+          {
+            "selected": false,
+            "text": "garden_linux",
+            "value": "garden_linux"
+          },
+          {
+            "selected": false,
+            "text": "gorouter",
+            "value": "gorouter"
+          },
+          {
+            "selected": false,
+            "text": "loggregator_traffic_controller",
+            "value": "loggregator_traffic_controller"
+          },
+          {
+            "selected": false,
+            "text": "metron_agent",
+            "value": "metron_agent"
+          },
+          {
+            "selected": false,
+            "text": "nsync_bulker",
+            "value": "nsync_bulker"
+          },
+          {
+            "selected": false,
+            "text": "nsync_listener",
+            "value": "nsync_listener"
+          },
+          {
+            "selected": false,
+            "text": "rep",
+            "value": "rep"
+          },
+          {
+            "selected": false,
+            "text": "route_emitter",
+            "value": "route_emitter"
+          },
+          {
+            "selected": false,
+            "text": "ssh_proxy",
+            "value": "ssh_proxy"
+          },
+          {
+            "selected": false,
+            "text": "stager",
+            "value": "stager"
+          },
+          {
+            "selected": false,
+            "text": "syslog_drain_binder",
+            "value": "syslog_drain_binder"
+          },
+          {
+            "selected": false,
+            "text": "tps_listener",
+            "value": "tps_listener"
+          },
+          {
+            "selected": false,
+            "text": "tps_watcher",
+            "value": "tps_watcher"
+          },
+          {
+            "selected": false,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "auctioneer,bbs,cc_uploader,doppler_server,etcd,file_server,garden_linux,gorouter,loggregator_traffic_controller,metron_agent,nsync_bulker,nsync_listener,rep,route_emitter,ssh_proxy,stager,syslog_drain_binder,tps_listener,tps_watcher,",
+        "type": "custom"
       }
     ]
   },
@@ -121,7 +237,169 @@
   "gnetId": null,
   "rows": [
     {
-      "title": "Dashboard Row",
+      "title": "CPU & Go Routines",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 8,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_[[cf_component]]_num_cpus{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CPUs",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Go Routines",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Memory",
       "panels": [
         {
           "aliasColors": {},
@@ -152,7 +430,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "metric": "",
@@ -228,7 +506,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -284,7 +562,7 @@
       "collapse": false
     },
     {
-      "title": "Dashboard Row",
+      "title": "Memory & GC",
       "panels": [
         {
           "aliasColors": {},
@@ -317,7 +595,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "metric": "",
@@ -393,7 +671,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_last_gc_pause_time_ns",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -447,7 +725,7 @@
       "collapse": false
     },
     {
-      "title": "Dashboard Row",
+      "title": "Memory",
       "panels": [
         {
           "aliasColors": {},
@@ -480,7 +758,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_num_mallocs{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_mallocs{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -537,7 +815,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -555,7 +833,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_gorouter_memory_stats_num_frees{bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_frees{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -588,7 +866,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -597,7 +875,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         }

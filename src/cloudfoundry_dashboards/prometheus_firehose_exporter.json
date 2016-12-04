@@ -75,7 +75,26 @@
     ]
   },
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Instance",
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(firehose_total_envelopes_received, instance)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
   },
   "annotations": {
     "list": []
@@ -132,14 +151,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_envelopes_received)",
+              "expr": "sum(firehose_total_envelopes_received{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Envelopes",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_metrics_received)",
+              "expr": "sum(firehose_total_metrics_received{instance=~\"$instance\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Metrics",
@@ -241,7 +260,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_envelope_received_timestamp",
+              "expr": "time() - max(firehose_last_envelope_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -318,7 +337,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_envelope_received_timestamp",
+              "expr": "time() - max(firehose_last_envelope_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -395,7 +414,7 @@
           },
           "targets": [
             {
-              "expr": "min(firehose_slow_consumer_alert)",
+              "expr": "max(firehose_slow_consumer_alert{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -468,14 +487,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_container_metrics_received)",
+              "expr": "sum(firehose_total_container_metrics_received{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_container_metrics_processed)",
+              "expr": "sum(firehose_total_container_metrics_processed{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -550,7 +569,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_container_metrics_cached)",
+              "expr": "sum(firehose_container_metrics_cached{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Cached",
               "refId": "A",
@@ -652,7 +671,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_container_metric_received_timestamp",
+              "expr": "time() - max(firehose_last_container_metric_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -715,14 +734,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_counter_events_received)",
+              "expr": "sum(firehose_total_counter_events_received{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_counter_events_processed)",
+              "expr": "sum(firehose_total_counter_events_processed{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -797,7 +816,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_counter_events_cached)",
+              "expr": "sum(firehose_counter_events_cached{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Cached",
               "refId": "A",
@@ -898,7 +917,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_counter_event_received_timestamp",
+              "expr": "time() - max(firehose_last_counter_event_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -961,14 +980,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_http_start_stop_received)",
+              "expr": "sum(firehose_total_http_start_stop_received{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_http_start_stop_processed)",
+              "expr": "sum(firehose_total_http_start_stop_processed{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -1043,7 +1062,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_cached)",
+              "expr": "sum(firehose_http_start_stop_cached{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Cached",
               "refId": "A",
@@ -1144,7 +1163,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_http_start_stop_received_timestamp",
+              "expr": "time() - max(firehose_last_http_start_stop_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1207,14 +1226,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_value_metrics_received)",
+              "expr": "sum(firehose_total_value_metrics_received{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_value_metrics_processed)",
+              "expr": "sum(firehose_total_value_metrics_processed{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "metric": "",
@@ -1290,7 +1309,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metrics_cached)",
+              "expr": "sum(firehose_value_metrics_cached{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Cached",
               "refId": "A",
@@ -1391,7 +1410,7 @@
           },
           "targets": [
             {
-              "expr": "time() - firehose_last_value_metric_received_timestamp",
+              "expr": "time() - max(firehose_last_value_metric_received_timestamp{instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60

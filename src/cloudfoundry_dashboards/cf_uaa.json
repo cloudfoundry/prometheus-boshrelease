@@ -76,9 +76,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_uaa_audit_service_user_authentication_count, bosh_deployment)",
@@ -155,7 +155,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_user_not_found_count{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_not_found_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "User Not Found",
               "refId": "A",
@@ -231,7 +231,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_principal_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_principal_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Non-user Authentication Attempts",
               "refId": "A",
@@ -319,7 +319,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_user_authentication_count{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Successful User Authentications",
@@ -396,7 +396,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Failed User Authentications",
               "refId": "A",
@@ -484,7 +484,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_user_password_changes{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_changes{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Successful Password Changes",
               "refId": "A",
@@ -560,7 +560,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_uaa_audit_service_user_password_failures{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_failures{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
               "intervalFactor": 2,
               "legendFormat": "Failed Password Changes",
               "refId": "A",

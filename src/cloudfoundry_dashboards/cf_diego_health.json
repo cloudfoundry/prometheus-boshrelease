@@ -82,9 +82,9 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": false,
+        "multi": true,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_rep_unhealthy_cell, bosh_deployment)",
@@ -353,10 +353,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_rep_unhealthy_cell{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment,bosh_job_name,bosh_job_id)",
+              "expr": "min(firehose_value_metric_rep_unhealthy_cell{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_id}}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
               "step": 4
             }
@@ -367,7 +367,7 @@
           "title": "Unhealthy Cells",
           "tooltip": {
             "msResolution": false,
-            "shared": true,
+            "shared": false,
             "sort": 0,
             "value_type": "cumulative"
           },
@@ -377,7 +377,9 @@
             "mode": "time",
             "name": null,
             "show": true,
-            "values": []
+            "values": [
+              "total"
+            ]
           },
           "yaxes": [
             {
