@@ -194,7 +194,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "sum(firehose_http_start_stop_request_total) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
@@ -266,7 +266,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, instance_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, instance_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_id }}",
               "refId": "A",
@@ -318,7 +318,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, method) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, method) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "5m",
               "intervalFactor": 2,
               "legendFormat": "{{ method }}",
@@ -360,7 +360,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, status_code) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, status_code) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ status_code }}",
@@ -428,7 +428,7 @@
           ],
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ uri }}",

@@ -183,7 +183,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum / firehose_http_start_stop_client_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum / firehose_http_start_stop_client_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Client",
@@ -191,7 +191,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum / firehose_http_start_stop_server_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum / firehose_http_start_stop_server_request_duration_seconds_count) by (application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "Server",
               "refId": "B",
@@ -281,7 +281,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ quantile }}",
@@ -372,7 +372,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "{{ quantile }}",
               "refId": "A",

@@ -189,7 +189,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes_sum / firehose_http_start_stop_response_size_bytes_count) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes_sum / firehose_http_start_stop_response_size_bytes_count) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "Size",
               "refId": "A",
@@ -278,7 +278,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes) by(application_id, quantile) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ quantile }}",
@@ -373,7 +373,7 @@
           ],
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes{quantile=\"0.5\"}) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes{quantile=\"0.5\"}) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ uri }}",

@@ -184,7 +184,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_cpu_percentage) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_container_metric_cpu_percentage) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -275,7 +275,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_memory_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_container_metric_memory_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -283,7 +283,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_container_metric_memory_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -374,7 +374,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_disk_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_container_metric_disk_bytes) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -382,7 +382,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}",
+              "expr": "avg(firehose_container_metric_disk_bytes_quota) by(application_id) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
