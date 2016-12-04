@@ -32,7 +32,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -49,13 +49,128 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": true,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_process_healthy, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "bosh_job_healthy",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Process",
+        "multi": false,
+        "name": "bosh_job_process_name",
+        "options": [],
+        "query": "label_values(bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_process_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "bosh"
+      ],
+      "targetBlank": true,
+      "title": "BOSH",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "BOSH Docs",
+      "type": "link",
+      "url": "http://bosh.io/docs"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
+      "title": "Health",
       "panels": [
         {
           "cacheTimeout": null,
@@ -79,7 +194,6 @@
           },
           "id": 1,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 2,
           "mappingTypes": [
@@ -107,8 +221,8 @@
             },
             {
               "from": "1",
-              "to": "1",
-              "text": "Running"
+              "text": "Running",
+              "to": "1"
             }
           ],
           "span": 6,
@@ -148,67 +262,70 @@
           "valueName": "min"
         },
         {
-          "title": "Failing Processes",
-          "error": false,
-          "span": 6,
-          "editable": true,
-          "type": "table",
-          "isNew": true,
-          "id": 6,
-          "targets": [
-            {
-              "expr": "bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"} < 1",
-              "intervalFactor": 1,
-              "refId": "A",
-              "step": 5,
-              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}: {{ bosh_job_process_name }}",
-              "interval": ""
-            }
-          ],
-          "styles": [
-            {
-              "unit": "short",
-              "type": "number",
-              "decimals": 0,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "colorMode": null,
-              "pattern": "/.*/",
-              "thresholds": []
-            }
-          ],
-          "transform": "timeseries_aggregations",
-          "pageSize": null,
-          "showHeader": true,
           "columns": [
             {
               "text": "Count",
               "value": "count"
             }
           ],
-          "scroll": true,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
           "fontSize": "100%",
+          "hideTimeOverride": false,
+          "id": 6,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
           "sort": {
             "col": null,
             "desc": false
           },
-          "datasource": "${DS_PROMETHEUS}",
-          "links": [],
+          "span": 6,
+          "styles": [
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 0,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_process_name=~\"$bosh_job_process_name\"} < 1",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}: {{ bosh_job_process_name }}",
+              "refId": "A",
+              "step": 5
+            }
+          ],
           "timeFrom": null,
           "timeShift": null,
+          "title": "Failing Processes",
+          "transform": "timeseries_aggregations",
           "transparent": true,
-          "hideTimeOverride": false
+          "type": "table"
         }
       ],
-      "title": "Health"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "200px",
+      "title": "CPU & Memory Usage",
       "panels": [
         {
           "aliasColors": {},
@@ -217,14 +334,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -257,6 +368,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "CPU Usage",
@@ -269,7 +381,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -297,14 +412,8 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 3,
-          "isNew": true,
           "legend": {
             "avg": false,
             "current": false,
@@ -335,6 +444,7 @@
               "step": 10
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Memory Usage",
@@ -347,7 +457,10 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -369,113 +482,13 @@
           ]
         }
       ],
-      "title": "CPU & Memory Usage"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Deployment",
-        "multi": false,
-        "name": "bosh_deployment",
-        "options": [],
-        "query": "label_values(bosh_job_process_healthy, bosh_deployment)",
-        "refresh": 1,
-        "regex": "",
-        "tagValuesQuery": "",
-        "tagsQuery": "bosh_job_healthy",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Job",
-        "multi": false,
-        "name": "bosh_job_name",
-        "options": [],
-        "query": "label_values(bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Process",
-        "multi": false,
-        "name": "bosh_job_process_name",
-        "options": [],
-        "query": "label_values(bosh_job_process_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_process_name)",
-        "refresh": 1,
-        "type": "query"
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "bosh"
-      ],
-      "targetBlank": true,
-      "title": "BOSH",
-      "type": "dashboards"
-    },
-    {
-      "type": "link",
-      "icon": "external link",
-      "tags": [],
-      "url": "http://bosh.io/docs",
-      "title": "BOSH Docs",
-      "targetBlank": true
-    }
-  ],
-  "gnetId": null
+  ]
 }

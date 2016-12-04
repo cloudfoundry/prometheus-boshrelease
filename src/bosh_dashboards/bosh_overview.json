@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.0-beta2"
     },
     {
       "type": "datasource",
@@ -38,13 +38,109 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": true,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "bosh"
+      ],
+      "targetBlank": true,
+      "title": "BOSH Dashboards",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "BOSH Docs",
+      "type": "link",
+      "url": "http://bosh.io/docs"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "100px",
+      "title": "Health",
       "panels": [
         {
           "cacheTimeout": null,
@@ -69,7 +165,6 @@
           "hideTimeOverride": false,
           "id": 1,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 2,
           "mappingTypes": [
@@ -97,8 +192,8 @@
             },
             {
               "from": "1",
-              "to": "1",
-              "text": "Running"
+              "text": "Running",
+              "to": "1"
             }
           ],
           "span": 4,
@@ -160,7 +255,6 @@
           "hideTimeOverride": false,
           "id": 2,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 2,
           "mappingTypes": [
@@ -188,8 +282,8 @@
             },
             {
               "from": "1",
-              "to": "1",
-              "text": "Running"
+              "text": "Running",
+              "to": "1"
             }
           ],
           "span": 4,
@@ -250,7 +344,6 @@
           "hideTimeOverride": true,
           "id": 14,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -309,12 +402,16 @@
           "valueName": "avg"
         }
       ],
-      "title": "Health"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "100px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "150px",
+      "title": "Max Memory & Swap Usage",
       "panels": [
         {
           "cacheTimeout": null,
@@ -338,7 +435,6 @@
           },
           "id": 6,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -416,7 +512,6 @@
           },
           "id": 7,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -473,12 +568,16 @@
           "valueName": "avg"
         }
       ],
-      "title": "Max Memory & Swap Usage"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "150px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "100px",
+      "title": "Max CPU Usage",
       "panels": [
         {
           "cacheTimeout": null,
@@ -502,7 +601,6 @@
           },
           "id": 10,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -580,7 +678,6 @@
           },
           "id": 11,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -659,7 +756,6 @@
           },
           "id": 12,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -716,12 +812,16 @@
           "valueName": "avg"
         }
       ],
-      "title": "Max CPU Usage"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "100px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "100px",
+      "title": "Max Load",
       "panels": [
         {
           "cacheTimeout": null,
@@ -745,7 +845,6 @@
           },
           "id": 8,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -823,7 +922,6 @@
           },
           "id": 9,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -901,7 +999,6 @@
           },
           "id": 13,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -958,12 +1055,16 @@
           "valueName": "avg"
         }
       ],
-      "title": "Max Load"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "100px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "150px",
+      "title": "Max Disk Usage",
       "panels": [
         {
           "cacheTimeout": null,
@@ -987,7 +1088,6 @@
           },
           "id": 3,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -1065,7 +1165,6 @@
           },
           "id": 4,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -1143,7 +1242,6 @@
           },
           "id": 5,
           "interval": null,
-          "isNew": true,
           "links": [],
           "mappingType": 1,
           "mappingTypes": [
@@ -1200,95 +1298,13 @@
           "valueName": "avg"
         }
       ],
-      "title": "Max Disk Usage"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "150px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Deployment",
-        "multi": false,
-        "name": "bosh_deployment",
-        "options": [],
-        "query": "label_values(bosh_job_healthy, bosh_deployment)",
-        "refresh": 1,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Job",
-        "multi": false,
-        "name": "bosh_job_name",
-        "options": [],
-        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
-        "refresh": 1,
-        "type": "query"
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "bosh"
-      ],
-      "targetBlank": true,
-      "title": "BOSH",
-      "type": "dashboards"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "BOSH Docs",
-      "type": "link",
-      "url": "http://bosh.io/docs"
-    }
-  ],
-  "gnetId": null
+  ]
 }
