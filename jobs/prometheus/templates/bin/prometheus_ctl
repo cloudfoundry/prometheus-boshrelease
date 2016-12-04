@@ -19,6 +19,8 @@ case $1 in
     pid_guard ${PIDFILE} "prometheus"
     echo $$ > ${PIDFILE}
 
+    ulimit -n 65536
+
     <% if_p('prometheus.storage.remote.influxdb.password') do |influxdb_password| %> \
     export INFLUXDB_PW="<%= influxdb_password %>"
     <% end %> \

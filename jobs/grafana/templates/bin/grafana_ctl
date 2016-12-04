@@ -20,6 +20,8 @@ case $1 in
 
     mkdir -p ${STORE_DIR}/dashboards
 
+    ulimit -n 65536
+
     exec grafana-server \
       -config=/var/vcap/jobs/grafana/config/grafana.ini \
       -homepath=/var/vcap/packages/grafana \
