@@ -32,7 +32,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta2"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -428,7 +428,7 @@
           ],
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_request_total) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
+              "expr": "topk(5, sum(firehose_http_start_stop_request_total) by(application_id, uri)) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ uri }}",
@@ -436,7 +436,7 @@
               "step": 4
             }
           ],
-          "title": "Total Requests by URI",
+          "title": "Top 5 Requests by URI",
           "transform": "timeseries_aggregations",
           "transparent": true,
           "type": "table"

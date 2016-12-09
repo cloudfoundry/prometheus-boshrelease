@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta2"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -125,7 +125,7 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -143,7 +143,7 @@
             "total": false,
             "values": true
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -157,14 +157,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
@@ -179,7 +179,7 @@
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
@@ -204,7 +204,7 @@
               "logBase": 1,
               "max": null,
               "min": null,
-              "show": true
+              "show": false
             }
           ]
         }
@@ -222,7 +222,7 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -240,7 +240,7 @@
             "total": false,
             "values": true
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -254,7 +254,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -262,7 +262,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
@@ -277,7 +277,7 @@
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",
@@ -320,7 +320,7 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -338,7 +338,7 @@
             "total": false,
             "values": true
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -352,14 +352,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
@@ -374,7 +374,7 @@
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",

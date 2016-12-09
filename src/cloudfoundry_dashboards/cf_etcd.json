@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta2"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -186,7 +186,7 @@
           },
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_etcd_is_leader{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_etcd_is_leader{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Leaders",
               "refId": "A",
@@ -264,7 +264,7 @@
           },
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_etcd_followers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_etcd_followers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Followers",
               "refId": "A",
@@ -287,7 +287,7 @@
         },
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -303,7 +303,7 @@
             "total": false,
             "values": false
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -313,7 +313,7 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
@@ -333,7 +333,7 @@
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "cumulative"
+            "value_type": "individual"
           },
           "transparent": true,
           "type": "graph",

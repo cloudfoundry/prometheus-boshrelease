@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta2"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -373,7 +373,7 @@
           ],
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes{quantile=\"0.5\"}) by(application_id, uri) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
+              "expr": "topk(5, avg(firehose_http_start_stop_response_size_bytes{quantile=\"0.5\"}) by(application_id, uri)) * on(application_id) group_left(application_name, organization_name, space_name) count(cf_application_info{application_name=~\"$cf_application_name\",space_name=~\"$cf_space_name\",organization_name=~\"$cf_organization_name\"}) by(application_id, application_name, organization_name, space_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ uri }}",
@@ -381,7 +381,7 @@
               "step": 4
             }
           ],
-          "title": "Median Response Size by URI",
+          "title": "Top 5 Response Size by URI",
           "transform": "timeseries_aggregations",
           "transparent": true,
           "type": "table"

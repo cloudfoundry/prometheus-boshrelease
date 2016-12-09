@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.0.0-beta2"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -154,7 +154,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_route_emitter_routes_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_route_emitter_routes_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Number of Routes",
               "refId": "A",
@@ -212,7 +212,7 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": false,
+          "bars": true,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -229,7 +229,7 @@
             "total": false,
             "values": false
           },
-          "lines": true,
+          "lines": false,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -239,18 +239,18 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_registered_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_registered_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Registered",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_synced_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_synced_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Synched",
@@ -258,7 +258,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_unregistered_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_counter_event_route_emitter_routes_unregistered_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Unregistered",
               "refId": "C",
@@ -347,7 +347,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_route_emitter_messages_emitted_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name))",
+              "expr": "sum(avg(firehose_counter_event_route_emitter_messages_emitted_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Messages Emitted",
               "refId": "A",
