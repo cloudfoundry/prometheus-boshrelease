@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -43,13 +43,149 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "now": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "text": "auto",
+          "value": "$__auto_interval"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interval",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "interval",
+        "options": [
+          {
+            "text": "auto",
+            "value": "$__auto_interval",
+            "selected": true
+          },
+          {
+            "text": "1s",
+            "value": "1s",
+            "selected": false
+          },
+          {
+            "text": "5s",
+            "value": "5s",
+            "selected": false
+          },
+          {
+            "text": "1m",
+            "value": "1m",
+            "selected": false
+          },
+          {
+            "text": "5m",
+            "value": "5m",
+            "selected": false
+          },
+          {
+            "text": "1h",
+            "value": "1h",
+            "selected": false
+          },
+          {
+            "text": "6h",
+            "value": "6h",
+            "selected": false
+          },
+          {
+            "text": "1d",
+            "value": "1d",
+            "selected": false
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allFormat": "glob",
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Host",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "host",
+        "options": [],
+        "query": "label_values(mysql_up, instance)",
+        "refresh": 1,
+        "refresh_on_load": false,
+        "type": "query",
+        "regex": "",
+        "sort": 0,
+        "allValue": null,
+        "tagsQuery": null,
+        "tagValuesQuery": null
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": true,
+      "title": "MySQL",
+      "type": "dashboards"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Checkpointing",
       "panels": [
         {
           "aliasColors": {},
@@ -58,12 +194,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 9,
           "legend": {
             "alignAsTable": true,
@@ -116,9 +247,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -136,7 +271,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "cacheTimeout": null,
@@ -218,12 +353,16 @@
           "valueName": "current"
         }
       ],
-      "title": "Checkpointing"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "CacheTable",
       "panels": [
         {
           "aliasColors": {},
@@ -232,12 +371,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 2,
           "legend": {
             "alignAsTable": true,
@@ -298,9 +432,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -318,7 +456,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -327,12 +465,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 1,
           "legend": {
             "alignAsTable": true,
@@ -377,9 +510,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -397,15 +534,19 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         }
       ],
-      "title": "CacheTable"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Pivots",
       "panels": [
         {
           "aliasColors": {},
@@ -414,12 +555,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 6,
           "legend": {
             "alignAsTable": true,
@@ -480,9 +616,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -500,7 +640,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -509,12 +649,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 3,
           "legend": {
             "alignAsTable": true,
@@ -583,9 +718,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -603,15 +742,19 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         }
       ],
-      "title": "Pivots"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Leaf",
       "panels": [
         {
           "aliasColors": {},
@@ -620,12 +763,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
           "legend": {
             "alignAsTable": true,
@@ -694,9 +832,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -714,7 +856,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -723,12 +865,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 7,
           "legend": {
             "alignAsTable": true,
@@ -797,9 +934,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -817,7 +958,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -826,12 +967,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 4,
           "legend": {
             "alignAsTable": true,
@@ -900,9 +1036,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -920,7 +1060,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -929,12 +1069,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 12,
           "legend": {
             "alignAsTable": true,
@@ -1003,9 +1138,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1023,7 +1162,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1032,12 +1171,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 13,
           "legend": {
             "alignAsTable": true,
@@ -1114,9 +1248,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1134,7 +1272,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1143,12 +1281,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 11,
           "legend": {
             "alignAsTable": true,
@@ -1209,9 +1342,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1229,7 +1366,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1238,12 +1375,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 19,
           "legend": {
             "alignAsTable": true,
@@ -1312,9 +1444,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1332,7 +1468,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1341,12 +1477,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 5,
           "legend": {
             "alignAsTable": true,
@@ -1415,9 +1546,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1435,7 +1570,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1444,12 +1579,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 15,
           "legend": {
             "alignAsTable": true,
@@ -1518,9 +1648,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1538,7 +1672,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1547,12 +1681,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 16,
           "legend": {
             "alignAsTable": true,
@@ -1613,9 +1742,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1633,7 +1766,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1642,12 +1775,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 18,
           "legend": {
             "alignAsTable": true,
@@ -1716,9 +1844,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1736,7 +1868,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1745,12 +1877,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 17,
           "legend": {
             "alignAsTable": true,
@@ -1811,9 +1938,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1831,7 +1962,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1840,12 +1971,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 14,
           "legend": {
             "alignAsTable": true,
@@ -1890,9 +2016,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1910,7 +2040,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1919,12 +2049,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 20,
           "legend": {
             "alignAsTable": true,
@@ -1969,9 +2094,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -1989,7 +2118,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -1998,12 +2127,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 22,
           "legend": {
             "alignAsTable": true,
@@ -2072,9 +2196,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -2092,7 +2220,7 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         },
         {
           "aliasColors": {},
@@ -2101,12 +2229,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 21,
           "legend": {
             "alignAsTable": true,
@@ -2167,9 +2290,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "show": true,
+            "mode": "time",
+            "name": null,
+            "values": []
           },
           "yaxes": [
             {
@@ -2187,143 +2314,16 @@
               "show": true
             }
           ],
-          "transparent": true
+          "thresholds": []
         }
       ],
-      "title": "Leaf"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "now": true,
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "allFormat": "glob",
-        "auto": true,
-        "auto_count": 200,
-        "auto_min": "1s",
-        "current": {
-          "text": "auto",
-          "value": "$__auto_interval"
-        },
-        "datasource": "prometheus",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Interval",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "interval",
-        "options": [
-          {
-            "selected": true,
-            "text": "auto",
-            "value": "$__auto_interval"
-          },
-          {
-            "selected": false,
-            "text": "1s",
-            "value": "1s"
-          },
-          {
-            "selected": false,
-            "text": "5s",
-            "value": "5s"
-          },
-          {
-            "selected": false,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "5m",
-            "value": "5m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "6h",
-            "value": "6h"
-          },
-          {
-            "selected": false,
-            "text": "1d",
-            "value": "1d"
-          }
-        ],
-        "query": "1s,5s,1m,5m,1h,6h,1d",
-        "refresh": 0,
-        "type": "interval"
-      },
-      {
-        "allFormat": "glob",
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Host",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "host",
-        "query": "label_values(mysql_up, instance)",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "type": "query",
-        "options": [],
-        "current": {}
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "MySQL"
-      ],
-      "targetBlank": true,
-      "title": "MySQL",
-      "type": "dashboards"
-    }
-  ],
-  "gnetId": null
+  ]
 }

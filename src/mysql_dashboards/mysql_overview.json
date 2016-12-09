@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -43,13 +43,154 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
+  "hideControls": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "collapse": false,
+    "enable": true,
+    "notice": false,
+    "now": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "status": "Stable",
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ],
+    "type": "timepicker"
+  },
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "text": "auto",
+          "value": "$__auto_interval"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interval",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "interval",
+        "options": [
+          {
+            "text": "auto",
+            "value": "$__auto_interval",
+            "selected": true
+          },
+          {
+            "text": "1s",
+            "value": "1s",
+            "selected": false
+          },
+          {
+            "text": "5s",
+            "value": "5s",
+            "selected": false
+          },
+          {
+            "text": "1m",
+            "value": "1m",
+            "selected": false
+          },
+          {
+            "text": "5m",
+            "value": "5m",
+            "selected": false
+          },
+          {
+            "text": "1h",
+            "value": "1h",
+            "selected": false
+          },
+          {
+            "text": "6h",
+            "value": "6h",
+            "selected": false
+          },
+          {
+            "text": "1d",
+            "value": "1d",
+            "selected": false
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allFormat": "glob",
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Host",
+        "multi": false,
+        "multiFormat": "regex values",
+        "name": "host",
+        "options": [],
+        "query": "label_values(mysql_up, instance)",
+        "refresh": 1,
+        "refresh_on_load": false,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "refresh": "30s",
+  "schemaVersion": 13,
+  "version": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": true,
+      "title": "MySQL",
+      "type": "dashboards"
+    }
+  ],
+  "gnetId": null,
   "rows": [
     {
-      "collapse": false,
-      "editable": true,
-      "height": "125px",
+      "title": "Widgets",
       "panels": [
         {
           "cacheTimeout": null,
@@ -101,7 +242,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -180,7 +321,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -259,7 +400,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -287,94 +428,18 @@
           "valueFontSize": "80%",
           "valueMaps": [],
           "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "editable": true,
-          "error": false,
-          "format": "percent",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "height": "125px",
-          "id": 52,
-          "interval": "$interval",
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "80%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "repeat": null,
-          "span": 3,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "targets": [
-            {
-              "calculatedInterval": "10m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "(mysql_global_variables_innodb_buffer_pool_size{instance=\"$host\"} * 100) / on (instance) node_memory_MemTotal{instance=\"$host\"}",
-              "interval": "5m",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "metric": "",
-              "refId": "A",
-              "step": 300
-            }
-          ],
-          "thresholds": "40,80",
-          "title": "Buffer Pool Size of Total RAM",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [],
-          "valueName": "current"
         }
       ],
-      "title": "Widgets"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "125px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Connections",
       "panels": [
         {
           "aliasColors": {},
@@ -384,13 +449,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
+          "grid": {},
           "height": "250px",
           "id": 2,
           "legend": {
@@ -462,6 +521,7 @@
               "target": ""
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Connections",
@@ -471,9 +531,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -492,8 +556,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -503,12 +566,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 10,
           "legend": {
             "alignAsTable": true,
@@ -571,6 +629,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Active Threads",
@@ -580,9 +639,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -599,16 +662,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Connections"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Table Locks",
       "panels": [
         {
           "aliasColors": {},
@@ -618,12 +684,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 53,
           "legend": {
             "alignAsTable": true,
@@ -662,6 +723,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Questions",
@@ -671,9 +733,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -690,8 +756,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -701,12 +766,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 11,
           "legend": {
             "alignAsTable": true,
@@ -776,6 +836,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Thread Cache",
@@ -785,9 +846,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -804,16 +869,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Table Locks"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Temporary Objects",
       "panels": [
         {
           "aliasColors": {},
@@ -823,12 +891,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 22,
           "legend": {
             "alignAsTable": true,
@@ -893,6 +956,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Temporary Objects",
@@ -902,9 +966,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -921,8 +989,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -932,12 +999,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "height": "250px",
           "id": 31,
           "legend": {
@@ -1028,6 +1090,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Select Types",
@@ -1037,9 +1100,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1056,16 +1123,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Temporary Objects"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Sorts",
       "panels": [
         {
           "aliasColors": {},
@@ -1075,12 +1145,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 30,
           "legend": {
             "alignAsTable": true,
@@ -1158,6 +1223,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Sorts",
@@ -1167,9 +1233,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1186,8 +1256,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -1197,13 +1266,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
+          "grid": {},
           "id": 48,
           "legend": {
             "alignAsTable": true,
@@ -1241,6 +1304,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Slow Queries",
@@ -1250,9 +1314,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1271,16 +1339,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Sorts"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Aborted",
       "panels": [
         {
           "aliasColors": {},
@@ -1290,13 +1361,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
+          "grid": {},
           "id": 47,
           "legend": {
             "alignAsTable": true,
@@ -1349,6 +1414,7 @@
               "target": ""
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Aborted Connections",
@@ -1358,9 +1424,13 @@
             "sort": 0,
             "value_type": "cumulative"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1379,8 +1449,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -1390,12 +1459,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 32,
           "legend": {
             "alignAsTable": true,
@@ -1448,6 +1512,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Table Locks",
@@ -1457,9 +1522,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1476,16 +1545,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Aborted"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Network",
       "panels": [
         {
           "aliasColors": {},
@@ -1495,12 +1567,7 @@
           "editable": true,
           "error": false,
           "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 9,
           "legend": {
             "alignAsTable": true,
@@ -1553,6 +1620,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Network Traffic",
@@ -1562,9 +1630,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1581,8 +1653,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -1592,12 +1663,7 @@
           "editable": true,
           "error": false,
           "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "height": "250px",
           "id": 38,
           "legend": {
@@ -1651,6 +1717,7 @@
               "step": 3600
             }
           ],
+          "thresholds": [],
           "timeFrom": "24h",
           "timeShift": null,
           "title": "MySQL Network Usage Hourly",
@@ -1660,9 +1727,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1679,17 +1750,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
       "showTitle": false,
-      "title": "Network"
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Memory",
       "panels": [
         {
           "aliasColors": {},
@@ -1699,14 +1772,8 @@
           "editable": true,
           "error": false,
           "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 50,
-          "isNew": true,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -1814,6 +1881,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Internal Memory Overview",
@@ -1823,9 +1891,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1844,16 +1916,19 @@
               "min": null,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Memory"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Command, Handlers, Processes",
       "panels": [
         {
           "aliasColors": {},
@@ -1863,12 +1938,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 14,
           "legend": {
             "alignAsTable": true,
@@ -1912,6 +1982,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Command Counters",
@@ -1921,9 +1992,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -1940,8 +2015,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -1951,12 +2025,7 @@
           "editable": true,
           "error": false,
           "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 39,
           "legend": {
             "alignAsTable": true,
@@ -1997,6 +2066,7 @@
               "step": 3600
             }
           ],
+          "thresholds": [],
           "timeFrom": "24h",
           "timeShift": null,
           "title": "Top Command Counters Hourly",
@@ -2006,9 +2076,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2025,8 +2099,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2036,12 +2109,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 8,
           "legend": {
             "alignAsTable": true,
@@ -2083,6 +2151,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Handlers",
@@ -2092,9 +2161,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2111,8 +2184,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2122,12 +2194,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 28,
           "legend": {
             "alignAsTable": true,
@@ -2169,6 +2236,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Transaction Handlers",
@@ -2178,9 +2246,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2197,8 +2269,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2208,12 +2279,7 @@
           "editable": true,
           "error": false,
           "fill": 0,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 40,
           "legend": {
             "alignAsTable": true,
@@ -2255,6 +2321,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Process States",
@@ -2264,9 +2331,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2283,8 +2354,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2294,12 +2364,7 @@
           "editable": true,
           "error": false,
           "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 49,
           "legend": {
             "alignAsTable": true,
@@ -2341,6 +2406,7 @@
               "step": 3600
             }
           ],
+          "thresholds": [],
           "timeFrom": "24h",
           "timeShift": null,
           "title": "Top Process States Hourly",
@@ -2350,9 +2416,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2369,17 +2439,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
       "showTitle": true,
-      "title": "Command, Handlers, Processes"
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Query Cache",
       "panels": [
         {
           "aliasColors": {},
@@ -2389,12 +2461,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 46,
           "legend": {
             "alignAsTable": true,
@@ -2447,6 +2514,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Query Cache Memory",
@@ -2456,9 +2524,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2475,8 +2547,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2486,12 +2557,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "height": "",
           "id": 45,
           "legend": {
@@ -2581,6 +2647,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Query Cache Activity",
@@ -2590,9 +2657,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2609,17 +2680,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
       "showTitle": true,
-      "title": "Query Cache"
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Files and Tables",
       "panels": [
         {
           "aliasColors": {},
@@ -2629,12 +2702,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 43,
           "legend": {
             "alignAsTable": true,
@@ -2673,6 +2741,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL File Openings",
@@ -2682,9 +2751,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2701,8 +2774,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2712,12 +2784,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 41,
           "legend": {
             "alignAsTable": true,
@@ -2770,6 +2837,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Open Files",
@@ -2779,9 +2847,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2798,17 +2870,19 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
       "showTitle": true,
-      "title": "Files and Tables"
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     },
     {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
+      "title": "Table Openings",
       "panels": [
         {
           "aliasColors": {},
@@ -2818,12 +2892,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 44,
           "legend": {
             "alignAsTable": true,
@@ -2862,6 +2931,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Table Openings",
@@ -2871,9 +2941,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2890,8 +2964,7 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         },
         {
           "aliasColors": {},
@@ -2901,12 +2974,7 @@
           "editable": true,
           "error": false,
           "fill": 2,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
+          "grid": {},
           "id": 42,
           "legend": {
             "alignAsTable": true,
@@ -2959,6 +3027,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "MySQL Open Tables",
@@ -2968,9 +3037,13 @@
             "sort": 0,
             "value_type": "individual"
           },
+          "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
           },
           "yaxes": [
             {
@@ -2987,150 +3060,16 @@
               "min": 0,
               "show": true
             }
-          ],
-          "transparent": true
+          ]
         }
       ],
-      "title": "Table Openings"
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
     }
-  ],
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "collapse": false,
-    "enable": true,
-    "notice": false,
-    "now": true,
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "status": "Stable",
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ],
-    "type": "timepicker"
-  },
-  "templating": {
-    "list": [
-      {
-        "allFormat": "glob",
-        "auto": true,
-        "auto_count": 200,
-        "auto_min": "1s",
-        "current": {
-          "text": "auto",
-          "value": "$__auto_interval"
-        },
-        "datasource": "prometheus",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Interval",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "interval",
-        "options": [
-          {
-            "selected": true,
-            "text": "auto",
-            "value": "$__auto_interval"
-          },
-          {
-            "selected": false,
-            "text": "1s",
-            "value": "1s"
-          },
-          {
-            "selected": false,
-            "text": "5s",
-            "value": "5s"
-          },
-          {
-            "selected": false,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "5m",
-            "value": "5m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "6h",
-            "value": "6h"
-          },
-          {
-            "selected": false,
-            "text": "1d",
-            "value": "1d"
-          }
-        ],
-        "query": "1s,5s,1m,5m,1h,6h,1d",
-        "refresh": 0,
-        "type": "interval"
-      },
-      {
-        "allFormat": "glob",
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Host",
-        "multi": false,
-        "multiFormat": "regex values",
-        "name": "host",
-        "query": "label_values(mysql_up, instance)",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "regex": "",
-        "type": "query",
-        "options": [],
-        "current": {}
-      }
-    ]
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 12,
-  "version": 1,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "MySQL"
-      ],
-      "targetBlank": true,
-      "title": "MySQL",
-      "type": "dashboards"
-    }
-  ],
-  "gnetId": null
+  ]
 }
