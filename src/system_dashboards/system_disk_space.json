@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "3.1.1"
+      "version": "4.0.2"
     },
     {
       "type": "datasource",
@@ -43,164 +43,8 @@
   "style": "dark",
   "timezone": "browser",
   "editable": false,
-  "hideControls": true,
   "sharedCrosshair": false,
-  "rows": [
-    {
-      "collapse": false,
-      "editable": true,
-      "height": "250px",
-      "panels": [
-        {
-          "content": "`Disk Space` -  Amount of disk space used and available on various mount points.  Running out of disk space on OS volume,  database volume or volume used for temporary space can cause downtime.   Some storage may also have reduced performance when small amount of space is available.\n",
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "height": "50px",
-          "id": 7,
-          "isNew": true,
-          "links": [],
-          "mode": "markdown",
-          "span": 12,
-          "style": {},
-          "title": "",
-          "transparent": true,
-          "type": "text"
-        },
-        {
-          "aliasColors": {
-            "Free (device /dev/xvda1, ext4)": "#82B5D8",
-            "Used (device /dev/xvda1, ext4)": "#BA43A9"
-          },
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 6,
-          "grid": {
-            "threshold1": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2": null,
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "thresholdLine": false
-          },
-          "id": 4,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "minSpan": 6,
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "mountpoint",
-          "scopedVars": {
-            "mountpoint": {
-              "text": "/",
-              "value": "/",
-              "selected": false
-            }
-          },
-          "seriesOverrides": [
-            {
-              "alias": "/Used/",
-              "color": "#99440A"
-            },
-            {
-              "alias": "/Free/",
-              "color": "#EF843C"
-            }
-          ],
-          "span": 6,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "node_filesystem_size{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"} - node_filesystem_avail{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
-              "hide": false,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "node_filesystem_avail{instance=\"$host\",  fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-              "metric": "",
-              "refId": "A",
-              "step": 20,
-              "target": ""
-            }
-          ],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Mountpoint $mountpoint",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "show": true
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "bytes",
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "scopedVars": {
-        "host": {
-          "selected": true,
-          "text": "cdba",
-          "value": "cdba"
-        }
-      },
-      "showTitle": false,
-      "title": "Disk Space"
-    }
-  ],
+  "hideControls": true,
   "time": {
     "from": "now-1h",
     "to": "now"
@@ -256,52 +100,53 @@
         "name": "interval",
         "options": [
           {
-            "selected": true,
             "text": "auto",
-            "value": "$__auto_interval"
+            "value": "$__auto_interval",
+            "selected": true
           },
           {
-            "selected": false,
             "text": "1s",
-            "value": "1s"
+            "value": "1s",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "5s",
-            "value": "5s"
+            "value": "5s",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "1m",
-            "value": "1m"
+            "value": "1m",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "5m",
-            "value": "5m"
+            "value": "5m",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "1h",
-            "value": "1h"
+            "value": "1h",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "6h",
-            "value": "6h"
+            "value": "6h",
+            "selected": false
           },
           {
-            "selected": false,
             "text": "1d",
-            "value": "1d"
+            "value": "1d",
+            "selected": false
           }
         ],
         "query": "1s,5s,1m,5m,1h,6h,1d",
-        "refresh": 0,
+        "refresh": 2,
         "type": "interval"
       },
       {
         "allFormat": "glob",
+        "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
@@ -315,6 +160,7 @@
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",
+        "sort": 0,
         "tagValuesQuery": "instance",
         "tagsQuery": "up",
         "type": "query",
@@ -322,6 +168,7 @@
       },
       {
         "allFormat": "wildcard",
+        "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
@@ -336,6 +183,7 @@
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",
+        "sort": 0,
         "tagValuesQuery": "instance",
         "tagsQuery": "up",
         "type": "query",
@@ -347,7 +195,7 @@
     "list": []
   },
   "refresh": "30s",
-  "schemaVersion": 12,
+  "schemaVersion": 13,
   "version": 1,
   "links": [
     {
@@ -363,5 +211,146 @@
       "type": "dashboards"
     }
   ],
-  "gnetId": null
+  "gnetId": null,
+  "rows": [
+    {
+      "title": "Disk Space",
+      "panels": [
+        {
+          "content": "`Disk Space` -  Amount of disk space used and available on various mount points.  Running out of disk space on OS volume,  database volume or volume used for temporary space can cause downtime.   Some storage may also have reduced performance when small amount of space is available.\n",
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "height": "50px",
+          "id": 7,
+          "links": [],
+          "mode": "markdown",
+          "span": 12,
+          "style": {},
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "aliasColors": {
+            "Free (device /dev/xvda1, ext4)": "#82B5D8",
+            "Used (device /dev/xvda1, ext4)": "#BA43A9"
+          },
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 6,
+          "grid": {},
+          "id": 4,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "minSpan": 6,
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "repeat": "mountpoint",
+          "seriesOverrides": [
+            {
+              "alias": "/Used/",
+              "color": "#99440A"
+            },
+            {
+              "alias": "/Free/",
+              "color": "#EF843C"
+            }
+          ],
+          "span": 6,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "node_filesystem_size{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"} - node_filesystem_avail{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+              "hide": false,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+              "metric": "",
+              "refId": "B",
+              "step": 20
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "node_filesystem_avail{instance=\"$host\",  fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+              "metric": "",
+              "refId": "A",
+              "step": 20,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Mountpoint $mountpoint",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "bytes",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "250px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    }
+  ]
 }
