@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eu
+
+<% if_p('grafana.users.seeded_global_users') do |users| %>
+GRAFANA_USERS_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.address %>:<%= p('grafana.server.http_port') %>/api/admin/users"
+GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
+
+<% users.each do |user| %>
+USER_DATA="{\"name\":\"<%= user['name'] %>\",\"email\":\"<%= user['email'] %>\",\"login\":\"<%= user['login'] %>\",\"password\":\"<%= user['password'] %>\"}"
+if curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST ${GRAFANA_USERS_API} -H 'Content-Type: application/json' -d "${USER_DATA}" ; then
+    echo -e "\nCreated global user <%= user['name'] %> at $(date)"
+fi
+<% end %>
+
+<% end %>
+
+exit 0

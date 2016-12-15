@@ -6,6 +6,7 @@ packages:
   - grafana_plugins
 
 templates:
+  bin/grafana-users: bin/grafana-users
   bin/grafana_ctl: bin/grafana_ctl
   bin/post-start: bin/post-start
   bin/prometheus-dashboards: bin/prometheus-dashboards
@@ -132,6 +133,14 @@ properties:
     description: "Background text for the user field on the login page"
   grafana.users.default_theme:
     description: "Default UI theme ('dark' or 'light')"
+  grafana.users.seeded_global_users:
+    description: "Array of Grafana users to be seeded"
+    default: []
+    example:
+      - name: user name
+        email: user@example.com
+        login: user
+        password: userpassword
 
   grafana.auth.disable_login_form:
     description: "Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false"
