@@ -23,8 +23,9 @@ case $1 in
       <% if_p('kube_state_metrics_exporter.apiserver') do |apiserver| %> \
       --apiserver="<%= apiserver %>" \
       <% end %> \
+      --in-cluster=false \
       <% if_p('kube_state_metrics_exporter.kubeconfig') do %> \
-      --kubeconfig=/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig \
+      --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
       <% end %> \
       --port=<%= p('kube_state_metrics_exporter.port') %> \
       >>  ${LOG_DIR}/kube_state_metrics_exporter.stdout.log \
