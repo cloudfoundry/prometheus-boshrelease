@@ -30,10 +30,10 @@
     }
   ],
   "id": null,
-  "title": "Kubernetes: Nodes Capacity",
+  "title": "Kubernetes: Admission Quota Controller",
   "tags": [
     "kubernetes",
-    "nodes"
+    "admission"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -70,26 +70,7 @@
     ]
   },
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Node",
-        "multi": false,
-        "name": "node",
-        "options": [],
-        "query": "label_values(kube_node_status_capacity_pods, node)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      }
-    ]
+    "list": []
   },
   "annotations": {
     "list": []
@@ -113,29 +94,26 @@
   "gnetId": null,
   "rows": [
     {
-      "title": "Pods",
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 3,
+          "id": 1,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -144,30 +122,23 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_pods{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
+              "expr": "avg(admission_quota_controller_adds)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Workqueue Adds",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Pods",
+          "title": "Workqueue Adds",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -188,7 +159,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -200,39 +171,25 @@
               "show": false
             }
           ]
-        }
-      ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
-      "repeat": null,
-      "repeatRowId": null,
-      "repeatIteration": null,
-      "collapse": false
-    },
-    {
-      "title": "Memory",
-      "panels": [
+        },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 2,
+          "id": 4,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -241,29 +198,22 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_memory_bytes{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
+              "expr": "avg(admission_quota_controller_depth)",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Workqueue Depth",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Memory",
+          "title": "Workqueue Depth",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -280,7 +230,7 @@
           },
           "yaxes": [
             {
-              "format": "decbytes",
+              "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -307,29 +257,26 @@
       "collapse": false
     },
     {
-      "title": "CPU Cores",
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 2,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -339,30 +286,21 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_cpu_cores{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
-              "interval": "",
+              "expr": "avg(admission_quota_controller_queue_latency_sum / admission_quota_controller_queue_latency_count)",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Queue Latency",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "CPU Cores",
+          "title": "Queue Latency",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -379,11 +317,98 @@
           },
           "yaxes": [
             {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
               "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
               "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 3,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(admission_quota_controller_work_duration_sum / admission_quota_controller_work_duration_count)",
+              "intervalFactor": 2,
+              "legendFormat": "Work Duration",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Work Duration",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
               "show": true
             },
             {

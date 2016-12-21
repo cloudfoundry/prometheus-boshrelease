@@ -30,10 +30,10 @@
     }
   ],
   "id": null,
-  "title": "Kubernetes: Nodes Capacity",
+  "title": "Kubernetes: Deployments",
   "tags": [
     "kubernetes",
-    "nodes"
+    "deployments"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -76,12 +76,30 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
-        "includeAll": true,
-        "label": "Node",
+        "includeAll": false,
+        "label": "Namespace",
         "multi": false,
-        "name": "node",
+        "name": "namespace",
         "options": [],
-        "query": "label_values(kube_node_status_capacity_pods, node)",
+        "query": "label_values(kube_deployment_metadata_generation, namespace)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "deployment",
+        "options": [],
+        "query": "label_values(kube_deployment_metadata_generation{namespace=~\"$namespace\"}, deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -113,29 +131,29 @@
   "gnetId": null,
   "rows": [
     {
-      "title": "Pods",
+      "title": "Replica Status",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 3,
+          "id": 1,
           "legend": {
             "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
             "rightSide": true,
             "show": true,
             "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -145,29 +163,35 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_pods{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
-              "interval": "",
+              "expr": "avg(kube_deployment_status_replicas_available{namespace=~\"$namespace\",deployment=~\"$deployment\"}) by(namespace, deployment)",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Available",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
+              "expr": "avg(kube_deployment_status_replicas_unavailable{namespace=~\"$namespace\",deployment=~\"$deployment\"}) by(namespace, deployment)",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Unavailable",
               "refId": "B",
+              "step": 4
+            },
+            {
+              "expr": "avg(kube_deployment_status_replicas_updated{namespace=~\"$namespace\",deployment=~\"$deployment\"}) by(namespace, deployment)",
+              "intervalFactor": 2,
+              "legendFormat": "Updated",
+              "refId": "C",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Pods",
+          "title": "Replica Status",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -185,102 +209,6 @@
           "yaxes": [
             {
               "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
-      "repeat": null,
-      "repeatRowId": null,
-      "repeatIteration": null,
-      "collapse": false
-    },
-    {
-      "title": "Memory",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(kube_node_status_capacity_memory_bytes{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Memory",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "decbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -307,29 +235,29 @@
       "collapse": false
     },
     {
-      "title": "CPU Cores",
+      "title": "Spec",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 2,
           "legend": {
             "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
             "rightSide": true,
             "show": true,
             "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -339,22 +267,20 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_cpu_cores{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
-              "interval": "",
+              "expr": "avg(kube_deployment_spec_replicas{namespace=~\"$namespace\",deployment=~\"$deployment\"}) by(namespace, deployment)",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Replicas",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
-              "interval": "",
+              "expr": "avg(kube_deployment_spec_paused{namespace=~\"$namespace\",deployment=~\"$deployment\"}) by(namespace, deployment)",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Paused",
               "refId": "B",
               "step": 4
             }
@@ -362,7 +288,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "CPU Cores",
+          "title": "Spec",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -383,7 +309,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {

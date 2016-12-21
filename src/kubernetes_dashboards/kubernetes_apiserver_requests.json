@@ -17,6 +17,12 @@
       "version": ""
     },
     {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
@@ -30,10 +36,10 @@
     }
   ],
   "id": null,
-  "title": "Kubernetes: Nodes Capacity",
+  "title": "Kubernetes: Apiserver Requests",
   "tags": [
     "kubernetes",
-    "nodes"
+    "apiserver"
   ],
   "style": "dark",
   "timezone": "browser",
@@ -70,26 +76,7 @@
     ]
   },
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Node",
-        "multi": false,
-        "name": "node",
-        "options": [],
-        "query": "label_values(kube_node_status_capacity_pods, node)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      }
-    ]
+    "list": []
   },
   "annotations": {
     "list": []
@@ -113,29 +100,26 @@
   "gnetId": null,
   "rows": [
     {
-      "title": "Pods",
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 3,
+          "id": 1,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -145,29 +129,22 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 12,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_pods{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
+              "expr": "sum(apiserver_request_count)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Pods",
+          "title": "Requests",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -185,102 +162,6 @@
           "yaxes": [
             {
               "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
-      "repeat": null,
-      "repeatRowId": null,
-      "repeatIteration": null,
-      "collapse": false
-    },
-    {
-      "title": "Memory",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(kube_node_status_capacity_memory_bytes{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Memory",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "decbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -307,29 +188,31 @@
       "collapse": false
     },
     {
-      "title": "CPU Cores",
+      "title": "Dashboard Row",
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 2,
           "legend": {
             "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
+            "avg": false,
+            "current": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
             "rightSide": true,
             "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -338,35 +221,27 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_cpu_cores{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
+              "expr": "sum(apiserver_request_count) by(code)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "{{ code }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Allocatable",
-              "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "CPU Cores",
+          "title": "Requests by Code",
           "tooltip": {
             "msResolution": false,
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "transparent": true,
@@ -383,7 +258,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -395,6 +270,211 @@
               "show": false
             }
           ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideZero": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {}
+          ],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(apiserver_request_count) by(verb)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ verb }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Requests by Verb",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "showTitle": false,
+      "titleSize": "h6",
+      "height": "200px",
+      "repeat": null,
+      "repeatRowId": null,
+      "repeatIteration": null,
+      "collapse": false
+    },
+    {
+      "title": "Dashboard Row",
+      "panels": [
+        {
+          "columns": [
+            {
+              "text": "Current",
+              "value": "current"
+            }
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fontSize": "100%",
+          "id": 4,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 1,
+            "desc": true
+          },
+          "span": 6,
+          "styles": [
+            {
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "topk(5, sum(apiserver_request_count) by(resource))",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ resource }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Top 5 Resources",
+          "transform": "timeseries_aggregations",
+          "transparent": true,
+          "type": "table"
+        },
+        {
+          "columns": [
+            {
+              "text": "Current",
+              "value": "current"
+            }
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
+          "fontSize": "100%",
+          "id": 5,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 1,
+            "desc": true
+          },
+          "span": 6,
+          "styles": [
+            {
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "topk(5, sum(apiserver_request_count) by(client))",
+              "intervalFactor": 2,
+              "legendFormat": "{{ client }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Top 5 Clients",
+          "transform": "timeseries_aggregations",
+          "transparent": true,
+          "type": "table"
         }
       ],
       "showTitle": false,
