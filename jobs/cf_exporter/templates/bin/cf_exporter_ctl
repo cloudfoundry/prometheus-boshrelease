@@ -21,8 +21,18 @@ case $1 in
 
     exec cf_exporter \
       -cf.api_url="<%= p('cf_exporter.cf.api_url') %>" \
-      -cf.username="<%= p('cf_exporter.cf.username') %>" \
-      -cf.password="<%= p('cf_exporter.cf.password') %>" \
+      <% if_p('cf_exporter.cf.username') do |username| %> \
+      -cf.username="<%= username %>" \
+      <% end %> \
+      <% if_p('cf_exporter.cf.password') do |password| %> \
+      -cf.password="<%= password %>" \
+      <% end %> \
+      <% if_p('cf_exporter.cf.client_id') do |client_id| %> \
+      -cf.client-id="<%= client_id %>" \
+      <% end %> \
+      <% if_p('cf_exporter.cf.client_secret') do |client_secret| %> \
+      -cf.client-secret="<%= client_secret %>" \
+      <% end %> \
       <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
       -filter.collectors="<%= collectors %>" \
       <% end %> \
