@@ -23,7 +23,7 @@ ALERT DiegoConvergenceLRPHighDuration
   }
 
 ALERT DiegoLowRemainingMemory
-  IF avg(firehose_value_metric_rep_capacity_remaining_memory) by(deployment_ip) / 0.000001024 < 4500000000
+  IF sum(avg(firehose_value_metric_rep_capacity_remaining_memory) by(bosh_deployment, bosh_job_name, bosh_job_id)) / 0.000001024 < 4500000000
   FOR 15m
   ANNOTATIONS {
     summary = "Diego: Min memory available too low",
