@@ -1,50 +1,15 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    }
-  ],
-  "id": null,
-  "title": "System: Overview",
+  "id": 8,
+  "title": "System: Overview with bosh",
   "tags": [
-    "System"
+    "System",
+    "bosh"
   ],
   "style": "dark",
   "timezone": "browser",
-  "editable": false,
+  "editable": true,
   "sharedCrosshair": false,
-  "hideControls": true,
+  "hideControls": false,
   "time": {
     "from": "now-1h",
     "to": "now"
@@ -88,8 +53,8 @@
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
-          "text": "auto",
-          "value": "$__auto_interval"
+          "text": "5s",
+          "value": "5s"
         },
         "datasource": "prometheus",
         "hide": 0,
@@ -102,7 +67,7 @@
           {
             "text": "auto",
             "value": "$__auto_interval",
-            "selected": true
+            "selected": false
           },
           {
             "text": "1s",
@@ -112,7 +77,7 @@
           {
             "text": "5s",
             "value": "5s",
-            "selected": false
+            "selected": true
           },
           {
             "text": "1m",
@@ -145,26 +110,67 @@
         "type": "interval"
       },
       {
-        "allFormat": "glob",
         "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "current": {
+          "text": "prometheus",
+          "value": "prometheus"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": true,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "prometheus-server",
+          "value": "prometheus-server"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "10.77.109.141",
+          "value": "10.77.109.141"
+        },
+        "datasource": "prometheus",
         "hide": 0,
         "includeAll": false,
         "label": "Host",
         "multi": false,
-        "multiFormat": "regex values",
         "name": "host",
         "options": [],
-        "query": "label_values(node_load1, instance)",
+        "query": "label_values(bosh_job_healthy{bosh_job_name=~\"$bosh_job_name\"}, bosh_job_ip)",
         "refresh": 1,
-        "refresh_on_load": false,
-        "regex": "/^(.*):[0-9]+/",
-        "sort": 0,
-        "tagValuesQuery": "instance",
-        "tagsQuery": "up",
-        "type": "query",
-        "useTags": false
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tagsQuery": null,
+        "type": "query"
       }
     ]
   },
@@ -173,7 +179,7 @@
   },
   "refresh": "30s",
   "schemaVersion": 13,
-  "version": 1,
+  "version": 7,
   "links": [
     {
       "asDropdown": true,
@@ -185,6 +191,18 @@
       ],
       "targetBlank": true,
       "title": "System",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "bosh"
+      ],
+      "targetBlank": true,
+      "title": "Bosh",
       "type": "dashboards"
     }
   ],
@@ -202,7 +220,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": 1,
           "editable": true,
           "error": false,
@@ -255,7 +273,7 @@
               "calculatedInterval": "10m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_time{instance=~\"$host(:[0-9]+)?\"} - node_boot_time{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_time{instance=~\"$host:[0-9]+\"} - node_boot_time{instance=~\"$host:[0-9]+\"}",
               "interval": "5m",
               "intervalFactor": 1,
               "legendFormat": "",
@@ -281,7 +299,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editable": true,
           "error": false,
           "format": "none",
@@ -330,9 +348,10 @@
           },
           "targets": [
             {
-              "expr": "count(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"})",
+              "expr": "count(node_cpu{mode=\"user\", instance=~\"$host:[0-9]+\"})",
               "interval": "5m",
               "intervalFactor": 1,
+              "legendFormat": "",
               "refId": "A",
               "step": 300
             }
@@ -360,7 +379,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": 2,
           "editable": true,
           "error": false,
@@ -410,7 +429,7 @@
           },
           "targets": [
             {
-              "expr": "node_memory_MemTotal{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_MemTotal{instance=~\"$host:[0-9]+\"}",
               "interval": "5m",
               "intervalFactor": 1,
               "refId": "A",
@@ -440,7 +459,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": 0,
           "editable": true,
           "error": false,
@@ -493,7 +512,7 @@
               "calculatedInterval": "10m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "(node_memory_MemAvailable{instance=~\"$host(:[0-9]+)?\"} or (node_memory_MemFree{instance=~\"$host(:[0-9]+)?\"} + node_memory_Buffers{instance=~\"$host(:[0-9]+)?\"} + node_memory_Cached{instance=~\"$host(:[0-9]+)?\"})) / node_memory_MemTotal{instance=~\"$host(:[0-9]+)?\"} * 100",
+              "expr": "(node_memory_MemAvailable{instance=~\"$host:[0-9]+\"} or (node_memory_MemFree{instance=~\"$host:[0-9]+\"} + node_memory_Buffers{instance=~\"$host:[0-9]+\"} + node_memory_Cached{instance=~\"$host:[0-9]+\"})) / node_memory_MemTotal{instance=~\"$host:[0-9]+\"} * 100",
               "interval": "5m",
               "intervalFactor": 1,
               "legendFormat": "",
@@ -525,7 +544,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -567,13 +586,13 @@
               "calculatedInterval": "10s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_load1{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_load1{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Load 1m",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -616,7 +635,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -668,39 +687,39 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_MemTotal{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_MemTotal{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Total",
               "metric": "",
               "refId": "C",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_MemTotal{instance=~\"$host(:[0-9]+)?\"} - (node_memory_MemAvailable{instance=~\"$host(:[0-9]+)?\"} or (node_memory_MemFree{instance=~\"$host(:[0-9]+)?\"} + node_memory_Buffers{instance=~\"$host(:[0-9]+)?\"} + node_memory_Cached{instance=~\"$host(:[0-9]+)?\"}))",
+              "expr": "node_memory_MemTotal{instance=~\"$host:[0-9]+\"} - (node_memory_MemAvailable{instance=~\"$host:[0-9]+\"} or (node_memory_MemFree{instance=~\"$host:[0-9]+\"} + node_memory_Buffers{instance=~\"$host:[0-9]+\"} + node_memory_Cached{instance=~\"$host:[0-9]+\"}))",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Used",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_MemAvailable{instance=~\"$host(:[0-9]+)?\"} or (node_memory_MemFree{instance=~\"$host(:[0-9]+)?\"} + node_memory_Buffers{instance=~\"$host(:[0-9]+)?\"} + node_memory_Cached{instance=~\"$host(:[0-9]+)?\"})",
+              "expr": "node_memory_MemAvailable{instance=~\"$host:[0-9]+\"} or (node_memory_MemFree{instance=~\"$host:[0-9]+\"} + node_memory_Buffers{instance=~\"$host:[0-9]+\"} + node_memory_Cached{instance=~\"$host:[0-9]+\"})",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Available",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -755,7 +774,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -795,13 +814,13 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum(rate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[$interval])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"}) or sum(irate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"})",
+              "expr": "sum(rate(node_cpu{instance=~\"$host:[0-9]+\"}[$interval])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host:[0-9]+\"}) or sum(irate(node_cpu{instance=~\"$host:[0-9]+\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host:[0-9]+\"})",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "{{ mode }}",
               "metric": "",
               "refId": "A",
-              "step": 20
+              "step": 5
             }
           ],
           "thresholds": [],
@@ -843,7 +862,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -882,52 +901,52 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_MemTotal{instance=~\"$host(:[0-9]+)?\"} - (node_memory_MemFree{instance=~\"$host(:[0-9]+)?\"} + node_memory_Buffers{instance=~\"$host(:[0-9]+)?\"} + node_memory_Cached{instance=~\"$host(:[0-9]+)?\"})",
+              "expr": "node_memory_MemTotal{instance=~\"$host:[0-9]+\"} - (node_memory_MemFree{instance=~\"$host:[0-9]+\"} + node_memory_Buffers{instance=~\"$host:[0-9]+\"} + node_memory_Cached{instance=~\"$host:[0-9]+\"})",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Used",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_MemFree{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_MemFree{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Free",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_Buffers{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_Buffers{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Buffers",
               "metric": "",
               "refId": "D",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_Cached{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_Cached{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Cached",
               "metric": "",
               "refId": "E",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -982,7 +1001,7 @@
         {
           "aliasColors": {},
           "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1023,13 +1042,13 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_forks{instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_forks{instance=~\"$host(:[0-9]+)?\"}[5m])",
+              "expr": "rate(node_forks{instance=~\"$host:[0-9]+\"}[$interval]) or irate(node_forks{instance=~\"$host:[0-9]+\"}[5m])",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Forks",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1072,7 +1091,7 @@
         {
           "aliasColors": {},
           "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1119,26 +1138,26 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_procs_running{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_procs_running{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Processes in runnable state",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_procs_blocked{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_procs_blocked{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Processes blocked waiting for I/O to complete",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1193,7 +1212,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1229,13 +1248,13 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_context_switches{instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_context_switches{instance=~\"$host(:[0-9]+)?\"}[5m])",
+              "expr": "rate(node_context_switches{instance=~\"$host:[0-9]+\"}[$interval]) or irate(node_context_switches{instance=~\"$host:[0-9]+\"}[5m])",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Context Switches",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1278,7 +1297,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1319,13 +1338,13 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_intr{instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_intr{instance=~\"$host(:[0-9]+)?\"}[5m])",
+              "expr": "rate(node_intr{instance=~\"$host:[0-9]+\"}[$interval]) or irate(node_intr{instance=~\"$host:[0-9]+\"}[5m])",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Interrupts",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1380,7 +1399,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1418,26 +1437,26 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_network_receive_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[5m])",
+              "expr": "rate(node_network_receive_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[5m])",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Inbound: {{ device }}",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_network_transmit_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[5m])",
+              "expr": "rate(node_network_transmit_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[5m])",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Outbound: {{ device }}",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1480,7 +1499,7 @@
         {
           "aliasColors": {},
           "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1518,7 +1537,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum(increase(node_network_receive_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[1h]))",
+              "expr": "sum(increase(node_network_receive_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[1h]))",
               "interval": "1h",
               "intervalFactor": 1,
               "legendFormat": "Received",
@@ -1531,7 +1550,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum(increase(node_network_transmit_bytes{instance=~\"$host(:[0-9]+)?\", device!=\"lo\"}[1h]))",
+              "expr": "sum(increase(node_network_transmit_bytes{instance=~\"$host:[0-9]+\", device!=\"lo\"}[1h]))",
               "interval": "1h",
               "intervalFactor": 1,
               "legendFormat": "Sent",
@@ -1592,7 +1611,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1639,26 +1658,26 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_SwapTotal{instance=~\"$host(:[0-9]+)?\"} - node_memory_SwapFree{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_SwapTotal{instance=~\"$host:[0-9]+\"} - node_memory_SwapFree{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Used",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_memory_SwapFree{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_memory_SwapFree{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Free",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1701,7 +1720,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1739,26 +1758,26 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_vmstat_pswpin{instance=~\"$host(:[0-9]+)?\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=~\"$host(:[0-9]+)?\"}[5m]) * 4096",
+              "expr": "rate(node_vmstat_pswpin{instance=~\"$host:[0-9]+\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=~\"$host:[0-9]+\"}[5m]) * 4096",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Swap In",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_vmstat_pswpout{instance=~\"$host(:[0-9]+)?\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=~\"$host(:[0-9]+)?\"}[5m]) * 4096",
+              "expr": "rate(node_vmstat_pswpout{instance=~\"$host:[0-9]+\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=~\"$host:[0-9]+\"}[5m]) * 4096",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Swap Out",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1813,7 +1832,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1851,26 +1870,26 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_vmstat_pgpgin{instance=~\"$host(:[0-9]+)?\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=~\"$host(:[0-9]+)?\"}[5m]) * 1024",
+              "expr": "rate(node_vmstat_pgpgin{instance=~\"$host:[0-9]+\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=~\"$host:[0-9]+\"}[5m]) * 1024",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Page In",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "rate(node_vmstat_pgpgout{instance=~\"$host(:[0-9]+)?\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=~\"$host(:[0-9]+)?\"}[5m]) * 1024",
+              "expr": "rate(node_vmstat_pgpgout{instance=~\"$host:[0-9]+\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=~\"$host:[0-9]+\"}[5m]) * 1024",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Page Out",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
@@ -1916,7 +1935,7 @@
             "Limit": "#1F78C1"
           },
           "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "decimals": null,
           "editable": true,
           "error": false,
@@ -1954,26 +1973,26 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_filefd_maximum{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_filefd_maximum{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Limit",
               "metric": "",
               "refId": "B",
-              "step": 20,
+              "step": 5,
               "target": ""
             },
             {
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "node_filefd_allocated{instance=~\"$host(:[0-9]+)?\"}",
+              "expr": "node_filefd_allocated{instance=~\"$host:[0-9]+\"}",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Allocated",
               "metric": "",
               "refId": "A",
-              "step": 20,
+              "step": 5,
               "target": ""
             }
           ],
