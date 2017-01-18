@@ -16,7 +16,6 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [Kubernetes](https://github.com/kubernetes/kube-state-metrics)
 * [MySQL](https://github.com/prometheus/mysqld_exporter)
 * [NATS](https://github.com/lovoo/nats_exporter)
-* [Node](https://github.com/prometheus/node_exporter)
 * [PostgreSQL](https://github.com/wrouesnel/postgres_exporter)
 * [PushGateway](https://github.com/prometheus/pushgateway)
 * [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter)
