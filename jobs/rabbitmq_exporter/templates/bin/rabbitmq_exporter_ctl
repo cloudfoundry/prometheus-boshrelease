@@ -34,6 +34,9 @@ case $1 in
     <% if_p('rabbitmq_exporter.rabbitmq.ca_cert') do %>
     export CAFILE="/var/vcap/jobs/rabbitmq_exporter/config/ca_cert.pem"
     <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.include_queues') do |include_queues| %>
+    export INCLUDE_QUEUES="<%= include_queues %>"
+    <% end %>
     <% if_p('rabbitmq_exporter.rabbitmq.skip_queues') do |skip_queues| %>
     export SKIP_QUEUES="<%= skip_queues %>"
     <% end %>
