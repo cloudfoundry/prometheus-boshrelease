@@ -1,0 +1,55 @@
+---
+name: mongodb_exporter
+
+packages:
+  - mongodb_exporter
+
+templates:
+  bin/mongodb_exporter_ctl: bin/mongodb_exporter_ctl
+  config/mongodb_tls_cert.pem: config/mongodb_tls_cert.pem
+  config/mongodb_tls_ca.pem: config/mongodb_tls_ca.pem
+  config/mongodb_tls_key.pem: config/mongodb_tls_key.pem
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_client_ca.pem: config/web_tls_client_ca.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+
+properties:
+  mongodb_exporter.auth_pass:
+    description: "Password for basic auth"
+  mongodb_exporter.auth_user:
+    description: "Username for basic auth"
+  mongodb_exporter.groups_enabled:
+    description: "Comma-separated list of groups to use, for more info see: docs.mongodb.org/manual/reference/command/serverStatus/"
+  mongodb_exporter.log_backtrace_at:
+    description: "When logging hits line file:N, emit a stack trace"
+  mongodb_exporter.collect_database:
+    description: "Collect MongoDB database metrics"
+  mongodb_exporter.collect_oplog:
+    description: "Collect Mongodb Oplog status"
+  mongodb_exporter.collect_replset:
+    description: "Collect Mongodb replica set status"
+  mongodb_exporter.mongodb.uri:
+    description: "Mongodb URI, format: [mongodb://][user:pass@]host1[:port1][,host2[:port2],...][/database][?options]"
+  mongodb_exporter.mongodb.tls_ca:
+    description: "MongoDB SSL CA (PEM encoded)"
+  mongodb_exporter.mongodb.tls_cert:
+    description: "MongoDB SSL Certificate (PEM encoded)"
+  mongodb_exporter.mongodb.tls_private_key:
+    description: "MongoDB SSL Private Key (PEM encoded)"
+  mongodb_exporter.mongodb.tls_disable_hostname_validation:
+    description: "Do hostname validation for server connection"
+  mongodb_exporter.v:
+    description: "Log level for V logs"
+  mongodb_exporter.vmodule:
+    description: "Comma-separated list of pattern=N settings for file-filtered logging"
+  mongodb_exporter.web.port:
+    description: "Port on which to expose metrics and web interface"
+    default: 9001
+  mongodb_exporter.web.metrics_path:
+    description: "Path under which to expose metrics"
+  mongodb_exporter.web.tls_cert:
+    description: "SSL Certificate (PEM encoded)"
+  mongodb_exporter.web.tls_client_ca:
+    description: "SSL Client CA (PEM encoded)"
+  mongodb_exporter.web.tls_private_key:
+    description: "SSL Private Key (PEM encoded)"
