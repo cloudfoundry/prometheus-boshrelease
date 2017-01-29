@@ -19,7 +19,17 @@ case $1 in
     pid_guard ${PIDFILE} "alertmanager"
     echo $$ > ${PIDFILE}
 
-    exec alertmanager \
+    exec \
+    <% if_p('alertmanager.http_proxy') do |http_proxy| %> \
+       env HTTP_PROXY="<%= http_proxy %>" env http_proxy="<%= http_proxy %>" \
+    <% end %> \
+    <% if_p('alertmanager.https_proxy') do |https_proxy| %> \
+       env HTTPS_PROXY="<%= https_proxy %>" env https_proxy="<%= https_proxy %>"\
+    <% end %> \
+    <% if_p('alertmanager.no_proxy') do |no_proxy| %> \
+       env NO_PROXY="<%= no_proxy %>" env no_proxy="<%= no_proxy %>" \
+    <% end %> \
+    alertmanager \
       -config.file="/var/vcap/jobs/alertmanager/config/alertmanager.yml" \
       <% if_p('alertmanager.data.retention') do |retention| %> \
       -data.retention="<%= retention %>" \
