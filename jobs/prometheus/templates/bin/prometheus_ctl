@@ -140,6 +140,12 @@ case $1 in
       -web.external-url="<%= external_url %>" \
       <% end %> \
       -web.listen-address=":<%= p('prometheus.web.port') %>" \
+      <% if_p('prometheus.web.max_connections') do |max_connections| %> \
+      -web.max-connections="<%= max_connections %>" \
+      <% end %> \
+      <% if_p('prometheus.web.read_timeout') do |read_timeout| %> \
+      -web.read-timeout="<%= read_timeout %>" \
+      <% end %> \
       <% if_p('prometheus.web.route_prefix') do |route_prefix| %> \
       -web.route-prefix="<%= route_prefix %>" \
       <% end %> \
