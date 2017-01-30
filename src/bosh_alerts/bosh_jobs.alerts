@@ -1,5 +1,5 @@
 ALERT BOSHJobUnhealthy
-  IF max(bosh_job_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) < 1
+  IF max(bosh_job_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) < 1
   FOR 5m
   ANNOTATIONS {
     summary = "BOSH: A job is unhealthy",
@@ -7,7 +7,7 @@ ALERT BOSHJobUnhealthy
   }
 
 ALERT BOSHJobExtentedUnhealthy
-  IF max(bosh_job_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) < 1
+  IF max(bosh_job_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) < 1
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job has been unhealthy for a long time",
@@ -15,7 +15,7 @@ ALERT BOSHJobExtentedUnhealthy
   }
 
 ALERT BOSHJobHighCPULoad
-  IF avg(bosh_job_load_avg01{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 5
+  IF avg(bosh_job_load_avg01{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 5
   FOR 10m
   ANNOTATIONS {
     summary = "BOSH: A job is reporting a high CPU load average",
@@ -23,7 +23,7 @@ ALERT BOSHJobHighCPULoad
   }
 
 ALERT BOSHJobLowFreeRAM
-  IF avg(bosh_job_mem_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  IF avg(bosh_job_mem_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 90
   FOR 10m
   ANNOTATIONS {
     summary = "BOSH: A job is reporting low free RAM",
@@ -31,7 +31,7 @@ ALERT BOSHJobLowFreeRAM
   }
 
 ALERT BOSHJobLowSwap
-  IF avg(bosh_job_swap_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  IF avg(bosh_job_swap_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 90
   FOR 10m
   ANNOTATIONS {
     summary = "BOSH: A job is reporting low swap",
@@ -47,7 +47,7 @@ ALERT BOSHJobSystemDiskWillFillIn2Hours
   }
 
 ALERT BOSHJobSystemDiskFull
-  IF avg(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  IF avg(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 90
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job is running out of system disk",
@@ -63,7 +63,7 @@ ALERT BOSHJobEphemeralDiskWillFillIn2Hours
   }
 
 ALERT BOSHJobEphemeralDiskFull
-  IF avg(bosh_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 80
+  IF avg(bosh_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 80
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job is running out of ephemeral disk",
@@ -79,7 +79,7 @@ ALERT BOSHJobPersistentDiskWillFillIn2Hours
   }
 
 ALERT BOSHJobPersistentDiskFull
-  IF avg(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  IF avg(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, instance) > 90
   FOR 30m
   ANNOTATIONS {
     summary = "BOSH: A job is running out of persistent disk",
