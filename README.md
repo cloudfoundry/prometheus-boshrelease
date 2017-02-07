@@ -25,29 +25,8 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 
 ## Usage
 
-To use this BOSH release, first upload it to your BOSH:
-
 ```
-bosh target <YOUR_BOSH_HOST>
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-community/prometheus-boshrelease
-```
-
-For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest & deploy a cluster:
-
-```
-git clone https://github.com/cloudfoundry-community/prometheus-boshrelease.git
-cd prometheus-boshrelease
-./templates/make_manifest warden
-bosh -n deploy
-```
-
-For AWS EC2, create a deployment manifest & deploy a cluster:
-
-```
-git clone https://github.com/cloudfoundry-community/prometheus-boshrelease.git
-cd prometheus-boshrelease
-./templates/make_manifest aws-ec2
-bosh -n deploy
+$ bosh -d prometheus deploy manifests/example.yml
 ```
 
 ## Contributing

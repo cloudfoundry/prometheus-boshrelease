@@ -10,13 +10,8 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/prometheus.pid
 
-source /var/vcap/packages/prometheus/common/utils.sh
-
-export PATH=/var/vcap/packages/prometheus/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "prometheus"
     echo $$ > ${PIDFILE}
 
     ulimit -n 65536
@@ -25,7 +20,7 @@ case $1 in
     export INFLUXDB_PW="<%= influxdb_password %>"
     <% end %> \
 
-    exec prometheus \
+    exec /var/vcap/packages/prometheus/bin/prometheus \
       -config.file=/var/vcap/jobs/prometheus/config/prometheus.yml \
       <% if_p('prometheus.alertmanager.notification_queue_capacity') do |notification_queue_capacity| %> \
       -alertmanager.notification-queue-capacity="<%= notification_queue_capacity %>" \
@@ -160,7 +155,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

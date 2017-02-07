@@ -10,19 +10,13 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/grafana.pid
 
-source /var/vcap/packages/grafana/common/utils.sh
-
-export PATH=/var/vcap/packages/grafana/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "grafana"
-
     mkdir -p ${STORE_DIR}/dashboards
 
     ulimit -n 65536
 
-    exec grafana-server \
+    exec /var/vcap/packages/grafana/bin/grafana-server \
       -config=/var/vcap/jobs/grafana/config/grafana.ini \
       -homepath=/var/vcap/packages/grafana \
       -pidfile=${PIDFILE} \
@@ -31,7 +25,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

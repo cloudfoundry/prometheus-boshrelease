@@ -5,21 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/graphite_exporter
 LOG_DIR=/var/vcap/sys/log/graphite_exporter
 TMP_DIR=/var/vcap/sys/tmp/graphite_exporter
-STORE_DIR=/var/vcap/store/graphite_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/graphite_exporter.pid
 
-source /var/vcap/packages/graphite_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/graphite_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "graphite_exporter"
     echo $$ > ${PIDFILE}
 
-    exec graphite_exporter \
+    exec /var/vcap/packages/graphite_exporter/bin/graphite_exporter \
       -graphite.listen-address=":<%= p('graphite_exporter.graphite.port') %>" \
       <% if_p('graphite_exporter.graphite.mapping_config') do %> \
       -graphite.mapping-config="/var/vcap/jobs/graphite_exporter/config/graphite_mapping.conf" \
@@ -49,7 +43,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

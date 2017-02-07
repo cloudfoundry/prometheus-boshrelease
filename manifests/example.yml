@@ -1,0 +1,212 @@
+name: prometheus
+
+releases:
+- name: prometheus
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 32
+  canary_watch_time: 1000-30000
+  update_watch_time: 1000-30000
+  serial: false
+
+instance_groups:
+- name: alertmanager
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: alertmanager
+    release: prometheus
+    properties:
+      alertmanager:
+        route:
+          receiver: default-receiver
+        receivers:
+          - name: default-receiver
+  vm_type: default
+  stemcell: default
+  persistent_disk: 1024
+  networks:
+  - name: default
+
+- name: prometheus
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: blackbox_exporter
+    release: prometheus
+    properties:
+      blackbox_exporter:
+        config:
+          modules:
+            http_2xx:
+              prober: http
+              timeout: 5s
+
+  #- name: bosh_exporter
+  #  release: prometheus
+  # - name: cadvisor
+  #   release: prometheus
+  - name: collectd_exporter
+    release: prometheus
+  - name: consul_exporter
+    release: prometheus
+  #- name: firehose_exporter
+  #  release: prometheus
+  - name: github_exporter
+    release: prometheus
+    properties:
+      github_exporter:
+        github:
+          repos: cloudfoundry-community/prometheus-boshrelease
+  - name: graphite_exporter
+    release: prometheus
+  - name: haproxy_exporter
+    release: prometheus
+  #- name: kube_state_metrics_exporter
+  #  release: prometheus
+  #- name: mysqld_exporter
+  #  release: prometheus
+  - name: nats_exporter
+    release: prometheus
+  #- name: postgres_exporter
+  #  release: prometheus
+  - name: prometheus
+    release: prometheus
+    properties:
+      prometheus:
+        scrape_configs:
+          - job_name: blackbox
+            metrics_path: /probe
+            params:
+              module:
+                - http_2xx
+            static_configs:
+              - targets:
+                - prometheus.io
+            relabel_configs:
+              - source_labels: [__address__]
+                regex: (.*)(:80)?
+                target_label: __param_target
+                replacement: ${1}
+              - source_labels: [__param_target]
+                regex: (.*)
+                target_label: instance
+                replacement: ${1}
+              - source_labels: []
+                regex: .*
+                target_label: __address__
+                replacement: localhost:9115
+          - job_name: bosh
+            scrape_interval: 1m
+            scrape_timeout: 1m
+            static_configs:
+              - targets:
+                - localhost:9190
+          - job_name: collectd
+            static_configs:
+              - targets:
+                - localhost:9103
+          - job_name: consul
+            static_configs:
+              - targets:
+                - localhost:9107
+          - job_name: firehose
+            static_configs:
+              - targets:
+                - localhost:9186
+          - job_name: github
+            static_configs:
+              - targets:
+                - localhost:9171
+          - job_name: graphite
+            static_configs:
+              - targets:
+                - localhost:9108
+          - job_name: haproxy
+            static_configs:
+              - targets:
+                - localhost:9101
+          - job_name: kube_state_metrics_exporter
+            static_configs:
+              - targets:
+                - localhost:9188
+          - job_name: mysql
+            static_configs:
+              - targets:
+                - localhost:9104
+          - job_name: nats
+            static_configs:
+              - targets:
+                - localhost:9118
+          - job_name: node
+            static_configs:
+              - targets:
+                - localhost:9100
+          - job_name: postgres_exporter
+            static_configs:
+              - targets:
+                - localhost:9113
+          - job_name: prometheus
+            static_configs:
+              - targets:
+                - localhost:9090
+          - job_name: pushgateway
+            static_configs:
+              - targets:
+                - localhost:9091
+          - job_name: rabbitmq
+            static_configs:
+              - targets:
+                - localhost:9125
+          - job_name: redis
+            static_configs:
+              - targets:
+                - localhost:9121
+          - job_name: statsd
+            static_configs:
+              - targets:
+                - localhost:9102
+  - name: pushgateway
+    release: prometheus
+  - name: rabbitmq_exporter
+    release: prometheus
+  - name: redis_exporter
+    release: prometheus
+  - name: statsd_exporter
+    release: prometheus
+  persistent_disk: 1024
+  stemcell: default
+  vm_type: default
+  networks:
+  - name: default
+
+- name: grafana
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: grafana
+    release: prometheus
+  persistent_disk: 1024
+  stemcell: default
+  vm_type: default
+  networks:
+  - name: default
+
+- name: nginx
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: nginx
+    release: prometheus
+  persistent_disk: 1024
+  stemcell: default
+  vm_type: default
+  networks:
+  - name: default

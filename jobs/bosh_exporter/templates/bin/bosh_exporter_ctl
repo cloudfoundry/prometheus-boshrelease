@@ -10,16 +10,11 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/bosh_exporter.pid
 
-source /var/vcap/packages/bosh_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/bosh_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "bosh_exporter"
     echo $$ > ${PIDFILE}
 
-    exec bosh_exporter \
+    exec /var/vcap/packages/bosh_exporter/bin/bosh_exporter \
       -bosh.url="<%= p('bosh_exporter.bosh.url') %>" \
       <% if_p('bosh_exporter.bosh.username') do |username| %> \
       -bosh.username="<%= username %>" \
@@ -75,7 +70,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

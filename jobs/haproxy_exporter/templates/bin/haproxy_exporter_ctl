@@ -5,21 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/haproxy_exporter
 LOG_DIR=/var/vcap/sys/log/haproxy_exporter
 TMP_DIR=/var/vcap/sys/tmp/haproxy_exporter
-STORE_DIR=/var/vcap/store/haproxy_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/haproxy_exporter.pid
 
-source /var/vcap/packages/haproxy_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/haproxy_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "haproxy_exporter"
     echo $$ > ${PIDFILE}
 
-    exec haproxy_exporter \
+    exec /var/vcap/packages/haproxy_exporter/bin/haproxy_exporter \
       <% if_p('haproxy_exporter.haproxy.pid_file') do |pid_file| %> \
       -haproxy.pid-file="<%= pid_file %>" \
       <% end %> \
@@ -47,7 +41,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

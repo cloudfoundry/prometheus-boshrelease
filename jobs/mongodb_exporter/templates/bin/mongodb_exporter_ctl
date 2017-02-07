@@ -5,23 +5,17 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/mongodb_exporter
 LOG_DIR=/var/vcap/sys/log/mongodb_exporter
 TMP_DIR=/var/vcap/sys/tmp/mongodb_exporter
-STORE_DIR=/var/vcap/store/mongodb_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/mongodb_exporter.pid
 
-source /var/vcap/packages/mongodb_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/mongodb_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "mongodb_exporter"
     echo $$ > ${PIDFILE}
 
     export MONGODB_URL="<%= p('mongodb_exporter.mongodb.uri') %>"
 
-    exec mongodb_exporter \
+    exec /var/vcap/packages/mongodb_exporter/bin/mongodb_exporter \
       <% if_p('mongodb_exporter.auth_pass') do |auth_pass| %> \
       -auth.pass="<%= auth_pass %>" \
       <% end %> \
@@ -80,7 +74,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

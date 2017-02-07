@@ -5,21 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/consul_exporter
 LOG_DIR=/var/vcap/sys/log/consul_exporter
 TMP_DIR=/var/vcap/sys/tmp/consul_exporter
-STORE_DIR=/var/vcap/store/consul_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/consul_exporter.pid
 
-source /var/vcap/packages/consul_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/consul_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "consul_exporter"
     echo $$ > ${PIDFILE}
 
-    exec consul_exporter \
+    exec /var/vcap/packages/consul_exporter/bin/consul_exporter \
       <% if_p('consul_exporter.consul_server') do |consul_server| %> \
       -consul.server="<%= consul_server %>" \
       <% end %> \
@@ -41,7 +35,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)
