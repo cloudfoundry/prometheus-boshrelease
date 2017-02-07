@@ -2,10 +2,6 @@
 
 set -eux
 
-# Copy common utils
-mkdir -p ${BOSH_INSTALL_TARGET}/common
-cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
-
 # Extract nginx package
 tar xzvf ${BOSH_COMPILE_TARGET}/nginx/nginx-1.10.2.tar.gz
 
@@ -21,3 +17,5 @@ cd ${BOSH_COMPILE_TARGET}/nginx-1.10.2
   --with-file-aio
 make
 make install
+
+mv ${BOSH_INSTALL_TARGET}/sbin/{nginx,nginx_prometheus}

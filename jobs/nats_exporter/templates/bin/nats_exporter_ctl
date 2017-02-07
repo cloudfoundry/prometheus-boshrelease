@@ -5,21 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/nats_exporter
 LOG_DIR=/var/vcap/sys/log/nats_exporter
 TMP_DIR=/var/vcap/sys/tmp/nats_exporter
-STORE_DIR=/var/vcap/store/nats_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/nats_exporter.pid
 
-source /var/vcap/packages/nats_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/nats_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "nats_exporter"
     echo $$ > ${PIDFILE}
 
-    exec nats_exporter \
+    exec /var/vcap/packages/nats_exporter/bin/nats_exporter \
       <% if_p('nats_exporter.namespace') do |namespace| %> \
       -namespace="<%= namespace %>" \
       <% end %> \
@@ -35,7 +29,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

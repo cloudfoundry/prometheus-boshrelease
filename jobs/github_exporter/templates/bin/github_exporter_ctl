@@ -5,19 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/github_exporter
 LOG_DIR=/var/vcap/sys/log/github_exporter
 TMP_DIR=/var/vcap/sys/tmp/github_exporter
-STORE_DIR=/var/vcap/store/github_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/github_exporter.pid
-
-source /var/vcap/packages/github_exporter/common/utils.sh
 
 export PATH=/var/vcap/packages/github_exporter/bin:${PATH}
 export PYTHONPATH=/var/vcap/packages/github_exporter/lib/python3.5
 
 case $1 in
   start)
-    pid_guard ${PIDFILE} "github_exporter"
     echo $$ > ${PIDFILE}
 
     <% if_p('env.http_proxy') do |http_proxy| %>
@@ -51,7 +47,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

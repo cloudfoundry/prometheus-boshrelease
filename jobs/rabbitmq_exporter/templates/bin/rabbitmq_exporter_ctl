@@ -5,18 +5,12 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/rabbitmq_exporter
 LOG_DIR=/var/vcap/sys/log/rabbitmq_exporter
 TMP_DIR=/var/vcap/sys/tmp/rabbitmq_exporter
-STORE_DIR=/var/vcap/store/rabbitmq_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/rabbitmq_exporter.pid
 
-source /var/vcap/packages/rabbitmq_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/rabbitmq_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "rabbitmq_exporter"
     echo $$ > ${PIDFILE}
 
     <% if_p('rabbitmq_exporter.log_level') do |log_level| %>
@@ -49,13 +43,16 @@ case $1 in
 
     export PUBLISH_PORT="<%= p('rabbitmq_exporter.web.port') %>"
 
-    exec rabbitmq_exporter \
+    exec /var/vcap/packages/rabbitmq_exporter/bin/rabbitmq_exporter \
       >>  ${LOG_DIR}/rabbitmq_exporter.stdout.log \
       2>> ${LOG_DIR}/rabbitmq_exporter.stderr.log
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

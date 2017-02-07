@@ -5,18 +5,12 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/mysqld_exporter
 LOG_DIR=/var/vcap/sys/log/mysqld_exporter
 TMP_DIR=/var/vcap/sys/tmp/mysqld_exporter
-STORE_DIR=/var/vcap/store/mysqld_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/mysqld_exporter.pid
 
-source /var/vcap/packages/mysqld_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/mysqld_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "mysqld_exporter"
     echo $$ > ${PIDFILE}
 
     <% if_p('mysqld_exporter.mysql.username', 'mysqld_exporter.mysql.password') do |mysql_username, mysql_password| %>
@@ -25,7 +19,7 @@ case $1 in
 
     export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{p('mysqld_exporter.mysql.protocol')}(#{p('mysqld_exporter.mysql.address')}:#{p('mysqld_exporter.mysql.port')})/" %>"
 
-    exec mysqld_exporter \
+    exec /var/vcap/packages/mysqld_exporter/bin/mysqld_exporter \
       <% if_p('mysqld_exporter.collect.auto_increment_columns') do |auto_increment_columns| %> \
       -collect.auto_increment.columns="<%= auto_increment_columns %>" \
       <% end %> \
@@ -125,7 +119,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

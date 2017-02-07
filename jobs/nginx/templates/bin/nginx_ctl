@@ -10,14 +10,8 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/nginx.pid
 
-source /var/vcap/packages/nginx_prometheus/common/utils.sh
-
-export PATH=/var/vcap/packages/nginx_prometheus/sbin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "nginx"
-
     <% if_p('nginx.alertmanager.auth_username', 'nginx.alertmanager.auth_password') do |auth_username, auth_password| %>
     echo "<%= auth_username %>:`openssl passwd -1 -quiet "<%= auth_password %>"`" > ${STORE_DIR}/htpasswd_alertmanager;
     <% end %>
@@ -30,7 +24,7 @@ case $1 in
     echo "<%= auth_username %>:`openssl passwd -1 -quiet "<%= auth_password %>"`" > ${STORE_DIR}/htpasswd_prometheus;
     <% end %>
 
-    exec nginx \
+    exec /var/vcap/packages/nginx_prometheus/sbin/nginx_prometheus \
       -p ${TMP_DIR} \
       -c /var/vcap/jobs/nginx/config/nginx.conf \
       >>  ${LOG_DIR}/nginx.stdout.log \
@@ -38,7 +32,12 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -TERM `cat ${PIDFILE}` || true
+      sleep 5
+      killall -9 nginx_prometheus || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

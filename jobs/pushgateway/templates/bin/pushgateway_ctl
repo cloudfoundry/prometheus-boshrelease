@@ -10,16 +10,11 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/pushgateway.pid
 
-source /var/vcap/packages/pushgateway/common/utils.sh
-
-export PATH=/var/vcap/packages/pushgateway/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "pushgateway"
     echo $$ > ${PIDFILE}
 
-    exec pushgateway \
+    exec /var/vcap/packages/pushgateway/bin/pushgateway \
       <% if_p('pushgateway.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
       <% end %> \
@@ -39,7 +34,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

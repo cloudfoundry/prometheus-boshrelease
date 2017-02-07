@@ -5,18 +5,12 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/blackbox_exporter
 LOG_DIR=/var/vcap/sys/log/blackbox_exporter
 TMP_DIR=/var/vcap/sys/tmp/blackbox_exporter
-STORE_DIR=/var/vcap/store/blackbox_exporter
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/blackbox_exporter.pid
 
-source /var/vcap/packages/blackbox_exporter/common/utils.sh
-
-export PATH=/var/vcap/packages/blackbox_exporter/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "blackbox_exporter"
     echo $$ > ${PIDFILE}
 
     <% if_p('env.http_proxy') do |http_proxy| %>
@@ -32,7 +26,7 @@ case $1 in
     export no_proxy="<%= no_proxy %>"
     <% end %>
 
-    exec blackbox_exporter \
+    exec /var/vcap/packages/blackbox_exporter/bin/blackbox_exporter \
       -config.file="/var/vcap/jobs/blackbox_exporter/config/blackbox.yml" \
       <% if_p('blackbox_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
@@ -46,7 +40,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)

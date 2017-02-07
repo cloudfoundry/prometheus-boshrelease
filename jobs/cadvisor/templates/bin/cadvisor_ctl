@@ -5,21 +5,15 @@ set -eu
 RUN_DIR=/var/vcap/sys/run/cadvisor
 LOG_DIR=/var/vcap/sys/log/cadvisor
 TMP_DIR=/var/vcap/sys/tmp/cadvisor
-STORE_DIR=/var/vcap/store/cadvisor
-mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR}
 
 PIDFILE=${RUN_DIR}/cadvisor.pid
 
-source /var/vcap/packages/cadvisor/common/utils.sh
-
-export PATH=/var/vcap/packages/cadvisor/bin:${PATH}
-
 case $1 in
   start)
-    pid_guard ${PIDFILE} "cadvisor"
     echo $$ > ${PIDFILE}
 
-    exec cadvisor \
+    exec /var/vcap/packages/cadvisor/bin/cadvisor \
       <% if_p('cadvisor.allow_dynamic_housekeeping') do |allow_dynamic_housekeeping| %> \
       -allow_dynamic_housekeeping="<%= allow_dynamic_housekeeping %>" \
       <% end %> \
@@ -186,7 +180,10 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    if [ -f ${PIDFILE} ]; then
+      kill -9 `cat ${PIDFILE}` || true
+      rm -f ${PIDFILE}
+    fi
     ;;
 
   *)
