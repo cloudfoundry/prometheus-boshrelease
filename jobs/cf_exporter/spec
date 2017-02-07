@@ -6,6 +6,8 @@ packages:
 
 templates:
   bin/cf_exporter_ctl: bin/cf_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
 
 properties:
   cf_exporter.cf.api_url:
@@ -18,8 +20,10 @@ properties:
     description: "Cloud Foundry Client ID"
   cf_exporter.cf.client_secret:
     description: "Cloud Foundry Client Secret"
+  cf_exporter.cf.deployment_name:
+    description: "Cloud Foundry Deployment Name to be reported as a metric label"
   cf_exporter.filter.collectors:
-    description: "Comma separated collectors to filter ('Applications', 'ApplicationEvents', Organizations', 'SecurityGroups', 'Services', 'Spaces')"
+    description: "Comma separated collectors to filter ('Applications', 'ApplicationEvents', Organizations', 'Routes', 'SecurityGroups', 'ServiceInstances', 'Services', 'Spaces', 'Stacks')"
   cf_exporter.log_format:
     description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
   cf_exporter.log_level:
@@ -33,3 +37,11 @@ properties:
     default: "9193"
   cf_exporter.web.telemetry_path:
     description: "Path under which to expose Prometheus metrics"
+  cf_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  cf_exporter.web.auth_pasword:
+    description: "Password for web interface basic auth"
+  cf_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  cf_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"
