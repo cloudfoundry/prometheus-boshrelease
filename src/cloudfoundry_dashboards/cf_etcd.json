@@ -11,10 +11,10 @@
   ],
   "__requires": [
     {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.1.1"
     },
     {
       "type": "panel",
@@ -23,86 +23,26 @@
       "version": ""
     },
     {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.2"
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
     }
   ],
-  "id": null,
-  "title": "CF: Etcd",
-  "tags": [
-    "cf",
-    "etcd"
-  ],
-  "style": "dark",
-  "timezone": "browser",
-  "editable": false,
-  "sharedCrosshair": false,
-  "hideControls": true,
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Deployment",
-        "multi": true,
-        "name": "bosh_deployment",
-        "options": [],
-        "query": "label_values(firehose_value_metric_etcd_is_leader, bosh_deployment)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      }
-    ]
-  },
   "annotations": {
     "list": []
   },
-  "refresh": "30s",
-  "schemaVersion": 13,
-  "version": 1,
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": true,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -124,10 +64,11 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "gnetId": null,
+  "refresh": "30s",
   "rows": [
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "cacheTimeout": null,
@@ -139,6 +80,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of etcd leaders. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "format": "none",
@@ -217,6 +159,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of etcd followers. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "format": "none",
@@ -289,6 +232,7 @@
           "aliasColors": {},
           "bars": true,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Watchers operation count. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -322,7 +266,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -363,21 +307,22 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Leaders, Followers & Watchers",
+      "titleSize": "h6"
     },
     {
-      "title": "Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "X-Raft-Term value from the /stats/store endpoint. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -411,7 +356,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -455,6 +400,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "X-Raft-Index value from the /stats/store endpoint. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -488,7 +434,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -529,35 +475,36 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Raft Term & Index",
+      "titleSize": "h6"
     },
     {
-      "title": "New row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of bytes per second etcd leader is sending and etcd followers are receivinb. This value is undefined on single member clusters. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
           "grid": {},
           "id": 3,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "alignAsTable": false,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
           "lines": true,
           "linewidth": 2,
@@ -573,25 +520,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_value_metric_etcd_receiving_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Receiving",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
-              "expr": "avg(rate(firehose_value_metric_etcd_sending_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Bandwidth Rate (5 mins)",
+          "title": "Bandwidth Rate",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -629,20 +576,21 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of requests per second etcd leader is sending and etcd followers are receiving. This value is undefined on single member clusters. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
           "grid": {},
           "id": 4,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "alignAsTable": false,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
+            "max": false,
+            "min": false,
+            "show": false,
             "total": false,
-            "values": true
+            "values": false
           },
           "lines": true,
           "linewidth": 2,
@@ -658,25 +606,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_value_metric_etcd_receiving_request_rate{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Receiving",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
-              "expr": "avg(rate(firehose_value_metric_etcd_sending_request_rate{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(firehose_value_metric_etcd_sending_request_rate{bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Request Rate (5 mins)",
+          "title": "Request Rate",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -711,21 +659,22 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Bandwidth & Request Rates",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Current latency in milliseconds from leader to a specific follower. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -758,7 +707,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -802,6 +751,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of append requests processed and sent. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -833,7 +783,7 @@
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(firehose_value_metric_etcd_sent_append_requests{bosh_deployment=~\"$bosh_deployment\"})",
@@ -841,7 +791,7 @@
               "intervalFactor": 2,
               "legendFormat": "Sent",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -882,13 +832,74 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Latency & Append Requests",
+      "titleSize": "h6"
     }
-  ]
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "cf",
+    "etcd"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": true,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_etcd_is_leader, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "CF: Etcd",
+  "version": 1
 }
