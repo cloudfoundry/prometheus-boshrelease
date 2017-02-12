@@ -60,11 +60,104 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Average Application % CPU Usage.",
-          "editable": true,
-          "error": false,
+          "decimals": 0,
+          "description": "Application Lifecycle Events.",
           "fill": 1,
-          "grid": {},
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.create\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Create",
+              "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.update\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Update",
+              "refId": "B",
+              "step": 4
+            },
+            {
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.delete-request\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Delete",
+              "refId": "C",
+              "step": 4
+            },
+            {
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.restage\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Restage",
+              "refId": "D",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Lifecycle",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Application Health Events.",
+          "fill": 1,
           "id": 1,
           "legend": {
             "alignAsTable": false,
@@ -73,82 +166,7 @@
             "max": false,
             "min": false,
             "rightSide": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "CPU Usage",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Average CPU Usage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
             "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "percent",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "CPU Usage by Application Instance.",
-          "fill": 1,
-          "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
             "total": false,
             "values": false
           },
@@ -166,127 +184,33 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.start\"})",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ instance_index }}",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "CPU Usage by Application Instance",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "percent",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "CPU Usage",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "description": "Average Application Memory Usage.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 2,
-          "legend": {
-            "alignAsTable": false,
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Quota",
-              "bars": false,
-              "legend": false,
-              "lines": true
-            }
-          ],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Start",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.stop\"})",
               "intervalFactor": 2,
-              "legendFormat": "Quota",
+              "legendFormat": "Stop",
               "refId": "B",
               "step": 4
+            },
+            {
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"app.crash\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Crash",
+              "refId": "C",
+              "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Average Memory Usage",
+          "title": "Health",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -300,89 +224,8 @@
             "values": []
           },
           "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
             {
               "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Memory Usage by Application Instance",
-          "fill": 1,
-          "id": 5,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
-              "intervalFactor": 2,
-              "legendFormat": "{{ instance_index }}",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Memory Usage by Application Instance",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -404,7 +247,7 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "Memory Usage",
+      "title": "Dashboard Row",
       "titleSize": "h6"
     },
     {
@@ -413,59 +256,45 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Average Application Disk Allocated.",
-          "editable": true,
-          "error": false,
+          "description": "Application Routes Events.",
           "fill": 1,
-          "grid": {},
           "id": 3,
           "legend": {
-            "alignAsTable": false,
             "avg": false,
             "current": false,
             "max": false,
             "min": false,
-            "rightSide": false,
-            "show": false,
+            "show": true,
             "total": false,
             "values": false
           },
-          "lines": false,
-          "linewidth": 2,
+          "lines": true,
+          "linewidth": 1,
           "links": [],
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Quota",
-              "bars": false,
-              "legend": false,
-              "lines": true
-            }
-          ],
+          "seriesOverrides": [],
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.map-route\"})",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Map",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "hide": false,
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.unmap-route\"})",
               "intervalFactor": 2,
-              "legendFormat": "Quota",
+              "legendFormat": "Unmap",
               "refId": "B",
               "step": 4
             }
@@ -473,9 +302,8 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Average Disk Allocated",
+          "title": "Routes",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -490,7 +318,7 @@
           },
           "yaxes": [
             {
-              "format": "bytes",
+              "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -511,15 +339,16 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Allocated Disk Space  by Application Instance.",
+          "decimals": 0,
+          "description": "Application SSH Events.",
           "fill": 1,
-          "id": 6,
+          "id": 2,
           "legend": {
             "avg": false,
             "current": false,
             "max": false,
             "min": false,
-            "show": false,
+            "show": true,
             "total": false,
             "values": false
           },
@@ -537,18 +366,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
-              "interval": "",
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.ssh-authorized\"})",
               "intervalFactor": 2,
-              "legendFormat": "{{ instance_index }}",
+              "legendFormat": "Authorized",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
+              "expr": "avg(cf_application_events_total{deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\",event_type=\"audit.app.ssh-unauthorized\"})",
               "intervalFactor": 2,
-              "legendFormat": "Quota",
+              "legendFormat": "Unauthorized",
               "refId": "B",
               "step": 4
             }
@@ -556,7 +383,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Allocated Disk Space  by Application Instance",
+          "title": "SSH",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -572,7 +399,7 @@
           },
           "yaxes": [
             {
-              "format": "bytes",
+              "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -594,7 +421,7 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "Disk Allocated",
+      "title": "Dashboard Row",
       "titleSize": "h6"
     }
   ],
@@ -639,9 +466,9 @@
         "refresh": 1,
         "regex": "",
         "sort": 0,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
@@ -659,9 +486,9 @@
         "refresh": 1,
         "regex": "",
         "sort": 0,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
@@ -679,9 +506,9 @@
         "refresh": 1,
         "regex": "",
         "sort": 0,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
@@ -737,6 +564,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Apps: System",
+  "title": "Apps: Events",
   "version": 1
 }
