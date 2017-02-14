@@ -11,168 +11,38 @@
   ],
   "__requires": [
     {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.1.1"
+    },
+    {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
       "version": ""
     },
     {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.2"
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
     }
   ],
-  "id": null,
-  "title": "MySQL: User Statistics",
-  "tags": [
-    "MySQL"
-  ],
-  "style": "dark",
-  "timezone": "browser",
-  "editable": false,
-  "sharedCrosshair": false,
-  "hideControls": true,
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "collapse": false,
-    "enable": true,
-    "notice": false,
-    "now": true,
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "status": "Stable",
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ],
-    "type": "timepicker"
-  },
-  "templating": {
-    "list": [
-      {
-        "allFormat": "glob",
-        "auto": true,
-        "auto_count": 200,
-        "auto_min": "1s",
-        "current": {
-          "text": "auto",
-          "value": "$__auto_interval"
-        },
-        "datasource": "prometheus",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Interval",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "interval",
-        "options": [
-          {
-            "text": "auto",
-            "value": "$__auto_interval",
-            "selected": true
-          },
-          {
-            "text": "1s",
-            "value": "1s",
-            "selected": false
-          },
-          {
-            "text": "5s",
-            "value": "5s",
-            "selected": false
-          },
-          {
-            "text": "1m",
-            "value": "1m",
-            "selected": false
-          },
-          {
-            "text": "5m",
-            "value": "5m",
-            "selected": false
-          },
-          {
-            "text": "1h",
-            "value": "1h",
-            "selected": false
-          },
-          {
-            "text": "6h",
-            "value": "6h",
-            "selected": false
-          },
-          {
-            "text": "1d",
-            "value": "1d",
-            "selected": false
-          }
-        ],
-        "query": "1s,5s,1m,5m,1h,6h,1d",
-        "refresh": 2,
-        "type": "interval"
-      },
-      {
-        "allFormat": "glob",
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Host",
-        "multi": false,
-        "multiFormat": "regex values",
-        "name": "host",
-        "options": [],
-        "query": "label_values(mysql_info_schema_user_statistics_bytes_sent_total, instance)",
-        "refresh": 1,
-        "refresh_on_load": false,
-        "regex": "",
-        "type": "query",
-        "sort": 0,
-        "allValue": null,
-        "tagsQuery": null,
-        "tagValuesQuery": null
-      }
-    ]
-  },
   "annotations": {
     "list": []
   },
-  "refresh": "30s",
-  "schemaVersion": 13,
-  "version": 1,
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": true,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -187,10 +57,11 @@
       "type": "dashboards"
     }
   ],
-  "gnetId": null,
+  "refresh": "30s",
   "rows": [
     {
-      "title": "Connections",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -240,6 +111,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by Connections",
@@ -252,9 +124,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -272,8 +144,7 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         },
         {
           "aliasColors": {},
@@ -323,6 +194,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by Traffic",
@@ -335,9 +207,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -355,20 +227,19 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "250px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Connections",
+      "titleSize": "h6"
     },
     {
-      "title": "Rows",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -418,6 +289,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by Rows Fetched/Read",
@@ -430,9 +302,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -450,8 +322,7 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         },
         {
           "aliasColors": {},
@@ -501,6 +372,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by Rows Updated",
@@ -513,9 +385,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -533,20 +405,19 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "250px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Rows",
+      "titleSize": "h6"
     },
     {
-      "title": "Busy",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -596,6 +467,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by Busy Time",
@@ -608,9 +480,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -628,8 +500,7 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         },
         {
           "aliasColors": {},
@@ -679,6 +550,7 @@
               "step": 20
             }
           ],
+          "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Top Users by CPU Time",
@@ -691,9 +563,9 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
-            "show": true,
             "mode": "time",
             "name": null,
+            "show": true,
             "values": []
           },
           "yaxes": [
@@ -711,20 +583,19 @@
               "min": 0,
               "show": false
             }
-          ],
-          "thresholds": []
+          ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "250px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Busy",
+      "titleSize": "h6"
     },
     {
-      "title": "Text",
+      "collapse": false,
+      "height": "50px",
       "panels": [
         {
           "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/user_stats.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/user-statistics/) and require `userstat` variable turned on.",
@@ -742,13 +613,145 @@
           "type": "text"
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "50px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Text",
+      "titleSize": "h6"
     }
-  ]
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "MySQL"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "selected": true,
+          "text": "auto",
+          "value": "$__auto_interval"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interval",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval"
+          },
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allFormat": "glob",
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Host",
+        "multi": false,
+        "multiFormat": "regex values",
+        "name": "host",
+        "options": [],
+        "query": "label_values(mysql_info_schema_user_statistics_bytes_sent_total, instance)",
+        "refresh": 1,
+        "refresh_on_load": false,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "collapse": false,
+    "enable": true,
+    "notice": false,
+    "now": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "status": "Stable",
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ],
+    "type": "timepicker"
+  },
+  "timezone": "browser",
+  "title": "MySQL: User Statistics",
+  "version": 1
 }
