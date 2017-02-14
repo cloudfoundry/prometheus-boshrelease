@@ -44,11 +44,19 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "System"
+        "bosh"
       ],
       "targetBlank": false,
-      "title": "System",
+      "title": "BOSH",
       "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "BOSH Docs",
+      "type": "link",
+      "url": "http://bosh.io/docs"
     }
   ],
   "refresh": "30s",
@@ -846,7 +854,7 @@
   "schemaVersion": 14,
   "style": "dark",
   "tags": [
-    "System"
+    "bosh"
   ],
   "templating": {
     "list": [
@@ -913,7 +921,46 @@
         "type": "interval"
       },
       {
-        "allFormat": "glob",
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
@@ -921,17 +968,15 @@
         "includeAll": false,
         "label": "Host",
         "multi": false,
-        "multiFormat": "regex values",
         "name": "host",
         "options": [],
-        "query": "label_values(node_disk_reads_completed, instance)",
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_ip)",
         "refresh": 1,
-        "refresh_on_load": false,
-        "regex": "/^(.*):[0-9]+/",
+        "regex": "",
         "sort": 0,
-        "tagValuesQuery": "instance",
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": "up",
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
@@ -996,6 +1041,6 @@
     "type": "timepicker"
   },
   "timezone": "browser",
-  "title": "System: Disk Performance",
-  "version": 1
+  "title": "BOSH: System Disk Performance",
+  "version": 11
 }
