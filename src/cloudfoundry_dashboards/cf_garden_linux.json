@@ -98,7 +98,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\", bosh_job_id=~\"$bosh_job_id\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -186,7 +186,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_garden_linux_loop_devices{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_garden_linux_loop_devices{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\", bosh_job_id=~\"$bosh_job_id\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -274,7 +274,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_garden_linux_depot_dirs{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_garden_linux_depot_dirs{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\", bosh_job_id=~\"$bosh_job_id\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -352,6 +352,46 @@
         "tagValuesQuery": null,
         "tags": [],
         "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Instance",
+        "multi": false,
+        "name": "bosh_job_id",
+        "options": [],
+        "query": "label_values(firehose_value_metric_garden_linux_backing_stores{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_id)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       }
