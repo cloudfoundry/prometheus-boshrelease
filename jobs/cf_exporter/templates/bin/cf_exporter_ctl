@@ -46,6 +46,9 @@ case $1 in
       <% if_p('cf_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
       <% end %> \
+      <% if_p('cf_exporter.metrics.environment') do |environment| %> \
+      -metrics.environment="<%= environment %>" \
+      <% end %> \
       <% if_p('cf_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
       -skip-ssl-verify="<%= skip_ssl_verify %>" \
       <% end %> \
