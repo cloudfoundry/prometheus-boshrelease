@@ -33,7 +33,9 @@ case $1 in
       <% if_p('cf_exporter.cf.client_secret') do |client_secret| %> \
       -cf.client-secret="<%= client_secret %>" \
       <% end %> \
-      -cf.deployment-name="<%= p('cf_exporter.cf.deployment_name', spec.name) %>" \
+      <% if_p('cf_exporter.cf.deployment_name') do |deployment_name| %> \
+      -cf.deployment-name="<%= deployment_name %>" \
+      <% end %> \
       <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
       -filter.collectors="<%= collectors %>" \
       <% end %> \
