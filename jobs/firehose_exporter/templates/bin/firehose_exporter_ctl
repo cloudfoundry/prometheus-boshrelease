@@ -54,6 +54,9 @@ case $1 in
       <% if_p('firehose_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
       <% end %> \
+      <% if_p('firehose_exporter.metrics.environment') do |environment| %> \
+      -metrics.environment="<%= environment %>" \
+      <% end %> \
       <% if_p('firehose_exporter.metrics.cleanup_interval') do |cleanup_interval| %> \
       -metrics.cleanup-interval="<%= cleanup_interval %>" \
       <% end %> \
