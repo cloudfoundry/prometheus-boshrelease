@@ -33,9 +33,7 @@ case $1 in
       <% if_p('cf_exporter.cf.client_secret') do |client_secret| %> \
       -cf.client-secret="<%= client_secret %>" \
       <% end %> \
-      <% if_p('cf_exporter.cf.deployment_name') do |deployment_name| %> \
-      -cf.deployment-name="<%= deployment_name %>" \
-      <% end %> \
+      -cf.deployment-name="<%= p('cf_exporter.cf.deployment_name') %>" \
       <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
       -filter.collectors="<%= collectors %>" \
       <% end %> \
@@ -48,9 +46,7 @@ case $1 in
       <% if_p('cf_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
       <% end %> \
-      <% if_p('cf_exporter.metrics.environment') do |environment| %> \
-      -metrics.environment="<%= environment %>" \
-      <% end %> \
+      -metrics.environment="<%= p('cf_exporter.metrics.environment') %>" \
       <% if_p('cf_exporter.skip_ssl_verify') do |skip_ssl_verify| %> \
       -skip-ssl-verify="<%= skip_ssl_verify %>" \
       <% end %> \
