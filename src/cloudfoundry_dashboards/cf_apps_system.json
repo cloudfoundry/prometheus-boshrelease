@@ -91,7 +91,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "CPU Usage",
@@ -166,7 +166,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
@@ -265,7 +265,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -273,7 +273,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -348,14 +348,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "expr": "avg(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -454,7 +454,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -462,7 +462,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -537,7 +537,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "expr": "avg(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
@@ -545,7 +545,7 @@
               "step": 4
             },
             {
-              "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -611,11 +611,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(cf_application_info, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_application_info, deployment)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -635,7 +655,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\"}, organization_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -655,7 +675,7 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -675,7 +695,7 @@
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -695,7 +715,7 @@
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
         "refresh": 1,
         "regex": "",
         "sort": 0,

@@ -89,7 +89,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
@@ -163,7 +163,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_id)",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_id }}",
@@ -252,7 +252,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(method)",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(method)",
               "intervalFactor": 2,
               "legendFormat": "{{ method }}",
               "refId": "A",
@@ -328,7 +328,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(status_code)",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(status_code)",
               "intervalFactor": 2,
               "legendFormat": "{{ status_code }}",
               "refId": "A",
@@ -416,7 +416,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(scheme)",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(scheme)",
               "intervalFactor": 2,
               "legendFormat": "{{ scheme }}",
               "refId": "A",
@@ -492,7 +492,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(host)",
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(host)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ host }}",
@@ -580,7 +580,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes_sum{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_response_size_bytes_count{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_response_size_bytes_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
               "intervalFactor": 2,
               "legendFormat": "Size",
               "refId": "A",
@@ -655,7 +655,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_http_start_stop_response_size_bytes{bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
+              "expr": "avg(firehose_http_start_stop_response_size_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ quantile }}",
@@ -721,11 +721,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(cf_application_info, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_application_info, deployment)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -745,7 +765,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\"}, organization_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -765,7 +785,7 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -785,7 +805,7 @@
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -805,7 +825,7 @@
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
         "refresh": 1,
         "regex": "",
         "sort": 0,
