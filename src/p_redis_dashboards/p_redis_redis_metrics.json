@@ -88,7 +88,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_num_cpus{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "CPUs",
@@ -165,7 +165,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_num_go_routines{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_num_go_routines{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Go Routines",
@@ -252,7 +252,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Memory",
@@ -330,7 +330,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated_stack{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Memory",
@@ -420,7 +420,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Main Heap Memory",
@@ -498,7 +498,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_last_gc_pause_time_ns{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Duration",
@@ -587,7 +587,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_mallocs{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_mallocs{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "# of Memory Allocations",
@@ -664,7 +664,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_frees{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "expr": "avg(firehose_value_metric_p_redis_memory_stats_num_frees{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "# of Memory Deallocations",
@@ -732,11 +732,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_p_redis_num_cpus, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_p_redis_num_cpus, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_p_redis_num_cpus{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -756,7 +776,7 @@
         "multi": false,
         "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(firehose_value_metric_p_redis_num_cpus{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "query": "label_values(firehose_value_metric_p_redis_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -776,7 +796,7 @@
         "multi": false,
         "name": "host",
         "options": [],
-        "query": "label_values(firehose_value_metric_p_redis_num_cpus{bosh_deployment=~\"$bosh_deployment\", bosh_job_name=~\"$bosh_job_name\"}, bosh_job_ip)",
+        "query": "label_values(firehose_value_metric_p_redis_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\", bosh_job_name=~\"$bosh_job_name\"}, bosh_job_ip)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
