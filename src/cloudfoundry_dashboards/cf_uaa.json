@@ -97,7 +97,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_not_found_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_not_found_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "User Not Found",
               "refId": "A",
@@ -174,7 +174,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_principal_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_principal_authentication_failure_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Non-user Authentication Attempts",
               "refId": "A",
@@ -263,7 +263,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Successful User Authentications",
@@ -341,7 +341,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Failed User Authentications",
               "refId": "A",
@@ -427,7 +427,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_client_authentication_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_client_authentication_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Successful Client Authentications",
               "refId": "A",
@@ -500,7 +500,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_client_authentication_failure_count{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_client_authentication_failure_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Failed Client Authentications",
               "refId": "A",
@@ -588,7 +588,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_changes{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_changes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Successful Password Changes",
               "refId": "A",
@@ -665,7 +665,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_failures{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_password_failures{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Failed Password Changes",
               "refId": "A",
@@ -732,11 +732,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_uaa_audit_service_user_authentication_count, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_uaa_audit_service_user_authentication_count, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_uaa_audit_service_user_authentication_count{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

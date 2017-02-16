@@ -101,7 +101,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_instances{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+              "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -109,7 +109,7 @@
               "step": 10
             },
             {
-              "expr": "avg(cf_organization_total_app_instances_quota{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
+              "expr": "avg(cf_organization_total_app_instances_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -180,7 +180,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, state)) by(state) ",
+              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, state)) by(state) ",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ state }}",
@@ -236,14 +236,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_memory_mb{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+              "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "avg(cf_organization_total_memory_mb_quota{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
+              "expr": "avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
@@ -318,14 +318,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_disk_quota_mb{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+              "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "avg(cf_organization_total_memory_mb_quota{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
+              "expr": "avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
@@ -407,7 +407,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name)  cf_stack_info",
+              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ stack_name }}",
@@ -447,7 +447,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_info{deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, buildpack)) by(buildpack)",
+              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, buildpack)) by(buildpack)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ buildpack }}",
@@ -482,11 +482,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(cf_organization_info, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_organization_info, deployment)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\"}, deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -506,7 +526,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_organization_info{deployment=~\"$bosh_deployment\"}, organization_name)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

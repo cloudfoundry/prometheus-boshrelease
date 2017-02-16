@@ -98,7 +98,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_total_requests_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Total",
@@ -106,7 +106,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_rejected_requests_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_rejected_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Rejected",
               "refId": "B",
@@ -183,28 +183,28 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_2_xx_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_responses_2_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "2xx",
               "refId": "B",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_3_xx_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_responses_3_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "3xx",
               "refId": "C",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_4_xx_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_responses_4_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "4xx",
               "refId": "D",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_5_xx_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_gorouter_responses_5_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "5xx",
@@ -294,7 +294,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_gorouter_latency{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_gorouter_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -371,7 +371,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_gorouter_route_lookup_time{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_gorouter_route_lookup_time{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -461,7 +461,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_gorouter_total_routes{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_gorouter_total_routes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Routes",
@@ -540,7 +540,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_counter_event_gorouter_registry_message_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_counter_event_gorouter_registry_message_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -608,11 +608,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_gorouter_total_requests_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_gorouter_total_requests_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

@@ -80,7 +80,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Whether the â€˜cf-appsâ€™ domain is up-to-date, so that CF apps from CC have been synchronized with DesiredLRPs for Diego to run. Emitted every 30 seconds.",
+          "description": "Whether the cf-app domain is up-to-date, so that CF apps from CC have been synchronized with DesiredLRPs for Diego to run. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "format": "none",
@@ -128,7 +128,7 @@
           },
           "targets": [
             {
-              "expr": "min(firehose_value_metric_bbs_domain_cf_apps{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -170,7 +170,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Whether the â€˜cf-tasksâ€™ domain is up-to-date, so that CF tasks from CC have been synchronized with tasks for Diego to run. Emitted every 30 seconds.",
+          "description": "Whether the cf-tasksdomain is up-to-date, so that CF tasks from CC have been synchronized with tasks for Diego to run. Emitted every 30 seconds.",
           "editable": true,
           "error": false,
           "format": "none",
@@ -218,7 +218,7 @@
           },
           "targets": [
             {
-              "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -297,7 +297,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max(firehose_value_metric_rep_unhealthy_cell{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "max(firehose_value_metric_rep_unhealthy_cell{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -367,11 +367,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_unhealthy_cell, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_rep_unhealthy_cell, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_rep_unhealthy_cell{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

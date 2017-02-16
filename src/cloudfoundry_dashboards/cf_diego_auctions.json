@@ -97,7 +97,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Failed LPRs",
               "metric": "",
@@ -105,7 +105,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Started LPRs",
@@ -113,14 +113,14 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Failed Tasks",
               "refId": "C",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Started Tasks",
               "refId": "D",
@@ -196,7 +196,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "LRPs",
@@ -204,7 +204,7 @@
               "step": 4
             },
             {
-              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+              "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
               "intervalFactor": 2,
               "legendFormat": "Tasks",
               "refId": "B",
@@ -293,7 +293,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -370,7 +370,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_auctioneer_request_latency{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_auctioneer_request_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Latency",
               "refId": "A",
@@ -437,11 +437,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

@@ -96,7 +96,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_num_cpus{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -172,7 +172,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -258,7 +258,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "metric": "",
@@ -335,7 +335,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -425,7 +425,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "metric": "",
@@ -502,7 +502,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -590,7 +590,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_mallocs{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_mallocs{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
               "refId": "A",
@@ -666,7 +666,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_frees{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_frees{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -734,11 +734,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -752,7 +772,6 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
           "text": "auctioneer",
           "value": "auctioneer"
         },

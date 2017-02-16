@@ -128,7 +128,7 @@
           },
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_etcd_is_leader{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Leaders",
               "refId": "A",
@@ -207,7 +207,7 @@
           },
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_etcd_followers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_etcd_followers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Followers",
               "refId": "A",
@@ -261,7 +261,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_watchers{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_watchers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -351,7 +351,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_raft_term{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_raft_term{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -429,7 +429,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_raft_index{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_raft_index{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -520,14 +520,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Receiving",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending",
@@ -606,14 +606,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Receiving",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_sending_request_rate{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending",
@@ -702,7 +702,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_latency{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
@@ -779,14 +779,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_received_append_requests{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_sent_append_requests{bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "avg(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sent",
@@ -854,11 +854,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_etcd_is_leader, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_etcd_is_leader, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_etcd_is_leader{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

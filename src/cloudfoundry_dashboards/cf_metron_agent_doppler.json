@@ -98,7 +98,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_sent_message_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "UDP",
@@ -106,7 +106,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_sent_message_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "TCP",
@@ -114,7 +114,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_sent_message_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "TLS",
@@ -205,7 +205,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_sent_byte_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_sent_byte_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "UDP",
@@ -213,14 +213,14 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_sent_byte_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_sent_byte_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "TCP",
               "refId": "B",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_sent_byte_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_sent_byte_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "TLS",
               "refId": "C",
@@ -310,21 +310,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_send_error_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_udp_send_error_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "UDP",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_send_error_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tcp_send_error_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "TCP",
               "refId": "B",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_send_error_count_total{bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_counter_event_metron_agent_tls_send_error_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "TLS",
               "refId": "C",
@@ -391,11 +391,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
-        "multi": true,
+        "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
