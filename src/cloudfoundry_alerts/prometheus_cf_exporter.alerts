@@ -6,8 +6,20 @@ ALERT CFExporterApplicationsScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: applications scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: Applications scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Applications metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterApplicationsScrapeTooOld
+  IF (time() - max(cf_last_applications_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: Last Applications scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Applications metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterApplicationEventsScrapeError
@@ -18,8 +30,20 @@ ALERT CFExporterApplicationEventsScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: application events scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: Application Events scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Application Events metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterApplicationEventsScrapeTooOld
+  IF (time() - max(cf_last_application_events_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Application Events scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Application Events metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterOrganizationsScrapeError
@@ -30,8 +54,20 @@ ALERT CFExporterOrganizationsScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: organizations scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: organizations scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Organizations metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterOrganizationsScrapeTooOld
+  IF (time() - max(cf_last_organizations_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Organizations scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Organizations metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterRoutesScrapeError
@@ -42,8 +78,20 @@ ALERT CFExporterRoutesScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: routes scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: routes scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Routes metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterRoutesScrapeTooOld
+  IF (time() - max(cf_last_routes_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Routes scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Routes metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterServicesScrapeError
@@ -54,8 +102,20 @@ ALERT CFExporterServicesScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: services scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: services scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Services metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterServicesScrapeTooOld
+  IF (time() - max(cf_last_services_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Services scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Services metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterServiceInstancesScrapeError
@@ -66,8 +126,20 @@ ALERT CFExporterServiceInstancesScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: service instances scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: service instances scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Service Instances metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterServiceInstancesScrapeTooOld
+  IF (time() - max(cf_last_service_instances_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Service Instances scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Service Instances metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterSpacesScrapeError
@@ -78,8 +150,20 @@ ALERT CFExporterSpacesScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: spaces scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: spaces scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Spaces metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterSpacesScrapeTooOld
+  IF (time() - max(cf_last_spaces_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Spaces scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Spaces metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterSecurityGroupsScrapeError
@@ -90,8 +174,20 @@ ALERT CFExporterSecurityGroupsScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: security groups scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: security groups scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Security Groups metrics during the last 10 minutes",
+  }
+
+ALERT CFExporterSecurityGroupsScrapeTooOld
+  IF (time() - max(cf_last_security_groups_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Security Groups scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Security Groups metrics was more than 10 minutes ago",
   }
 
 ALERT CFExporterStacksScrapeError
@@ -102,6 +198,19 @@ ALERT CFExporterStacksScrapeError
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environmen}}`: stacks scrape error",
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: stacks scrape error",
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Stacks metrics during the last 10 minutes",
   }
+
+ALERT CFExporterStacksScrapeTooOld
+  IF (time() - max(cf_last_stacks_scrape_timestamp) by(environment, deployment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "cf-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}`: last Stacks scrape > 10 minutes ago",
+    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Stacks metrics was more than 10 minutes ago",
+  }
+
