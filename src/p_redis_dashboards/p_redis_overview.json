@@ -560,7 +560,7 @@
               "intervalFactor": 2,
               "legendFormat": "Hit Rate",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -635,28 +635,28 @@
               "intervalFactor": 2,
               "legendFormat": "Hits",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(firehose_value_metric_p_redis_p_redis_info_stats_keyspace_misses{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "intervalFactor": 2,
               "legendFormat": "Misses",
               "refId": "B",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(firehose_value_metric_p_redis_p_redis_info_stats_expired_keys{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "intervalFactor": 2,
               "legendFormat": "Expired",
               "refId": "C",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(firehose_value_metric_p_redis_p_redis_info_stats_evicted_keys{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
               "intervalFactor": 2,
               "legendFormat": "Evicted",
               "refId": "D",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -741,7 +741,7 @@
               "intervalFactor": 2,
               "legendFormat": "Ops/sec",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -813,7 +813,7 @@
               "intervalFactor": 2,
               "legendFormat": "Input",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(firehose_value_metric_p_redis_p_redis_info_stats_instantaneous_output_kbps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
@@ -821,7 +821,7 @@
               "intervalFactor": 2,
               "legendFormat": "Output",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -906,7 +906,7 @@
               "intervalFactor": 2,
               "legendFormat": "Changes",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -978,7 +978,7 @@
               "intervalFactor": 2,
               "legendFormat": "Clients",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -1014,6 +1014,170 @@
               "max": null,
               "min": null,
               "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 13,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_p_redis_p_redis_info_memory_mem_fragmentation_ratio{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Memory Fragmentation",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Memory Fragmentation Ratio",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "",
+              "logBase": 1,
+              "max": "100",
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 14,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_p_redis_p_redis_info_persistence_aof_last_rewrite_time_sec{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "AOF rewrite",
+              "refId": "A",
+              "step": 4
+            },
+            {
+              "expr": "avg(firehose_value_metric_p_redis_p_redis_info_persistence_rdb_last_bgsave_time_sec{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"$bosh_job_name\", bosh_job_ip=~\"$host\"})",
+              "intervalFactor": 2,
+              "legendFormat": "RDB bgsave",
+              "refId": "B",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Persistence Times",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
             }
           ]
         }
