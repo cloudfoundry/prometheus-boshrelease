@@ -1,0 +1,35 @@
+ALERT FirehosExporterSlowConsumer
+  IF max(firehose_slow_consumer_alert) by(environment, instance) != 0
+  FOR 5m
+  LABELS {
+    service = "firehose-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}`: slow consumer alert",
+    description = "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` is reporting a slow consumer alert during the last 5 minutes, consider scaling up the number of `firehose_exporter` instances",
+  }
+
+ALERT FirehoseExporterLastEnvelopeReceivedTooOld
+  IF (time() - max(firehose_last_envelope_received_timestamp) by(environment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "firehose-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}`: Last Envelope received > 10 minutes ago",
+    description = "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last Envelope received was more than 10 minutes ago",
+  }
+
+ALERT FirehoseExporterLastMetricReceivedTooOld
+  IF (time() - max(firehose_last_metric_received_timestamp) by(environment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "firehose-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}`: Last Metric received > 10 minutes ago",
+    description = "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last Metric received was more than 10 minutes ago",
+  }
