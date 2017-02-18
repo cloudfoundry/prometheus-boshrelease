@@ -1,0 +1,11 @@
+ALERT RabbitMQServerDown
+  IF min(rabbitmq_up) by(instance) != 1
+  FOR 5m
+  LABELS {
+    service = "rabbitmq",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Rabbitmq (`{{$labels.instance}}}`): RabbitMQ Server instance is down",
+    description = "The RabbitMQ Server instance at `{{$labels.instance}}}` has been down for the last 5 minutes",
+  }
