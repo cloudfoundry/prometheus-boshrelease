@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/memcached_exporter
+LOG_DIR=/var/vcap/sys/log/memcached_exporter
+TMP_DIR=/var/vcap/sys/tmp/memcached_exporter
+STORE_DIR=/var/vcap/store/memcached_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/memcached_exporter.pid
+
+source /var/vcap/packages/memcached_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/memcached_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "memcached_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec memcached_exporter \
+      -memcached.address="<%= p('memcached_exporter.memcached.address') %>" \
+      <% if_p('memcached_exporter.memcached.timeout') do |timeout| %> \
+      -memcached.timeout="<%= timeout %>" \
+      <% end %> \
+      <% if_p('memcached.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('memcached_exporter.web.port') %>" \
+      <% if_p('memcached_exporter.web.metrics_path') do |metrics_path| %> \
+      -web.metrics-path="<%= metrics_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/memcached_exporter.stdout.log \
+      2>> ${LOG_DIR}/memcached_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
