@@ -62,6 +62,7 @@ case $1 in
       <% if_p('bosh_exporter.metrics.namespace') do |namespace| %> \
       -metrics.namespace="<%= namespace %>" \
       <% end %> \
+      -metrics.environment="<%= p('bosh_exporter.metrics.environment') %>" \
       -sd.filename="${STORE_DIR}/bosh_target_groups.json" \
       <% if_p('bosh_exporter.sd.processes_regexp') do |processes_regexp| %> \
       -sd.processes_regexp="<%= namespace %>" \
