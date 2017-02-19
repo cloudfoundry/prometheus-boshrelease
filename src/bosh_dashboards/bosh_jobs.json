@@ -11,10 +11,10 @@
   ],
   "__requires": [
     {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.1.1"
     },
     {
       "type": "panel",
@@ -23,103 +23,26 @@
       "version": ""
     },
     {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.2"
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
     }
   ],
-  "id": null,
-  "title": "BOSH: Jobs",
-  "tags": [
-    "bosh"
-  ],
-  "style": "dark",
-  "timezone": "browser",
-  "editable": false,
-  "sharedCrosshair": false,
-  "hideControls": true,
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Deployment",
-        "multi": true,
-        "name": "bosh_deployment",
-        "options": [],
-        "query": "label_values(bosh_job_healthy, bosh_deployment)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Job",
-        "multi": false,
-        "name": "bosh_job_name",
-        "options": [],
-        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query"
-      }
-    ]
-  },
   "annotations": {
     "list": []
   },
-  "refresh": "30s",
-  "schemaVersion": 13,
-  "version": 1,
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": true,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -142,10 +65,11 @@
       "url": "http://bosh.io/docs"
     }
   ],
-  "gnetId": null,
+  "refresh": "30s",
   "rows": [
     {
-      "title": "Health, Memory & Swap",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "cacheTimeout": null,
@@ -210,7 +134,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"})",
+              "expr": "min(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"})",
               "interval": "1m",
               "intervalFactor": 2,
               "refId": "A",
@@ -270,11 +194,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_mem_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_mem_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [
@@ -361,11 +285,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_swap_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_swap_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [
@@ -421,16 +345,16 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Health, Memory & Swap",
+      "titleSize": "h6"
     },
     {
-      "title": "CPU Usage",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -464,12 +388,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_cpu_sys{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_cpu_sys{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -541,11 +465,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_cpu_user{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_cpu_user{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -617,11 +541,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_cpu_wait{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_cpu_wait{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -662,16 +586,16 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "CPU Usage",
+      "titleSize": "h6"
     },
     {
-      "title": "Load",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -705,11 +629,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_load_avg01{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_load_avg01{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -781,11 +705,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_load_avg05{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_load_avg05{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -857,11 +781,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_load_avg15{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_load_avg15{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -902,16 +826,16 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Load",
+      "titleSize": "h6"
     },
     {
-      "title": "Disk Usage",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
@@ -945,11 +869,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_system_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_system_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [
@@ -1041,11 +965,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_ephemeral_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_ephemeral_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [
@@ -1132,11 +1056,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bosh_job_persistent_disk_percent{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(bosh_job_persistent_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 20
+              "step": 10
             }
           ],
           "thresholds": [
@@ -1192,13 +1116,133 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Disk Usage",
+      "titleSize": "h6"
     }
-  ]
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "bosh"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\"}, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name!~\"^compilation.*\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Index",
+        "multi": false,
+        "name": "bosh_job_index",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_index)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "BOSH: Jobs",
+  "version": 1
 }
