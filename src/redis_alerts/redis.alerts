@@ -1,0 +1,59 @@
+ALERT RedisNoClientsConnected
+  IF avg(redis_connected_clients) by(addr) < 1
+  FOR 30m
+  LABELS {
+    service = "redis",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Redis (`{{$labels.addr}}: instance has NO clients connected",
+    description = "The Redis instance at `{{$labels.addr}}` had NO clients connected during the last 30 minutes",
+  }
+
+ALERT RedisRejectedConnections
+  IF avg(redis_rejected_connections_total) by(addr) > 0
+  FOR 30m
+  LABELS {
+    service = "redis",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Redis (`{{$labels.addr}}`): instance may be hitting maxclient limit",
+    description = "The Redis instance at `{{$labels.addr}}` had rejected connections during the last 30 minutes, so it may be hitting the maxclient limit",
+  }
+
+ALERT RedisHighMemoryFragmentation
+  IF avg(redis_memory_fragmentation_ratio) by(addr) > 30
+  FOR 30m
+  LABELS {
+    service = "redis",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Redis (`{{$labels.addr}}`): instance has high memory fragmentation",
+    description = "The Redis instance at `{{$labels.addr}}` had a memory fragmentation of {{$value}}% during the last 30 minutes, this may lead to performance degradation",
+  }
+
+ALERT RedisHighAOFRewriteTime
+  IF avg(redis_aof_last_rewrite_duration_sec) by(addr) > 600
+  FOR 30m
+  LABELS {
+    service = "redis",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Redis (`{{$labels.addr}}`): instance AOF rewrite took too much time",
+    description = "The Redis instance at `{{$labels.addr}}` took {{$value}} seconds to perform an AOF rewrite",
+  }
+
+ALERT RedisHighRDBBgSaveTime
+  IF avg(redis_rdb_last_bgsave_duration_sec) by(addr) > 600
+  FOR 30m
+  LABELS {
+    service = "redis",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Redis (`{{$labels.addr}}`): instance RDB bgsave took too much time",
+    description = "The Redis instance at `{{$labels.addr}}` took {{$value}} seconds to perform a RDB bgsave",
+  }
