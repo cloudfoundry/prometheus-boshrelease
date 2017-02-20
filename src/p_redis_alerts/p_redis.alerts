@@ -6,7 +6,7 @@ ALERT PRedisNoClientsConnected
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis for PCF (`{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}`): instance has NO clients connected",
+    summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has NO clients connected",
     description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had NO clients connected during the last 30 minutes",
   }
 
@@ -18,7 +18,7 @@ ALERT PRedisRejectedConnections
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis for PCF (`{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}`): instance may be hitting maxclient limit",
+    summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` may be hitting maxclient limit",
     description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had rejected connections during the last 30 minutes, so it may be hitting the maxclient limit",
   }
 
@@ -30,7 +30,7 @@ ALERT PRedisHighMemoryFragmentation
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis for PCF (`{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}`): instance has high memory fragmentation",
+    summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has high memory fragmentation",
     description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had a memory fragmentation of {{$value}}% during the last 30 minutes, this may lead to performance degradation",
   }
 
@@ -42,7 +42,7 @@ ALERT PRedisHighAOFRewriteTime
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis for PCF (`{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}`): instance AOF rewrite took too much time",
+    summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` AOF rewrite took too much time",
     description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{$value}} seconds to perform an AOF rewrite",
   }
 
@@ -54,6 +54,6 @@ ALERT PRedisHighRDBBgSaveTime
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis for PCF (`{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}`): instance RDB bgsave took too much time",
+    summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` RDB bgsave took too much time",
     description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{$value}} seconds to perform a RDB bgsave",
   }

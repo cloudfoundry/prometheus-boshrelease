@@ -6,7 +6,7 @@ ALERT RedisNoClientsConnected
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis (`{{$labels.addr}}: instance has NO clients connected",
+    summary = "Redis instance `{{$labels.addr}} has NO clients connected",
     description = "The Redis instance at `{{$labels.addr}}` had NO clients connected during the last 30 minutes",
   }
 
@@ -18,7 +18,7 @@ ALERT RedisRejectedConnections
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis (`{{$labels.addr}}`): instance may be hitting maxclient limit",
+    summary = "Redis instance `{{$labels.addr}}` may be hitting maxclient limit",
     description = "The Redis instance at `{{$labels.addr}}` had rejected connections during the last 30 minutes, so it may be hitting the maxclient limit",
   }
 
@@ -30,7 +30,7 @@ ALERT RedisHighMemoryFragmentation
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis (`{{$labels.addr}}`): instance has high memory fragmentation",
+    summary = "Redis instance `{{$labels.addr}}` has high memory fragmentation",
     description = "The Redis instance at `{{$labels.addr}}` had a memory fragmentation of {{$value}}% during the last 30 minutes, this may lead to performance degradation",
   }
 
@@ -42,7 +42,7 @@ ALERT RedisHighAOFRewriteTime
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis (`{{$labels.addr}}`): instance AOF rewrite took too much time",
+    summary = "Redis instance `{{$labels.addr}}` AOF rewrite took too much time",
     description = "The Redis instance at `{{$labels.addr}}` took {{$value}} seconds to perform an AOF rewrite",
   }
 
@@ -54,6 +54,6 @@ ALERT RedisHighRDBBgSaveTime
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Redis (`{{$labels.addr}}`): instance RDB bgsave took too much time",
+    summary = "Redis instance `{{$labels.addr}}` RDB bgsave took too much time",
     description = "The Redis instance at `{{$labels.addr}}` took {{$value}} seconds to perform a RDB bgsave",
   }
