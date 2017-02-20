@@ -1,15 +1,23 @@
-ALERT BOSHProcessUnhealthy
-  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name, instance) < 1
+ALERT BOSHJobProcessUnhealthy
+  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
   FOR 5m
+  LABELS {
+    service = "bosh-job-process",
+    severity = "warning",
+  }
   ANNOTATIONS {
-    summary = "BOSH: A job process is unhealthy",
-    description = "BOSH process `{{$labels.bosh_job_process_name}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is being reported unhealthy",
+    summary = "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}`: is unhealthy",
+    description = "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` is being reported unhealthy",
   }
 
-ALERT BOSHProcessExtentedUnhealthy
-  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name, instance) < 1
+ALERT BOSHJobProcessExtentedUnhealthy
+  IF max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
   FOR 30m
+  LABELS {
+    service = "bosh-job-process",
+    severity = "critical",
+  }
   ANNOTATIONS {
-    summary = "BOSH: A job process has been unhealthy for a long time",
-    description = "BOSH process `{{$labels.bosh_job_process_name}}` from job `{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been reported unhealthy for more than 30 minutes",
+    summary = "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}`: has been unhealthy for a long time",
+    description = "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` has been reported unhealthy for more than 30 minutes",
   }
