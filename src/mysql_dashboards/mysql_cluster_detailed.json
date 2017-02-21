@@ -1,0 +1,1275 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": false,
+  "id": 21,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": true,
+      "title": "MySQL detailed",
+      "type": "link",
+      "url": "https://elpaaso-prometheus-grafana.cfy-api.dev.paascfy.s0.p.fti.net/dashboard/db/mkt-mysql-by-bosh-deployment"
+    },
+    {
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "System overview",
+      "type": "link",
+      "url": "https://elpaaso-prometheus-grafana.cfy-api.dev.paascfy.s0.p.fti.net/dashboard/db/system-overview-corrected"
+    },
+    {
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Disk Space",
+      "type": "link",
+      "url": "https://elpaaso-prometheus-grafana.cfy-api.dev.paascfy.s0.p.fti.net/dashboard/db/system-disk-space-corrected"
+    },
+    {
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Disk Performance",
+      "type": "link",
+      "url": "https://elpaaso-prometheus-grafana.cfy-api.dev.paascfy.s0.p.fti.net/dashboard/db/system-disk-performance-corrected"
+    }
+  ],
+  "refresh": false,
+  "rows": [
+    {
+      "collapse": false,
+      "height": "50",
+      "panels": [
+        {
+          "content": "<h1 style=\"padding:10px;border:2px solid white;font-style: normal;\"><center>MySQL statistics</center></h1>",
+          "editable": true,
+          "error": false,
+          "height": "50px",
+          "id": 9,
+          "links": [],
+          "minSpan": 1,
+          "mode": "html",
+          "repeat": "interval",
+          "scopedVars": {
+            "interval": {
+              "selected": true,
+              "text": "5s",
+              "value": "5s"
+            }
+          },
+          "span": 12,
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "MySQL global stats",
+      "titleSize": "h1"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 5,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Max Connections",
+              "fill": 0
+            }
+          ],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_connections{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_connections{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Connections",
+              "refId": "A",
+              "step": 1
+            },
+            {
+              "expr": "mysql_global_status_max_used_connections{instance=~\"($host)(:[0-9]+)?\"}",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Max Used Connections",
+              "metric": "",
+              "refId": "B",
+              "step": 1
+            },
+            {
+              "expr": "mysql_global_variables_max_connections{instance=~\"($host)(:[0-9]+)?\"}",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Max Connections",
+              "refId": "C",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Connections",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 6,
+          "height": "250px",
+          "id": 6,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_bytes_received{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_bytes_received{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Inbound",
+              "refId": "A",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_bytes_sent{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_bytes_sent{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Outbound",
+              "metric": "",
+              "refId": "B",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Network Traffic",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Row title",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "250px",
+          "id": 7,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "mysql_global_status_threads_connected{instance=~\"($host)(:[0-9]+)?\"}",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Threads Connected",
+              "refId": "A",
+              "step": 1
+            },
+            {
+              "expr": "mysql_global_status_threads_running{instance=~\"($host)(:[0-9]+)?\"}",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Threads Running",
+              "refId": "B",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Active Threads",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 12,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(mysql_info_schema_table_size{instance=~\"$host:.*\", component!=\"data_free\"})",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Data + Index Size",
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Database Size",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Row title",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "content": "<h1 style=\"padding:10px;border:2px solid white;font-style: normal;\"><center>Query statistics</center></h1>",
+          "editable": true,
+          "error": false,
+          "height": "10px",
+          "id": 10,
+          "links": [],
+          "mode": "html",
+          "span": 12,
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 1,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_select_full_join{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_select_full_join{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Select Full Join",
+              "refId": "A",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_select_full_range_join{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_select_full_range_join{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Select Full Range Join",
+              "refId": "B",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_select_range{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_select_range{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Select Range",
+              "refId": "C",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_select_range_check{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_select_range_check{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Select Range Check",
+              "refId": "D",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_select_scan{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_select_scan{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Select Scan",
+              "refId": "E",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Select Types",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 4,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_slow_queries{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_slow_queries{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Slow Queries",
+              "refId": "A",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Slow Queries",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Row title",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 250,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_rows_sent{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_rows_sent{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Rows sent",
+              "refId": "A",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rows sent",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "datasource": null,
+          "editable": true,
+          "error": false,
+          "format": "short",
+          "gauge": {
+            "maxValue": 1000,
+            "minValue": 0,
+            "show": true,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "height": "250",
+          "id": 13,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 6,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_queries{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_queries{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "refId": "A",
+              "step": 5
+            }
+          ],
+          "thresholds": "600,800",
+          "title": "Current QPS",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 250,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "250px",
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_handlers_total{instance=~\"$host:.*\", handler!~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or irate(mysql_global_status_handlers_total{instance=~\"$host:.*\", handler!~\"commit|rollback|savepoint.*|prepare\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{ handler }}",
+              "refId": "A",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Handlers",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "content": "<h1 style=\"padding:10px;border:2px solid white;font-style: normal;\"><center>Cache Info</center></h1>",
+          "editable": true,
+          "error": false,
+          "height": "0",
+          "id": 11,
+          "links": [],
+          "mode": "html",
+          "span": 12,
+          "title": "",
+          "transparent": true,
+          "type": "text"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "0",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 2,
+          "height": "400px",
+          "id": 8,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(mysql_global_status_qcache_hits{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_qcache_hits{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Hits",
+              "refId": "A",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_qcache_inserts{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_qcache_inserts{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Inserts",
+              "refId": "B",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_qcache_not_cached{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_qcache_not_cached{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Not Cached",
+              "refId": "C",
+              "step": 1
+            },
+            {
+              "expr": "rate(mysql_global_status_qcache_lowmem_prunes{instance=~\"($host)(:[0-9]+)?\"}[$interval]) or irate(mysql_global_status_qcache_lowmem_prunes{instance=~\"($host)(:[0-9]+)?\"}[5m])",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Prunes",
+              "refId": "D",
+              "step": 1
+            },
+            {
+              "expr": "mysql_global_status_qcache_queries_in_cache{instance=~\"($host)(:[0-9]+)?\"}",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Queries in Cache",
+              "refId": "E",
+              "step": 1
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "MySQL Query Cache Activity",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    }
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "MySQL"
+  ],
+  "templating": {
+    "list": [
+      {
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "selected": true,
+          "text": "5s",
+          "value": "5s"
+        },
+        "hide": 0,
+        "label": "interval",
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "auto",
+            "value": "$__auto_interval"
+          },
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": true,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "mysql-dev-infra-poc-multicluster",
+          "value": "mysql-dev-infra-poc-multicluster"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy, bosh_deployment)",
+        "refresh": 1,
+        "regex": "mysql.*",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "mysql",
+          "value": "mysql"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": true,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "mysql.*",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "prometheus",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Host",
+        "multi": false,
+        "name": "host",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_job_name=~\"$bosh_job_name\", bosh_deployment=~\"$bosh_deployment\"}, bosh_job_ip)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "MySQL / Cluster detailed",
+  "version": 15
+}
