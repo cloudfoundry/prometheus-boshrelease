@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu
+
+<% if p('alertmanager.test_alert.hourly') %>
+# Send a test alert hourly
+cp /var/vcap/jobs/alertmanager/bin/alertmanager_test /etc/cron.hourly/alertmanager_test_hourly
+<% else.do %>
+# Remove pre-existing hourly test alert
+rm -f /etc/cron.hourly/alertmanager_test_hourly
+<% end %>
+
+<% if p('alertmanager.test_alert.daily') %>
+# Send a test alert daily
+cp /var/vcap/jobs/alertmanager/bin/alertmanager_test /etc/cron.hourly/alertmanager_test_daily
+<% else.do %>
+# Remove pre-existing daily test alert
+rm -f /etc/cron.hourly/alertmanager_test_daily
+<% end %>
+
+<% if p('alertmanager.test_alert.weekly') %>
+# Send a test alert weekly
+cp /var/vcap/jobs/alertmanager/bin/alertmanager_test /etc/cron.weekly/alertmanager_test_weekly
+<% else.do %>
+# Remove pre-existing weekly test alert
+rm -f /etc/cron.hourly/alertmanager_test_weekly
+<% end %>

@@ -6,6 +6,8 @@ packages:
 
 templates:
   bin/alertmanager_ctl: bin/alertmanager_ctl
+  bin/alertmanager_test: bin/alertmanager_test
+  bin/pre-start: bin/pre-start
   config/alertmanager.yml: config/alertmanager.yml
 
 provides:
@@ -94,6 +96,16 @@ properties:
 
   alertmanager.inhibit_rules:
     description: "Inhibition rules"
+
+  alertmanager.test_alert.hourly:
+    description: "Send a test alert hourly?"
+    default: false
+  alertmanager.test_alert.daily:
+    description: "Send a test alert daily?"
+    default: false
+  alertmanager.test_alert.weekly:
+    description: "Send a test alert weekly?"
+    default: false
 
   env.http_proxy:
     description: "HTTP proxy to use"
