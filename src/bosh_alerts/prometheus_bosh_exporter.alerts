@@ -1,23 +1,23 @@
 ALERT BOSHExporterScrapeError
-  IF max(bosh_last_scrape_error) by(environment, instance) != 0
+  IF max(bosh_last_scrape_error) by(environment, bosh_name, instance) != 0
   FOR 10m
   LABELS {
     service = "bosh-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
-    summary = "bosh_exporter `{{$labels.environment}}/{{$labels.instance}}` scrape error",
-    description = "The `bosh_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape metrics during the last 10 minutes",
+    summary = "bosh_exporter `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` scrape error",
+    description = "The `bosh_exporter` at `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` was unable to scrape metrics during the last 10 minutes",
   }
 
 ALERT BOSHExporterScrapeTooOld
-  IF (time() - max(bosh_last_scrape_timestamp) by(environment, instance)) > 600
+  IF (time() - max(bosh_last_scrape_timestamp) by(environment, bosh_name, instance)) > 600
   FOR 5m
   LABELS {
     service = "bosh-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "bosh_exporter `{{$labels.environment}}/{{$labels.instance}}` last scrape > 10 minutes ago",
-    description = "bosh `cf_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for metrics was more than 10 minutes ago",
+    summary = "bosh_exporter `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` last scrape > 10 minutes ago",
+    description = "bosh `cf_exporter` at `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` last scrape for metrics was more than 10 minutes ago",
   }
