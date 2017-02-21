@@ -139,7 +139,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_job_process_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"})",
+              "expr": "min(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 2
@@ -205,12 +205,12 @@
           ],
           "targets": [
             {
-              "expr": "avg(bosh_job_process_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1",
+              "expr": "avg(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1",
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}: {{ bosh_job_process_name }}",
               "refId": "A",
-              "step": 2
+              "step": 5
             }
           ],
           "timeFrom": null,
@@ -264,13 +264,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_process_cpu_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name,  bosh_job_index, bosh_job_process_name)",
+              "expr": "avg(bosh_job_process_cpu_total{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name,  bosh_job_index, bosh_job_process_name)",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}/{{bosh_job_process_name}}",
               "metric": "bosh_job_process_cpu_total",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -342,11 +342,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_process_mem_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name)",
+              "expr": "avg(bosh_job_process_mem_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\",bosh_job_process_name=~\"$bosh_job_process_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name)",
               "intervalFactor": 2,
               "legendFormat": "{{bosh_deployment}}/{{bosh_job_name}}/{{bosh_job_index}}/{{bosh_job_process_name}}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -428,11 +428,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Director",
+        "multi": false,
+        "name": "bosh_director",
+        "options": [],
+        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\"}, bosh_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\"}, bosh_deployment)",
+        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -452,7 +472,7 @@
         "multi": false,
         "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -472,7 +492,7 @@
         "multi": false,
         "name": "bosh_job_index",
         "options": [],
-        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_index)",
+        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_index)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -492,7 +512,7 @@
         "multi": false,
         "name": "bosh_job_process_name",
         "options": [],
-        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}, bosh_job_process_name)",
+        "query": "label_values(bosh_job_process_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}, bosh_job_process_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

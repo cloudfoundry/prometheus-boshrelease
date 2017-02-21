@@ -134,7 +134,7 @@
           },
           "targets": [
             {
-              "expr": "min(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"})",
+              "expr": "min(bosh_job_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"})",
               "interval": "1m",
               "intervalFactor": 2,
               "refId": "A",
@@ -194,11 +194,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_mem_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_mem_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [
@@ -285,11 +285,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_swap_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_swap_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [
@@ -388,12 +388,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_cpu_sys{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_cpu_sys{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -465,11 +465,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_cpu_user{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_cpu_user{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -541,11 +541,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_cpu_wait{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_cpu_wait{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -629,11 +629,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_load_avg01{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_load_avg01{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -705,11 +705,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_load_avg05{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_load_avg05{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -781,11 +781,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_load_avg15{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_load_avg15{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -869,11 +869,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_system_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_system_disk_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [
@@ -965,11 +965,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_ephemeral_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_ephemeral_disk_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [
@@ -1056,11 +1056,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_job_persistent_disk_percent{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
+              "expr": "avg(bosh_job_persistent_disk_percent{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\",bosh_job_index=~\"$bosh_job_index\"}) by(bosh_deployment,bosh_job_name,bosh_job_index)",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_index }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [
@@ -1157,11 +1157,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Director",
+        "multi": false,
+        "name": "bosh_director",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\"}, bosh_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(bosh_job_healthy{environment=~\"$environment\"}, bosh_deployment)",
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -1181,7 +1201,7 @@
         "multi": false,
         "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name!~\"^compilation.*\"}, bosh_job_name)",
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name!~\"^compilation.*\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -1201,7 +1221,7 @@
         "multi": false,
         "name": "bosh_job_index",
         "options": [],
-        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_index)",
+        "query": "label_values(bosh_job_healthy{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_index)",
         "refresh": 1,
         "regex": "",
         "sort": 1,

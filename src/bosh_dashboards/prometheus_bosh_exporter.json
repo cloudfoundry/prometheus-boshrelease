@@ -120,7 +120,7 @@
           },
           "targets": [
             {
-              "expr": "max(bosh_last_scrape_error{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "max(bosh_last_scrape_error{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -206,7 +206,7 @@
           },
           "targets": [
             {
-              "expr": "avg(bosh_scrapes_total{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_scrapes_total{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -282,7 +282,7 @@
           },
           "targets": [
             {
-              "expr": "avg(bosh_scrape_errors_total{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_scrape_errors_total{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -346,7 +346,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_last_scrape_duration_seconds{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_last_scrape_duration_seconds{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -448,7 +448,7 @@
           },
           "targets": [
             {
-              "expr": "time() - max(bosh_last_scrape_timestamp{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "time() - max(bosh_last_scrape_timestamp{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -500,7 +500,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_last_deployments_scrape_duration_seconds{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_last_deployments_scrape_duration_seconds{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -602,7 +602,7 @@
           },
           "targets": [
             {
-              "expr": "time() - max(bosh_last_deployments_scrape_timestamp{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "time() - max(bosh_last_deployments_scrape_timestamp{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -664,7 +664,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_last_jobs_scrape_duration_seconds{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_last_jobs_scrape_duration_seconds{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -763,7 +763,7 @@
           },
           "targets": [
             {
-              "expr": "time() - max(bosh_last_jobs_scrape_timestamp{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "time() - max(bosh_last_jobs_scrape_timestamp{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -815,7 +815,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(bosh_last_service_discovery_scrape_duration_seconds{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "avg(bosh_last_service_discovery_scrape_duration_seconds{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "legendFormat": "Duration",
               "refId": "A",
@@ -917,7 +917,7 @@
           },
           "targets": [
             {
-              "expr": "time() - max(bosh_last_service_discovery_scrape_timestamp{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "time() - max(bosh_last_service_discovery_scrape_timestamp{environment=~\"$environment\",bosh_name=~\"$bosh_director\",instance=~\"$instance\"})",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -979,11 +979,31 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Director",
+        "multi": false,
+        "name": "bosh_director",
+        "options": [],
+        "query": "label_values(bosh_last_scrape_timestamp{environment=~\"$environment\"}, bosh_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": true,
         "label": "Instance",
         "multi": false,
         "name": "instance",
         "options": [],
-        "query": "label_values(bosh_last_scrape_timestamp{environment=~\"$environment\"}, instance)",
+        "query": "label_values(bosh_last_scrape_timestamp{environment=~\"$environment\",bosh_name=~\"$bosh_director\"}, instance)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
