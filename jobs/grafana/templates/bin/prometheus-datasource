@@ -9,8 +9,9 @@ GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.secu
 <%
   pinstances = prometheus.instances.select { |instance| instance.az == spec.az }
   prometheus_ip = pinstances.empty? ? prometheus.instances.first.address : pinstances.first.address
+  purl = prometheus.p('prometheus.web.external_url', "http://#{prometheus_ip}:#{prometheus.p('prometheus.web.port')}")
 %>
-PROMETHEUS_URL="http://<%= prometheus_ip %>:<%= prometheus.p('prometheus.web.port') %>"
+PROMETHEUS_URL="<%= purl %>"
 
 DATASOURCE_NAME="<%= p('grafana.prometheus.datasource_name') %>"
 DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"prometheus\",\"access\":\"proxy\",\"url\":\"${PROMETHEUS_URL}\",\"password\":\"\",\"user\":\"\",\"database\":\"\",\"basicAuth\":false,\"basicAuthUser\":\"\",\"basicAuthPassword\":\"\",\"isDefault\":true,\"jsonData\":null}"
