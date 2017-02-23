@@ -415,7 +415,7 @@
               "intervalFactor": 2,
               "legendFormat": "Load 5m",
               "refId": "B",
-              "step": 10
+              "step": 2
             },
             {
               "expr": "node_load15{instance=~\"$host(:[0-9]+)?\"}",
@@ -423,7 +423,7 @@
               "intervalFactor": 2,
               "legendFormat": "Load 15m",
               "refId": "C",
-              "step": 10
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -1884,6 +1884,7 @@
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
+          "selected": true,
           "text": "5s",
           "value": "5s"
         },
@@ -1943,7 +1944,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "mysql-dev-infra-poc-multicluster",
           "value": "mysql-dev-infra-poc-multicluster"
         },
@@ -1967,15 +1968,16 @@
       {
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "mysql",
+          "value": "mysql"
         },
         "datasource": "prometheus",
         "hide": 0,
         "includeAll": true,
-        "label": null,
+        "label": "Job",
         "multi": true,
-        "name": "Job",
+        "name": "bosh_job_name",
         "options": [],
         "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
         "refresh": 1,
@@ -1991,14 +1993,15 @@
         "allFormat": "glob",
         "allValue": null,
         "current": {
-          "text": "10.234.250.238",
-          "value": "10.234.250.238"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "prometheus",
         "hide": 0,
         "includeAll": true,
         "label": "Host",
-        "multi": true,
+        "multi": false,
         "multiFormat": "regex values",
         "name": "host",
         "options": [],
@@ -2016,7 +2019,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2052,5 +2055,5 @@
   },
   "timezone": "browser",
   "title": "System: Overview corrected",
-  "version": 12
+  "version": 13
 }
