@@ -1,0 +1,59 @@
+ALERT PrometheusConfigReloadFailed
+  IF prometheus_config_last_reload_successful == 0
+  FOR 30m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` config reload failed"
+    description = "The Prometheus instance at `{{$labels.instance}}` has failed to reload its configuration during the last 30 minutes",
+  }
+
+ALERT PrometheusSkippingScrapes
+  IF rate(prometheus_target_skipped_scrapes_total[5m]) > 1
+  FOR 10m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` is skipping scrapes",
+    description = "The Prometheus instance at `{{$labels.instance}}` has been skipping scrapes during the last 10 minutes",
+  }
+
+ALERT PrometheusExceededSampleLimit
+  IF rate(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > 1
+  FOR 10m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` exceeded the sample limit",
+    description = "The Prometheus instance at `{{$labels.instance}}` exceeded the sample limit during the last 10 minutes",
+  }
+
+ALERT PrometheusNotificationsDroppedTooHigh
+  IF rate(prometheus_notifications_dropped_total[5m]) > 1
+  FOR 10m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` is dropping notifications",
+    description = "The Prometheus instance at `{{$labels.instance}}` has been dropping to much notifications during the last 10 minutes",
+  }
+
+ALERT PrometheusNotificationsQueue
+  IF rate(prometheus_notifications_queue_length[5m]) > 1
+  FOR 30m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` notifications queue is too high",
+    description = "The Prometheus instance at `{{$labels.instance}}` notifications queue has been too high during the last 10 minutes",
+  }
