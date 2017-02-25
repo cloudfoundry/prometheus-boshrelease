@@ -46,7 +46,7 @@ ALERT PrometheusNotificationsDroppedTooHigh
     description = "The Prometheus instance at `{{$labels.instance}}` has been dropping to much notifications during the last 10 minutes",
   }
 
-ALERT PrometheusNotificationsQueue
+ALERT PrometheusNotificationsQueueTooHigh
   IF rate(prometheus_notifications_queue_length[5m]) > 1
   FOR 30m
   LABELS {
