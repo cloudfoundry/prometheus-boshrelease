@@ -1,3 +1,15 @@
+ALERT PrometheusScrapeError
+  IF up == 0
+  FOR 30m
+  LABELS {
+    service = "prometheus",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Prometheus instance `{{$labels.instance}}` (`{{$labels.job}}`) down or not reachable",
+    description = "The Prometheus instance at `{{$labels.instance}}` for job `{{$labels.job}}` has been down or has not been reachable during the last 30 minutes",
+  }
+
 ALERT PrometheusConfigReloadFailed
   IF prometheus_config_last_reload_successful == 0
   FOR 30m
