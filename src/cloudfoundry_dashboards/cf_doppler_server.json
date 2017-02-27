@@ -103,7 +103,7 @@
               "intervalFactor": 2,
               "legendFormat": "Container Metric",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_doppler_server_message_router_number_of_dump_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -111,21 +111,21 @@
               "intervalFactor": 2,
               "legendFormat": "Dump",
               "refId": "B",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_doppler_server_message_router_number_of_firehose_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Firehose",
               "refId": "C",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_doppler_server_message_router_number_of_syslog_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Syslog",
               "refId": "D",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_doppler_server_message_router_number_of_websocket_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -133,7 +133,7 @@
               "intervalFactor": 2,
               "legendFormat": "Websocket",
               "refId": "E",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -224,7 +224,7 @@
               "intervalFactor": 2,
               "legendFormat": "Container Metric",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_counter_event_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -232,21 +232,21 @@
               "intervalFactor": 2,
               "legendFormat": "Counter Event",
               "refId": "B",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_http_start_stop_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "HttpStartStop",
               "refId": "C",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_log_message_total_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Log Message",
               "refId": "D",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_value_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -254,7 +254,15 @@
               "intervalFactor": 2,
               "legendFormat": "Value Metric",
               "refId": "E",
-              "step": 4
+              "step": 2
+            },
+            {
+              "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_error_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Error",
+              "refId": "F",
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -350,7 +358,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Dropsonde Messages Received by Listeners",
+          "title": "Messages Received by Listeners",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -427,7 +435,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Dropsonde Bytes Received by Listeners",
+          "title": "Bytes Received by Listeners",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -467,6 +475,164 @@
       "repeatRowId": null,
       "showTitle": false,
       "title": "Dropsonde Message & Bytes Received by Listeners",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of errors when unmarshalling messages.",
+          "fill": 1,
+          "id": 5,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(avg(firehose_counter_event_doppler_server_dropsonde_unmarshaller_unmarshal_errors{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Errors",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Unmarshal Errors",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Total number of messages intentionally dropped by Doppler from all of its sinks due to back pressure. Emitted every 5 seconds.",
+          "fill": 1,
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(avg(firehose_counter_event_doppler_server_truncating_buffer_total_dropped_messages{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Messages",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Dropped Messages",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Unmarshall Errors & Dropped Messages",
       "titleSize": "h6"
     }
   ],

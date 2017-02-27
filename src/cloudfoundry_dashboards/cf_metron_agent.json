@@ -103,7 +103,7 @@
               "intervalFactor": 2,
               "legendFormat": "Sent (Marshaller)",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_received_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -111,7 +111,7 @@
               "intervalFactor": 2,
               "legendFormat": "Received (Unmarshaller)",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -202,7 +202,7 @@
               "intervalFactor": 2,
               "legendFormat": "Container Metric",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_counter_event_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -210,21 +210,21 @@
               "intervalFactor": 2,
               "legendFormat": "Counter Event",
               "refId": "B",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_http_start_stop_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "HttpStartStop",
               "refId": "C",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_log_message_total_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Log Message",
               "refId": "D",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_value_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -232,7 +232,14 @@
               "intervalFactor": 2,
               "legendFormat": "Value Metric",
               "refId": "E",
-              "step": 4
+              "step": 2
+            },
+            {
+              "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_error_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Error",
+              "refId": "F",
+              "step": 2
             }
           ],
           "thresholds": [],
