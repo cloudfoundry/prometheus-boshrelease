@@ -1,0 +1,10 @@
+ALERT MySQLInnoDBLogWaits
+  IF rate(mysql_global_status_innodb_log_waits[15m]) > 10
+  LABELS {
+    service = "mysql",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "MySQL innodb log writes on `{{$labels.instance}}` stalling",
+    description = "The innodb logs on `{{$labels.instance}}` are waiting for disk at a rate of {{$value}} / second",
+  }

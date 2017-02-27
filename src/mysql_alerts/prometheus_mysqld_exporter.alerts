@@ -1,0 +1,11 @@
+ALERT MySQLdExporterScrapeError
+  IF max(mysql_exporter_last_scrape_error) by(instance) != 0
+  FOR 10m
+  LABELS {
+    service = "mysqld-exporter",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "mysqld_exporter `{{$labels.instance}}` scrape error",
+    description = "TThe `mysqld_exporter` at `{{$labels.instance}}` was unable to scrape metrics during the last 10 minutes",
+  }
