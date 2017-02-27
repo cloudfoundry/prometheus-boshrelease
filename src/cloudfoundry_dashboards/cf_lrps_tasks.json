@@ -104,35 +104,35 @@
               "intervalFactor": 2,
               "legendFormat": "Desired",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_lr_ps_running{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Running",
               "refId": "B",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_lr_ps_extra{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Extra",
               "refId": "C",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_lr_ps_missing{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Missing",
               "refId": "D",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_lr_ps_claimed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Claimed",
               "refId": "E",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_lr_ps_unclaimed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
@@ -140,7 +140,7 @@
               "intervalFactor": 2,
               "legendFormat": "Unclaimed",
               "refId": "F",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -233,28 +233,28 @@
               "intervalFactor": 2,
               "legendFormat": "Pending",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_tasks_resolving{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Resolving",
               "refId": "B",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_tasks_running{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Running",
               "refId": "C",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_tasks_completed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Completed",
               "refId": "D",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -345,14 +345,14 @@
               "intervalFactor": 2,
               "legendFormat": "Actual",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "sum(avg(firehose_value_metric_bbs_crashing_desired_lr_ps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
               "intervalFactor": 2,
               "legendFormat": "Desired",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -398,6 +398,93 @@
       "repeatRowId": null,
       "showTitle": false,
       "title": "Crashing LRPs",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Time in nanoseconds that the nsync-bulker took to synchronize CF apps and Diego DesiredLRPs. Emitted every 30 seconds.",
+          "fill": 1,
+          "id": 4,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(firehose_value_metric_nsync_bulker_desired_lrp_sync_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) ",
+              "intervalFactor": 2,
+              "legendFormat": "Duration",
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Desired LRP Sync Duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ns",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
       "titleSize": "h6"
     }
   ],
