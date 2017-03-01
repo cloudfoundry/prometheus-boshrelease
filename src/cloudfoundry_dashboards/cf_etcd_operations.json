@@ -66,9 +66,9 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "SetsSuccess and SetsFail operation count. Emitted every 30 seconds.",
+          "description": "SetsSuccess and SetsFail operations per second.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -82,7 +82,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -96,24 +96,26 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "irate(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "irate(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Sets",
+          "title": "Sets per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -134,7 +136,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": "0",
+              "min": null,
               "show": true
             },
             {
@@ -149,9 +151,9 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "GetsSuccess and GetsFail operation count. Emitted every 30 seconds.",
+          "description": "GetsSuccess and GetsFail operations per second.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -165,7 +167,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -179,24 +181,27 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "irate(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "metric": "",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "irate(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Gets",
+          "title": "Gets per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -244,9 +249,9 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "CreateSuccess and CreateFail operation count. Emitted every 30 seconds.",
+          "description": "CreateSuccess and CreateFail operation rate.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -260,7 +265,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -274,25 +279,27 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_create_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Fail",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(firehose_value_metric_etcd_create_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_create_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "metric": "",
+              "refId": "A",
+              "step": 240
+            },
+            {
+              "expr": "rate(firehose_value_metric_etcd_create_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Create",
+          "title": "Creates per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -328,9 +335,9 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "UpdateSuccess and UpdateFail operation count. Emitted every 30 seconds.",
+          "description": "UpdateSuccess and UpdateFail operations rate.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -344,7 +351,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -358,24 +365,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_update_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_update_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_update_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_update_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Update",
+          "title": "Update per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -411,9 +419,9 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "DeleteSuccess and DeleteFail operation count. Emitted every 30 seconds.",
+          "description": "DeleteSuccess and DeleteFail operations per second.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -427,7 +435,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -441,25 +449,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Delete",
+          "title": "Deletes per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -507,9 +515,9 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "CompareAndDeleteSuccess and CompareAndDeleteFail operation count. Emitted every 30 seconds.",
+          "description": "CompareAndDeleteSuccess and CompareAndDeleteFail operations rate.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -523,7 +531,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -537,24 +545,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_compare_and_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_compare_and_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_compare_and_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_compare_and_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Compare & Delete",
+          "title": "Compare & Delete per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -590,9 +599,9 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "CompareAndSwapSuccess and CompareAndSwapFail operation count. Emitted every 30 seconds.",
+          "description": "CompareAndSwapSuccess and CompareAndSwapFail operations rate.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -606,7 +615,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -620,24 +629,25 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_compare_and_swap_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_compare_and_swap_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail",
+              "legendFormat": "Fail ({{bosh_job_ip}})",
               "refId": "A",
-              "step": 4
+              "step": 240
             },
             {
-              "expr": "avg(firehose_value_metric_etcd_compare_and_swap_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "rate(firehose_value_metric_etcd_compare_and_swap_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success",
+              "legendFormat": "Success ({{bosh_job_ip}})",
               "refId": "B",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Compare & Swap",
+          "title": "Compare & Swap per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -731,8 +741,8 @@
     ]
   },
   "time": {
-    "from": "now-1h",
-    "to": "now"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -761,5 +771,5 @@
   },
   "timezone": "browser",
   "title": "CF: Etcd Operations",
-  "version": 1
+  "version": 17
 }
