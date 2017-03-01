@@ -24,21 +24,17 @@ case $1 in
       <% if_p('graphite_exporter.graphite.mapping_config') do %> \
       -graphite.mapping-config="/var/vcap/jobs/graphite_exporter/config/graphite_mapping.conf" \
       <% end %> \
+      <% if_p('graphite_exporter.graphite.mapping_strict_match') do |mapping_strict_match| %> \
+      -graphite.mapping-strict-match="<%= mapping_strict_match %>" \
+      <% end %> \
       <% if_p('graphite_exporter.graphite.sample_expiry') do |sample_expiry| %> \
       -graphite.sample-expiry="<%= sample_expiry %>" \
       <% end %> \
-      <% if_p('graphite_exporter.log_backtrace_at') do |log_backtrace_at| %> \
-      -log_backtrace_at="<%= log_backtrace_at %>" \
+      <% if_p('graphite_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
       <% end %> \
-      -log_dir=${LOG_DIR} \
-      <% if_p('graphite_exporter.stderrthreshold') do |stderrthreshold| %> \
-      -stderrthreshold="<%= stderrthreshold %>" \
-      <% end %> \
-      <% if_p('graphite_exporter.v') do |v| %> \
-      -v="<%= v %>" \
-      <% end %> \
-      <% if_p('graphite_exporter.vmodule') do |vmodule| %> \
-      -vmodule="<%= vmodule %>" \
+      <% if_p('graphite_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
       <% end %> \
       -web.listen-address=":<%= p('graphite_exporter.web.port') %>" \
       <% if_p('graphite_exporter.web.telemetry_path') do |telemetry_path| %> \
