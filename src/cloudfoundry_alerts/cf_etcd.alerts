@@ -1,0 +1,11 @@
+ALERT CFEtcdMoreThanOneLeader
+  IF count(firehose_value_metric_etcd_is_leader == 1) by(environment, bosh_deployment) > 1
+  FOR 10m
+  LABELS {
+    service = "cf-etcd",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "CF etcd cluster at deployment `{{$labels.environment}}/{{$labels.bosh_deployment}}` > 1 leader",
+    description = "CF etcd cluster at deployment `{{$labels.environment}}/{{$labels.bosh_deployment}}` had more than one leader in the last 10 minutes: {{value}}",
+  }
