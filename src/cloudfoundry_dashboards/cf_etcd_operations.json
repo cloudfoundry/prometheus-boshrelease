@@ -78,7 +78,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -92,24 +92,24 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "rate(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
-              "expr": "irate(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "rate(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -136,7 +136,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -163,7 +163,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -177,25 +177,25 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "rate(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "metric": "",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
-              "expr": "irate(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "rate(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -261,7 +261,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -275,25 +275,25 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 4,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(firehose_value_metric_etcd_create_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "metric": "",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
               "expr": "rate(firehose_value_metric_etcd_create_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -347,7 +347,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -361,23 +361,23 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 4,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(firehose_value_metric_etcd_update_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
               "expr": "rate(firehose_value_metric_etcd_update_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -431,7 +431,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -445,23 +445,23 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 4,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(firehose_value_metric_etcd_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
               "expr": "rate(firehose_value_metric_etcd_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -527,7 +527,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -541,23 +541,23 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(firehose_value_metric_etcd_compare_and_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
               "expr": "rate(firehose_value_metric_etcd_compare_and_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -611,7 +611,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -625,23 +625,23 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(firehose_value_metric_etcd_compare_and_swap_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Fail ({{bosh_job_ip}})",
+              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 240
+              "step": 10
             },
             {
               "expr": "rate(firehose_value_metric_etcd_compare_and_swap_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Success ({{bosh_job_ip}})",
+              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 240
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -741,8 +741,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-1h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -771,5 +771,5 @@
   },
   "timezone": "browser",
   "title": "CF: Etcd Operations",
-  "version": 17
+  "version": 1
 }

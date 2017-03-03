@@ -47,7 +47,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": false,
+  "hideControls": true,
   "id": null,
   "links": [
     {
@@ -74,204 +74,7 @@
   "rows": [
     {
       "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative used and available MiB of memory to allocate to containers.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 40
-            },
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
-              "intervalFactor": 2,
-              "legendFormat": "Available",
-              "refId": "B",
-              "step": 40
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Total Cell Memory",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Memory",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative used and available MiB of disk to allocate to containers.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 4,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 40
-            },
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
-              "intervalFactor": 2,
-              "legendFormat": "Available",
-              "refId": "B",
-              "step": 40
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Total Cell Disk",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Disk",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
+      "height": "125px",
       "panels": [
         {
           "cacheTimeout": null,
@@ -328,7 +131,7 @@
           },
           "targets": [
             {
-              "expr": "count(firehose_value_metric_rep_capacity_total_containers)",
+              "expr": "count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "metric": "firehose_value_metric_rep_capacity_total_containers",
               "refId": "A",
@@ -337,6 +140,7 @@
           ],
           "thresholds": "",
           "title": "Number of Cells",
+          "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -346,7 +150,7 @@
               "value": "null"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         },
         {
           "cacheTimeout": null,
@@ -404,17 +208,18 @@
           },
           "targets": [
             {
-              "expr": "bottomk(1,firehose_value_metric_rep_capacity_remaining_memory)",
+              "expr": "bottomk(1, firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "intervalFactor": 2,
               "metric": "firehose_value_metric_rep_capacity_remaining_memory",
               "refId": "A",
-              "step": 2
+              "step": 600
             }
           ],
           "thresholds": "2000,4000",
-          "timeFrom": "1m",
+          "timeFrom": null,
           "timeShift": null,
-          "title": "Least Remaining Memory",
+          "title": "Cell with Least Remaining Memory",
+          "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -482,19 +287,20 @@
           },
           "targets": [
             {
-              "expr": "bottomk(1, firehose_value_metric_rep_capacity_remaining_memory)",
+              "expr": "bottomk(1, firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_job_ip}}",
+              "legendFormat": "{{ bosh_job_ip }}",
               "metric": "firehose_value_metric_rep_capacity_remaining_memory",
               "refId": "A",
-              "step": 2
+              "step": 600
             }
           ],
           "thresholds": "",
-          "timeFrom": "1m",
+          "timeFrom": null,
           "timeShift": null,
           "title": "Cell with Least Memory",
+          "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -516,6 +322,203 @@
     },
     {
       "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative used and available MiB of memory to allocate to containers.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Used",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Available",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Cell Memory",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "mbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Memory",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": true,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative used and available MiB of disk to allocate to containers.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 4,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Used",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "intervalFactor": 2,
+              "legendFormat": "Available",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Cell Disk",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "mbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Disk",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
       "height": 250,
       "panels": [
         {
@@ -531,7 +534,9 @@
           "id": 6,
           "interval": null,
           "legend": {
+            "percentage": true,
             "show": true,
+            "sortDesc": true,
             "values": true
           },
           "legendType": "Under graph",
@@ -546,12 +551,13 @@
               "expr": "firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_job_ip}}",
+              "legendFormat": "{{ bosh_job_ip }}",
               "refId": "A",
               "step": 21600
             }
           ],
           "title": "Running Containers Per Cell",
+          "transparent": true,
           "type": "grafana-piechart-panel",
           "valueName": "current"
         },
@@ -568,6 +574,7 @@
           "id": 7,
           "interval": null,
           "legend": {
+            "percentage": true,
             "show": true,
             "values": true
           },
@@ -583,12 +590,13 @@
               "expr": "firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_job_ip}}",
+              "legendFormat": "{{ bosh_job_ip }}",
               "refId": "A",
               "step": 21600
             }
           ],
           "title": "Memory Used Per Cell",
+          "transparent": true,
           "type": "grafana-piechart-panel",
           "valueName": "current"
         }
@@ -682,5 +690,5 @@
   },
   "timezone": "browser",
   "title": "CF: Cells Capacity",
-  "version": 28
+  "version": 1
 }

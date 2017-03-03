@@ -68,7 +68,7 @@
   "rows": [
     {
       "collapse": false,
-      "height": "200px",
+      "height": "125px",
       "panels": [
         {
           "cacheTimeout": null,
@@ -80,7 +80,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Number of etcd leaders. Emitted every 30 seconds.",
+          "description": "",
           "editable": true,
           "error": false,
           "format": "none",
@@ -131,7 +131,7 @@
               "expr": "firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} == 1",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{bosh_job_ip}}",
+              "legendFormat": "{{ bosh_job_ip }}",
               "metric": "",
               "refId": "B",
               "step": 60
@@ -153,7 +153,7 @@
         },
         {
           "cacheTimeout": null,
-          "colorBackground": true,
+          "colorBackground": false,
           "colorValue": false,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -217,7 +217,7 @@
               "step": 60
             }
           ],
-          "thresholds": "1,2",
+          "thresholds": "",
           "title": "Followers",
           "transparent": true,
           "type": "singlestat",
@@ -235,7 +235,7 @@
           "aliasColors": {},
           "bars": true,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Watchers operation count. Emitted every 30 seconds.",
+          "description": "",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -355,10 +355,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_raft_term{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_raft_term{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "refId": "A",
               "step": 10
             }
@@ -433,10 +433,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_value_metric_etcd_raft_index{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(firehose_value_metric_etcd_raft_index{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
+              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "refId": "A",
               "step": 10
             }
@@ -527,7 +527,7 @@
               "expr": "firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Receiving ({{bosh_job_ip}})",
+              "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
               "step": 10
             },
@@ -535,7 +535,7 @@
               "expr": "firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Sending ({{bosh_job_ip}})",
+              "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
               "step": 10
             }
@@ -613,7 +613,7 @@
             {
               "expr": "firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "intervalFactor": 2,
-              "legendFormat": "Receiving ({{bosh_job_ip}})",
+              "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
               "step": 10
             },
@@ -621,7 +621,7 @@
               "expr": "firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Sending ({{bosh_job_ip}})",
+              "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
               "step": 10
             }
@@ -788,7 +788,7 @@
               "expr": "rate(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Received ({{bosh_job_ip}})",
+              "legendFormat": "Received ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "metric": "",
               "refId": "A",
               "step": 10
@@ -797,7 +797,7 @@
               "expr": "rate(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Sent ({{bosh_job_ip}})",
+              "legendFormat": "Sent ({{{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}}})",
               "refId": "B",
               "step": 10
             }
@@ -929,5 +929,5 @@
   },
   "timezone": "browser",
   "title": "CF: Etcd",
-  "version": 32
+  "version": 1
 }
