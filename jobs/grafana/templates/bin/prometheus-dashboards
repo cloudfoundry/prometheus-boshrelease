@@ -8,10 +8,11 @@ rm -fr ${DASHBOARDS_DIR}/*
 
 <% if_link('prometheus') do |prometheus| %>
 <% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
-dashboard_file="<%= dashboard_file %>"
-filename=$(basename "${dashboard_file}")
-echo -e "Updating dashboard ${dashboard_file} at $(date)"
-sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
+for dashboard_file in $(ls "<%= dashboard_file %>"); do
+  filename=$(basename "${dashboard_file}")
+  echo -e "Updating dashboard ${dashboard_file} at $(date)"
+  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
+done
 <% end %>
 <% end %>
 
