@@ -50,6 +50,9 @@ case $1 in
       <% link('alertmanager').instances.each do |instance|  %> \
       -mesh.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port')}" %>" \
       <% end %> \
+      <% if_p('alertmanager.mesh.peer') do |peer|  %> \
+      -mesh.peer="<%= peer %>" \
+      <% end %> \
       -storage.path="${STORE_DIR}" \
       <% if_p('alertmanager.web.external_url') do |external_url| %> \
       -web.external-url="<%= external_url %>" \
