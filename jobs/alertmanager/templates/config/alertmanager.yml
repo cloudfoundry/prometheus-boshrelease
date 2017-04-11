@@ -23,6 +23,10 @@ global:
   smtp_auth_secret: <%= auth_secret %>
   <% end %>
 
+  <% if_p('alertmanager.smtp.require_tls') do |require_tls| %>
+  smtp_require_tls: <%= require_tls %>
+  <% end %>
+
   <% if_p('alertmanager.slack.api_url') do |api_url| %>
   slack_api_url: <%= api_url %>
   <% end %>
