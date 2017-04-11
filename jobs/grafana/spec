@@ -68,6 +68,13 @@ properties:
     description: "Database User"
   grafana.database.password:
     description: "Database Password"
+  grafana.database.max_conn:
+    description: "Database max connections"
+  grafana.database.max_idle_conn:
+    description: "Database max idle connections"
+  grafana.database.max_open_conn:
+    description: "Database max open connections"
+
   grafana.database.ssl_mode:
     description: "For 'postgres' only, either 'disable', 'require' or 'verify-full'"
   grafana.database.path:
@@ -83,6 +90,11 @@ properties:
     description: "If you use session in https only"
   grafana.session.session_life_time:
     description: "Session life time"
+  grafana.session.gc_interval_time:
+    description: "GC Interval time"
+
+  grafana.dataproxy.logging_enabled:
+    description: "Enable data proxy logging"
 
   grafana.analytics.reporting_enabled:
     description: "Change this option to false to disable reporting."
@@ -90,6 +102,8 @@ properties:
     description: "Set to false to disable all checks to https://grafana.net"
   grafana.analytics.google_analytics_ua_id:
     description: "Google Analytics universal tracking code, only enabled if you specify an id here"
+  grafana.analytics.google_tag_manager_id:
+    description: "Google Tag Manager ID"
 
   grafana.security.admin_user:
     description: "default admin user"
@@ -128,6 +142,8 @@ properties:
     description: "Set to true to automatically assign new users to the default organization (id 1)"
   grafana.users.auto_assign_org_role:
     description: "Default role new users will be automatically assigned (if disabled above is set to true)"
+  grafana.users.verify_email_enabled:
+    description: "Require email validation before sign up completes"
   grafana.users.login_hint:
     description: "Background text for the user field on the login page"
   grafana.users.default_theme:
@@ -268,6 +284,8 @@ properties:
     description: "SMTP skip SSL verification"
   grafana.smtp.from_address:
     description: "SMTP from address"
+  grafana.smtp.from_name:
+    description: "SMTP from name"
 
   grafana.emails.welcome_email_on_sign_up:
     description: "Welcome email on sign up"
@@ -322,6 +340,31 @@ properties:
   grafana.dashboards.json.enabled:
     description: "Enable Dashboard JSON files"
 
+  grafana.quota.enabled:
+    description: "Enable Usage Quotas"
+  grafana.quota.org_user:
+    description: "limit number of users per Org"
+  grafana.quota.org_dashboard:
+    description: "limit number of dashboards per Org"
+  grafana.quota.org_data_source:
+    description: "limit number of data_sources per Org"
+  grafana.quota.org_api_key:
+    description: "limit number of api_keys per Org"
+  grafana.quota.user_org:
+    description: "limit number of orgs a user can create"
+  grafana.quota.global_user:
+    description: "Global limit of users"
+  grafana.quota.global_org:
+    description: "global limit of orgs"
+  grafana.quota.global_dashboard:
+    description: "global limit of dashboards"
+  grafana.quota.global_api_key:
+    description: "global limit of api_keys"
+  grafana.quota.global_session:
+    description: "global limit on number of logged in users"
+
+  grafana.alerting.enabled:
+    description: "Enable alerting engine & UI featuresn"
   grafana.alerting.execute_alerts:
     description: "Makes it possible to turn off alert rule execution"
 
