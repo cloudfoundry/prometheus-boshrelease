@@ -35,6 +35,9 @@ case $1 in
       <% if_p('redis_exporter.redis.address') do |address| %> \
       -redis.addr="<%= address %>" \
       <% end %> \
+      <% if_p('redis_exporter.redis.alias') do |redis_alias| %> \
+      -redis.alias="<%= redis_alias %>" \
+      <% end %> \
       <% if_p('redis_exporter.redis.password') do |password| %> \
       -redis.password="<%= password %>" \
       <% end %> \
