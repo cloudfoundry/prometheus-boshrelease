@@ -20,14 +20,35 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec consul_exporter \
+      <% if_p('consul_exporter.consul_ca') do %> \
+      -consul.ca-file="/var/vcap/jobs/consul_exporter/config/consul_ca.pem" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_cert') do %> \
+      -consul.cert-file="/var/vcap/jobs/consul_exporter/config/consul_cert.pem" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_key') do %> \
+      -consul.key-file="/var/vcap/jobs/consul_exporter/config/consul_key.pem" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_health_summary') do |consul_health_summary| %> \
+      -consul.health-summary="<%= consul_health_summary %>" \
+      <% end %> \
       <% if_p('consul_exporter.consul_server') do |consul_server| %> \
       -consul.server="<%= consul_server %>" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_server_name') do |consul_server_name| %> \
+      -consul.server-name="<%= consul_server_name %>" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_timeout') do |consul_timeout| %> \
+      -consul.timeout="<%= consul_timeout %>" \
       <% end %> \
       <% if_p('consul_exporter.kv_filter') do |kv_filter| %> \
       -kv.filter="<%= kv_filter %>" \
       <% end %> \
       <% if_p('consul_exporter.kv_prefix') do |kv_prefix| %> \
       -kv.prefix="<%= kv_prefix %>" \
+      <% end %> \
+      <% if_p('consul_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('consul_exporter.log_level') do |log_level| %> \
       -log.level="<%= log_level %>" \
