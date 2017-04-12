@@ -61,7 +61,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests.",
+          "description": "Requests per minute.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -89,7 +89,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "expr": "rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
@@ -137,7 +137,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Number of requests per application instance.",
+          "description": "Number of requests per application instance per minute.",
           "fill": 1,
           "id": 7,
           "legend": {
@@ -163,7 +163,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_id)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(instance_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_id }}",
@@ -224,7 +224,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests by method.",
+          "description": "Number of requests per minute by method.",
           "fill": 1,
           "id": 8,
           "legend": {
@@ -252,7 +252,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(method)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(method)",
               "intervalFactor": 2,
               "legendFormat": "{{ method }}",
               "refId": "A",
@@ -300,7 +300,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests by status code.",
+          "description": "Number of requests per minute by status code.",
           "fill": 1,
           "id": 9,
           "legend": {
@@ -328,7 +328,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(status_code)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(status_code)",
               "intervalFactor": 2,
               "legendFormat": "{{ status_code }}",
               "refId": "A",
@@ -388,7 +388,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests by scheme.",
+          "description": "Number of requests per min by scheme.",
           "fill": 1,
           "id": 10,
           "legend": {
@@ -416,7 +416,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(scheme)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(scheme)",
               "intervalFactor": 2,
               "legendFormat": "{{ scheme }}",
               "refId": "A",
@@ -464,7 +464,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests by host.",
+          "description": "Number of requests per min by host.",
           "fill": 1,
           "id": 11,
           "legend": {
@@ -492,7 +492,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(host)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(host)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ host }}",

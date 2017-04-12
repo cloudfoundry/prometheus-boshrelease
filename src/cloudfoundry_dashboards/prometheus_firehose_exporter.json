@@ -66,7 +66,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of envelopes and metrics received from Cloud Foundry Firehose.",
+          "description": "Number of envelopes and metrics received per min from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -94,14 +94,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Envelopes",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Metrics",
@@ -406,7 +406,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ContainerMetrics received and processed from Cloud Foundry Firehose.",
+          "description": "Number of ContainerMetrics received and processed per min from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -434,14 +434,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -489,7 +489,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ContainerMetrics cached from Cloud Foundry Firehose.",
+          "description": "Count of ContainerMetrics cached from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -656,7 +656,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of CounterEvents received and processed from Cloud Foundry Firehose.",
+          "description": "Number of CounterEvents received and processed per min from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -684,14 +684,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -739,7 +739,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of CounterEvents cached from Cloud Foundry Firehose.",
+          "description": "Count of CounterEvents cached from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -905,7 +905,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of HttpStartStops received and processed from Cloud Foundry Firehose.",
+          "description": "Number of HttpStartStops received and processed per min from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -933,14 +933,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "refId": "B",
@@ -988,7 +988,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of HttpStartStops cached from Cloud Foundry Firehose.",
+          "description": "Count of HttpStartStops cached from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1154,7 +1154,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ValueMetrics received and processed from Cloud Foundry Firehose.",
+          "description": "Number of ValueMetrics received and processed per min from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1182,14 +1182,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Received",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "rate(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[1m])",
               "intervalFactor": 2,
               "legendFormat": "Processed",
               "metric": "",
@@ -1238,7 +1238,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ValueMetrics cached from Cloud Foundry Firehose.",
+          "description": "Count of ValueMetrics cached from Cloud Foundry Firehose.",
           "editable": true,
           "error": false,
           "fill": 1,

@@ -66,9 +66,9 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of requests and bad requests received. Emitted every 5 seconds.",
+          "description": "Successful and failed requests per minute. Emitted every 5 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -84,7 +84,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -94,11 +94,11 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Total",
@@ -106,7 +106,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_rejected_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_rejected_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "Rejected",
               "refId": "B",
@@ -152,9 +152,9 @@
         },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of HTTP responses. Emitted every 5 seconds.",
+          "description": "HTTP Responses per minute. Emitted every 5 seconds.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -169,7 +169,7 @@
             "total": false,
             "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 2,
           "links": [],
           "nullPointMode": "connected",
@@ -179,32 +179,32 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "span": 6,
-          "stack": true,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_2_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_responses_2_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "2xx",
               "refId": "B",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_3_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_responses_3_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "3xx",
               "refId": "C",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_4_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_responses_4_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "intervalFactor": 2,
               "legendFormat": "4xx",
               "refId": "D",
               "step": 4
             },
             {
-              "expr": "sum(avg(firehose_counter_event_gorouter_responses_5_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "avg(rate(firehose_counter_event_gorouter_responses_5_xx_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "5xx",
@@ -511,7 +511,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Number of route register messages received. Emitted per route-register message.",
+          "description": "Route registratoins per minute. Emitted per route-register message.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -540,7 +540,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(firehose_counter_event_gorouter_registry_message_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)",
+              "expr": "avg(rate(firehose_counter_event_gorouter_registry_message_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1m])) by(bosh_deployment, bosh_job_name, bosh_job_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_id }}",
