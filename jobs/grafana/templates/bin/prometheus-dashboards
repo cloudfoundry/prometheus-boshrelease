@@ -12,6 +12,9 @@ for dashboard_file in $(ls <%= dashboard_file %>); do
   filename=$(basename "${dashboard_file}")
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
   sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
+  echo -e "Validating ${DASHBOARDS_DIR}/${filename}"
+  # want stderr going to stdout, don't want stdout at all
+  /var/vcap/packages/grafana_jq/bin/jq . < ${DASHBOARDS_DIR}/${filename} 2>&1 > /dev/null
 done
 <% end %>
 <% end %>
