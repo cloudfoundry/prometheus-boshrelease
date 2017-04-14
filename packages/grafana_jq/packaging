@@ -1,13 +1,8 @@
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
+#!/bin/bash
 
-# Detect # of CPUs so make jobs can be parallelized
-CPUS=$(grep -c ^processor /proc/cpuinfo)
- # Available variables
-# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
-# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
-export HOME=/var/vcap
+set -eux
 
+# Copy jq package
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
-cp jq/jq-linux64 ${BOSH_INSTALL_TARGET}/bin/jq
+cp -a ${BOSH_COMPILE_TARGET}/jq/jq-1.5.linux64 ${BOSH_INSTALL_TARGET}/bin/jq
 chmod 755 ${BOSH_INSTALL_TARGET}/bin/jq
