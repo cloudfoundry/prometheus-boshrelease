@@ -21,10 +21,6 @@ case $1 in
 
     ulimit -n 65536
 
-    <% if_p('prometheus.storage.remote.influxdb.password') do |influxdb_password| %> \
-    export INFLUXDB_PW="<%= influxdb_password %>"
-    <% end %> \
-
     exec prometheus \
       -config.file=/var/vcap/jobs/prometheus/config/prometheus.yml \
       <% if_p('prometheus.alertmanager.notification_queue_capacity') do |notification_queue_capacity| %> \
@@ -78,12 +74,6 @@ case $1 in
       <% if_p('prometheus.storage.local.index_cache_size.label_pair_to_fingerprints') do |label_pair_to_fingerprints| %> \
       -storage.local.index-cache-size.label-pair-to-fingerprints="<%= label_pair_to_fingerprints %>" \
       <% end %> \
-      <% if_p('prometheus.storage.local.max_chunks_to_persist') do |max_chunks_to_persist| %> \
-      -storage.local.max-chunks-to-persist="<%= max_chunks_to_persist %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.local.memory_chunks') do |memory_chunks| %> \
-      -storage.local.memory-chunks="<%= memory_chunks %>" \
-      <% end %> \
       <% if_p('prometheus.storage.local.num_fingerprint_mutexes') do |num_fingerprint_mutexes| %> \
       -storage.local.num-fingerprint-mutexes="<%= num_fingerprint_mutexes %>" \
       <% end %> \
@@ -100,32 +90,8 @@ case $1 in
       <% if_p('prometheus.storage.local.series_sync_strategy') do |series_sync_strategy| %> \
       -storage.local.series-sync-strategy="<%= series_sync_strategy %>" \
       <% end %> \
-      <% if_p('prometheus.storage.remote.graphite.address') do |graphite_address| %> \
-      -storage.remote.graphite-address="<%= graphite_address %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.graphite.prefix') do |graphite_prefix| %> \
-      -storage.remote.graphite-prefix="<%= graphite_prefix %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.graphite.transport') do |graphite_transport| %> \
-      -storage.remote.graphite-transport="<%= graphite_transport %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.influxdb.url') do |influxdb_url| %> \
-      -storage.remote.influxdb-url="<%= influxdb_url %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.influxdb.database') do |influxdb_database| %> \
-      -storage.remote.influxdb.database="<%= influxdb_database %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.influxdb.retention_policy') do |influxdb_retention_policy| %> \
-      -storage.remote.influxdb.retention-policy="<%= influxdb_retention_policy %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.influxdb.username') do |influxdb_username| %> \
-      -storage.remote.influxdb.username="<%= influxdb_username %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.opentsdb.url') do |opentsdb_url| %> \
-      -storage.remote.opentsdb-url="<%= opentsdb_url %>" \
-      <% end %> \
-      <% if_p('prometheus.storage.remote.timeout') do |timeout| %> \
-      -storage.remote.timeout="<%= timeout %>" \
+      <% if_p('prometheus.storage.local.target_heap_size') do |target_heap_size| %> \
+      -storage.local.target-heap-size="<%= target_heap_size %>" \
       <% end %> \
       <% if_p('prometheus.web.console.libraries') do |libraries| %> \
       -web.console.libraries="<%= libraries %>" \

@@ -37,8 +37,12 @@ properties:
     description: "Array of paths to Prometheus rule files"
   prometheus.scrape_configs:
     description: "Array of scrape configurations"
+  prometheus.alerting:
+    description: "Alerting configuration"
   prometheus.remote_write:
-    description: "Remote storage configuration"
+    description: "Remote write storage configuration"
+  prometheus.remote_read:
+    description: "Remote read storage configuration"
 
   prometheus.alertmanager.notification_queue_capacity:
     description: "The capacity of the queue for pending alert manager notifications"
@@ -70,10 +74,6 @@ properties:
     description: "The size in bytes for the label name to label values index cache"
   prometheus.storage.local.index_cache_size.label_pair_to_fingerprints:
     description: "The size in bytes for the label pair to fingerprints index cache"
-  prometheus.storage.local.max_chunks_to_persist:
-    description: "How many chunks can be waiting for persistence before sample ingestion will be throttled "
-  prometheus.storage.local.memory_chunks:
-    description: "How many chunks to keep in memory"
   prometheus.storage.local.num_fingerprint_mutexes:
     description: "The number of mutexes used for fingerprint locking"
   prometheus.storage.local.pedantic_checks:
@@ -84,26 +84,8 @@ properties:
     description: "If 0 or smaller, truncation will be performed even for a single dropped chunk, while 1 or larger will effectively prevent any truncation"
   prometheus.storage.local.series_sync_strategy:
     description: "When to sync series files after modification"
-  prometheus.storage.remote.graphite.address:
-    description: "The host:port of the remote Graphite server to send samples to. None, if empty"
-  prometheus.storage.remote.graphite.prefix:
-    description: "The prefix to prepend to all metrics exported to Graphite. None, if empty"
-  prometheus.storage.remote.graphite.transport:
-    description: "Transport protocol to use to communicate with Graphite"
-  prometheus.storage.remote.influxdb.url:
-    description: "The URL of the remote InfluxDB server to send samples to. None, if empty"
-  prometheus.storage.remote.influxdb.database:
-    description: "The name of the database to use for storing samples in InfluxDB"
-  prometheus.storage.remote.influxdb.retention_policy:
-    description: "The InfluxDB retention policy to use"
-  prometheus.storage.remote.influxdb.username:
-    description: "The username to use when sending samples to InfluxDB"
-  prometheus.storage.remote.influxdb.password:
-    description: "The password to use when sending samples to InfluxDB"
-  prometheus.storage.remote.opentsdb.url:
-    description: "The URL of the remote OpenTSDB server to send samples to. None, if empty"
-  prometheus.storage.remote.timeout:
-    description: "The timeout to use when sending samples to the remote storage"
+  prometheus.storage.local.target_heap_size:
+    description: "The metrics storage attempts to limit its own memory usage such that the total heap size approaches this value"
 
   prometheus.web.console.libraries:
     description: "Path to the console library directory"

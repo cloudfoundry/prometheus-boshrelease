@@ -3,6 +3,7 @@
 ### Breaking changes
 
 * The grafana password must be explicitelly set (it does not default to `admin` anymore)
+* Prometheus properties `prometheus.storage.remote.graphite*`, `prometheus.storage.remote.influxdb*` and `prometheus.storage.remote.opentsdb*` have been removed in favor of the new `prometheus.remote_write` configuration.
 
 ### Fixes
 

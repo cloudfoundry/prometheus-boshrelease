@@ -24,7 +24,15 @@ rule_files: <%= p('prometheus.rule_files', []).to_json %>
 # A list of scrape configurations.
 scrape_configs: <%= p('prometheus.scrape_configs', []).to_json %>
 
+# Alerting specifies settings related to the Alertmanager.
+alerting: <%= p('prometheus.alerting', {}).to_json %>
+
 <% if_p('prometheus.remote_write') do |remote_write| %>
-# Write samples to remote storage.
+# Settings related to the experimental remote write feature.
 remote_write: <%= remote_write.to_json %>
+<% end %>
+
+<% if_p('prometheus.remote_read') do |remote_read| %>
+# Settings related to the experimental remote read feature.
+remote_read: <%= remote_read.to_json %>
 <% end %>
