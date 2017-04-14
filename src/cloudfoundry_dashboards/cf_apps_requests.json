@@ -61,7 +61,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Requests per minute.",
+          "description": "Requests per second during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -84,22 +84,22 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])",
+              "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests",
+          "title": "Rate Requests per second",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -137,7 +137,84 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Number of requests per application instance per minute.",
+          "decimals": 0,
+          "description": "Number of requests.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 14,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "intervalFactor": 2,
+              "legendFormat": "Requests",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Requests per application instance per second during the last 5 minutes.",
           "fill": 1,
           "id": 7,
           "legend": {
@@ -158,23 +235,97 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(instance_id)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by(instance_id)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_id }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Application Instance",
+          "title": "Rate Requests by Application Instance per second",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of requests per application instance.",
+          "fill": 1,
+          "id": 17,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_id)",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance_id }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests by Application Instance",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -224,7 +375,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests per minute by method.",
+          "description": "Requests by method per second during the last 5 mintes.",
           "fill": 1,
           "id": 8,
           "legend": {
@@ -247,22 +398,22 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(method)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by(method)",
               "intervalFactor": 2,
               "legendFormat": "{{ method }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Method",
+          "title": "Rate Requests by Method per second",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -300,7 +451,83 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests per minute by status code.",
+          "description": "Number of requests by method.",
+          "fill": 1,
+          "id": 15,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(method)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ method }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests by Method",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Requests by status code per second during the last 5 minutes.",
           "fill": 1,
           "id": 9,
           "legend": {
@@ -323,22 +550,98 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(status_code)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by(status_code)",
               "intervalFactor": 2,
               "legendFormat": "{{ status_code }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Status Code",
+          "title": "Rate Requests by Status Code per second",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Number of requests by status code.",
+          "fill": 1,
+          "id": 18,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(status_code)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ status_code }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests by Status Code",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -388,7 +691,7 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests per min by scheme.",
+          "description": "Requests by scheme per second during the last 5 mintes.",
           "fill": 1,
           "id": 10,
           "legend": {
@@ -411,22 +714,22 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(scheme)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by(scheme)",
               "intervalFactor": 2,
               "legendFormat": "{{ scheme }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Scheme",
+          "title": "Rate Requests by Scheme per second",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -464,7 +767,83 @@
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of requests per min by host.",
+          "description": "Number of requests by scheme.",
+          "fill": 1,
+          "id": 16,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(scheme)",
+              "intervalFactor": 2,
+              "legendFormat": "{{ scheme }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests by Scheme",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Requests by host per second during the last 5 minutes.",
           "fill": 1,
           "id": 11,
           "legend": {
@@ -487,23 +866,100 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[1m])) by(host)",
+              "expr": "avg(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by(host)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ host }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Host",
+          "title": "Rate Requests by Host per second",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Number of requests by host.",
+          "fill": 1,
+          "id": 19,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(host)",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ host }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Total Requests by Host",
           "tooltip": {
             "shared": true,
             "sort": 0,
