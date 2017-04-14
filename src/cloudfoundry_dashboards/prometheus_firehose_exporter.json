@@ -66,7 +66,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of envelopes and metrics received from Cloud Foundry Firehose.",
+          "description": "Number of envelopes and metrics received per second from Cloud Foundry Firehose during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -89,7 +89,91 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Envelopes",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Metrics",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rate Envelopes & Metrics Received per second",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative number of envelopes and metrics received from Cloud Foundry Firehose.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 25,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -98,7 +182,7 @@
               "intervalFactor": 2,
               "legendFormat": "Envelopes",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
               "expr": "sum(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
@@ -106,13 +190,13 @@
               "intervalFactor": 2,
               "legendFormat": "Metrics",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Envelopes & Metrics Received",
+          "title": "Total Envelopes & Metrics Received",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -406,7 +490,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ContainerMetrics received and processed from Cloud Foundry Firehose.",
+          "description": "Number of ContainerMetrics received and processed per second from Cloud Foundry Firehose during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -429,7 +513,90 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Received",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Processed",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rate Container Metrics per second",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative number of ContainerMetrics received and processed from Cloud Foundry Firehose.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 21,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -451,7 +618,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Container Metrics",
+          "title": "Total Container Metrics",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -512,7 +679,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -611,7 +778,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -656,7 +823,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of CounterEvents received and processed from Cloud Foundry Firehose.",
+          "description": "Number of CounterEvents received and processed per second from Cloud Foundry Firehose during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -679,7 +846,90 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Received",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Processed",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rate Counter Events  per second",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative number of CounterEvents received and processed from Cloud Foundry Firehose.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 22,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -701,7 +951,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Counter Events",
+          "title": "Total Counter Events",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -762,7 +1012,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -860,7 +1110,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -905,7 +1155,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of HttpStartStops received and processed from Cloud Foundry Firehose.",
+          "description": "Number of HttpStartStops received and processed per second from Cloud Foundry Firehose during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -928,7 +1178,90 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Received",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Processed",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rate HTTP Start Stop per second",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative number of HttpStartStops received and processed from Cloud Foundry Firehose.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 23,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -950,7 +1283,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "HTTP Start Stop",
+          "title": "Total HTTP Start Stop",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -1011,7 +1344,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -1109,7 +1442,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1154,7 +1487,7 @@
           "aliasColors": {},
           "bars": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative number of ValueMetrics received and processed from Cloud Foundry Firehose.",
+          "description": "Number of ValueMetrics received and processed persecond from Cloud Foundry Firehose during the last 5 minutes.",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -1177,7 +1510,91 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Received",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "intervalFactor": 2,
+              "legendFormat": "Processed",
+              "metric": "",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Rate Value Metrics per second",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Cumulative number of ValueMetrics received and processed from Cloud Foundry Firehose.",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "id": 24,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -1200,7 +1617,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Value Metrics",
+          "title": "Total Value Metrics",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -1261,7 +1678,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 5,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -1359,7 +1776,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
