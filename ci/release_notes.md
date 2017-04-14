@@ -20,6 +20,7 @@
 
 ### Upgrades
 
+* prometheus 1.6.0
 * cadvisor 0.25.0
 * consul_exporter 0.3.0
 * grafana 4.2.0
