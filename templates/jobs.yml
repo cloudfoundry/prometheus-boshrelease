@@ -26,42 +26,70 @@ jobs:
 
   - name: prometheus
     templates:
+
+
+      - name: bosh_alerts
+        release: prometheus
+      - name: cloudfoundry_alerts
+        release: prometheus
+      - name: kubernetes_alerts
+        release: prometheus
+      - name: mysql_alerts
+        release: prometheus
+      - name: p_rabbitmq_alerts
+        release: prometheus
+      - name: p_redis_alerts
+        release: prometheus
+      - name: probe_alerts
+        release: prometheus
+      - name: prometheus_alerts
+        release: prometheus
+      - name: rabbitmq_alerts
+        release: prometheus
+      - name: redis_alerts
+        release: prometheus
+      - name: prometheus
+        release: prometheus
+      - name: pushgateway
+        release: prometheus
       - name: blackbox_exporter
         release: prometheus
       #- name: bosh_exporter
       #  release: prometheus
       # - name: cadvisor
       #   release: prometheus
-      - name: collectd_exporter
-        release: prometheus
-      - name: consul_exporter
-        release: prometheus
+      # - name: cf_exporter
+      #   release: prometheus
+      #- name: collectd_exporter
+      #  release: prometheus
+      #- name: consul_exporter
+      #  release: prometheus
       #- name: firehose_exporter
       #  release: prometheus
-      - name: github_exporter
-        release: prometheus
-      - name: graphite_exporter
-        release: prometheus
-      - name: haproxy_exporter
-        release: prometheus
+      #- name: github_exporter
+      #  release: prometheus
+      #- name: graphite_exporter
+      #  release: prometheus
+      #- name: haproxy_exporter
+      #  release: prometheus
       #- name: kube_state_metrics_exporter
+      #  release: prometheus
+      #- name: memcached_exporter
+      #  release: prometheus
+      #- name: mongodb_exporter
       #  release: prometheus
       #- name: mysqld_exporter
       #  release: prometheus
-      - name: nats_exporter
-        release: prometheus
+      #- name: nats_exporter
+      #  release: prometheus
       #- name: postgres_exporter
       #  release: prometheus
-      - name: prometheus
-        release: prometheus
-      - name: pushgateway
-        release: prometheus
-      - name: rabbitmq_exporter
-        release: prometheus
-      - name: redis_exporter
-        release: prometheus
-      - name: statsd_exporter
-        release: prometheus
+      #- name: rabbitmq_exporter
+      #  release: prometheus
+      #- name: redis_exporter
+      #  release: prometheus
+      #- name: statsd_exporter
+      #  release: prometheus
     instances: 1
     persistent_disk: 1024
     resource_pool: small_z1
@@ -74,11 +102,18 @@ jobs:
              prober: http
              timeout: 5s
 
-      github_exporter:
-        github:
-          repos: cloudfoundry-community/prometheus-boshrelease
-
       prometheus:
+        rule_files:
+          - /var/vcap/packages/bosh_alerts/*.alerts
+          - /var/vcap/packages/cloudfoundry_alerts/*.alerts
+          - /var/vcap/packages/kubernetes_alerts/*.alerts
+          - /var/vcap/packages/mysql_alerts/*.alerts
+          - /var/vcap/packages/p_rabbitmq_alerts/*.alerts
+          - /var/vcap/packages/p_redis_alerts/*.alerts
+          - /var/vcap/packages/probe_alerts/*.alerts
+          - /var/vcap/packages/prometheus_alerts/*.alerts
+          - /var/vcap/packages/rabbitmq_alerts/*.alerts
+          - /var/vcap/packages/redis_alerts/*.alerts
         scrape_configs:
           - job_name: blackbox
             metrics_path: /probe
@@ -107,6 +142,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9190
+          - job_name: cf
+            static_configs:
+              - targets:
+                - localhost:9193
           - job_name: collectd
             static_configs:
               - targets:
@@ -135,6 +174,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9188
+          - job_name: memcached_exporter
+            static_configs:
+              - targets:
+                - localhost:9150
           - job_name: mysql
             static_configs:
               - targets:
@@ -176,10 +219,52 @@ jobs:
     templates:
       - name: grafana
         release: prometheus
+      - name: bosh_dashboards
+        release: prometheus
+      - name: cloudfoundry_dashboards
+        release: prometheus
+      - name: kubernetes_dashboards
+        release: prometheus
+      - name: mysql_dashboards
+        release: prometheus
+      - name: p_rabbitmq_dashboards
+        release: prometheus
+      - name: p_redis_dashboards
+        release: prometheus
+      - name: probe_dashboards
+        release: prometheus
+      - name: prometheus_dashboards
+        release: prometheus
+      - name: rabbitmq_dashboards
+        release: prometheus
+      - name: redis_dashboards
+        release: prometheus
+      - name: system_dashboards
+        release: prometheus
     instances: 1
     persistent_disk: 1024
     resource_pool: small_z1
     networks: (( param "please set grafana networks" ))
+    properties:
+      grafana:
+        security:
+          admin_password: admin
+      dashboards:
+        json:
+          enabled: true
+      prometheus:
+        dashboard_files:
+          - /var/vcap/packages/bosh_dashboards/*.json
+          - /var/vcap/packages/cloudfoundry_dashboards/*.json
+          - /var/vcap/packages/kubernetes_dashboards/*.json
+          - /var/vcap/packages/mysql_dashboards/*.json
+          - /var/vcap/packages/p_rabbitmq_dashboards/*.json
+          - /var/vcap/packages/p_redis_dashboards/*.json
+          - /var/vcap/packages/probe_dashboards/*.json
+          - /var/vcap/packages/prometheus_dashboards/*.json
+          - /var/vcap/packages/rabbitmq_dashboards/*.json
+          - /var/vcap/packages/redis_dashboardss/*.json
+          - /var/vcap/packages/system_dashboards/*.json
 
   - name: nginx
     templates:
@@ -189,6 +274,14 @@ jobs:
     persistent_disk: 1024
     resource_pool: small_z1
     networks: (( param "please set nginx networks" ))
+    properties:
+      nginx:
+        alertmanager:
+          auth_username: admin
+          auth_password: admin
+        prometheus:
+          auth_username: admin
+          auth_password: admin
 
 networks: (( param "please set networks" ))
 
