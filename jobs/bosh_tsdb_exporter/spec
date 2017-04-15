@@ -1,0 +1,36 @@
+---
+name: bosh_tsdb_exporter
+
+packages:
+  - bosh_tsdb_exporter
+
+templates:
+  bin/bosh_tsdb_exporter_ctl: bin/bosh_tsdb_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+
+properties:
+  bosh_tsdb_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  bosh_tsdb_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  bosh_tsdb_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  bosh_tsdb_exporter.metrics.environment:
+    description: "Environment label to be attached to metrics"
+  bosh_tsdb_exporter.tsdb.port:
+    description: "Port on which to expose TSDB endpoint"
+    default: "13321"
+  bosh_tsdb_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9194"
+  bosh_tsdb_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
+  bosh_tsdb_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  bosh_tsdb_exporter.web.auth_pasword:
+    description: "Password for web interface basic auth"
+  bosh_tsdb_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  bosh_tsdb_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"

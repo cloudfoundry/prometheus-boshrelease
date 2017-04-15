@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/bosh_tsdb_exporter
+LOG_DIR=/var/vcap/sys/log/bosh_tsdb_exporter
+TMP_DIR=/var/vcap/sys/tmp/bosh_tsdb_exporter
+STORE_DIR=/var/vcap/store/bosh_tsdb_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/bosh_tsdb_exporter.pid
+
+source /var/vcap/packages/bosh_tsdb_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/bosh_tsdb_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "bosh_tsdb_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec bosh_tsdb_exporter \
+      <% if_p('bosh_tsdb_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('bosh_tsdb_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('bosh_tsdb_exporter.metrics.namespace') do |namespace| %> \
+      -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      -metrics.environment="<%= p('bosh_tsdb_exporter.metrics.environment') %>" \
+      -tsdb.listen-address=":<%= p('bosh_tsdb_exporter.tsdb.port') %>" \
+      -web.listen-address=":<%= p('bosh_tsdb_exporter.web.port') %>" \
+      <% if_p('bosh_tsdb_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('bosh_tsdb_exporter.web.auth_username') do |auth_username| %> \
+      -web.auth.username="<%= auth_username %>" \
+      <% end %> \
+      <% if_p('bosh_tsdb_exporterr.web.auth_pasword') do |auth_pasword| %> \
+      -web.auth.pasword="<%= auth_pasword %>" \
+      <% end %> \
+      <% if_p('bosh_tsdb_exporter.web.tls_cert', 'bosh_tsdb_exporter.web.tls_key') do %> \
+      -web.tls.cert_file="/var/vcap/jobs/bosh_tsdb_exporter/config/web_tls_cert.pem" \
+      -web.tls.key_file="/var/vcap/jobs/bosh_tsdb_exporter/config/web_tls_key.pem" \
+      <% end %> \
+      >>  ${LOG_DIR}/bosh_tsdb_exporter.stdout.log \
+      2>> ${LOG_DIR}/bosh_tsdb_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

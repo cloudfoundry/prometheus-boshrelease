@@ -26,8 +26,6 @@ jobs:
 
   - name: prometheus
     templates:
-
-
       - name: bosh_alerts
         release: prometheus
       - name: cloudfoundry_alerts
@@ -56,10 +54,12 @@ jobs:
         release: prometheus
       #- name: bosh_exporter
       #  release: prometheus
-      # - name: cadvisor
-      #   release: prometheus
-      # - name: cf_exporter
-      #   release: prometheus
+      #- name: bosh_tsdb_exporter
+      #  release: prometheus
+      #- name: cadvisor
+      #  release: prometheus
+      #- name: cf_exporter
+      #  release: prometheus
       #- name: collectd_exporter
       #  release: prometheus
       #- name: consul_exporter
@@ -142,6 +142,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9190
+          - job_name: bosh_tsdb
+            static_configs:
+              - targets:
+                - localhost:9194
           - job_name: cf
             static_configs:
               - targets:

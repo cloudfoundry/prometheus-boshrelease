@@ -5,6 +5,7 @@ This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io
 It includes the following [Prometheus Exporters](https://prometheus.io/docs/instrumenting/exporters/):
 * [Blackbox](https://github.com/prometheus/blackbox_exporter)
 * [BOSH](https://github.com/cloudfoundry-community/bosh_exporter)
+* [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter)
 * [cAdvisor](https://github.com/google/cadvisor)
 * [Collectd](https://github.com/prometheus/collectd_exporter)
 * [Consul](https://github.com/prometheus/consul_exporter)
