@@ -1,0 +1,107 @@
+ALERT BOSHTSDBJobHighCPULoad
+  IF avg(bosh_tsdb_job_load_avg01{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 5
+  FOR 10m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is reporting a high CPU load average",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` had a CPU load average (1m) above 5 for 10 minutes: {{$value}}",
+  }
+
+ALERT BOSHTSDBJobLowFreeRAM
+  IF avg(bosh_tsdb_job_mem_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  FOR 10m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is reporting low free RAM",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its RAM for 10 minutes: {{$value}}%",
+  }
+
+ALERT BOSHTSDBJobLowSwap
+  IF avg(bosh_tsdb_job_swap_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  FOR 10m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is reporting low swap",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its swap for 10 minutes: {{$value}}%",
+  }
+
+ALERT BOSHTSDBJobSystemDiskWillFillIn2Hours
+  IF predict_linear(bosh_tsdb_job_system_disk_percent{bosh_job_name!~"^compilation.*"}[1h], 2*3600) > 90
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` will run out of system disk in 2 hours",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` system disk will be used more than 90% in 2 hours",
+  }
+
+ALERT BOSHTSDBJobSystemDiskFull
+  IF avg(bosh_tsdb_job_system_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is running out of system disk",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its system disk for 30 minutes: {{$value}%",
+  }
+
+ALERT BOSHTSDBJobEphemeralDiskWillFillIn2Hours
+  IF predict_linear(bosh_tsdb_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}[1h], 2*3600) > 80
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` will run out of ephemeral disk in 2 hours",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` ephemeral disk will be used more than 80% in 2 hours",
+  }
+
+ALERT BOSHTSDBJobEphemeralDiskFull
+  IF avg(bosh_tsdb_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 80
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is running out of ephemeral disk",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 80% of its ephemeral disk for 30 minutes: {{$value}%",
+  }
+
+ALERT BOSHTSDBJobPersistentDiskWillFillIn2Hours
+  IF predict_linear(bosh_tsdb_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}[1h], 2*3600) > 90
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` will run out of persistent disk in 2 hours",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` persistent disk will be used more than 90% in 2 hours",
+  }
+
+ALERT BOSHTSDBJobPersistentDiskFull
+  IF avg(bosh_tsdb_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is running out of persistent disk",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its persistent disk for 30 minutes: {{$value}}%",
+  }

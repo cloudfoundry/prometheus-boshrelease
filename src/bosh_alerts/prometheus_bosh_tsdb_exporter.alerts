@@ -1,0 +1,11 @@
+ALERT BOSHTSDBExporterLastMessageTooOld
+  IF (time() - max(bosh_tsdb_last_received_tsdb_message_timestamp) by(environment, instance)) > 600
+  FOR 5m
+  LABELS {
+    service = "bosh-tsdb-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "bosh_tsdb_exporter `{{$labels.environment}}/{{$labels.instance}}` last TSDB message received > 10 minutes ago",
+    description = "bosh `cf_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last TSDB message received from BOSH HM was more than 10 minutes ago",
+  }
