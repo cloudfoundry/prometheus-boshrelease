@@ -105,3 +105,15 @@ ALERT BOSHJobPersistentDiskFull
     summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is running out of persistent disk",
     description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its persistent disk for 30 minutes: {{$value}}%",
   }
+
+ALERT BOSHJobPersistentDiskInodesExhausted
+  IF avg(bosh_job_persistent_disk_inode_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > 90
+  FOR 30m
+  LABELS {
+    service = "bosh-job",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is running out of inodes",
+    description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has used more than 90% of its persistent disk inodes for 30 minutes: {{$value}}%",
+  }
