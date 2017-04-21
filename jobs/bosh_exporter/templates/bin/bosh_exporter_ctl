@@ -40,9 +40,6 @@ case $1 in
       <% if_p('bosh_exporter.bosh.password') do |password| %> \
       -bosh.password="<%= password %>" \
       <% end %> \
-      <% if_p('bosh_exporter.bosh.uaa.url') do |url| %> \
-      -bosh.uaa.url="<%= url %>" \
-      <% end %> \
       <% if_p('bosh_exporter.bosh.uaa.client_id') do |client_id| %> \
       -bosh.uaa.client-id="<%= client_id %>" \
       <% end %> \
@@ -81,6 +78,16 @@ case $1 in
       -web.listen-address=":<%= p('bosh_exporter.web.port') %>" \
       <% if_p('bosh_exporter.web.telemetry_path') do |telemetry_path| %> \
       -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.web.auth_username') do |auth_username| %> \
+      -web.auth.username="<%= auth_username %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.web.auth_pasword') do |auth_pasword| %> \
+      -web.auth.pasword="<%= auth_pasword %>" \
+      <% end %> \
+      <% if_p('bosh_exporter.web.tls_cert', 'bosh_exporter.web.tls_key') do %> \
+      -web.tls.cert_file="/var/vcap/jobs/bosh_exporter/config/web_tls_cert.pem" \
+      -web.tls.key_file="/var/vcap/jobs/bosh_exporter/config/web_tls_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/bosh_exporter.stdout.log \
       2>> ${LOG_DIR}/bosh_exporter.stderr.log

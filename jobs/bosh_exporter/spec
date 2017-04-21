@@ -7,6 +7,8 @@ packages:
 templates:
   bin/bosh_exporter_ctl: bin/bosh_exporter_ctl
   config/bosh_ca_cert.pem: config/bosh_ca_cert.pem
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
 
 properties:
   bosh_exporter.bosh.url:
@@ -15,8 +17,6 @@ properties:
     description: "BOSH Username"
   bosh_exporter.bosh.password:
     description: "BOSH Password"
-  bosh_exporter.bosh.uaa.url:
-    description: "BOSH UAA URL"
   bosh_exporter.bosh.uaa.client_id:
     description: "BOSH UAA Client ID"
   bosh_exporter.bosh.uaa.client_secret:
@@ -46,6 +46,14 @@ properties:
     default: "9190"
   bosh_exporter.web.telemetry_path:
     description: "Path under which to expose Prometheus metrics"
+  bosh_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  bosh_exporter.web.auth_pasword:
+    description: "Password for web interface basic auth"
+  bosh_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  bosh_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"
 
   env.http_proxy:
     description: "HTTP proxy to use"
