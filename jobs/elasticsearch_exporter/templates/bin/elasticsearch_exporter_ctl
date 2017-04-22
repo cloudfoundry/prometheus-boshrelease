@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/elasticsearch_exporter
+LOG_DIR=/var/vcap/sys/log/elasticsearch_exporter
+TMP_DIR=/var/vcap/sys/tmp/elasticsearch_exporter
+STORE_DIR=/var/vcap/store/elasticsearch_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/elasticsearch_exporter.pid
+
+source /var/vcap/packages/elasticsearch_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/elasticsearch_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "elasticsearch_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec elasticsearch_exporter \
+      <% if_p('elasticsearch_exporter.es.uri') do |es_uri| %> \
+      -es.uri="<%= es_uri %>" \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.es.all') do |es_all| %> \
+      -es.all="<%= es_all %>" \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.es.timeout') do |es_timeout| %> \
+      -es.timeout="<%= es_timeout %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('elasticsearch_exporter.web.port') %>" \
+      <% if_p('elasticsearch_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/elasticsearch_exporter.stdout.log \
+      2>> ${LOG_DIR}/elasticsearch_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

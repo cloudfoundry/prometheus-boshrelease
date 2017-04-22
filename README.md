@@ -11,6 +11,7 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [Consul](https://github.com/prometheus/consul_exporter)
 * [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter)
 * [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter)
+* [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter)
 * [Github](https://github.com/infinityworksltd/github-exporter)
 * [Graphite](https://github.com/prometheus/graphite_exporter)
 * [HAProxy](https://github.com/prometheus/haproxy_exporter)
