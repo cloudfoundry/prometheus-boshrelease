@@ -53,6 +53,12 @@ cd prometheus-boshrelease
 bosh -n deploy
 ```
 
+
+### Known issues
+
+The `cf_exporter` is known to require quite some resources on the `cloud_controller` since the queries include an `inline-relations-depth=2` API call, which basically dumps the `ccdb` and transforms it into `json` response. This may result in a very poor `cloud_controller` API performance. To prevent this, consider setting a reasonable `scrape_interval`.
+
+
 ## Contributing
 
 Refer to [CONTRIBUTING.md](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/CONTRIBUTING.md).
