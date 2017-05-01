@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/shield_exporter
+LOG_DIR=/var/vcap/sys/log/shield_exporter
+TMP_DIR=/var/vcap/sys/tmp/shield_exporter
+STORE_DIR=/var/vcap/store/shield_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/shield_exporter.pid
+
+source /var/vcap/packages/shield_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/shield_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "shield_exporter"
+    echo $$ > ${PIDFILE}
+
+    <% if_p('env.http_proxy') do |http_proxy| %>
+    export HTTP_PROXY="<%= http_proxy %>"
+    export http_proxy="<%= http_proxy %>"
+    <% end %>
+    <% if_p('env.https_proxy') do |https_proxy| %>
+    export HTTPS_PROXY="<%= https_proxy %>"
+    export https_proxy="<%= https_proxy %>"
+    <% end %>
+    <% if_p('env.no_proxy') do |no_proxy| %>
+    export NO_PROXY="<%= no_proxy %>"
+    export no_proxy="<%= no_proxy %>"
+    <% end %>
+
+    <% if_p('shield_exporter.shield.skip_ssl_verify') do |skip_ssl_verify| %>
+    export SHIELD_SKIP_SSL_VERIFY="<%= skip_ssl_verify %>"
+    <% end %>
+
+    <% if_p('shield_exporter.shield.trace') do |trace| %>
+    export SHIELD_TRACE="<%= trace %>"
+    <% end %>
+
+    exec shield_exporter \
+      -shield.backend_url="<%= p('shield_exporter.shield.backend_url') %>" \
+      -shield.username="<%= p('shield_exporter.shield.username') %>" \
+      -shield.password="<%= p('shield_exporter.shield.password') %>" \
+      <% if_p('shield_exporter.filter.collectors') do |collectors| %> \
+      -filter.collectors="<%= collectors %>" \
+      <% end %> \
+      <% if_p('shield_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('shield_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('shield_exporter.metrics.namespace') do |namespace| %> \
+      -metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      -metrics.environment="<%= p('shield_exporter.metrics.environment') %>" \
+      -web.listen-address=":<%= p('shield_exporter.web.port') %>" \
+      <% if_p('shield_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('shield_exporter.web.auth_username') do |auth_username| %> \
+      -web.auth.username="<%= auth_username %>" \
+      <% end %> \
+      <% if_p('shield_exporter.web.auth_pasword') do |auth_pasword| %> \
+      -web.auth.pasword="<%= auth_pasword %>" \
+      <% end %> \
+      <% if_p('shield_exporter.web.tls_cert', 'shield_exporter.web.tls_key') do %> \
+      -web.tls.cert_file="/var/vcap/jobs/shield_exporter/config/web_tls_cert.pem" \
+      -web.tls.key_file="/var/vcap/jobs/shield_exporter/config/web_tls_key.pem" \
+      <% end %> \
+      >>  ${LOG_DIR}/shield_exporter.stdout.log \
+      2>> ${LOG_DIR}/shield_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

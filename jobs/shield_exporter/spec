@@ -1,0 +1,52 @@
+---
+name: shield_exporter
+
+packages:
+  - shield_exporter
+
+templates:
+  bin/shield_exporter_ctl: bin/shield_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+
+properties:
+  shield_exporter.shield.backend_url:
+    description: "Shield Backend URL"
+  shield_exporter.shield.username:
+    description: "Shield Username"
+  shield_exporter.shield.password:
+    description: "Shield Password"
+  shield_exporter.shield.skip_ssl_verify:
+    description: "Disable Shield SSL Verify"
+  shield_exporter.shield.trace:
+    description: "Enable Shield trace mode"
+  shield_exporter.filter.collectors:
+    description: "Comma separated collectors to filter. If not set, all collectors will be enabled ('Archives', 'Jobs', 'RetentionPolicies', 'Schedules', 'Status', 'Stores', 'Targets', 'Tasks')"
+  shield_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  shield_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  shield_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  shield_exporter.metrics.environment:
+    description: "Environment label to be attached to metrics"
+  shield_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9179"
+  shield_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
+  shield_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  shield_exporter.web.auth_pasword:
+    description: "Password for web interface basic auth"
+  shield_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  shield_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"
+
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"

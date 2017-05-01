@@ -90,6 +90,8 @@ jobs:
       #  release: prometheus
       #- name: redis_exporter
       #  release: prometheus
+      #- name: shield_exporter
+      #  release: prometheus
       #- name: statsd_exporter
       #  release: prometheus
     instances: 1
@@ -220,6 +222,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9121
+          - job_name: shield
+            static_configs:
+              - targets:
+                - localhost:9179
           - job_name: statsd
             static_configs:
               - targets:

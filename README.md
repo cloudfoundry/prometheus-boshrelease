@@ -24,6 +24,7 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [PushGateway](https://github.com/prometheus/pushgateway)
 * [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter)
 * [Redis](https://github.com/oliver006/redis_exporter)
+* [Shield](https://github.com/cloudfoundry-community/shield_exporter)
 * [Statsd](https://github.com/prometheus/statsd_exporter)
 
 ## Usage

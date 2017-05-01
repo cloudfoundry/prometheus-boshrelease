@@ -5,6 +5,7 @@
 ### Features
 
 * Added elasticsearch_exporter
+* Added shield_exporter
 
 ### Upgrades
 
