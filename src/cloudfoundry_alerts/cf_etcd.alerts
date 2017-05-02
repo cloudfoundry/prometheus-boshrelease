@@ -1,5 +1,5 @@
 ALERT CFEtcdMoreThanOneLeader
-  IF count(firehose_value_metric_etcd_is_leader == 1) by(environment, bosh_deployment) > 1
+  IF max(count(firehose_value_metric_etcd_is_leader == 1) by(environment, bosh_deployment, instance)) by(environment, bosh_deployment) > 1
   FOR 10m
   LABELS {
     service = "cf-etcd",
