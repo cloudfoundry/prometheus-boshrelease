@@ -2,10 +2,13 @@
 
 ### Fixes
 
+* Fixes cloudfoundry dashboards when there's more than 1 firehose exporter
+* Fixes cloudfoundry etcd alert when there's more than 1 firehose exporter
+
 ### Features
 
 * Added elasticsearch_exporter
-* Added shield_exporter
+* Added shield_exporter (and dashboards)
 
 ### Upgrades
 
