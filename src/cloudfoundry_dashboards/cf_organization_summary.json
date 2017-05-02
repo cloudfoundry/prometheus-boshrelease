@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "4.2.0"
     },
     {
       "type": "panel",
@@ -106,7 +106,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(cf_organization_total_app_instances_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
@@ -114,7 +114,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -240,7 +240,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
@@ -249,7 +249,7 @@
               "legendFormat": "Quota",
               "metric": "",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -322,14 +322,14 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
               "expr": "avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -407,7 +407,7 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}",
+              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(stack_id, stack_name)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ stack_name }}",

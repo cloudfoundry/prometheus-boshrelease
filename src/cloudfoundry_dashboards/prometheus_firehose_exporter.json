@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "4.2.0"
     },
     {
       "type": "panel",
@@ -76,7 +76,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -95,8 +95,9 @@
           "targets": [
             {
               "expr": "rate(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Envelopes",
+              "legendFormat": "Envelopes ({{ instance }})",
               "refId": "A",
               "step": 10
             },
@@ -104,7 +105,7 @@
               "expr": "rate(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Metrics",
+              "legendFormat": "Metrics ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -160,7 +161,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -178,17 +179,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_envelopes_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Envelopes",
+              "legendFormat": "Envelopes ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Metrics",
+              "legendFormat": "Metrics ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -500,7 +501,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -520,14 +521,14 @@
             {
               "expr": "rate(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
               "expr": "rate(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -583,7 +584,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -601,16 +602,17 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_container_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_container_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -684,9 +686,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_container_metrics_cached{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_container_metrics_cached{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Cached",
+              "legendFormat": "{{ instance }}",
               "refId": "A",
               "step": 10
             }
@@ -699,7 +702,7 @@
             "msResolution": false,
             "shared": true,
             "sort": 0,
-            "value_type": "individual"
+            "value_type": "cumulative"
           },
           "transparent": true,
           "type": "graph",
@@ -833,7 +836,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -853,14 +856,14 @@
             {
               "expr": "rate(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
               "expr": "rate(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -916,7 +919,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -934,16 +937,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_counter_events_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_counter_events_processed{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -1017,9 +1020,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_counter_events_cached{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_counter_events_cached{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Cached",
+              "legendFormat": "{{ instance }}",
               "refId": "A",
               "step": 10
             }
@@ -1165,7 +1168,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1185,14 +1188,14 @@
             {
               "expr": "rate(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
               "expr": "rate(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -1248,7 +1251,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1266,16 +1269,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_http_start_stop_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_http_start_stop_processed{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "refId": "B",
               "step": 10
             }
@@ -1349,9 +1352,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_http_start_stop_cached{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_http_start_stop_cached{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Cached",
+              "legendFormat": "{{ instance }}",
               "refId": "A",
               "step": 10
             }
@@ -1497,7 +1500,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1517,14 +1520,14 @@
             {
               "expr": "rate(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
               "expr": "rate(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}[5m])",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "metric": "",
               "refId": "B",
               "step": 10
@@ -1581,7 +1584,7 @@
             "current": false,
             "max": false,
             "min": false,
-            "show": true,
+            "show": false,
             "total": false,
             "values": false
           },
@@ -1599,16 +1602,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_value_metrics_received{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Received",
+              "legendFormat": "Received ({{ instance }})",
               "refId": "A",
               "step": 10
             },
             {
-              "expr": "sum(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_total_value_metrics_processed{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Processed",
+              "legendFormat": "Processed ({{ instance }})",
               "metric": "",
               "refId": "B",
               "step": 10
@@ -1683,9 +1686,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(firehose_value_metrics_cached{environment=~\"$environment\",instance=~\"$instance\"})",
+              "expr": "sum(firehose_value_metrics_cached{environment=~\"$environment\",instance=~\"$instance\"}) by(instance)",
               "intervalFactor": 2,
-              "legendFormat": "Cached",
+              "legendFormat": "{{ instance }}",
               "refId": "A",
               "step": 10
             }

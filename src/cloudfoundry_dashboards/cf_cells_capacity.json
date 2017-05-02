@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "4.2.0"
     },
     {
       "type": "panel",
@@ -131,11 +131,11 @@
           },
           "targets": [
             {
-              "expr": "count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"})",
+              "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
               "intervalFactor": 2,
               "metric": "firehose_value_metric_rep_capacity_total_containers",
               "refId": "A",
-              "step": 600
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -208,11 +208,11 @@
           },
           "targets": [
             {
-              "expr": "bottomk(1, firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"})",
+              "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
               "intervalFactor": 2,
               "metric": "firehose_value_metric_rep_capacity_remaining_memory",
               "refId": "A",
-              "step": 600
+              "step": 60
             }
           ],
           "thresholds": "2000,4000",
@@ -287,13 +287,13 @@
           },
           "targets": [
             {
-              "expr": "bottomk(1, firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"})",
+              "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_job_ip }}",
               "metric": "firehose_value_metric_rep_capacity_remaining_memory",
               "refId": "A",
-              "step": 600
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -359,19 +359,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id, bosh_job_name)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id, bosh_job_name))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 60
+              "step": 2
             },
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
-              "step": 60
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -458,18 +458,18 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 60
+              "step": 2
             },
             {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_id))",
+              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
               "intervalFactor": 2,
               "legendFormat": "Available",
               "refId": "B",
-              "step": 60
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -548,12 +548,12 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_job_ip }}",
               "refId": "A",
-              "step": 21600
+              "step": 2400
             }
           ],
           "title": "Running Containers Per Cell",
@@ -587,12 +587,12 @@
           "strokeWidth": 1,
           "targets": [
             {
-              "expr": "firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}",
+              "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_job_ip }}",
               "refId": "A",
-              "step": 21600
+              "step": 2400
             }
           ],
           "title": "Memory Used Per Cell",
@@ -680,7 +680,7 @@
     ]
   },
   "time": {
-    "from": "now/d",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {

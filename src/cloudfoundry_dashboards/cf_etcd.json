@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "4.2.0"
     },
     {
       "type": "panel",
@@ -128,7 +128,7 @@
           },
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} == 1",
+              "expr": "avg(count(firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} == 1) by(instance, bosh_job_ip)) by(bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_job_ip }}",
@@ -270,7 +270,7 @@
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "metric": "",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -360,7 +360,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -438,7 +438,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -524,20 +524,20 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
-              "expr": "firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -611,19 +611,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "intervalFactor": 2,
               "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
-              "expr": "firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}",
+              "expr": "avg(firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -713,7 +713,7 @@
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "metric": "",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -785,21 +785,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "avg(rate(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Received ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "metric": "",
               "refId": "A",
-              "step": 10
+              "step": 4
             },
             {
-              "expr": "rate(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])",
+              "expr": "avg(rate(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Sent ({{{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}}})",
+              "legendFormat": "Sent ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
               "refId": "B",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -826,7 +826,7 @@
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -929,5 +929,5 @@
   },
   "timezone": "browser",
   "title": "CF: Etcd",
-  "version": 8
+  "version": 1
 }
