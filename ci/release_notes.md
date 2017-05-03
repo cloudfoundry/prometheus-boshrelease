@@ -2,6 +2,8 @@
 
 ### Fixes
 
+* Increased MySQLGalera*QueueLengthTooHigh alert thresholds
+
 ### Features
 
 * Added Shield alerts
