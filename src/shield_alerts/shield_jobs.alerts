@@ -1,0 +1,47 @@
+ALERT ShieldJobPending1d
+  IF shield_job_status == 1
+  FOR 1d
+  LABELS {
+    service = "shield",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` pending > 24h",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a pending status for more than 1 day",
+  }
+
+ALERT ShieldJobRunning1d
+  IF shield_job_status == 2
+  FOR 1d
+  LABELS {
+    service = "shield",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` running > 24h",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a running status for more than 1 day",
+  }
+
+ALERT ShieldJobFailed1d
+  IF shield_job_status == 4 and shield_job_paused != 0
+  FOR 1d
+  LABELS {
+    service = "shield",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` failed > 24h",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a failing status for more than 1 day",
+  }
+
+ALERT ShieldJobPaused1day
+  IF shield_job_paused == 1
+  FOR 1d
+  LABELS {
+    service = "shield",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` paused > 24h",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a paused state for more than 1 day",
+  }
