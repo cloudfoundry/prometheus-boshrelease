@@ -8,6 +8,7 @@ rm -fr ${DASHBOARDS_DIR}/*
 
 <% if_link('prometheus') do |prometheus| %>
 <% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
+<% if !dashboard_file.nil? && dashboard_file.strip != "" %>
 for dashboard_file in $(ls <%= dashboard_file %>); do
   filename=$(basename "${dashboard_file}")
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
@@ -16,6 +17,7 @@ for dashboard_file in $(ls <%= dashboard_file %>); do
   # want stderr going to stdout, don't want stdout at all
   /var/vcap/packages/grafana_jq/bin/jq . < ${DASHBOARDS_DIR}/${filename} 2>&1 > /dev/null
 done
+<% end %>
 <% end %>
 <% end %>
 
