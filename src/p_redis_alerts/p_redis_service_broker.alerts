@@ -46,7 +46,7 @@ ALERT PRedisServiceBrokerSharedPlanNoInstancesAvailable
     description = "There are NOT any instances available for the Shared Plan at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`",
   }
 
-ALERT PRedisOnDemandServiceBrokerLowInstancesAvailable
+ALERT PRedisServiceBrokerOnDemandLowInstancesAvailable
   IF ((avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment) / (avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_total_instances) by(environment,bosh_deployment) + avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment))) * 100) < 10
   FOR 30m
   LABELS {
@@ -58,7 +58,7 @@ ALERT PRedisOnDemandServiceBrokerLowInstancesAvailable
     description = "There are less than {{$value}}% of instances available for the On Demand Service Broker at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`",
   }
 
-ALERT PRedisOnDemandServiceBrokerNoInstancesAvailable
+ALERT PRedisServiceBrokerOnDemandNoInstancesAvailable
   IF avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment) < 1
   FOR 30m
   LABELS {
