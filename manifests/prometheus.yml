@@ -73,13 +73,16 @@ instance_groups:
   networks:
   - name: default
   jobs:
-    nginx:
-      alertmanager:
-        auth_username: admin
-        auth_password: ((alertmanager_password))
-      prometheus:
-        auth_username: admin
-        auth_password: ((prometheus_password))
+    - name: nginx
+      release: prometheus
+      properties:
+        nginx:
+          alertmanager:
+            auth_username: admin
+            auth_password: ((alertmanager_password))
+          prometheus:
+            auth_username: admin
+            auth_password: ((prometheus_password))
 
 variables:
 - name: grafana_password
