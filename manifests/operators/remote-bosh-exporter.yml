@@ -1,0 +1,43 @@
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value: 
+    job_name: bosh
+    scheme: https
+    basic_auth:
+      username: ((bosh_exporter_username))
+      password: ((bosh_exporter_password))
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+    - targets: ((bosh_exporter_targets))
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value: 
+    name: system_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/prometheus/dashboard_files/-
+  value: /var/vcap/packages/system_dashboards/*.json
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value: 
+    name: bosh_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/prometheus/dashboard_files/-
+  value: /var/vcap/packages/bosh_dashboards/*.json
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: bosh_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/packages/bosh_alerts/*.alerts
+
