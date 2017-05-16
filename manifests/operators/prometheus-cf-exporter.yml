@@ -1,3 +1,5 @@
+# Should be used in combination with ./cf/firehose-exporter-uaa-client.yml
+
 # Prometheus Scrape Config
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
@@ -63,8 +65,3 @@
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/packages/cloudfoundry_alerts/*.alerts
-
-# TODO Alertmanager Grouping
-# - type: replace
-#   path: /instance_groups/name=alertmanager/jobs/name=alertmanager/properties/alertmanager/route/group_by?/-
-#   value: bosh_deployment
