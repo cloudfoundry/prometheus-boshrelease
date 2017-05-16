@@ -1,0 +1,11 @@
+ALERT PostgresExporterScrapeError
+  IF max(pg_exporter_last_scrape_error) by(instance) != 0
+  FOR 10m
+  LABELS {
+    service = "postgres-exporter",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "postgres_exporter `{{$labels.instance}}` scrape error",
+    description = "The `postgres_exporter` at `{{$labels.instance}}` was unable to scrape metrics during the last 10 minutes",
+  }
