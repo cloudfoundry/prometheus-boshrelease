@@ -1,0 +1,66 @@
+# Prometheus Scrape Config
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value: 
+    job_name: cf
+    static_configs:
+    - targets: 
+      - localhost:9193 # cf_exporter
+      - localhost:9186 # firehose_exporter
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: cf_exporter
+    release: prometheus
+    properties:
+      cf_exporter:
+        skip_ssl_verify: ((skip_ssl_verify))
+        cf:
+          api_url: ((cf_api_url))
+          username: ((cf_admin_username))
+          password: ((cf_admin_password))
+          deployment_name: cf
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: firehose_exporter
+    release: prometheus
+    properties:
+      firehose_exporter:
+        skip_ssl_verify: ((skip_ssl_verify))
+        uaa:
+          url: ((uaa_url))
+          client_id: ((uaa_client_id))
+          client_secret: ((uaa_client_secret))
+        doppler:
+          url: ((doppler_url))
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value: 
+    name: cloudfoundry_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/packages/cloudfoundry_dashboards/*.json
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: cloudfoundry_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/packages/cloudfoundry_alerts/*.alerts
+
+# TODO Alertmanager Grouping
+# - type: replace
+#   path: /instance_groups/name=alertmanager/jobs/name=alertmanager/properties/alertmanager/route/group_by?/-
+#   value: bosh_deployment
