@@ -56,6 +56,10 @@ instance_groups:
     release: prometheus
     properties:
       grafana:
+        auth:
+          basic:
+            enabled: true
+          disable_login_form: true
         security:
           admin_password: ((grafana_password))
         dashboards:
@@ -77,6 +81,9 @@ instance_groups:
       release: prometheus
       properties:
         nginx:
+          grafana:
+            auth_username: admin
+            auth_password: ((grafana_password))
           alertmanager:
             auth_username: admin
             auth_password: ((alertmanager_password))
