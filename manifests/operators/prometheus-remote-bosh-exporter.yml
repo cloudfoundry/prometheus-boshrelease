@@ -1,3 +1,11 @@
+# Depends on ./prometheus-bosh-exporter.yml
+- type: remove
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/job_name=bosh
+
+- type: remove
+  path: /instance_groups/name=prometheus/jobs/name=bosh_exporter
+
+# Prometheus Scrape Config
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
   value: 
@@ -11,43 +19,3 @@
     static_configs:
     - targets: ((bosh_exporter_targets))
 
-# Grafana Dashboards
-- type: replace
-  path: /instance_groups/name=grafana/jobs/-
-  value: 
-    name: system_dashboards
-    release: prometheus
-
-- type: replace
-  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
-  value: /var/vcap/packages/system_dashboards/*.json
-
-- type: replace
-  path: /instance_groups/name=grafana/jobs/-
-  value: 
-    name: bosh_dashboards
-    release: prometheus
-
-- type: replace
-  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
-  value: /var/vcap/packages/bosh_dashboards/*.json
-
-# Prometheus Alerts
-- type: replace
-  path: /instance_groups/name=prometheus/jobs/-
-  value: 
-    name: bosh_alerts
-    release: prometheus
-
-- type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/packages/bosh_alerts/*.alerts
-
-# Alertmanager Grouping
-- type: replace
-  path: /instance_groups/name=alertmanager/jobs/name=alertmanager/properties/alertmanager/route/group_by?/-
-  value: bosh_deployment
-
-- type: replace
-  path: /instance_groups/name=alertmanager/jobs/name=alertmanager/properties/alertmanager/route/group_by?/-
-  value: bosh_job_name
