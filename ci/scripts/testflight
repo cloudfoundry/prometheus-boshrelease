@@ -45,6 +45,11 @@ header "Deploying to BOSH-lite..."
 ./templates/make_manifest warden
 bosh -n deploy
 
+if [[ -n ${TEST_ERRAND} ]]; then
+	header "Running '${TEST_ERRAND}' validation errand"
+	bosh -n run errand ${TEST_ERRAND}
+fi
+
 header "Cleaning up..."
 bosh -n delete deployment ${BOSH_LITE_DEPLOYMENT} --force || echo "continuing on..."
 bosh -n cleanup || echo "continuing on..."

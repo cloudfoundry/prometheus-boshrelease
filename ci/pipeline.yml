@@ -18,6 +18,8 @@ meta:
   url:      (( param "Please specify the full url of the target Concourse CI" ))
   pipeline: (( concat meta.name "-boshrelease" ))
 
+  image:    docker:///starkandwayne/concourse
+
   aws:
     bucket:     (( concat meta.pipeline "-pipeline" ))
     access_key: (( param "Please set your AWS Access Key ID for your pipeline S3 Bucket" ))
@@ -45,7 +47,7 @@ meta:
     channel:       (( param "Please specify the channel (#name) or user (@user) to send messages to" ))
     username:      concourse
     icon:          http://cl.ly/image/3e1h0H3H2s0P/concourse-logo.png
-    fail_url: '(( concat "<" meta.url "/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Failure! " meta.slack.upset_moji ">" ))'
+    fail_url: '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Concourse Failure! " meta.slack.upset_moji ">" ))'
 
 groups:
   - name: (( grab meta.pipeline ))
@@ -67,7 +69,7 @@ jobs:
       - task: testflight
         config:
           platform: linux
-          image: docker:///starkandwayne/concourse
+          rootfs_uri:    (( grab meta.image ))
           inputs:
             - { name: git }
           run:
@@ -79,6 +81,7 @@ jobs:
             BOSH_LITE_USERNAME:   (( grab meta.bosh-lite.username ))
             BOSH_LITE_PASSWORD:   (( grab meta.bosh-lite.password ))
             BOSH_LITE_DEPLOYMENT: (( grab meta.bosh-lite.deployment ))
+            TEST_ERRAND:          (( grab meta.test-errand || ~ ))
       on_failure:
         put: notify
         params:
@@ -144,8 +147,8 @@ jobs:
       - name: release
         task: release
         config:
-          image: docker:///starkandwayne/concourse
           platform: linux
+          rootfs_uri:    (( grab meta.image ))
           inputs:
             - name: version
             - name: git
