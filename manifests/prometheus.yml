@@ -56,12 +56,36 @@ instance_groups:
     release: prometheus
     properties:
       grafana:
-        auth:
-          basic:
-            enabled: true
-          disable_login_form: true
+        database:
+          type: sqlite3
+          path: database.sqlite
+          host: ~
+          name: ~
+          username: ~
+          password: ~
         security:
+          admin_user: admin
           admin_password: ((grafana_password))
+          secret_key: ((grafana_secret_key))
+        analytics:
+          reporting_enabled: false
+          check_for_updates: false
+        users:
+          allow_sign_up: false
+          allow_org_create: false
+          auto_assign_org: true
+          auto_assign_org_role: Viewer
+          seeded_global_users: []
+        auth:
+          anonymous:
+            enabled: true
+            org_role: Viewer
+          disable_login_form: false
+          generic_oauth:
+            enabled: true
+            allow_sign_up: true
+        alerting:
+          enabled: false
         dashboards:
           json:
             enabled: true
@@ -81,9 +105,6 @@ instance_groups:
       release: prometheus
       properties:
         nginx:
-          grafana:
-            auth_username: admin
-            auth_password: ((grafana_password))
           alertmanager:
             auth_username: admin
             auth_password: ((alertmanager_password))
@@ -93,6 +114,8 @@ instance_groups:
 
 variables:
 - name: grafana_password
+  type: password
+- name: grafana_secret_key
   type: password
 - name: alertmanager_password
   type: password
