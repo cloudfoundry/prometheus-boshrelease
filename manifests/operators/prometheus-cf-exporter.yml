@@ -1,0 +1,58 @@
+# Apply ./cf/firehose-exporter-uaa-client.yml to your cf-deployment based Cloud Foundry
+# This file assumes bosh_exporter based Service Discovery is being used: ./prometheus-bosh-exporter.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: cf_exporter
+    release: prometheus
+    properties:
+      cf_exporter:
+        metrics:
+          environment: ((metrics_environment))
+        skip_ssl_verify: ((skip_ssl_verify))
+        cf:
+          api_url: ((cf_api_url))
+          client_id: cf_exporter
+          client_secret: ((uaa_clients_cf_exporter_secret))
+          deployment_name: cf
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: firehose_exporter
+    release: prometheus
+    properties:
+      firehose_exporter:
+        metrics:
+          environment: ((metrics_environment))
+        skip_ssl_verify: ((skip_ssl_verify))
+        uaa:
+          url: ((uaa_url))
+          client_id: firehose_exporter
+          client_secret: ((uaa_clients_cf_exporter_secret))
+        doppler:
+          url: ((doppler_url))
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value: 
+    name: cloudfoundry_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/packages/cloudfoundry_dashboards/*.json
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value: 
+    name: cloudfoundry_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/packages/cloudfoundry_alerts/*.alerts
