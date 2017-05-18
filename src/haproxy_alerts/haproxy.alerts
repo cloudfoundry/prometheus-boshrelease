@@ -1,0 +1,11 @@
+ALERT HAProxyDown
+  IF min(haproxy_up) by(instance) != 1
+  FOR 5m
+  LABELS {
+    service = "haproxy",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "HAProxy instance `{{$labels.instance}}` is down",
+    description = "The HAProxy instance at `{{$labels.instance}}` has been down for the last 5 minutes",
+  }
