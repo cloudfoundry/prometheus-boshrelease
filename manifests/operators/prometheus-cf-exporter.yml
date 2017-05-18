@@ -1,14 +1,5 @@
-# Should be used in combination with ./cf/firehose-exporter-uaa-client.yml
-
-# Prometheus Scrape Config
-- type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
-    job_name: cf
-    static_configs:
-    - targets: 
-      - localhost:9193 # cf_exporter
-      - localhost:9186 # firehose_exporter
+# Apply ./cf/firehose-exporter-uaa-client.yml to your cf-deployment based Cloud Foundry
+# This file assumes bosh_exporter based Service Discovery is being used: ./prometheus-bosh-exporter.yml
 
 # Exporter jobs
 - type: replace
