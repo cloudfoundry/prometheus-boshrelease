@@ -1,0 +1,27 @@
+# Uaa client for firehose_exporter
+- type: replace
+  path: /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/clients/firehose_exporter?
+  value:
+    authorized-grant-types: refresh_token,client_credentials
+    authorities: doppler.firehose
+    secret: "((uaa_clients_firehose_exporter_secret))"
+
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_clients_firehose_exporter_secret
+    type: password
+
+# Uaa client for cf_exporter
+- type: replace
+  path: /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/clients/cf_exporter?
+  value:
+    authorized-grant-types: refresh_token,client_credentials
+    authorities: cloud_controller.admin
+    secret: "((uaa_clients_cf_exporter_secret))"
+
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_clients_cf_exporter_secret
+    type: password
