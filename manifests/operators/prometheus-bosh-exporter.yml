@@ -1,18 +1,18 @@
 # Prometheus Scrape Config
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: bosh
     scrape_interval: 2m
     scrape_timeout: 1m
     static_configs:
-    - targets: 
+    - targets:
       - localhost:9190 # bosh_exporter
 
 # Exporter jobs
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
-  value: 
+  value:
     name: bosh_exporter
     release: prometheus
     properties:
@@ -28,24 +28,24 @@
 # Grafana Dashboards
 - type: replace
   path: /instance_groups/name=grafana/jobs/-
-  value: 
+  value:
     name: bosh_dashboards
     release: prometheus
 
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
-  value: /var/vcap/packages/bosh_dashboards/*.json
+  value: /var/vcap/jobs/bosh_dashboards/*.json
 
 # Prometheus Alerts
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
-  value: 
+  value:
     name: bosh_alerts
     release: prometheus
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/packages/bosh_alerts/*.alerts
+  value: /var/vcap/jobs/bosh_alerts/*.alerts
 
 # Alertmanager Grouping
 - type: replace
@@ -59,7 +59,7 @@
 # Service Discovery
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: bosh_tsdb
     file_sd_configs:
     - files:
@@ -77,7 +77,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: cadvisor
     file_sd_configs:
     - files:
@@ -95,7 +95,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: cf
     scrape_interval: 4m
     scrape_timeout: 2m
@@ -115,7 +115,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: collectd
     file_sd_configs:
     - files:
@@ -133,7 +133,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: consul
     file_sd_configs:
     - files:
@@ -151,7 +151,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: elasticsearch
     file_sd_configs:
     - files:
@@ -169,7 +169,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: firehose
     file_sd_configs:
     - files:
@@ -187,7 +187,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: github
     file_sd_configs:
     - files:
@@ -205,7 +205,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: graphite
     file_sd_configs:
     - files:
@@ -223,7 +223,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: haproxy
     file_sd_configs:
     - files:
@@ -241,7 +241,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: kubernetes
     file_sd_configs:
     - files:
@@ -259,7 +259,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: memcached
     file_sd_configs:
     - files:
@@ -277,7 +277,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: mongodb
     file_sd_configs:
     - files:
@@ -295,7 +295,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: nats
     file_sd_configs:
     - files:
@@ -313,7 +313,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: node
     file_sd_configs:
     - files:
@@ -331,7 +331,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: postgres
     file_sd_configs:
     - files:
@@ -349,7 +349,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/job_name=prometheus
-  value: 
+  value:
     job_name: prometheus
     file_sd_configs:
     - files:
@@ -367,7 +367,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: pushgateway
     file_sd_configs:
     - files:
@@ -385,7 +385,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: rabbitmq
     file_sd_configs:
     - files:
@@ -403,7 +403,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: redis
     file_sd_configs:
     - files:
@@ -421,7 +421,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: shield
     scrape_interval: 4m
     scrape_timeout: 2m
@@ -441,7 +441,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
-  value: 
+  value:
     job_name: statsd
     file_sd_configs:
     - files:
