@@ -1,47 +1,23 @@
 ALERT ProbeUnsuccessful
   IF min(probe_success) by(instance) != 1
-  FOR 5m
+  FOR <%= p('probe_alerts.unsuccessful.evaluation_time') %>
   LABELS {
     service = "probe",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "Endpoint `{{$labels.instance}}` unsuccessful probe",
-    description = "The probe against endpoint `{{$labels.instance}}` has been unsuccessful during the last 5 minutes",
+    description = "The probe against endpoint `{{$labels.instance}}` has been unsuccessful during the last <%= p('probe_alerts.unsuccessful.evaluation_time') %>",
   }
 
 ALERT ProbeHighDuration
-  IF avg(probe_duration_seconds) by(instance) > 1
-  FOR 5m
+  IF avg(probe_duration_seconds) by(instance) > <%= p('probe_alerts.high_duration.threshold') %>
+  FOR <%= p('probe_alerts.high_duration.evaluation_time') %>
   LABELS {
     service = "probe",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Endpoint `{{$labels.instance}}` probe took more than 1 second",
-    description = "The probe against endpoint `{{$labels.instance}}` took more than 1 second during the last 5 minutes",
-  }
-
-ALERT ProbeSSLCertExpiry1Week
-  IF avg(probe_ssl_earliest_cert_expiry) by(instance) - time() < 604800
-  FOR 5m
-  LABELS {
-    service = "probe",
-    severity = "warning",
-  }
-  ANNOTATIONS {
-    summary = "Endpoint `{{$labels.instance}}` SSL certificate will expiry in less than 1 week",
-    description = "The SSL certificate at endpoint `{{$labels.instance}}` will expiry in less than 1 week",
-  }
-
-ALERT ProbeSSLCertExpiry1Day
-  IF avg(probe_ssl_earliest_cert_expiry) by(instance) - time() < 86400
-  FOR 5m
-  LABELS {
-    service = "probe",
-    severity = "critical",
-  }
-  ANNOTATIONS {
-    summary = "Endpoint `{{$labels.instance}}` SSL certificate will expiry in less than 1 day",
-    description = "The SSL certificate at endpoint `{{$labels.instance}}` will expiry in less than 1 day",
+    description = "The probe against endpoint `{{$labels.instance}}` took {{$value}} seconds during the last <%= p('probe_alerts.high_duration.evaluation_time') %>",
   }
