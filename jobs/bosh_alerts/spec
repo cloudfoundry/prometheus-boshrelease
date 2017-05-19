@@ -7,9 +7,107 @@ templates:
   bosh_jobs.alerts: bosh_jobs.alerts
   bosh_processes.alerts: bosh_processes.alerts
   bosh_system.alerts: bosh_system.alerts
+  bosh_system_predict.alerts: bosh_system_predict.alerts
   bosh_tsdb_jobs.alerts: bosh_tsdb_jobs.alerts
   bosh_tsdb_system.alerts: bosh_tsdb_system.alerts
+  bosh_tsdb_system_predict.alerts: bosh_tsdb_system_predict.alerts
   prometheus_bosh_exporter.alerts: prometheus_bosh_exporter.alerts
   prometheus_bosh_tsdb_exporter.alerts: prometheus_bosh_tsdb_exporter.alerts
 
-properties: {}
+properties:
+  bosh_alerts.job_unhealthy.evaluation_time:
+    description: "Job unhealthy alert evaluation time"
+    default: 5m
+  bosh_alerts.job_extended_unhealthy.evaluation_time:
+    description: "Job extended unhealthy alert evaluation time"
+    default: 30m
+  bosh_alerts.process_unhealthy.evaluation_time:
+    description: "Process unhealthy alert evaluation time"
+    default: 5m
+  bosh_alerts.process_extended_unhealthy.evaluation_time:
+    description: "Process extended unhealthy alert evaluation time"
+    default: 30m
+  bosh_alerts.job_high_cpu_load.threshold:
+    description: "Job High CPU Load alert threshold"
+    default: 5
+  bosh_alerts.job_high_cpu_load.evaluation_time:
+    description: "Job High CPU Load alert evaluation time"
+    default: 10m
+  bosh_alerts.job_low_free_ram.threshold:
+    description: "Job Low Free RAM alert threshold"
+    default: 90
+  bosh_alerts.job_low_free_ram.evaluation_time:
+    description: "Job Low Free RAM alert evaluation time"
+    default: 10m
+  bosh_alerts.job_low_swap.threshold:
+    description: "Job Low Swap alert threshold"
+    default: 90
+  bosh_alerts.job_low_swap.evaluation_time:
+    description: "Job Low Swap alert evaluation time"
+    default: 10m
+  bosh_alerts.job_system_disk_full.threshold:
+    description: "Job System Disk Full alert threshold"
+    default: 90
+  bosh_alerts.job_system_disk_full.evaluation_time:
+    description: "Job System Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.job_ephemeral_disk_full.threshold:
+    description: "Job Ephemeral Disk Full alert threshold"
+    default: 80
+  bosh_alerts.job_ephemeral_disk_full.evaluation_time:
+    description: "Job Ephemeral Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.job_persistent_disk_full.threshold:
+    description: "Job Persistent Disk Full alert threshold"
+    default: 90
+  bosh_alerts.job_persistent_disk_full.evaluation_time:
+    description: "Job Persistent Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.job_persistent_disk_inodes_exhausted.threshold:
+    description: "Job Persistent Disk Inodes Exhausted alert threshold"
+    default: 90
+  bosh_alerts.job_persistent_disk_inodes_exhausted.evaluation_time:
+    description: "Job Persistent Disk Inodes Exhausted alert evaluation time"
+    default: 30m
+  bosh_alerts.job_predict_system_disk_full.threshold:
+    description: "Job predict System Disk Full alert threshold"
+    default: 90
+  bosh_alerts.job_predict_system_disk_full.predict_time:
+    description: "Job predict System Disk Full alert predict time"
+    default: 14400
+  bosh_alerts.job_predict_system_disk_full.evaluation_time:
+    description: "Job predict System Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.job_predict_ephemeral_disk_full.threshold:
+    description: "Job predict Ephemeral Disk Full alert threshold"
+    default: 80
+  bosh_alerts.job_predict_ephemeral_disk_full.predict_time:
+    description: "Job predict Ephemeral Disk Full alert predict time"
+    default: 14400
+  bosh_alerts.job_predict_ephemeral_disk_full.evaluation_time:
+    description: "Job predict Ephemeral Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.job_predict_persistent_disk_full.threshold:
+    description: "Job predict Persistent Disk Full alert threshold"
+    default: 90
+  bosh_alerts.job_predict_persistent_disk_full.predict_time:
+    description: "Job predict Persistent Disk Full alert predict time"
+    default: 14400
+  bosh_alerts.job_predict_persistent_disk_full.evaluation_time:
+    description: "Job predict Persistent Disk Full alert evaluation time"
+    default: 30m
+  bosh_alerts.scrape_error.evaluation_time:
+    description: "Scrape error alert evaluation time"
+    default: 10m
+  bosh_alerts.scrape_too_old.threshold:
+    description: "Scrape too old alert threshold"
+    default: 600
+  bosh_alerts.scrape_too_old.evaluation_time:
+    description: "Scrape too old alert evaluation time"
+    default: 5m
+  bosh_alerts.tsdb_message_too_old.threshold:
+    description: "TSDB Message too old alert threshold"
+    default: 600
+  bosh_alerts.tsdb_message_too_old.evaluation_time:
+    description: "TSDB Message too old alert evaluation time"
+    default: 5m

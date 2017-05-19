@@ -1,6 +1,6 @@
 ALERT BOSHTSDBJobUnhealthy
   IF max(bosh_tsdb_job_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) < 1
-  FOR 5m
+  FOR <%= p('bosh_alerts.job_unhealthy.evaluation_time') %>
   LABELS {
     service = "bosh-job",
     severity = "warning",
@@ -12,12 +12,12 @@ ALERT BOSHTSDBJobUnhealthy
 
 ALERT BOSHTSDBJobExtentedUnhealthy
   IF max(bosh_tsdb_job_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) < 1
-  FOR 30m
+  FOR <%= p('bosh_alerts.job_extended_unhealthy.evaluation_time') %>
   LABELS {
     service = "bosh-job",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been unhealthy for a long time",
-    description = "BOSH job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been reported unhealthy for more than 30 minutes",
+    description = "BOSH job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been reported unhealthy for more than <%= p('bosh_alerts.job_extended_unhealthy.evaluation_time') %>",
   }
