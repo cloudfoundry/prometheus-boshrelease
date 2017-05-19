@@ -4,7 +4,7 @@
 # Exporter jobs
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
-  value: 
+  value:
     name: cf_exporter
     release: prometheus
     properties:
@@ -20,7 +20,7 @@
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
-  value: 
+  value:
     name: firehose_exporter
     release: prometheus
     properties:
@@ -38,7 +38,7 @@
 # Grafana Dashboards
 - type: replace
   path: /instance_groups/name=grafana/jobs/-
-  value: 
+  value:
     name: cloudfoundry_dashboards
     release: prometheus
 
@@ -49,10 +49,10 @@
 # Prometheus Alerts
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
-  value: 
+  value:
     name: cloudfoundry_alerts
     release: prometheus
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/packages/cloudfoundry_alerts/*.alerts
+  value: /var/vcap/jobs/cloudfoundry_alerts/*.alerts
