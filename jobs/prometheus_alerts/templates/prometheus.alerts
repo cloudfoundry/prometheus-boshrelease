@@ -1,71 +1,71 @@
 ALERT PrometheusScrapeError
   IF up == 0
-  FOR 30m
+  FOR <%= p('prometheus_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` (scrape job `{{$labels.job}}`) down or not reachable",
-    description = "The Prometheus instance at `{{$labels.instance}}` for scrape job `{{$labels.job}}` has been down or has not been reachable during the last 30 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` for scrape job `{{$labels.job}}` has been down or has not been reachable during the last <%= p('prometheus_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT PrometheusConfigReloadFailed
   IF prometheus_config_last_reload_successful == 0
-  FOR 30m
+  FOR <%= p('prometheus_alerts.config_reload_failed.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` config reload failed",
-    description = "The Prometheus instance at `{{$labels.instance}}` has failed to reload its configuration during the last 30 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` has failed to reload its configuration during the last <%= p('prometheus_alerts.config_reload_failed.evaluation_time') %>",
   }
 
 ALERT PrometheusSkippingScrapes
-  IF rate(prometheus_target_skipped_scrapes_total[5m]) > 1
-  FOR 10m
+  IF rate(prometheus_target_skipped_scrapes_total[5m]) > <%= p('prometheus_alerts.skipping_scrapes.threshold') %>
+  FOR <%= p('prometheus_alerts.skipping_scrapes.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` is skipping scrapes",
-    description = "The Prometheus instance at `{{$labels.instance}}` has been skipping scrapes during the last 10 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` has been skipping scrapes during the last <%= p('prometheus_alerts.skipping_scrapes.evaluation_time') %>",
   }
 
 ALERT PrometheusExceededSampleLimit
-  IF rate(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > 1
-  FOR 10m
+  IF rate(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > <%= p('prometheus_alerts.exceeded_sample_limit.threshold') %>
+  FOR <%= p('prometheus_alerts.exceeded_sample_limit.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` exceeded the sample limit",
-    description = "The Prometheus instance at `{{$labels.instance}}` exceeded the sample limit during the last 10 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` exceeded the sample limit during the last <%= p('prometheus_alerts.exceeded_sample_limit.evaluation_time') %>",
   }
 
 ALERT PrometheusNotificationsDroppedTooHigh
-  IF rate(prometheus_notifications_dropped_total[5m]) > 1
-  FOR 10m
+  IF rate(prometheus_notifications_dropped_total[5m]) > <%= p('prometheus_alerts.notifications_dropped.threshold') %>
+  FOR <%= p('prometheus_alerts.notifications_dropped.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` is dropping notifications",
-    description = "The Prometheus instance at `{{$labels.instance}}` has been dropping to much notifications during the last 10 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` has been dropping to much notifications during the last <%= p('prometheus_alerts.notifications_dropped.evaluation_time') %>",
   }
 
 ALERT PrometheusNotificationsQueueTooHigh
-  IF rate(prometheus_notifications_queue_length[5m]) > 1
-  FOR 30m
+  IF rate(prometheus_notifications_queue_length[5m]) > <%= p('prometheus_alerts.notifications_queue.threshold') %>
+  FOR <%= p('prometheus_alerts.notifications_queue.evaluation_time') %>
   LABELS {
     service = "prometheus",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Prometheus instance `{{$labels.instance}}` notifications queue is too high",
-    description = "The Prometheus instance at `{{$labels.instance}}` notifications queue has been too high during the last 10 minutes",
+    description = "The Prometheus instance at `{{$labels.instance}}` notifications queue has been too high during the last <%= p('prometheus_alerts.notifications_queue.evaluation_time') %>",
   }
