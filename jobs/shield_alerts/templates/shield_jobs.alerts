@@ -1,47 +1,47 @@
 ALERT ShieldJobPending1d
   IF shield_job_status == 1
-  FOR 1d
+  FOR <%= p('shield_alerts.job_pending.evaluation_time') %>
   LABELS {
     service = "shield",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` pending > 24h",
-    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a pending status for more than 1 day",
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` pending > <%= p('shield_alerts.job_pending.evaluation_time') %>",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `pending` state for more than <%= p('shield_alerts.job_pending.evaluation_time') %>",
   }
 
 ALERT ShieldJobRunning1d
   IF shield_job_status == 2
-  FOR 1d
+  FOR <%= p('shield_alerts.job_running.evaluation_time') %>
   LABELS {
     service = "shield",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` running > 24h",
-    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a running status for more than 1 day",
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` running > <%= p('shield_alerts.job_running.evaluation_time') %>",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `running` state for more than <%= p('shield_alerts.job_running.evaluation_time') %>",
   }
 
 ALERT ShieldJobFailed1d
   IF shield_job_status == 4 and shield_job_paused != 0
-  FOR 1d
+  FOR <%= p('shield_alerts.job_failed.evaluation_time') %>
   LABELS {
     service = "shield",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` failed > 24h",
-    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a failing status for more than 1 day",
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` failed > <%= p('shield_alerts.job_failed.evaluation_time') %>",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `failing` state for more than <%= p('shield_alerts.job_failed.evaluation_time') %>",
   }
 
 ALERT ShieldJobPaused1d
   IF shield_job_paused == 1
-  FOR 1d
+  FOR <%= p('shield_alerts.job_paused.evaluation_time') %>
   LABELS {
     service = "shield",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` paused > 24h",
-    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a paused state for more than 1 day",
+    summary = "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` paused > <%= p('shield_alerts.job_paused.evaluation_time') %>",
+    description = "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `paused` state for more than <%= p('shield_alerts.job_paused.evaluation_time') %>",
   }

@@ -1,191 +1,191 @@
 ALERT ShieldExporterArchivesScrapeError
   IF max(shield_last_archives_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Archives scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Archives metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Archives metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterArchivesScrapeTooOld
-  IF (time() - max(shield_last_archives_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_archives_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Archives scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Archives metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Archives scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Archives metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterJobsScrapeError
   IF max(shield_last_jobs_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Jobs scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Jobs metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Jobs metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterJobsScrapeTooOld
-  IF (time() - max(shield_last_jobs_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_jobs_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Jobs scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Jobs metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Jobs scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Jobs metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterRetentionPoliciesScrapeError
   IF max(shield_last_retention_policies_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Retention Policies scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Retention Policies metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Retention Policies metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterRetentionPoliciesScrapeTooOld
-  IF (time() - max(shield_last_retention_policies_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_retention_policies_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Retention Policies scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Retention Policiess metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Retention Policies scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Retention Policiess metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterSchedulesScrapeError
   IF max(shield_last_schedules_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Schedules scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Schedules metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Schedules metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterSchedulesScrapeTooOld
-  IF (time() - max(shield_last_schedules_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_schedules_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Schedules scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Schedules metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Schedules scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Schedules metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterStatusScrapeError
   IF max(shield_last_status_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Status scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Status metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Status metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterStatusScrapeTooOld
-  IF (time() - max(shield_last_status_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_status_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Status scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Status metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Status scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Status metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterStoresScrapeError
   IF max(shield_last_stores_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Stores scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Stores metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Stores metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterStoresScrapeTooOld
-  IF (time() - max(shield_last_stores_scrape_timestamp) by(environment, backend_name, instancee)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_stores_scrape_timestamp) by(environment, backend_name, instancee)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Stores scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Stores metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Stores scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Stores metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterTargetsScrapeError
   IF max(shield_last_targets_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Targets scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Targets metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Targets metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterTargetsScrapeTooOld
-  IF (time() - max(shield_last_targets_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_targets_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Targets scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Targets metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Targets scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Targets metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
 ALERT ShieldExporterTasksScrapeError
   IF max(shield_last_tasks_scrape_error) by(environment, backend_name, instance) != 0
-  FOR 10m
+  FOR <%= p('shield_alerts.scrape_error.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Tasks scrape error for Shield backend `{{$labels.backend_name}}`",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Tasks metrics from Shield backend `{{$labels.backend_name}}` during the last 10 minutes",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Tasks metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>",
   }
 
 ALERT ShieldExporterTasksScrapeTooOld
-  IF (time() - max(shield_last_tasks_scrape_timestamp) by(environment, backend_name, instance)) > 600
-  FOR 5m
+  IF (time() - max(shield_last_tasks_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
   LABELS {
     service = "shield-exporter",
     severity = "warning",
   }
   ANNOTATIONS {
-    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Taskss scrape > 10 minutes ago",
-    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Tasks metrics from Shield backend `{{$labels.backend_name}}` was more than 10 minutes ago",
+    summary = "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Tasks scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Tasks metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago",
   }
