@@ -30,6 +30,22 @@ ALERT DiegoLowRemainingMemory
     description = "Diego min memory available has been too low for the last 15 minutes: {{$value}}",
   }
 
+ALERT DiegoLowRemainingDisk
+  IF sum(avg(firehose_value_metric_rep_capacity_remaining_disk) by(bosh_deployment, bosh_job_name, bosh_job_id)) / 0.000001024 < 45000000000
+  FOR 15m
+  ANNOTATIONS {
+    summary = "Diego: Min disk available too low",
+    description = "Diego min disk available has been too low for the last 15 minutes: {{$value}}",
+  }
+
+ALERT DiegoLowRemainingContainers
+  IF sum(avg(firehose_value_metric_rep_capacity_remaining_containers) by(bosh_deployment, bosh_job_name, bosh_job_id)) < 100
+  FOR 15m
+  ANNOTATIONS {
+    summary = "Diego: Min containers available too low",
+    description = "Diego min containers available has been too low for the last 15 minutes: {{$value}}",
+  }
+
 ALERT DiegoHighMissingLRPs
   IF avg(firehose_value_metric_bbs_lr_ps_missing) > 70
   FOR 5m
