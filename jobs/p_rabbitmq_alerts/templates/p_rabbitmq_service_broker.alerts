@@ -1,6 +1,6 @@
 ALERT PRabbitMQServiceBrokerOnDemandLowInstancesAvailable
-  IF ((avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment) / (avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_total_instances) by(environment,bosh_deployment) + avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment))) * 100) < 10
-  FOR 30m
+  IF ((avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment) / (avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_total_instances) by(environment,bosh_deployment) + avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment))) * 100) < <%= p('p_rabbitmq_alerts.sb_odb_low_instances.threshold') %>
+  FOR <%= p('p_rabbitmq_alerts.sb_odb_low_instances.evaluation_time') %>
   LABELS {
     service = "p-rabbitmq",
     severity = "warning",
@@ -12,7 +12,7 @@ ALERT PRabbitMQServiceBrokerOnDemandLowInstancesAvailable
 
 ALERT PRabbitMQServiceBrokerOnDemandNoInstancesAvailable
   IF avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment) < 1
-  FOR 30m
+  FOR <%= p('p_rabbitmq_alerts.sb_odb_no_instances.evaluation_time') %>
   LABELS {
     service = "p-rabbitmq",
     severity = "critical",
