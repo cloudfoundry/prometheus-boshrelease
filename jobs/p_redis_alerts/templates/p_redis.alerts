@@ -1,59 +1,59 @@
 ALERT PRedisNoClientsConnected
-  IF avg(firehose_value_metric_p_redis_p_redis_info_clients_connected_clients) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) < 1
-  FOR 30m
+  IF avg(firehose_value_metric_p_redis_p_redis_info_clients_connected_clients) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) < <%= p('p_redis_alerts.connected_clients.threshold') %>
+  FOR <%= p('p_redis_alerts.connected_clients.evaluation_time') %>
   LABELS {
     service = "p-redis",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has NO clients connected",
-    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had NO clients connected during the last 30 minutes",
+    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had less than <%= p('p_redis_alerts.connected_clients.threshold') %> clients connected during the last <%= p('p_redis_alerts.connected_clients.evaluation_time') %>",
   }
 
 ALERT PRedisRejectedConnections
-  IF avg(firehose_value_metric_p_redis_p_redis_info_stats_rejected_connections) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > 0
-  FOR 30m
+  IF avg(firehose_value_metric_p_redis_p_redis_info_stats_rejected_connections) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.rejected_connections.threshold') %>
+  FOR <%= p('p_redis_alerts.rejected_connections.evaluation_time') %>
   LABELS {
     service = "p-redis",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` may be hitting maxclient limit",
-    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had rejected connections during the last 30 minutes, so it may be hitting the maxclient limit",
+    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had {{$value}} rejected connections during the last <%= p('p_redis_alerts.rejected_connections.evaluation_time') %>, so it may be hitting the maxclient limit",
   }
 
 ALERT PRedisHighMemoryFragmentation
-  IF avg(firehose_value_metric_p_redis_p_redis_info_memory_mem_fragmentation_ratio) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > 30
-  FOR 30m
+  IF avg(firehose_value_metric_p_redis_p_redis_info_memory_mem_fragmentation_ratio) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.memory_fragmentation_ratio.threshold') %>
+  FOR <%= p('p_redis_alerts.memory_fragmentation_ratio.evaluation_time') %>
   LABELS {
     service = "p-redis",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has high memory fragmentation",
-    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had a memory fragmentation of {{$value}}% during the last 30 minutes, this may lead to performance degradation",
+    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had a memory fragmentation of {{$value}}% during the last <%= p('p_redis_alerts.memory_fragmentation_ratio.evaluation_time') %>, this may lead to performance degradation",
   }
 
 ALERT PRedisHighAOFRewriteTime
-  IF avg(firehose_value_metric_p_redis_p_redis_info_persistence_aof_last_rewrite_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > 600
-  FOR 30m
+  IF avg(firehose_value_metric_p_redis_p_redis_info_persistence_aof_last_rewrite_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.aof_rewrite_duration.threshold') %>
+  FOR <%= p('p_redis_alerts.aof_rewrite_duration.evaluation_time') %>
   LABELS {
     service = "p-redis",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` AOF rewrite took too much time",
-    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{$value}} seconds to perform an AOF rewrite",
+    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{humanizeDuration $value}} to perform an AOF rewrite",
   }
 
 ALERT PRedisHighRDBBgSaveTime
-  IF avg(firehose_value_metric_p_redis_p_redis_info_persistence_rdb_last_bgsave_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > 600
-  FOR 30m
+  IF avg(firehose_value_metric_p_redis_p_redis_info_persistence_rdb_last_bgsave_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.bgsave_duration.threshold') %>
+  FOR <%= p('p_redis_alerts.bgsave_duration.evaluation_time') %>
   LABELS {
     service = "p-redis",
     severity = "warning",
   }
   ANNOTATIONS {
     summary = "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` RDB bgsave took too much time",
-    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{$value}} seconds to perform a RDB bgsave",
+    description = "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{humanizeDuration $value}} to perform a RDB bgsave",
   }
