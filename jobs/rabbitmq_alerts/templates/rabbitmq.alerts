@@ -1,11 +1,11 @@
 ALERT RabbitMQServerDown
   IF min(rabbitmq_up) by(instance) != 1
-  FOR 5m
+  FOR <%= p('rabbitmq_alerts.server_down.evaluation_time') %>
   LABELS {
     service = "rabbitmq",
     severity = "critical",
   }
   ANNOTATIONS {
     summary = "Rabbitmq Server instance `{{$labels.instance}}` is down",
-    description = "The RabbitMQ Server instance at `{{$labels.instance}}` has been down for the last 5 minutes",
+    description = "The RabbitMQ Server instance at `{{$labels.instance}}` has been down the last <%= p('rabbitmq_alerts.server_down.evaluation_time') %>",
   }
