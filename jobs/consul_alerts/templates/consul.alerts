@@ -1,0 +1,35 @@
+ALERT ConsulDown
+  IF min(consul_up) by(instance) < 1
+  FOR <%= p('consul_alerts.down.evaluation_time') %>
+  LABELS {
+    service = "consul",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Consul instance `{{$labels.instance}}` is down",
+    description = "The Consul instance at `{{$labels.instance}}` has been down during the last <%= p('consul_alerts.down.evaluation_time') %>",
+  }
+
+ALERT ConsulNodeHealthCheckFailing
+  IF min(consul_health_node_status) by(instance, node, check)  < 1
+  FOR <%= p('consul_alerts.node_health.evaluation_time') %>
+  LABELS {
+    service = "consul",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Health check `{{$labels.check}}` at Consul node `{{$labels.instance}}/{{$labels.node}}` is failing",
+    description = "The health check `{{$labels.check}}` at Consul node `{{$labels.instance}}/{{$labels.node}}` has been failing during the last <%= p('consul_alerts.node_health.evaluation_time') %>",
+  }
+
+ALERT ConsulMoreThanOneLeader
+  IF count(consul_raft_leader == 1) by(instance) > 1
+  FOR <%= p('consul_alerts.leaders.evaluation_time') %>
+  LABELS {
+    service = "consul",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Consul cluster at`{{$labels.instance}}` has ${{value}} leaders",
+    description = "The Consul cluster at `{{$labels.instance}}` had {{$value}} leaders during the last <%= p('consul_alerts.leaders.evaluation_time') %>",
+  }
