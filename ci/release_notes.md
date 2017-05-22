@@ -9,3 +9,4 @@
 ## Features
 
 * All **Alerts** have been parametrized. You can now specify via manifest file the `evaluation_time` and `thresholds`.
+* Added **Consul** alerts and dashboards
