@@ -10,9 +10,10 @@ cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 export GOROOT=/var/vcap/packages/golang_prometheus/go
 export PATH=${GOROOT}/bin:${PATH}
 
-PACKAGE_NAME=github.com/kubernetes/kube-state-metrics
+SOURCE_DIR=github.com/kubernetes/kube-state-metrics
+PACKAGE_NAME=k8s.io/kube-state-metrics
 mkdir -p ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
-cp -a ${BOSH_COMPILE_TARGET}/${PACKAGE_NAME}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
+cp -a ${BOSH_COMPILE_TARGET}/${SOURCE_DIR}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
 export GOPATH=${BOSH_INSTALL_TARGET}
 
 go install ${PACKAGE_NAME}
