@@ -23,6 +23,9 @@ case $1 in
       <% if_p('kube_state_metrics_exporter.apiserver') do |apiserver| %> \
       --apiserver="<%= apiserver %>" \
       <% end %> \
+      <% if_p('kube_state_metrics_exporter.collectors') do |collectors| %> \
+      --collectors="<%= collectors %>" \
+      <% end %> \
       --in-cluster=false \
       <% if_p('kube_state_metrics_exporter.kubeconfig') do %> \
       --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
