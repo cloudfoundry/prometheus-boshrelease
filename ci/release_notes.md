@@ -1,5 +1,6 @@
 ## Features
 
+* Added [Stackdriver exporter](https://github.com/frodenas/stackdriver_exporter)
 * Added [Status Planel](https://grafana.com/plugins/vonage-status-panel) grafana plugin
 * `kube_state_metrics` exporter allows to specify which collectors should be enabled
 

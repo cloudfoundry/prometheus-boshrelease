@@ -98,6 +98,8 @@ jobs:
       #  release: prometheus
       #- name: shield_exporter
       #  release: prometheus
+      #- name: stackdriver_exporter
+      #  release: prometheus
       #- name: statsd_exporter
       #  release: prometheus
     instances: 1
@@ -235,6 +237,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9179
+          - job_name: stackdriver
+            static_configs:
+              - targets:
+                - localhost:9255
           - job_name: statsd
             static_configs:
               - targets:

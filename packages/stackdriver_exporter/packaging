@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Extract stackdriver_exporter package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/stackdriver_exporter/stackdriver_exporter-0.1.0.linux-amd64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/stackdriver_exporter-0.1.0.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin

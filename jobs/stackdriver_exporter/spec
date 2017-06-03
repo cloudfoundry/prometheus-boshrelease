@@ -1,0 +1,35 @@
+---
+name: stackdriver_exporter
+
+packages:
+  - stackdriver_exporter
+
+templates:
+  bin/stackdriver_exporter_ctl: bin/stackdriver_exporter_ctl
+  config/goole_application_credentials.json: config/goole_application_credentials.json
+
+properties:
+  stackdriver_exporter.google.project_id:
+    description: "Google Project ID"
+  stackdriver_exporter.google.application_credentials:
+    description: "Google JSON key"
+  stackdriver_exporter.monitoring.metrics_type_prefixes:
+    description: "Comma separated Google Stackdriver Monitoring Metric Type prefixes"
+  stackdriver_exporter.monitoring.metrics_interval:
+    description: "Interval to request the Google Stackdriver Monitoring Metrics for"
+  stackdriver_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  stackdriver_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  stackdriver_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9255"
+  stackdriver_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
+
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"
