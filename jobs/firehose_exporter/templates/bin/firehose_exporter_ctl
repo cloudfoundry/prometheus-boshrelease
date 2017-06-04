@@ -49,6 +49,9 @@ case $1 in
       <% if_p('firehose_exporter.doppler.max_retry_delay') do |max_retry_delay| %> \
       -doppler.max-retry-delay-timeout="<%= max_retry_delay %>" \
       <% end %> \
+      <% if_p('firehose_exporter.doppler.max_retry_count') do |max_retry_count| %> \
+      -doppler.max-retry-count="<%= max_retry_count %>" \
+      <% end %> \
       <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
       -doppler.metric-expiration="<%= metric_expiration %>" \
       <% end %> \
