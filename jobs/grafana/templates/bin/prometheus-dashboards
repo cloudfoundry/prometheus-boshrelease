@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -eu
-shopt -s nullglob
 
 DASHBOARDS_DIR=/var/vcap/store/grafana/dashboards/
 JQ_CMD=/var/vcap/packages/grafana_jq/bin/jq
@@ -10,7 +9,8 @@ rm -fr ${DASHBOARDS_DIR}/*
 <% if_link('prometheus') do |prometheus| %>
 <% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
 <% if !dashboard_file.nil? && dashboard_file.strip != "" %>
-for dashboard_file in $(ls <%= dashboard_file %>); do
+dashboard_files=$(ls <%= dashboard_file %>)
+for dashboard_file in ${dashboard_files[@]}; do
   filename=$(basename "${dashboard_file}")
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
   sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
