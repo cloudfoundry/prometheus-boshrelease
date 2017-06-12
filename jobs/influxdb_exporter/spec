@@ -1,0 +1,25 @@
+---
+name: influxdb_exporter
+
+packages:
+  - influxdb_exporter
+
+templates:
+  bin/influxdb_exporter_ctl: bin/influxdb_exporter_ctl
+
+properties:
+  influxdb_exporter.log_format:
+    description: "If set use a syslog logger or JSON logging"
+  influxdb_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  influxdb_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: 9122
+  influxdb_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"
+  influxdb_exporter.udp.port:
+    description: "Address on which to listen for udp packets."
+    default: 9122
+  influxdb_exporter.sample_expiry:
+    description: "How long a sample is valid for."
+    default: 5m0s
