@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/influxdb_exporter
+LOG_DIR=/var/vcap/sys/log/influxdb_exporter
+TMP_DIR=/var/vcap/sys/tmp/influxdb_exporter
+STORE_DIR=/var/vcap/store/influxdb_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/influxdb_exporter.pid
+
+source /var/vcap/packages/influxdb_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/influxdb_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "influxdb_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec influxdb_exporter \
+      <% if_p('influxdb_exporter.log_format') do |log_format| %> \
+      -log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('influxdb_exporter.log_level') do |log_level| %> \
+      -log.level="<%= log_level %>" \
+      <% end %> \
+      -web.listen-address=":<%= p('influxdb_exporter.web.port') %>" \
+      -udp.bind-address=":<%= p('influxdb_exporter.udp.port') %>" \
+      <% if_p('influxdb_exporter.web.telemetry_path') do |telemetry_path| %> \
+      -web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/influxdb_exporter.stdout.log \
+      2>> ${LOG_DIR}/influxdb_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Build influxdb_exporter package
+export GOROOT=/var/vcap/packages/golang_prometheus/go
+export PATH=${GOROOT}/bin:${PATH}
+
+SOURCE_DIR=github.com/prometheus/influxdb_exporter
+PACKAGE_NAME=prometheus/influxdb_exporter
+mkdir -p ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
+cp -a ${BOSH_COMPILE_TARGET}/${SOURCE_DIR}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
+export GOPATH=${BOSH_INSTALL_TARGET}
+
+go install ${PACKAGE_NAME}
+
+rm -rf ${BOSH_INSTALL_TARGET}/pkg ${BOSH_INSTALL_TARGET}/src
