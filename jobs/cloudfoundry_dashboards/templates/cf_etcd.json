@@ -209,7 +209,7 @@
           },
           "targets": [
             {
-              "expr": "sum(firehose_value_metric_etcd_followers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+              "expr": "sum(avg(firehose_value_metric_etcd_followers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_job_ip))",
               "intervalFactor": 2,
               "legendFormat": "",
               "metric": "",
