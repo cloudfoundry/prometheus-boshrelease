@@ -6,6 +6,9 @@ packages:
 
 templates:
   bin/elasticsearch_exporter_ctl: bin/elasticsearch_exporter_ctl
+  config/es_ca_cert.pem : config/es_ca_cert.pem
+  config/es_tls_cert.pem: config/es_tls_cert.pem
+  config/es_tls_key.pem: config/es_tls_key.pem
 
 properties:
   elasticsearch_exporter.es.uri:
@@ -19,3 +22,9 @@ properties:
     default: "9114"
   elasticsearch_exporter.web.telemetry_path:
     description: "Path under which to expose metrics"
+  elasticsearch_exporter.es.ca_cert:
+    description: "Trusted CA Certificate (PEM format) for the Elasticsearch connection"
+  elasticsearch_exporter.es.tls_cert:
+    description: "TLS Certificate (PEM format) for the private key to connect to Elasticsearch"
+  elasticsearch_exporter.es.tls_key:
+    description: "TLS Private key (PEM format) for client auth when connecting to Elasticsearch"
