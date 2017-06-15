@@ -80,6 +80,8 @@ jobs:
       #  release: prometheus
       #- name: haproxy_exporter
       #  release: prometheus
+      #- name: influxdb_exporter
+      #  release: prometheus
       #- name: kube_state_metrics_exporter
       #  release: prometheus
       #- name: memcached_exporter
@@ -193,6 +195,10 @@ jobs:
             static_configs:
               - targets:
                 - localhost:9101
+          - job_name: influxdb
+            static_configs:
+              - targets:
+                - localhost:9122
           - job_name: kube_state_metrics_exporter
             static_configs:
               - targets:
@@ -256,6 +262,8 @@ jobs:
         release: prometheus
       - name: consul_dashboards
         release: prometheus
+      - name: elasticsearch_dashboards
+        release: prometheus
       - name: haproxy_dashboards
         release: prometheus
       - name: kubernetes_dashboards
@@ -294,6 +302,7 @@ jobs:
             - /var/vcap/jobs/bosh_dashboards/*.json
             - /var/vcap/jobs/cloudfoundry_dashboards/*.json
             - /var/vcap/jobs/consul_dashboards/*.json
+            - /var/vcap/jobs/elasticsearch_dashboards/*.json
             - /var/vcap/jobs/haproxy_dashboards/*.json
             - /var/vcap/jobs/kubernetes_dashboards/*.json
             - /var/vcap/jobs/mysql_dashboards/*.json
