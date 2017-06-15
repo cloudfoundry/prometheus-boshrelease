@@ -15,6 +15,7 @@ It includes the following [Prometheus Exporters](https://prometheus.io/docs/inst
 * [Github](https://github.com/infinityworksltd/github-exporter)
 * [Graphite](https://github.com/prometheus/graphite_exporter)
 * [HAProxy](https://github.com/prometheus/haproxy_exporter)
+* [InfluxDB](https://github.com/prometheus/influxdb_exporter)
 * [Kubernetes](https://github.com/kubernetes/kube-state-metrics)
 * [Memcached](https://github.com/prometheus/memcached_exporter)
 * [MongoDB](https://github.com/dcu/mongodb_exporter)
