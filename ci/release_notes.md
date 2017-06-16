@@ -1,6 +1,7 @@
 ## Fixes
 
 * Fixed CF Etcd followers panel
+* Fixed CFRepBulkSynchDurationTooHigh alert (bug converting ns to s)
 
 ## Features
 
