@@ -107,7 +107,7 @@ ALERT CFAppInstancesMoreThanExpected
   }
 
 ALERT CFRepBulkSynchDurationTooHigh
-  IF max(firehose_value_metric_rep_rep_bulk_sync_duration) by(environment, bosh_deployment) / 1000000 > <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.threshold') %>
+  IF max(firehose_value_metric_rep_rep_bulk_sync_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.threshold') %>
   FOR <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.evaluation_time') %>
   LABELS {
     service = "cf",
