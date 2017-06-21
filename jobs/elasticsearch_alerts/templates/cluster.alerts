@@ -1,0 +1,37 @@
+ALERT ElasticUp
+  IF elasticsearch_up != 1
+  FOR <%= p('elasticsearch_alerts.cluster_down.evaluation_time') %>
+  LABELS {
+    service = "elasticsearch",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Elasticsearch instance {{$labels.instance}} is not responding",
+    description = "Elasticsearch instance {{$labels.instance}} is not responding",
+  }
+
+ALERT ElasticClusterRed
+  IF elasticsearch_cluster_health_status = 2
+  FOR <%= p('elasticsearch_alerts.cluster_red.evaluation_time') %>
+  LABELS {
+    service = "elasticsearch",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "Cluster {{$labels.cluster}} is red",
+    description = "Cluster {{$labels.cluster}} is red",
+  }
+
+<% if_p('elasticsearch_alerts.cluster_yellow.evaluation_time') do |time| %>
+ALERT ElasticClusterYellow
+  IF elasticsearch_cluster_health_status = 1
+  FOR <%= time %>
+  LABELS {
+    service = "elasticsearch",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "Cluster {{$labels.cluster}} is yellow",
+    description = "Cluster {{$labels.cluster}} is yellow",
+  }
+<% end %>
