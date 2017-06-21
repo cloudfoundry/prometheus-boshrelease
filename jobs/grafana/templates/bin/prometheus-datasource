@@ -42,10 +42,16 @@ DATASOURCE_ID=$(curl -u ${GRAFANA_CREDENTIALS} -ks ${GRAFANA_DATASOURCES_API} | 
 if [ -n "${DATASOURCE_ID}" ]; then
   if curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT ${GRAFANA_DATASOURCES_API}/${DATASOURCE_ID} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
     echo -e "\nUpdated datasource ${DATASOURCE_NAME} at $(date)"
+  else
+    echo -e "\nFailed to update datasource ${DATASOURCE_NAME} at $(date)"
+    exit 1
   fi
 else
   if curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST ${GRAFANA_DATASOURCES_API} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
     echo -e "\nCreated datasource ${DATASOURCE_NAME} at $(date)"
+  else
+    echo -e "\nFailed to create datasource ${DATASOURCE_NAME} at $(date)"
+    exit 1
   fi
 fi
 
