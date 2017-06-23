@@ -160,97 +160,311 @@ jobs:
               - targets:
                 - localhost:9190
           - job_name: bosh_tsdb
-            static_configs:
-              - targets:
-                - localhost:9194
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: bosh_tsdb_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9194"
           - job_name: cf
-            static_configs:
-              - targets:
-                - localhost:9193
+            scrape_interval: 4m
+            scrape_timeout: 2m
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: cf_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9193"
           - job_name: collectd
-            static_configs:
-              - targets:
-                - localhost:9103
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: collectd_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9103"
           - job_name: consul
-            static_configs:
-              - targets:
-                - localhost:9107
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: consul_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9107"
           - job_name: elasticsearch
-            static_configs:
-              - targets:
-                - localhost:9114
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: elasticsearch_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9114"
           - job_name: firehose
-            static_configs:
-              - targets:
-                - localhost:9186
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: firehose_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9186"
           - job_name: github
-            static_configs:
-              - targets:
-                - localhost:9171
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: github_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9171"
           - job_name: graphite
-            static_configs:
-              - targets:
-                - localhost:9108
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: graphite_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9108"
           - job_name: haproxy
-            static_configs:
-              - targets:
-                - localhost:9101
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: haproxy_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9101"
           - job_name: influxdb
             static_configs:
               - targets:
                 - localhost:9122
-          - job_name: kube_state_metrics_exporter
-            static_configs:
-              - targets:
-                - localhost:9188
-          - job_name: memcached_exporter
-            static_configs:
-              - targets:
-                - localhost:9150
+          - job_name: kubernetes
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: kube_state_metrics_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9188"
+          - job_name: memcached
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: memcached_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9150"
           - job_name: mysql
             static_configs:
               - targets:
                 - localhost:9104
           - job_name: nats
-            static_configs:
-              - targets:
-                - localhost:9118
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: nats_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9118"
           - job_name: node
-            static_configs:
-              - targets:
-                - localhost:9100
-          - job_name: postgres_exporter
-            static_configs:
-              - targets:
-                - localhost:9113
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: node_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9100"
+          - job_name: postgres
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: postgres_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9187"
           - job_name: prometheus
-            static_configs:
-              - targets:
-                - localhost:9090
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: prometheus
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9090"
           - job_name: pushgateway
-            static_configs:
-              - targets:
-                - localhost:9091
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: pushgateway
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9091"
           - job_name: rabbitmq
-            static_configs:
-              - targets:
-                - localhost:9125
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: rabbitmq_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9125"
           - job_name: redis
-            static_configs:
-              - targets:
-                - localhost:9121
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: redis_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9121"
           - job_name: shield
-            static_configs:
-              - targets:
-                - localhost:9179
+            scrape_interval: 4m
+            scrape_timeout: 2m
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: shield_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9179"
           - job_name: stackdriver
-            static_configs:
-              - targets:
-                - localhost:9255
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: stackdriver_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9255"
           - job_name: statsd
-            static_configs:
-              - targets:
-                - localhost:9102
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: statsd_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9102"
 
   - name: grafana
     templates:
