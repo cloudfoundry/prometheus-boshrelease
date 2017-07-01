@@ -23,7 +23,7 @@ ALERT CFTasksAuctionsFailedTooHigh
   }
 
 ALERT CFAuctioneerFetchStatesDurationTooHigh
-  IF max(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration) by(environment, bosh_deployment) / 1000000 > <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.threshold') %>
+  IF max(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.threshold') %>
   FOR <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.evaluation_time') %>
   LABELS {
     service = "cf",
