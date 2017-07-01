@@ -55,6 +55,9 @@ case $1 in
       -web.external-url="<%= external_url %>" \
       <% end %> \
       -web.listen-address=":<%= p('alertmanager.web.port') %>" \
+      <% if_p('alertmanager.web.route_prefix') do |route_prefix| %> \
+      -web.route-prefix="<%= route_prefix %>" \
+      <% end %> \
       >>  ${LOG_DIR}/alertmanager.stdout.log \
       2>> ${LOG_DIR}/alertmanager.stderr.log
     ;;
