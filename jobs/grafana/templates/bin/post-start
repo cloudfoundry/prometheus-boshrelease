@@ -2,9 +2,6 @@
 
 set -eu
 
-echo "[$(date)] Resetting grafana admin password ..."
-/var/vcap/packages/grafana/bin/grafana-cli  admin reset-admin-password --homepath=/var/vcap/packages/grafana --config=/var/vcap/jobs/grafana/config/grafana.ini <%= p("grafana.security.admin_password") %>
-
 <% if_p('env.http_proxy') do |http_proxy| %>
 export HTTP_PROXY="<%= http_proxy %>"
 export http_proxy="<%= http_proxy %>"
@@ -17,6 +14,9 @@ export https_proxy="<%= https_proxy %>"
 export NO_PROXY="<%= no_proxy %>"
 export no_proxy="<%= no_proxy %>"
 <% end %>
+
+echo "[$(date)] Resetting grafana admin password ..."
+/var/vcap/packages/grafana/bin/grafana-cli admin reset-admin-password --homepath=/var/vcap/packages/grafana --config=/var/vcap/jobs/grafana/config/grafana.ini <%= p("grafana.security.admin_password") %>
 
 echo "[$(date)] Calling 'grafana-users' ..."
 $(dirname $0)/grafana-users
