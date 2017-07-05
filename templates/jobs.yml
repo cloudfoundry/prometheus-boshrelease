@@ -30,7 +30,11 @@ jobs:
         release: prometheus
       - name: cloudfoundry_alerts
         release: prometheus
+      - name: concourse_alerts
+        release: prometheus
       - name: consul_alerts
+        release: prometheus
+      - name: elasticsearch_alerts
         release: prometheus
       - name: haproxy_alerts
         release: prometheus
@@ -120,7 +124,9 @@ jobs:
         rule_files:
           - /var/vcap/jobs/bosh_alerts/*.alerts
           - /var/vcap/jobs/cloudfoundry_alerts/*.alerts
+          - /var/vcap/jobs/concourse_alerts/*.alerts
           - /var/vcap/jobs/consul_alerts/*.alerts
+          - /var/vcap/jobs/elasticsearch_alerts/*.alerts
           - /var/vcap/jobs/haproxy_alerts/*.alerts
           - /var/vcap/jobs/kubernetes_alerts/*.alerts
           - /var/vcap/jobs/mysql_alerts/*.alerts
@@ -474,6 +480,8 @@ jobs:
         release: prometheus
       - name: cloudfoundry_dashboards
         release: prometheus
+      - name: concourse_dashboards
+        release: prometheus
       - name: consul_dashboards
         release: prometheus
       - name: elasticsearch_dashboards
@@ -515,6 +523,7 @@ jobs:
           dashboard_files:
             - /var/vcap/jobs/bosh_dashboards/*.json
             - /var/vcap/jobs/cloudfoundry_dashboards/*.json
+            - /var/vcap/jobs/concourse_dashboards/*.json
             - /var/vcap/jobs/consul_dashboards/*.json
             - /var/vcap/jobs/elasticsearch_dashboards/*.json
             - /var/vcap/jobs/haproxy_dashboards/*.json
