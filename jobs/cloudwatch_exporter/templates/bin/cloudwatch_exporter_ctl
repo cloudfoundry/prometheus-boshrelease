@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/cloudwatch_exporter
+LOG_DIR=/var/vcap/sys/log/cloudwatch_exporter
+TMP_DIR=/var/vcap/sys/tmp/cloudwatch_exporter
+STORE_DIR=/var/vcap/store/cloudwatch_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/cloudwatch_exporter.pid
+
+source /var/vcap/packages/cloudwatch_exporter/common/utils.sh
+
+export PATH=/var/vcap/packages/java_prometheus/bin:${PATH}
+
+<% if_p('cloudwatch_exporter.aws.access_key') do |access_key| %>
+export AWS_ACCESS_KEY_ID="<%= access_key %>"
+<% end %>
+<% if_p('cloudwatch_exporter.aws.secret_key') do |secret_key| %>
+export AWS_SECRET_ACCESS_KEY="<%= secret_key %>"
+<% end %>
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "cloudwatch_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec java -jar /var/vcap/packages/cloudwatch_exporter/cloudwatch_exporter-0.4-jar-with-dependencies.jar \
+      <%= p('cloudwatch_exporter.web.port') %> \
+      /var/vcap/jobs/cloudwatch_exporter/config/config.yml \
+      >>  ${LOG_DIR}/cloudwatch_exporter.stdout.log \
+      2>> ${LOG_DIR}/cloudwatch_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
