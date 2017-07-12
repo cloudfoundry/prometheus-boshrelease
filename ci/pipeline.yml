@@ -18,7 +18,7 @@ meta:
   url:      (( param "Please specify the full url of the target Concourse CI" ))
   pipeline: (( concat meta.name "-boshrelease" ))
 
-  image:    docker:///starkandwayne/concourse
+  image:    starkandwayne/concourse
 
   aws:
     bucket:     (( concat meta.pipeline "-pipeline" ))
@@ -69,7 +69,10 @@ jobs:
       - task: testflight
         config:
           platform: linux
-          rootfs_uri:    (( grab meta.image ))
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image ))
           inputs:
             - { name: git }
           run:
@@ -148,7 +151,10 @@ jobs:
         task: release
         config:
           platform: linux
-          rootfs_uri:    (( grab meta.image ))
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image ))
           inputs:
             - name: version
             - name: git
