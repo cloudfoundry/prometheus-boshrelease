@@ -30,7 +30,7 @@ case $1 in
       -alertmanager.timeout="<%= timeout %>" \
       <% end %> \
       <% if_link('alertmanager') do |alertmanager| %> \
-      -alertmanager.url="<%= alertmanager.instances.map { |instance| "http://#{instance.address}:#{alertmanager.p('alertmanager.web.port')}" }.join(',') %>" \
+      -alertmanager.url="<%= alertmanager.instances.map { |instance| "http://#{instance.address}:#{alertmanager.p('alertmanager.web.port')}#{alertmanager.p('alertmanager.web.route_prefix')}" }.join(',') %>" \
       <% end %> \
       <% if_p('prometheus.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
