@@ -1,0 +1,23 @@
+---
+name: cloudwatch_exporter
+
+packages:
+- cloudwatch_exporter
+- java_prometheus
+
+templates:
+  bin/cloudwatch_exporter_ctl: bin/cloudwatch_exporter_ctl
+  config/config.yml: config/config.yml
+
+properties:
+  cloudwatch_exporter.aws.access_key:
+    description: "AWS access key ID, if using access keys"
+  cloudwatch_exporter.aws.secret_key:
+    description: "AWS secret access key if using access keys"
+  cloudwatch_exporter.aws.region:
+    description: "AWS region"
+  cloudwatch_exporter.metrics:
+    description: "Array of metrics to export; see https://github.com/prometheus/cloudwatch_exporter#configuration"
+  cloudwatch_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9106"
