@@ -22,30 +22,6 @@ ALERT CFExporterApplicationsScrapeTooOld
     description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Applications metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago",
   }
 
-ALERT CFExporterApplicationEventsScrapeError
-  IF max(cf_last_application_events_scrape_error) by(environment, deployment, instance) != 0
-  FOR <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
-  LABELS {
-    service = "cf-exporter",
-    severity = "critical",
-  }
-  ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Application Events scrape error",
-    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Application Events metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>",
-  }
-
-ALERT CFExporterApplicationEventsScrapeTooOld
-  IF (time() - max(cf_last_application_events_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
-  FOR <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
-  LABELS {
-    service = "cf-exporter",
-    severity = "warning",
-  }
-  ANNOTATIONS {
-    summary = "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Application Events scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago",
-    description = "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Application Events metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago",
-  }
-
 ALERT CFExporterOrganizationsScrapeError
   IF max(cf_last_organizations_scrape_error) by(environment, deployment, instance) != 0
   FOR <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>

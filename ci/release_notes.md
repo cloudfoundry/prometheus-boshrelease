@@ -1,3 +1,7 @@
+## Breaking changes
+
+* The `Application Events` collector at the `cf_exporter` has been removed, and consequently all alerts and dashboards with references to their metrics have been updated or removed (`cf_apps_events.json`)
+
 ## Fixes
 
 * Adds route prefix to the alertmanager url when configured
@@ -6,5 +10,6 @@
 
 ## Upgrades
 
+* `cf_exporter` to v0.5.0
 * `firehose_exporter` to v4.2.3
 * `shield_exporter` to v0.2.1
