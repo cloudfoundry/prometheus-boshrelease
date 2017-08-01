@@ -19,3 +19,4 @@
 * `firehose_exporter` to v4.2.3
 * `redis_exporter` to v0.11.3
 * `shield_exporter` to v0.2.1
+* `stackdriver_exporter` to v0.1.1
