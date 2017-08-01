@@ -20,19 +20,19 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec influxdb_exporter \
+      <% if_p('influxdb_exporter.sample_expiry') do |sample_expiry| %> \
+      -influxdb.sample-expiry="<%= sample_expiry %>" \
+      <% end %> \
       <% if_p('influxdb_exporter.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('influxdb_exporter.log_level') do |log_level| %> \
       -log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('influxdb_exporter.web.port') %>" \
       -udp.bind-address=":<%= p('influxdb_exporter.udp.port') %>" \
+      -web.listen-address=":<%= p('influxdb_exporter.web.port') %>" \
       <% if_p('influxdb_exporter.web.telemetry_path') do |telemetry_path| %> \
       -web.telemetry-path="<%= telemetry_path %>" \
-      <% end %> \
-      <% if_p('influxdb_exporter.sample_expiry') do |sample_expiry| %> \
-      -influxdb.sample-expiry="<%= sample_expiry %>" \
       <% end %> \
       >>  ${LOG_DIR}/influxdb_exporter.stdout.log \
       2>> ${LOG_DIR}/influxdb_exporter.stderr.log

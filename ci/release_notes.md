@@ -19,6 +19,7 @@
 * `cf_exporter` to v0.5.0
 * `elasticsearch_exporter` to v1.0.1
 * `firehose_exporter` to v4.2.3
+* `influxdb_exporter` to v0.1.0
 * `redis_exporter` to v0.11.3
 * `shield_exporter` to v0.2.1
 * `stackdriver_exporter` to v0.1.1
