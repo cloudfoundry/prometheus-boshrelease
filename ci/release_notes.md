@@ -2,6 +2,10 @@
 
 * The `Application Events` collector at the `cf_exporter` has been removed, and consequently all alerts and dashboards with references to their metrics have been updated or removed (`cf_apps_events.json`)
 
+## Features
+
+* Added kubernetes memory and cpu request alerts
+
 ## Fixes
 
 * Adds route prefix to the alertmanager url when configured
