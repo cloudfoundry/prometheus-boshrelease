@@ -17,6 +17,7 @@
 * `alertmanager` to v0.8.0
 * `blackbox_exporter` to v0.7.0
 * `cf_exporter` to v0.5.0
+* `elasticsearch_exporter` to v1.0.1
 * `firehose_exporter` to v4.2.3
 * `redis_exporter` to v0.11.3
 * `shield_exporter` to v0.2.1
