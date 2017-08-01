@@ -230,91 +230,6 @@
       "panels": [
         {
           "cacheTimeout": null,
-          "colorBackground": true,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(255, 166, 0, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "height": "50",
-          "id": 8,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 5,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": true,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true
-          },
-          "targets": [
-            {
-              "expr": "elasticsearch_cluster_health_status_is_green{instance=\"$instance\"}",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "refId": "A",
-              "step": 1800
-            }
-          ],
-          "thresholds": "0,1",
-          "title": "Cluster health status",
-          "transparent": false,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "GREEN",
-              "value": "1"
-            },
-            {
-              "op": "=",
-              "text": "RED",
-              "value": "0"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
           "colorBackground": false,
           "colorValue": false,
           "colors": [
@@ -362,7 +277,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -443,7 +358,7 @@
               "to": "null"
             }
           ],
-          "span": 2,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -525,7 +440,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1017,7 +932,7 @@
               "expr": "elasticsearch_process_cpu_percent{instance=\"$instance\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1191,7 +1106,7 @@
               "expr": "1-(elasticsearch_filesystem_data_available_bytes{instance=\"$instance\"}/elasticsearch_filesystem_data_size_bytes{instance=\"$instance\"})",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}} - {{path}}",
+              "legendFormat": "{{name}} - {{path}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1301,7 +1216,7 @@
               "expr": "elasticsearch_indices_docs{instance=\"$instance\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1384,7 +1299,7 @@
               "expr": "irate(elasticsearch_indices_indexing_index_total{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1467,7 +1382,7 @@
               "expr": "rate(elasticsearch_indices_docs_deleted{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1550,7 +1465,7 @@
               "expr": "rate(elasticsearch_indices_merges_total{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1642,10 +1557,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(elasticsearch_indices_search_query_time_ms_total{instance=\"$instance\"}[$interval]) ",
+              "expr": "rate(elasticsearch_indices_search_query_time_seconds{instance=\"$instance\"}[$interval]) ",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1725,10 +1640,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(elasticsearch_indices_indexing_index_time_ms_total{instance=\"$instance\"}[$interval])",
+              "expr": "rate(elasticsearch_indices_indexing_index_time_seconds_total{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1808,10 +1723,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(elasticsearch_indices_merges_total_time_ms_total{instance=\"$instance\"}[$interval])",
+              "expr": "rate(elasticsearch_indices_merges_total_time_seconds_total{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1906,7 +1821,7 @@
               "expr": "elasticsearch_indices_fielddata_memory_size_bytes{instance=\"$instance\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -1989,7 +1904,7 @@
               "expr": "rate(elasticsearch_indices_fielddata_evictions{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -2072,7 +1987,7 @@
               "expr": "elasticsearch_indices_query_cache_memory_size_bytes{instance=\"$instance\"}",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -2155,7 +2070,7 @@
               "expr": "rate(elasticsearch_indices_query_cache_evictions{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}}",
+              "legendFormat": "{{name}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -2567,7 +2482,7 @@
               "expr": "rate(elasticsearch_jvm_gc_collection_seconds_count{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}} - {{gc}}",
+              "legendFormat": "{{name}} - {{gc}}",
               "metric": "",
               "refId": "A",
               "step": 240
@@ -2650,7 +2565,7 @@
               "expr": "rate(elasticsearch_jvm_gc_collection_seconds_count{instance=\"$instance\"}[$interval])",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}} - {{gc}}",
+              "legendFormat": "{{name}} - {{gc}}",
               "metric": "",
               "refId": "A",
               "step": 240
