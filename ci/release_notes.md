@@ -5,6 +5,7 @@
 ## Features
 
 * Added kubernetes memory and cpu request alerts
+* Prometheus job allows to specify inline custom rules
 
 ## Fixes
 
