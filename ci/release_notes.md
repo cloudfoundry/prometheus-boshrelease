@@ -7,3 +7,4 @@
 ## Upgrades
 
 * `firehose_exporter` to v4.2.3
+* `shield_exporter` to v0.2.1
