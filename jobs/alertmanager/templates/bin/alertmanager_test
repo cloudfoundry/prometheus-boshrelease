@@ -4,4 +4,4 @@ set -eu
 
 curl -H "Content-Type: application/json" \
   -d '[{"labels":{"service":"alertmanager","severity":"warning"},"annotations":{"summary":"Alertmanager `<%= spec.name %>/<%= spec.index %>` test","description":"This is a test alert from alertmanager `<%= spec.name %>/<%= spec.index %>`"}}]' \
-  <%= spec.address %>:<%= p('alertmanager.web.port') %>/api/v1/alerts
+  <%= spec.ip %>:<%= p('alertmanager.web.port') %>/api/v1/alerts

@@ -22,7 +22,7 @@ done
 <% end %>
 
 <% if_p('grafana.dashboards.custom_homepage_json') do |homepage_json| %>
-GRAFANA_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.address %>:<%= p('grafana.server.http_port') %>"
+GRAFANA_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>"
 GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
 upsert_dash_resp="$(curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST "${GRAFANA_API}/api/dashboards/db" \
   -H 'Content-Type: application/json' \
