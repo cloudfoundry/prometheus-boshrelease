@@ -18,7 +18,7 @@
 
 * `alertmanager` to v0.8.0
 * `blackbox_exporter` to v0.7.0
-* `bosh_exporter` to v2.4.2
+* `bosh_exporter` to v2.4.3
 * `cf_exporter` to v0.5.0
 * `elasticsearch_exporter` to v1.0.1
 * `firehose_exporter` to v4.2.3
