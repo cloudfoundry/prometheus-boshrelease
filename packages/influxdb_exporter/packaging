@@ -6,15 +6,8 @@ set -eux
 mkdir -p ${BOSH_INSTALL_TARGET}/common
 cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-# Build influxdb_exporter package
-export GOROOT=/var/vcap/packages/golang_prometheus/go
-export PATH=${GOROOT}/bin:${PATH}
+# Extract influxdb_exporter package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/influxdb_exporter/influxdb_exporter-0.1.0.linux-amd64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/influxdb_exporter-0.1.0.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin
 
-PACKAGE_NAME=github.com/prometheus/influxdb_exporter
-mkdir -p ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
-cp -a ${BOSH_COMPILE_TARGET}/${PACKAGE_NAME}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
-export GOPATH=${BOSH_INSTALL_TARGET}
-
-go install ${PACKAGE_NAME}
-
-rm -rf ${BOSH_INSTALL_TARGET}/pkg ${BOSH_INSTALL_TARGET}/src

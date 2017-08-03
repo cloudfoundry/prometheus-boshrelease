@@ -43,7 +43,7 @@ case $1 in
       <% if_p('alertmanager.log_level') do |log_level| %> \
       -log.level="<%= log_level %>" \
       <% end %> \
-      -mesh.listen-address=<%= "#{spec.address}:#{p('alertmanager.mesh.port')}" %> \
+      -mesh.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port')}" %> \
       <% if_p('alertmanager.mesh.password') do |password| %> \
       -mesh.password="<%= password %>" \
       <% end %> \

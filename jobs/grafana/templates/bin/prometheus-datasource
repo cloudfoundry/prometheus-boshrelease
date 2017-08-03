@@ -3,7 +3,7 @@
 set -eu
 
 <% if_link('prometheus') do |prometheus| %>
-GRAFANA_DATASOURCES_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.address %>:<%= p('grafana.server.http_port') %>/api/datasources"
+GRAFANA_DATASOURCES_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>/api/datasources"
 GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
 
 <%
