@@ -1,0 +1,47 @@
+ALERT GrafanaExporterAdminStatsScrapeError
+  IF max(grafana_admin_stats_last_scrape_error) by(instance) != 0
+  FOR <%= p('grafana_alerts.scrape_error.evaluation_time') %>
+  LABELS {
+    service = "grafana-exporter",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "grafana_exporter `{{$labels.instance}}` Admin Stats scrape error",
+    description = "The `grafana_exporter` at `{{$labels.instance}}` was unable to scrape Admin Stats metrics during the last <%= p('grafana_alerts.scrape_error.evaluation_time') %>",
+  }
+
+ALERT GrafanaExporterAdminStatsScrapeTooOld
+  IF (time() - max(grafana_admin_stats_last_scrape_timestamp) by(instance)) > <%= p('grafana_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('grafana_alerts.scrape_too_old.evaluation_time') %>
+  LABELS {
+    service = "grafana-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "grafana_exporter `{{{$labels.instance}}` last Admin Stats scrape > {{humanizeDuration <%= p('grafana_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `grafana_exporter` at `{{$labels.instance}}` last scrape for Admin Stats metrics was more than {{humanizeDuration <%= p('grafana_alerts.scrape_too_old.evaluation_time') %>}} ago",
+  }
+
+ALERT GrafanaExporterMetricsScrapeError
+  IF max(grafana_metrics_last_scrape_error) by(instance) != 0
+  FOR <%= p('grafana_alerts.scrape_error.evaluation_time') %>
+  LABELS {
+    service = "grafana-exporter",
+    severity = "critical",
+  }
+  ANNOTATIONS {
+    summary = "grafana_exporter `{{$labels.instance}}` Metrics scrape error",
+    description = "The `grafana_exporter` at `{{$labels.instance}}` was unable to scrape Metrics metrics during the last <%= p('grafana_alerts.scrape_error.evaluation_time') %>",
+  }
+
+ALERT GrafanaExporterMetricsScrapeTooOld
+  IF (time() - max(grafana_metrics_last_scrape_timestamp) by(instance)) > <%= p('grafana_alerts.scrape_too_old.threshold') %>
+  FOR <%= p('grafana_alerts.scrape_too_old.evaluation_time') %>
+  LABELS {
+    service = "grafana-exporter",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "grafana_exporter `{{{$labels.instance}}` last Metrics scrape > {{humanizeDuration <%= p('grafana_alerts.scrape_too_old.threshold') %>}} ago",
+    description = "The `grafana_exporter` at `{{$labels.instance}}` last scrape for Metrics metrics was more than {{humanizeDuration <%= p('grafana_alerts.scrape_too_old.evaluation_time') %>}} ago",
+  }
