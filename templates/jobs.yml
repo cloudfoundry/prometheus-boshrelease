@@ -265,6 +265,20 @@ jobs:
               regex: "(.*)"
               target_label: __address__
               replacement: "${1}:9171"
+          - job_name: grafana
+            file_sd_configs:
+            - files:
+              - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+            relabel_configs:
+            - source_labels:
+              - __meta_bosh_job_process_name
+              regex: grafana_exporter
+              action: keep
+            - source_labels:
+              - __address__
+              regex: "(.*)"
+              target_label: __address__
+              replacement: "${1}:9261"
           - job_name: graphite
             file_sd_configs:
             - files:
@@ -476,6 +490,8 @@ jobs:
     templates:
       - name: grafana
         release: prometheus
+      - name: grafana_exporter
+        release: prometheus
       - name: bosh_dashboards
         release: prometheus
       - name: cloudfoundry_dashboards
@@ -537,6 +553,11 @@ jobs:
             - /var/vcap/jobs/rabbitmq_dashboards/*.json
             - /var/vcap/jobs/redis_dashboards/*.json
             - /var/vcap/jobs/system_dashboards/*.json
+      grafana_exporter:
+        grafana:
+          uri: http://localhost:3000
+          username: admin
+          password: admin
 
   - name: nginx
     templates:
