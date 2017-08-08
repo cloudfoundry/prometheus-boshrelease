@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "4.4.1"
     },
     {
       "type": "panel",
@@ -118,16 +118,18 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "prometheus_local_storage_memory_series{instance=~\"$instance\"}",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
             }
           ],
           "thresholds": "",
-          "title": "Local Storage Memory Series",
+          "title": "Time Series",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "70%",
@@ -189,16 +191,18 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "prometheus_local_storage_memory_dirty_series{instance=~\"$instance\"}",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
             }
           ],
           "thresholds": "",
-          "title": "Local Storage Memory Dirty Series",
+          "title": "Dirty Time Series",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "70%",
@@ -260,16 +264,18 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "prometheus_local_storage_indexing_queue_length{instance=~\"$instance\"}",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
             }
           ],
           "thresholds": "500,4000",
-          "title": "Internal Storage Queue Length",
+          "title": "Indexing Queue Length",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "70%",
@@ -338,9 +344,11 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "prometheus_local_storage_checkpoint_last_duration_seconds{instance=~\"$instance\"}",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -373,13 +381,205 @@
       "height": "200px",
       "panels": [
         {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "",
+          "fill": 1,
+          "id": 23,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "prometheus_local_storage_memory_chunks{instance=~\"$instance\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Chunks",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "prometheus_local_storage_chunks_to_persist{instance=~\"$instance\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "To Persist",
+              "refId": "B",
+              "step": 10
+            },
+            {
+              "expr": "prometheus_local_storage_open_head_chunks{instance=~\"$instance\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Open Head",
+              "refId": "C",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Chunks",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "",
+          "fill": 1,
+          "id": 20,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"create\"}[10m])",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "10m rate",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"create\"}[1h])",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "1h rate",
+              "refId": "B",
+              "step": 10
+            },
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"create\"}[6h])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "6h rate",
+              "refId": "C",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Chunks Created",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
           "aliasColors": {
             "prometheus": "#C15C17",
             "{instance=\"localhost:9090\",job=\"prometheus\"}": "#C15C17"
           },
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "description": "This graph displays the count of samples ingested by the Prometheus server, as measured over the last 5 minutes, per time series in the range vector.",
+          "description": "",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -403,15 +603,17 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "spaceLength": 10,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "rate(prometheus_local_storage_ingested_samples_total{instance=~\"$instance\"}[5m])",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Samples Ingested",
+              "legendFormat": "samples/sec",
               "metric": "",
               "refId": "A",
               "step": 10
@@ -420,7 +622,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Samples ingested (rate-5m)",
+          "title": "Samples Ingested",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -429,6 +631,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -450,13 +653,28 @@
               "show": false
             }
           ]
-        },
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "",
           "fill": 1,
-          "id": 18,
+          "id": 21,
           "legend": {
             "avg": false,
             "current": false,
@@ -475,14 +693,16 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "spaceLength": 10,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "prometheus_local_storage_chunks_to_persist{instance=~\"$instance\"}",
+              "expr": "prometheus_local_storage_persistence_urgency_score{instance=~\"$instance\"}",
+              "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Chunks",
+              "legendFormat": "score",
               "refId": "A",
               "step": 10
             }
@@ -490,7 +710,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Chunks To Persist",
+          "title": "Urgency Score",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -499,6 +719,179 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "",
+          "fill": 1,
+          "id": 22,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"persist\"}[10m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "10m rate",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"persist\"}[1h])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "1h rate",
+              "refId": "B",
+              "step": 10
+            },
+            {
+              "expr": "rate(prometheus_local_storage_chunk_ops_total{instance=~\"$instance\", type=\"persist\"}[6h])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "6h rate",
+              "refId": "C",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Chunks Persisted",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 17,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "prometheus_local_storage_memory_chunkdescs{instance=~\"$instance\"}",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "descriptors",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Chunk Descriptors",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -538,6 +931,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
           "id": 16,
@@ -559,15 +954,17 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "spaceLength": 10,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "prometheus_local_storage_memory_chunks{instance=~\"$instance\"}",
+              "expr": "rate(prometheus_local_storage_series_chunks_persisted_sum{instance=~\"$instance\"}[10m]) / rate(prometheus_local_storage_series_chunks_persisted_count{instance=~\"$instance\"}[10m])",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Memory Chunks",
+              "legendFormat": "chunks per series",
               "refId": "A",
               "step": 10
             }
@@ -575,7 +972,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Local Storage Memory Chunks",
+          "title": "Series Chunks Persisted",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -584,6 +981,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -611,9 +1009,96 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "fill": 1,
-          "id": 17,
+          "id": 24,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(prometheus_local_storage_series_ops_total{instance=~\"$instance\", type=\"maintenance_in_memory\"}[10m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "memory series/sec",
+              "refId": "A",
+              "step": 10
+            },
+            {
+              "expr": "rate(prometheus_local_storage_series_chunks_persisted_count{instance=~\"$instance\"}[10m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "series persisted/sec",
+              "refId": "B",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Timeseries Maintenance",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 25,
           "legend": {
             "avg": false,
             "current": false,
@@ -632,15 +1117,16 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 6,
+          "spaceLength": 10,
+          "span": 4,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "prometheus_local_storage_memory_chunkdescs{instance=~\"$instance\"}",
-              "interval": "",
+              "expr": "rate(prometheus_local_storage_maintain_series_duration_seconds_sum{instance=~\"$instance\", location=\"memory\"}[10m]) / rate(prometheus_local_storage_maintain_series_duration_seconds_count{instance=~\"$instance\", location=\"memory\"}[10m])",
+              "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Memory Chunks Descriptors",
+              "legendFormat": "duration",
               "refId": "A",
               "step": 10
             }
@@ -648,7 +1134,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Local Storage Memory Chunk Descriptors",
+          "title": "Memory Maintenance Duration",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -657,6 +1143,174 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 19,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(prometheus_engine_query_duration_seconds_sum{instance=~\"$instance\"}[5m])",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ slice }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Query Engine Timings",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 26,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "irate(prometheus_local_storage_checkpoint_series_chunks_written_sum{instance=~\"$instance\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "writes/s",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Checkpoint Chunks Written/sec",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -665,6 +1319,83 @@
           "yaxes": [
             {
               "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 27,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "prometheus_local_storage_checkpoint_last_size_bytes{instance=~\"$instance\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "size",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Checkpoint Size",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
               "label": null,
               "logBase": 1,
               "max": null,
