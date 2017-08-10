@@ -1,0 +1,52 @@
+# Alertmanager URL
+- type: replace
+  path: /instance_groups/name=alertmanager/jobs/name=alertmanager/properties/alertmanager/web?/external_url
+  value: https://alertmanager.((system_domain))
+
+# Prometheus URL
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/web?/external_url
+  value: https://prometheus.((system_domain))
+
+# Grafana URL
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/server?/root_url
+  value: https://grafana.((system_domain))
+
+# Route Registrar
+- type: replace
+  path: /instance_groups/name=nginx/jobs/-
+  value:
+    name: route_registrar
+    release: routing
+    consumes:
+      nats:
+        from: nats
+        deployment: cf
+    properties:
+      route_registrar:
+        routes:
+          - name: alertmanager
+            registration_interval: 20s
+            port: 9093
+            uris:
+              - alertmanager.((system_domain))
+          - name: prometheus
+            registration_interval: 20s
+            port: 9090
+            uris:
+              - prometheus.((system_domain))
+          - name: grafana
+            port: 3000
+            registration_interval: 60s
+            uris:
+            - grafana.((system_domain))
+
+# Releases
+- type: replace
+  path: /releases/-
+  value:
+    name: routing
+    version: 0.159.0
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/cf-routing-release?v=0.159.0
+    sha1: 739f663f976fea826595880cfd58470bc8d49172
