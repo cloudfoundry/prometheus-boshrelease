@@ -1,0 +1,23 @@
+# This file assumes influxdb_exporter is being used: ./monitor-influxdb.yml
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: concourse_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/concourse_alerts/*.alerts
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: concourse_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/concourse_dashboards/*.json
