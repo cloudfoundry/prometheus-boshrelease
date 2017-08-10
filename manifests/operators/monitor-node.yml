@@ -1,0 +1,10 @@
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: system_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/system_dashboards/*.json
