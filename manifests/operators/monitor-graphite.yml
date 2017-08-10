@@ -1,0 +1,13 @@
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: graphite_exporter
+    release: prometheus
+    properties:
+      graphite_exporter:
+        graphite:
+          mapping_config: ((graphite_mapping_config))
+  
