@@ -1,0 +1,18 @@
+# Apply ./cf/grafana-uaa-clients.yml to your cf-deployment based Cloud Foundry
+
+# Grafana Generic OAuth
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/auth?/generic_oauth
+  value:
+    enabled: true
+    allow_sign_up: true
+    client_id: grafana
+    client_secret: "((uaa_clients_grafana_secret))"
+    scopes: openid
+    auth_url: https://login.((system_domain))/oauth/authorize
+    token_url: https://login.((system_domain))/oauth/token
+    api_url: https://login.((system_domain))/userinfo
+    name: Cloud Foundry
+    tls_client_ca: "((uaa_ssl.ca))"
+    tls_client_cert: "((uaa_ssl.certificate))"
+    tls_client_key: "((uaa_ssl.private_key))"

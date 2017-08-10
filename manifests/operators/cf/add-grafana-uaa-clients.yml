@@ -1,0 +1,16 @@
+# Apply to your cf-deployment based Cloud Foundry
+
+# UAA client for grafana
+- type: replace
+  path: /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/clients/grafana?
+  value:
+    authorized-grant-types: authorization_code
+    authorities: uaa.none
+    scope: openid
+    secret: "((uaa_clients_grafana_secret))"
+
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_clients_grafana_secret
+    type: password
