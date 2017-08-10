@@ -1,0 +1,34 @@
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: kube_state_metrics_exporter
+    release: prometheus
+    properties:
+      kube_state_metrics_exporter:
+        apiserver: "((kubernetes_apiserver))"
+        kubeconfig: ((kubernetes_kubeconfig))
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: kubernetes_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/kubernetes_alerts/*.alerts
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: kubernetes_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/kubernetes_dashboards/*.json
