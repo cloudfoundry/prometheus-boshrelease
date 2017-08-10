@@ -1,0 +1,14 @@
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: stackdriver_exporter
+    release: prometheus
+    properties:
+      stackdriver_exporter:
+        google:
+          project_id: "((stackdriver_project_id))"
+        monitoring:
+          metrics_type_prefixes: "((stackdriver_metrics_type_prefixes))"
