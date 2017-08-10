@@ -1,0 +1,66 @@
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: blackbox_exporter
+    release: prometheus
+    properties:
+      blackbox_exporter:
+        config:
+          modules:
+            http:
+              prober: http
+              timeout: 5s
+              http:
+                protocol: tcp4
+                tls_config:
+                  insecure_skip_verify: ((skip_ssl_verify))
+
+# Prometheus Scrape Config
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value:
+    job_name: blackbox
+    metrics_path: /probe
+    params:
+      module:
+        - http
+    static_configs:
+      - targets: ((probe_endpoints))
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: (.*)
+        target_label: __param_target
+        replacement: ${1}
+      - source_labels: [__param_target]
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+      - source_labels: []
+        regex: .*
+        target_label: __address__
+        replacement: localhost:9115
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: probe_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/probe_alerts/*.alerts
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: probe_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/probe_dashboards/*.json
