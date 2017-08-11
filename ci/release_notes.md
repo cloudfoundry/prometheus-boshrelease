@@ -5,4 +5,5 @@
 
 ## Upgrades
 
+* `blackbox_exporter` to v0.8.1
 * `kube_state_metrics` to v1.0.0
