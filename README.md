@@ -4,6 +4,21 @@ This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io
 
 It includes the following [exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/cloudfoundry-community/bosh_exporter), [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter), [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Github](https://github.com/infinityworksltd/github-exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/cloudfoundry-community/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter)
 
+## Table of Contents
+
+* [Usage](https://github.com/cloudfoundry-community/prometheus-boshrelease#usage)
+  * [Requirements](https://github.com/cloudfoundry-community/prometheus-boshrelease#requirements)
+  * [Clone the repository](https://github.com/cloudfoundry-community/prometheus-boshrelease#clone-the-repository)
+  * [Basic deployment](https://github.com/cloudfoundry-community/prometheus-boshrelease#basic-deployment)
+  * [Using BOSH Service Discovery](https://github.com/cloudfoundry-community/prometheus-boshrelease#using-bosh-service-discovery)
+  * [Monitoring Cloud Foundry](https://github.com/cloudfoundry-community/prometheus-boshrelease#monitoring-cloud-foundry)
+    * [Register Cloud Foundry routes](https://github.com/cloudfoundry-community/prometheus-boshrelease#register-cloud-foundry-routes)
+    * [Use UAA for Grafana authentication](https://github.com/cloudfoundry-community/prometheus-boshrelease#use-uaa-for-grafana-authentication)
+  * [Operations files](https://github.com/cloudfoundry-community/prometheus-boshrelease#operations-files)
+  * [Deployment variables and the var-store](https://github.com/cloudfoundry-community/prometheus-boshrelease#deployment-variables-and-the-var-store)
+* [Contributing](https://github.com/cloudfoundry-community/prometheus-boshrelease#contributing)
+* [License](https://github.com/cloudfoundry-community/prometheus-boshrelease#license)
+
 ## Usage
 
 ### Requirements
