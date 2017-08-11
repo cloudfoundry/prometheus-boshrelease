@@ -6,4 +6,5 @@
 ## Upgrades
 
 * `blackbox_exporter` to v0.8.1
+* `grafana` to v4.4.3
 * `kube_state_metrics` to v1.0.0
