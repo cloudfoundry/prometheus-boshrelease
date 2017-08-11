@@ -2,7 +2,7 @@
 
 This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io/), [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/), and [Grafana](https://grafana.com/).
 
-It includes the following [exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/cloudfoundry-community/bosh_exporter), [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter), [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Github](https://github.com/infinityworksltd/github-exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/cloudfoundry-community/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter)
+It includes the following [exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/cloudfoundry-community/bosh_exporter), [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter), [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Github](https://github.com/infinityworksltd/github-exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/cloudfoundry-community/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter)
 
 ## Usage
 
@@ -59,7 +59,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v bosh_url= \
   -v bosh_username= \
   -v bosh_password= \
-  -v bosh_ca_cert=<> \
+  -v bosh_ca_cert= \
   -v metrics_environment=
 ```
 
@@ -83,7 +83,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v uaa_clients_cf_exporter_secret= \
   -v uaa_clients_firehose_exporter_secret= \
   -v traffic_controller_external_port= \
-  -v skip_ssl_verify= \
+  -v skip_ssl_verify=
 ```
 
 #### Register Cloud Foundry routes
@@ -145,7 +145,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-github.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-github.yml) | Enables monitoring [Github](https://github.com/infinityworksltd/github-exporter) | x | | |
 | [monitor-graphite.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-graphite.yml) | Enables monitoring [Graphite](https://github.com/prometheus/graphite_exporter) | x | | |
 | [monitor-haproxy.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-haproxy.yml) | Enables monitoring [HAProxy](https://github.com/prometheus/haproxy_exporter) | x | x | x |
-| [monitor-http-probe.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-probe.yml) | Enables monitoring HTTP(s) endpoints via the [Blackbox](https://github.com/prometheus/blackbox_exporter) exporter | x | x | x |
+| [monitor-http-probe.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-http-probe.yml) | Enables monitoring HTTP(s) endpoints via the [Blackbox](https://github.com/prometheus/blackbox_exporter) exporter | x | x | x |
 | [monitor-influxdb.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-influxdb.yml) | Enables monitoring [InfluxDB](https://github.com/prometheus/influxdb_exporter) | x | | |
 | [monitor-kubernetes.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-kubernetes.yml) | Enables monitoring [Kubernetes](https://github.com/kubernetes/kube-state-metrics) | x | x | x |
 | [monitor-memcached.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-memcached.yml) | Enables monitoring [Memcached](https://github.com/prometheus/memcached_exporter) | x | | |
@@ -165,7 +165,7 @@ Please review the op files before deploying them to check the requeriments, depe
 
 ### Deployment variables and the var-store
 
-Some operator files requires additional information to provide environment-specific or sensitive configuration such as various credentials. To do this in the default configuration, we use the `--vars-store`. This flag takes the name of a `yml` file that it will read and write to. Where necessary credential values are not present, it will generate new values based on the type information stored at the different deployment files. Necessary variables that BOSH can't generate need to be supplied as well.
+Some operators files requires additional information to provide environment-specific or sensitive configuration such as various credentials. To do this in the default configuration, we use the `--vars-store`. This flag takes the name of a `yml` file that it will read and write to. Where necessary credential values are not present, it will generate new values based on the type information stored at the different deployment files. Necessary variables that BOSH can't generate need to be supplied as well.
 See each particular op files you're using for any additional necessary variables.
 
 See also the [BOSH CLI documentation](http://bosh.io/docs/cli-int.html#value-sources) for more information about ways to supply such additional variables.
