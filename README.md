@@ -70,7 +70,7 @@ If you want to use the [BOSH Service Discovery](https://github.com/cloudfoundry-
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
   --vars-store tmp/deployment-vars.yml \
-  -o manifests/operators/monitor-bosh.yml
+  -o manifests/operators/monitor-bosh.yml \
   -v bosh_url= \
   -v bosh_username= \
   -v bosh_password= \
