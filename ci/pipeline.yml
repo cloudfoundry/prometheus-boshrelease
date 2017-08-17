@@ -17,8 +17,14 @@ meta:
   target:   (( param "Please identify the name of the target Concourse CI" ))
   url:      (( param "Please specify the full url of the target Concourse CI" ))
   pipeline: (( concat meta.name "-boshrelease" ))
+  manifest:
+    path:   (( concat "manifests/" meta.name ".yml" ))
+    vars:   "--- {}"
+    operator_file_paths: "" # comma separated list relative to repo root
 
-  image:    starkandwayne/concourse
+  image:
+    name: starkandwayne/concourse
+    tag: latest
 
   aws:
     bucket:     (( concat meta.pipeline "-pipeline" ))
@@ -35,9 +41,11 @@ meta:
 
   bosh-lite:
     target:     (( param "Please specify the BOSH target URI for the bosh-lite to run test deployments against" ))
-    deployment: (( param "Please specify the name of the local bosh-lite (warden) deployment" ))
+    cacert:     (( param "Please specify the BOSH Director Root CA cert" ))
     username:   admin
-    password:   admin
+    password:   (( param "Please specify the BOSH Director admin password" ))
+    deployment:    (( concat meta.name "-testflight" ))
+    deployment-pr: (( concat meta.name "-testflight-pr" ))
 
   slack:
     webhook:       (( param "Please specify your Slack Incoming Webhook Integration URL" ))
@@ -53,6 +61,7 @@ groups:
   - name: (( grab meta.pipeline ))
     jobs:
       - testflight
+      - testflight-pr
       - rc
       - shipit
       - major
@@ -72,7 +81,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: (( grab meta.image ))
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
           inputs:
             - { name: git }
           run:
@@ -80,18 +90,95 @@ jobs:
             args: []
           params:
             REPO_ROOT:            git
-            BOSH_LITE_TARGET:     (( grab meta.bosh-lite.target ))
-            BOSH_LITE_USERNAME:   (( grab meta.bosh-lite.username ))
-            BOSH_LITE_PASSWORD:   (( grab meta.bosh-lite.password ))
-            BOSH_LITE_DEPLOYMENT: (( grab meta.bosh-lite.deployment ))
+            BOSH_ENVIRONMENT:     (( grab meta.bosh-lite.target ))
+            BOSH_CA_CERT:         (( grab meta.bosh-lite.cacert ))
+            BOSH_CLIENT:          (( grab meta.bosh-lite.username ))
+            BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
+            BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment ))
             TEST_ERRAND:          (( grab meta.test-errand || ~ ))
+            MANIFEST_PATH:        (( grab meta.manifest.path ))
+            MANIFEST_VARS:        (( grab meta.manifest.vars ))
+            MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
       on_failure:
         put: notify
         params:
           channel:  (( grab meta.slack.channel ))
           username: (( grab meta.slack.username ))
           icon_url: (( grab meta.slack.icon ))
-          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": test job failed" ))'
+          text:    '(( concat meta.slack.fail_url " " meta.pipeline ": testflight job failed" ))'
+
+  - name: testflight-pr
+    public: true
+    serial: true
+    plan:
+    - do:
+      - { get: git-pull-requests, trigger: true, version: every }
+      - put: git-pull-requests
+        params:
+          path: git-pull-requests
+          status: pending
+      - task: testflight
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          inputs:
+            - { name: git-pull-requests }
+          run:
+            path: ./git-pull-requests/ci/scripts/testflight
+            args: []
+          params:
+            REPO_ROOT:            git-pull-requests
+            BOSH_ENVIRONMENT:     (( grab meta.bosh-lite.target ))
+            BOSH_CA_CERT:         (( grab meta.bosh-lite.cacert ))
+            BOSH_CLIENT:          (( grab meta.bosh-lite.username ))
+            BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
+            BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment-pr ))
+            TEST_ERRAND:          (( grab meta.test-errand || ~ ))
+            MANIFEST_PATH:        (( grab meta.manifest.path ))
+            MANIFEST_VARS:        (( grab meta.manifest.vars ))
+            MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
+        on_success:
+          put: git-pull-requests
+          params:
+            path: git-pull-requests
+            status: success
+        on_failure:
+          put: git-pull-requests
+          params:
+            path: git-pull-requests
+            status: failure
+      - task: pr-success-message
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          inputs:
+            - { name: git-pull-requests }
+          outputs:
+            - { name: message }
+          run:
+            path: sh
+            args:
+            - -ce
+            - |
+              cd git-pull-requests
+              pr_url=$(git config --get pullrequest.url)
+              cd -
+              echo "<${pr_url}|Pull request passed testflight> Merge when ready: ${pr_url}" > message/body
+      on_success:
+        put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text_file: message/body
 
   - name: rc
     public: true
@@ -154,7 +241,8 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: (( grab meta.image ))
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
           inputs:
             - name: version
             - name: git
@@ -167,15 +255,11 @@ jobs:
           params:
             REPO_ROOT:    git
             VERSION_FROM: version/number
-            RELEASE_NAME: (( concat meta.release " BOSH Release" ))
             RELEASE_ROOT: gh
             REPO_OUT:     pushme
             BRANCH:       (( grab meta.github.branch ))
-
-            BOSH_LITE_TARGET:     (( grab meta.bosh-lite.target ))
-            BOSH_LITE_USERNAME:   (( grab meta.bosh-lite.username ))
-            BOSH_LITE_PASSWORD:   (( grab meta.bosh-lite.password ))
-            BOSH_LITE_DEPLOYMENT: (( grab meta.bosh-lite.deployment ))
+            GITHUB_OWNER: (( grab meta.github.owner ))
+            MANIFEST_PATH: (( concat "manifests/" meta.name ".yml" ))
 
             AWS_ACCESS_KEY:       (( grab meta.aws.access_key ))
             AWS_SECRET_KEY:       (( grab meta.aws.secret_key ))
@@ -214,6 +298,11 @@ resource_types:
     source:
       repository: cfcommunity/slack-notification-resource
 
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: jtarchie/pr
+
 resources:
   - name: git
     type: git
@@ -221,6 +310,14 @@ resources:
       uri:         (( grab meta.github.uri ))
       branch:      (( grab meta.github.branch ))
       private_key: (( grab meta.github.private_key ))
+
+  - name: git-pull-requests
+    type: pull-request
+    source:
+      access_token: (( grab meta.github.access_token ))
+      private_key:  (( grab meta.github.private_key ))
+      repo:         (( concat meta.github.owner "/" meta.github.repo ))
+      base:         (( grab meta.github.branch ))
 
   - name: version
     type: semver

@@ -3,22 +3,106 @@ meta:
   name:    prometheus
   target:  sw
   url:     https://ci.starkandwayne.com
-  initial_version: 1.0.0
+
+  initial_version: 1.1.0
+
+  bosh-lite:
+    target: https://10.58.111.49:25555
+    username: (( vault "secret/bosh-lites/lite49/users/admin:username" ))
+    password: (( vault "secret/bosh-lites/lite49/users/admin:password" ))
+    cacert:   (( vault "secret/bosh-lites/lite49/certs:rootCA.pem" ))
 
   aws:
+    bucket: prometheus-boshrelease
     access_key: (( vault "secret/aws/cfcommunity:access" ))
     secret_key: (( vault "secret/aws/cfcommunity:secret" ))
 
   github:
     owner:  cloudfoundry-community
-    repo:   prometheus-boshrelease
-    private_key:  (( vault "secret/pipelines/prometheus-boshrelease/github:private" ))
-    access_token: (( vault "secret/pipelines/prometheus-boshrelease/github:token" ))
-
-  bosh-lite:
-    target: https://10.58.111.44:25555
-    deployment: prometheus-warden
+    repo:   (( concat meta.name "-boshrelease" ))
+    branch: master
+    private_key:  (( vault "secret/pipelines/shared/github:private_key" ))
+    access_token: (( vault "secret/pipelines/shared/github:access_token" ))
 
   slack:
-    webhook: (( vault "secret/pipelines/prometheus-boshrelease/slack:webhook" ))
-    channel: '#botspam'
+    webhook:       (( vault "secret/pipelines/prometheus-boshrelease/slack:webhook" ))
+    channel:       '#prometheus'
+    username:      starkandwayne-ci
+    icon:          https://cl.ly/0o401h3l1x3R/logo-50x50.png
+    blob_success:  '(( concat "$BUILD_PIPELINE_NAME: New version of $BUILD_JOB_NAME was detected, and updated in master. <" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME| Cut a new release?>" ))'
+    blob_failure:  '(( concat "$BUILD_PIPELINE_NAME: :airplane_arriving: <" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Failed to update the blob for $BUILD_JOB_NAME>" ))'
+
+# groups:
+# - name: blobs
+#   jobs:
+#   - prometheus
+#
+# jobs:
+# - name: prometheus
+#   public: true
+#   plan:
+#   - aggregate:
+#     - get: git
+#     - get: prometheus
+#       trigger: true
+#       params: { globs: [prometheus-0.14.0.linux-amd64.tar.gz] }
+#   - task: update-prometheus
+#     config:
+#       image_resource:
+#         type: docker-image
+#         source:
+#           repository: (( grab meta.image.name ))
+#           tag:        (( grab meta.image.tag ))
+#       platform: linux
+#       inputs:
+#       - name: git
+#       - name: prometheus
+#       outputs:
+#       - name: pushme
+#       run:
+#         path: ./git/ci/scripts/update-blob
+#       params:
+#         REPO_ROOT:   git
+#         REPO_OUT:    pushme
+#         BLOB_DIR:    prometheus
+#         BLOB_NAME:   prometheus
+#         BLOB_BINARY: prometheus*.linux-amd64.tar.gz
+#         BLOB_URL:    https://github.com/prometheus/prometheus
+#         BLOB_CLEANUP:     prometheus/prometheus.*
+#         BLOB_DESTINATION: prometheus/prometheus-${VERSION}.linux-amd64.tar.gz
+#         AWS_ACCESS_KEY: (( grab meta.aws.access_key ))
+#         AWS_SECRET_KEY: (( grab meta.aws.secret_key ))
+#         BRANCH:         (( grab meta.github.branch ))
+#     on_failure:
+#       put: notify
+#       params:
+#         channel:  (( grab meta.slack.channel ))
+#         username: (( grab meta.slack.username ))
+#         icon_url: (( grab meta.slack.icon ))
+#         text:     (( grab meta.slack.blob_failure ))
+#   - put: git
+#     params:
+#       rebase: true
+#       repository: pushme/git
+#     on_success:
+#       put: notify
+#       params:
+#         channel:  (( grab meta.slack.channel ))
+#         username: (( grab meta.slack.username ))
+#         icon_url: (( grab meta.slack.icon ))
+#         text:     (( grab meta.slack.blob_success ))
+#     on_failure:
+#       put: notify
+#       params:
+#         channel:  (( grab meta.slack.channel ))
+#         username: (( grab meta.slack.username ))
+#         icon_url: (( grab meta.slack.icon ))
+#         text:     (( grab meta.slack.blob_failure ))
+#
+# resources:
+#   - name: prometheus
+#     type: github-release
+#     source:
+#       user:         prometheus
+#       repository:   prometheus
+#       access_token: (( grab meta.github.access_token ))

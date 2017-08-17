@@ -1,12 +1,10 @@
 #!/bin/bash
 #
-# ci/scripts/create-release-and-deploy
+# ci/scripts/testflight
 #
-# Script for generating Github release / tag assets
-# and managing release notes for a BOSH Release pipeline
+# Script for testing a BOSH release using bosh2
 #
 # author:  James Hunt <james@niftylogic.com>
-# created: 2016-03-30
 
 header() {
 	echo
@@ -16,43 +14,121 @@ header() {
 	echo
 }
 
-header "Setting up ~/.bosh_config..."
-cat > ~/.bosh_config << EOF
----
-aliases:
-  target:
-    bosh-lite: ${BOSH_LITE_TARGET}
-auth:
-  ${BOSH_LITE_TARGET}:
-    username: ${BOSH_LITE_USERNAME}
-    password: ${BOSH_LITE_PASSWORD}
-EOF
+#!/bin/bash
 
 set -e
-cd ${REPO_ROOT}
+
+: ${BOSH_ENVIRONMENT:?required}
+: ${BOSH_CA_CERT:?required}
+: ${BOSH_CLIENT:?required}
+: ${BOSH_CLIENT_SECRET:?required}
+: ${BOSH_DEPLOYMENT:?required}
+: ${MANIFEST_PATH:?required}
+
+cd ${REPO_ROOT:?required}
 header "Pulling in any git submodules..."
 git submodule update --init --recursive --force
 
-header "Cleaning up from any previous deployments..."
-bosh target ${BOSH_LITE_TARGET}
-bosh -n delete deployment ${BOSH_LITE_DEPLOYMENT} --force || echo "continuing on..."
+header "Confirming testflight inputs"
 
-header "Creating candidate BOSH release..."
-bosh -n create release
-bosh -n upload release --rebase || echo "Continuing..."
-
-header "Deploying to BOSH-lite..."
-./templates/make_manifest warden
-bosh -n deploy
-
-if [[ -n ${TEST_ERRAND} ]]; then
-	header "Running '${TEST_ERRAND}' validation errand"
-	bosh -n run errand ${TEST_ERRAND}
+echo "Confirming deployment manifest ${MANIFEST_PATH} exists"
+if [[ ! -f ${MANIFEST_PATH} ]]; then
+	echo "Deployment manifest ${MANIFEST_PATH} does not exist"
+	exit 1
 fi
 
-header "Cleaning up..."
-bosh -n delete deployment ${BOSH_LITE_DEPLOYMENT} --force || echo "continuing on..."
-bosh -n cleanup || echo "continuing on..."
+echo "Confirming that \$MANIFEST_VARS is valid"
+mkdir -p tmp
+
+# $MANIFEST_VARS can either be "key: value" or "key=value"
+# and will be converted to "key: value" YAML
+echo "${MANIFEST_VARS:-"{} ---"}" | sed -e "s/ *= */: /g" > tmp/vars.yml
+if [[ ! -z $DEBUG ]]; then
+	echo "Variables passed to deployment manifest:"
+	cat tmp/vars.yml
+fi
+# convert YAML to JSON to check YAML validity
+spruce json tmp/vars.yml > /dev/null
+
+echo "Confirming each operator file exists: ${MANIFEST_OP_PATHS:-ok, none specified.}"
+op_patch_file_errors=
+for op_patch_file in ${MANIFEST_OP_PATHS//,/ } ; do
+	if [[ ! -f $op_patch_file ]]; then
+		op_patch_file_errors=1
+		echo "Operator file missing: ${op_patch_file}"
+	fi
+done
+if [[ ! -z ${op_patch_file_errors} ]]; then
+	exit 1
+fi
+
+
+header "Cleaning up from any previous deployments..."
+bosh2 -n delete-deployment
+
+header "Creating candidate BOSH release..."
+bosh2 create-release
+bosh2 upload-release --rebase
+
+header "Deploying to ${BOSH_ENVIRONMENT}..."
+release_name=$(bosh2 int config/final.yml --path /final_name)
+
+header "Choosing cloud-config options"
+vm_type=$(bosh2 int <(bosh2 cloud-config) --path /vm_types/0/name)
+disk_type=$(bosh2 int <(bosh2 cloud-config) --path /disk_types/0/name)
+network=$(bosh2 int <(bosh2 cloud-config) --path /networks/0/name)
+
+cat > tmp/deployment.yml <<YAML
+---
+- type: replace
+  path: /name
+  value: ${BOSH_DEPLOYMENT}
+
+- type: replace
+  path: /releases/name=${release_name}
+  value:
+    name: ${release_name}
+    version: latest
+YAML
+
+for ig_name in $(spruce json ${MANIFEST_PATH} | jq -r ".instance_groups[].name"); do
+cat >> tmp/deployment.yml <<YAML
+- type: replace
+  path: /instance_groups/name=${ig_name}/vm_type
+  value: ${vm_type}
+
+- type: replace
+  path: /instance_groups/name=${ig_name}/persistent_disk_type?
+  value: ${disk_type}
+
+- type: replace
+  path: /instance_groups/name=${ig_name}/networks
+  value: [{name: ${vm_type}}]
+YAML
+done
+
+op_patch_files_flags=""
+for op_patch_file in ${MANIFEST_OP_PATHS//,/ } ; do
+   op_patch_files_flags="${op_patch_files_flags} -o $op_patch_file"
+done
+
+set -x
+
+bosh2 int ${MANIFEST_PATH} \
+  -o tmp/deployment.yml    \
+  ${op_patch_files_flags}            \
+  --vars-store tmp/creds.yml \
+  --vars-file  tmp/vars.yml  \
+  --var-errs \
+    > tmp/manifest.yml
+
+bosh2 -n deploy tmp/manifest.yml
+
+if [[ ! -z $TEST_ERRAND ]]; then
+	bosh2 run-errand "$TEST_ERRAND"
+else
+	echo "No test errand specified, skipping."
+fi
 
 echo
 echo "SUCCESS"
