@@ -9,3 +9,29 @@ cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 # Extract grafana package
 tar xzvf ${BOSH_COMPILE_TARGET}/grafana/grafana-4.4.3.linux-x64.tar.gz
 cp -a ${BOSH_COMPILE_TARGET}/grafana-4.4.3/* ${BOSH_INSTALL_TARGET}
+
+# Compile freetype (fontconfig dependency)
+tar xzvf ${BOSH_COMPILE_TARGET}/freetype/freetype-2.8.tar.gz
+pushd freetype-2.8
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Compile gperf (fontconfig dependency)
+tar xzvf ${BOSH_COMPILE_TARGET}/gperf/gperf-3.1.tar.gz
+pushd gperf-3.1
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install
+popd
+
+# Compile fontconfig package
+tar xzvf ${BOSH_COMPILE_TARGET}/fontconfig/fontconfig-2.12.4.tar.gz
+pushd fontconfig-2.12.4
+export PKG_CONFIG_PATH=${BOSH_INSTALL_TARGET}/lib/pkgconfig
+export PATH=${BOSH_INSTALL_TARGET}/bin:$PATH
+./configure --prefix=${BOSH_INSTALL_TARGET} --enable-libxml2
+make
+make install
+popd

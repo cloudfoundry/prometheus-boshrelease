@@ -1,3 +1,7 @@
+# Fixes
+
+* Fixes rendered PNG of grafana pannels (missing `fontconfig` dependency required by `PhantomJS`)
+
 # CI
 
 The CI system has been upgraded:
