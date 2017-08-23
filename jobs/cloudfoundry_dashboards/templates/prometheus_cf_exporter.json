@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.3.2"
+      "version": "4.4.3"
     },
     {
       "type": "panel",
@@ -98,6 +98,7 @@
           "targets": [
             {
               "expr": "avg(cf_last_applications_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
@@ -203,6 +204,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_applications_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -282,6 +284,7 @@
           "targets": [
             {
               "expr": "max(cf_last_applications_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -341,16 +344,17 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 3,
+          "span": 2,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(cf_last_organizations_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -440,7 +444,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -451,6 +455,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_organizations_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -519,7 +524,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -606,6 +611,7 @@
           "targets": [
             {
               "expr": "avg(cf_last_routes_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
@@ -707,6 +713,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_routes_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -784,6 +791,7 @@
           "targets": [
             {
               "expr": "max(cf_last_routes_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -843,16 +851,17 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 3,
+          "span": 2,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(cf_last_services_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -942,7 +951,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -953,6 +962,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_services_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1021,7 +1031,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1080,9 +1090,254 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
+          "description": "How long it took to scrape Service Bindings from Cloud Foundry.",
+          "fill": 1,
+          "id": 28,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 2,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(cf_last_service_bindings_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance }}",
+              "refId": "A",
+              "step": 20
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Service Bindings Scrape Duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "When was the last Service Bindings scrape from Cloud Foundry.",
+          "format": "s",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 29,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " ago",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "time() - max(cf_last_service_bindings_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "",
+          "title": "Last Service Bindings Scrape",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorValue": false,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Whether the last scrape of Service Bindings metrics from Cloud Foundry resulted in an error.",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 30,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "max(cf_last_service_bindings_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "0.9,1",
+          "title": "Last Service Bindings Scrape Status",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Succeeded",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
           "description": "How long it took to scrape Service Instances from Cloud Foundry.",
           "fill": 1,
-          "id": 17,
+          "id": 31,
           "legend": {
             "avg": false,
             "current": false,
@@ -1108,6 +1363,7 @@
           "targets": [
             {
               "expr": "avg(cf_last_service_instances_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
@@ -1170,7 +1426,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 19,
+          "id": 32,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -1209,6 +1465,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_service_instances_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1239,6 +1496,262 @@
           ],
           "datasource": "${DS_PROMETHEUS}",
           "description": "Whether the last scrape of Service Instance metrics from Cloud Foundry resulted in an error.",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 33,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "max(cf_last_service_instances_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "0.9,1",
+          "title": "Last Service Instances Scrape Status",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "Succeeded",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "Failed",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Service Bindings & Service Instances",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "How long it took to scrape Service Plans from Cloud Foundry.",
+          "fill": 1,
+          "id": 17,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 2,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(cf_last_service_plans_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance }}",
+              "refId": "A",
+              "step": 20
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Service Plans Scrape Duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "When was the last Service Plans scrape from Cloud Foundry.",
+          "format": "s",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 19,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " ago",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "time() - max(cf_last_service_plans_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "",
+          "title": "Last Service Plans Scrape",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorValue": false,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Whether the last scrape of Service Plans metrics from Cloud Foundry resulted in an error.",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -1285,14 +1798,15 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "max(cf_last_service_instances_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "expr": "max(cf_last_service_plans_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
             }
           ],
           "thresholds": "0.9,1",
-          "title": "Last Service Instances Scrape Status",
+          "title": "Last Service Plans Scrape Status",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -1345,16 +1859,17 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 3,
+          "span": 2,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(cf_last_spaces_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -1444,7 +1959,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1455,6 +1970,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_spaces_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1523,7 +2039,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1534,6 +2050,7 @@
           "targets": [
             {
               "expr": "max(cf_last_spaces_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1568,7 +2085,7 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "Service Instances & Spaces",
+      "title": "Service Plans & Spaces",
       "titleSize": "h6"
     },
     {
@@ -1609,6 +2126,7 @@
           "targets": [
             {
               "expr": "avg(cf_last_security_groups_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
@@ -1710,6 +2228,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_security_groups_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1787,6 +2306,7 @@
           "targets": [
             {
               "expr": "max(cf_last_security_groups_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1844,16 +2364,17 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 3,
+          "span": 2,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(cf_last_stacks_scrape_duration_seconds{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"}) by(instance)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance }}",
               "refId": "A",
-              "step": 10
+              "step": 20
             }
           ],
           "thresholds": [],
@@ -1940,7 +2461,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -1951,6 +2472,7 @@
           "targets": [
             {
               "expr": "time() - max(cf_last_stacks_scrape_timestamp{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -2017,7 +2539,7 @@
               "to": "null"
             }
           ],
-          "span": 1.5,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -2028,6 +2550,7 @@
           "targets": [
             {
               "expr": "max(cf_last_stacks_scrape_error{environment=~\"$environment\",deployment=~\"$deployment\",instance=~\"$instance\"})",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
