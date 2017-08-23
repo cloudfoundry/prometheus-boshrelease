@@ -4,6 +4,7 @@
 * Added state, buildpack & instances to CF Apps dashboard
 * Added Service Bindings to CF Summary dashboard
 * Added Service Bindings and Service Plans to Prometheus CF Exporter dashboard
+* Added CF Services dashboard
 
 # Fixes
 
