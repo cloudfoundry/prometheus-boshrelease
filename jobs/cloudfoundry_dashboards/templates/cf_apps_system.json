@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "4.4.3"
     },
     {
       "type": "panel",
@@ -27,6 +27,12 @@
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
     }
   ],
   "annotations": {
@@ -57,8 +63,270 @@
       "height": "200px",
       "panels": [
         {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Application State",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 8,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "STOPPED",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "count(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(state)",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ state }}",
+              "refId": "A",
+              "step": 40
+            }
+          ],
+          "thresholds": "",
+          "title": "State",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Application Buildpack",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 9,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "STOPPED",
+              "to": "null"
+            }
+          ],
+          "span": 3,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "count(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(buildpack)",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ buildpack }}",
+              "refId": "A",
+              "step": 40
+            }
+          ],
+          "thresholds": "",
+          "title": "Buildpack",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Number of Application Instances",
+          "fill": 1,
+          "id": 7,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "min(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Desired",
+              "refId": "A",
+              "step": 2
+            },
+            {
+              "expr": "min(cf_application_instances_running{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Running",
+              "refId": "B",
+              "step": 2
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Instances",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "State, Buildpack & Instances",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Average Application % CPU Usage.",
           "editable": true,
@@ -86,17 +354,19 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "CPU Usage",
               "refId": "A",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -112,6 +382,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -139,6 +410,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "CPU Usage by Application Instance.",
           "fill": 1,
@@ -161,6 +434,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
@@ -171,7 +445,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -186,6 +460,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -225,6 +500,8 @@
         {
           "aliasColors": {},
           "bars": true,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "description": "Average Application Memory Usage.",
@@ -260,6 +537,7 @@
               "lines": true
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
@@ -270,7 +548,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -278,7 +556,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -294,6 +572,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -321,6 +600,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Memory Usage by Application Instance",
           "fill": 1,
@@ -343,24 +624,27 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -375,6 +659,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -414,6 +699,8 @@
         {
           "aliasColors": {},
           "bars": true,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
           "description": "Average Application Disk Allocated.",
@@ -449,25 +736,28 @@
               "lines": true
             }
           ],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+              "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -483,6 +773,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -510,6 +801,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Allocated Disk Space  by Application Instance.",
           "fill": 1,
@@ -532,6 +825,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
@@ -542,7 +836,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 2
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -550,7 +844,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 2
             }
           ],
           "thresholds": [],
@@ -565,6 +859,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
