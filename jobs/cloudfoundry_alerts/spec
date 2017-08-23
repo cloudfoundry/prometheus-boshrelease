@@ -4,6 +4,7 @@ name: cloudfoundry_alerts
 packages: []
 
 templates:
+  cf_apps.alerts: cf_apps.alerts
   cf_cells.alerts: cf_cells.alerts
   cf_diego.alerts: cf_diego.alerts
   cf_doppler.alerts: cf_doppler.alerts
@@ -13,6 +14,12 @@ templates:
   prometheus_firehose_exporter.alerts: prometheus_firehose_exporter.alerts
 
 properties:
+  cloudfoundry_alerts.app_crashed.evaluation_time:
+    description: "Application Crashed alert evaluation time"
+    default: 8h
+  cloudfoundry_alerts.app_unhealthy.evaluation_time:
+    description: "Application Unhealthy alert evaluation time"
+    default: 30m
   cloudfoundry_alerts.cell_unhealthy.evaluation_time:
     description: "Cell Unhealthy alert evaluation time"
     default: 5m
