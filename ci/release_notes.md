@@ -2,6 +2,10 @@
 
 * Fixes rendered PNG of grafana pannels (missing `fontconfig` dependency required by `PhantomJS`)
 
+# Upgrades
+
+* `cf_exporter` to v0.5.1
+
 # CI
 
 The CI system has been upgraded:
