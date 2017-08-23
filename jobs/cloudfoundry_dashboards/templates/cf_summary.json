@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.3.2"
+      "version": "4.4.3"
     },
     {
       "type": "panel",
@@ -801,6 +801,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -858,6 +859,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Number of Services",
               "metric": "",
@@ -1017,6 +1019,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Number of Service Instances",
               "refId": "A",
@@ -1082,7 +1085,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "description": "Total number of Cloud Foundry Spaces",
+          "description": "Total number of Cloud Foundry Service Bindings",
           "editable": true,
           "error": false,
           "format": "none",
@@ -1131,7 +1134,173 @@
           "tableColumn": "",
           "targets": [
             {
+              "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "",
+          "title": "Service Bindings",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "description": "Number of Cloud Foundry Service Bindings",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {},
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Number of Service Bindings",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Service Bindings",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "description": "Total number of Cloud Foundry Spaces",
+          "editable": true,
+          "error": false,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 20,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
               "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
               "refId": "A",
@@ -1164,7 +1333,7 @@
           "error": false,
           "fill": 1,
           "grid": {},
-          "id": 6,
+          "id": 21,
           "legend": {
             "avg": false,
             "current": false,
@@ -1190,6 +1359,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Number of Spaces",
@@ -1234,7 +1404,19 @@
               "show": false
             }
           ]
-        },
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
         {
           "cacheTimeout": null,
           "colorBackground": false,
@@ -1295,6 +1477,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
               "refId": "A",
@@ -1350,6 +1533,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Number of Security Groups",
               "refId": "A",
@@ -1392,19 +1576,7 @@
               "show": false
             }
           ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+        },
         {
           "cacheTimeout": null,
           "colorBackground": false,
@@ -1465,6 +1637,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "refId": "A",
               "step": 60
@@ -1518,6 +1691,7 @@
           "targets": [
             {
               "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Number of Stacks",
               "refId": "A",
