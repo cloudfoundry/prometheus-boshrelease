@@ -21,26 +21,26 @@ case $1 in
 
     exec haproxy_exporter \
       <% if_p('haproxy_exporter.haproxy.pid_file') do |pid_file| %> \
-      -haproxy.pid-file="<%= pid_file %>" \
+      --haproxy.pid-file="<%= pid_file %>" \
       <% end %> \
       <% if_p('haproxy_exporter.haproxy.scrape_uri') do |scrape_uri| %> \
-      -haproxy.scrape-uri="<%= scrape_uri %>" \
+      --haproxy.scrape-uri="<%= scrape_uri %>" \
       <% end %> \
       <% if_p('haproxy_exporter.haproxy.server_metric_fields') do |server_metric_fields| %> \
-      -haproxy.server-metric-fields="<%= server_metric_fields %>" \
+      --haproxy.server-metric-fields="<%= server_metric_fields %>" \
       <% end %> \
       <% if_p('haproxy_exporter.haproxy.timeout') do |timeout| %> \
-      -haproxy.timeout="<%= timeout %>" \
+      --haproxy.timeout="<%= timeout %>" \
       <% end %> \
       <% if_p('haproxy_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('haproxy_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('haproxy_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('haproxy_exporter.web.port') %>" \
       <% if_p('haproxy_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/haproxy_exporter.stdout.log \
       2>> ${LOG_DIR}/haproxy_exporter.stderr.log
