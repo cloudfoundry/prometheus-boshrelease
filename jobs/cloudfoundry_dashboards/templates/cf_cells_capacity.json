@@ -14,13 +14,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "4.4.3"
     },
     {
       "type": "panel",
       "id": "grafana-piechart-panel",
       "name": "Pie Chart",
-      "version": "1.1.4"
+      "version": "1.1.5"
     },
     {
       "type": "panel",
@@ -129,6 +129,7 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
@@ -162,7 +163,7 @@
             "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "format": "decmbytes",
+          "format": "mbytes",
           "gauge": {
             "maxValue": 100,
             "minValue": 0,
@@ -206,9 +207,11 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": true
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+              "format": "time_series",
               "intervalFactor": 2,
               "metric": "firehose_value_metric_rep_capacity_remaining_memory",
               "refId": "A",
@@ -285,6 +288,7 @@
             "lineColor": "rgb(31, 120, 193)",
             "show": false
           },
+          "tableColumn": "",
           "targets": [
             {
               "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
@@ -327,6 +331,8 @@
         {
           "aliasColors": {},
           "bars": true,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Cumulative used and available MiB of memory to allocate to containers.",
           "editable": true,
@@ -354,6 +360,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": true,
           "steppedLine": false,
@@ -387,6 +394,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -426,6 +434,8 @@
         {
           "aliasColors": {},
           "bars": true,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Cumulative used and available MiB of disk to allocate to containers.",
           "editable": true,
@@ -453,6 +463,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": true,
           "steppedLine": false,
@@ -485,6 +496,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -570,7 +582,7 @@
           },
           "datasource": "${DS_PROMETHEUS}",
           "fontSize": "80%",
-          "format": "decmbytes",
+          "format": "mbytes",
           "id": 7,
           "interval": null,
           "legend": {
@@ -588,6 +600,7 @@
           "targets": [
             {
               "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_job_ip }}",
