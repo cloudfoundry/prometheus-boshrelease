@@ -33,6 +33,12 @@
       "id": "singlestat",
       "name": "Singlestat",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
     }
   ],
   "annotations": {
@@ -125,7 +131,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ state }}",
               "refId": "A",
-              "step": 40
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -205,7 +211,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ buildpack }}",
               "refId": "A",
-              "step": 40
+              "step": 60
             }
           ],
           "thresholds": "",
@@ -221,6 +227,52 @@
             }
           ],
           "valueName": "name"
+        },
+        {
+          "columns": [],
+          "description": "Show the IP address of the Diego Cell where the Application Instance is running.",
+          "fontSize": "100%",
+          "id": 10,
+          "links": [],
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": false
+          },
+          "span": 3,
+          "styles": [
+            {
+              "alias": "Instance: Diego Cell IP address",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 0,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "count(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index,  bosh_job_ip)",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance_index }}: {{ bosh_job_ip }}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Diego Cell IP addresses",
+          "transform": "timeseries_aggregations",
+          "transparent": true,
+          "type": "table"
         },
         {
           "aliasColors": {},
@@ -250,7 +302,7 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 6,
+          "span": 3,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -260,7 +312,7 @@
               "intervalFactor": 2,
               "legendFormat": "Desired",
               "refId": "A",
-              "step": 2
+              "step": 10
             },
             {
               "expr": "min(cf_application_instances_running{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -270,7 +322,7 @@
               "intervalFactor": 2,
               "legendFormat": "Running",
               "refId": "B",
-              "step": 2
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -293,7 +345,7 @@
           },
           "yaxes": [
             {
-              "format": "short",
+              "format": "none",
               "label": "",
               "logBase": 1,
               "max": null,
@@ -366,7 +418,7 @@
               "intervalFactor": 2,
               "legendFormat": "CPU Usage",
               "refId": "A",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -441,11 +493,12 @@
           "targets": [
             {
               "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -548,7 +601,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 2
+              "step": 4
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -556,7 +609,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -635,7 +688,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 2
+              "step": 4
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -644,7 +697,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -748,7 +801,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 2
+              "step": 4
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -757,7 +810,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
@@ -836,7 +889,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 2
+              "step": 4
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -844,7 +897,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
