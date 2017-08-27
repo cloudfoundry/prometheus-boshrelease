@@ -57,6 +57,8 @@ groups:
       - update_haproxy_exporter
       - influxdb_exporter
       - update_influxdb_exporter
+      - memcached_exporter
+      - update_memcached_exporter
       - statsd_exporter
       - update_statsd_exporter
 
@@ -764,6 +766,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: memcached_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: memcached_exporter
+          trigger: true
+          params:
+            globs:
+              - memcached_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of memcached_exporter was detected. " meta.slack.blob_update ))'
+          text_file: memcached_exporter/version
+
+  - name: update_memcached_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: memcached_exporter
+          trigger: false
+          passed:
+            - memcached_exporter
+          params:
+            globs:
+              - memcached_exporter-*.linux-amd64.tar.gz
+      - task: update_memcached_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: memcached_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         memcached_exporter
+            BLOB_NAME:        memcached_exporter
+            BLOB_BINARY:      memcached_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/prometheus/memcached_exporter
+            BLOB_CLEANUP:     memcached_exporter/memcached_exporter.*
+            BLOB_DESTINATION: memcached_exporter/memcached_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of memcached_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: memcached_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: statsd_exporter
     public: true
     serial: true
@@ -896,6 +976,12 @@ resources:
     source:
       user:         prometheus
       repository:   influxdb_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: memcached_exporter
+    type: github-release
+    source:
+      user:         prometheus
+      repository:   memcached_exporter
       access_token: (( grab meta.github.access_token ))
   - name: statsd_exporter
     type: github-release
