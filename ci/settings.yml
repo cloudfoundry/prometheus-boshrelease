@@ -55,6 +55,8 @@ groups:
       - update_graphite_exporter
       - haproxy_exporter
       - update_haproxy_exporter
+      - influxdb_exporter
+      - update_influxdb_exporter
       - statsd_exporter
       - update_statsd_exporter
 
@@ -684,6 +686,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: influxdb_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: influxdb_exporter
+          trigger: true
+          params:
+            globs:
+              - influxdb_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of influxdb_exporter was detected. " meta.slack.blob_update ))'
+          text_file: influxdb_exporter/version
+
+  - name: update_influxdb_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: influxdb_exporter
+          trigger: false
+          passed:
+            - influxdb_exporter
+          params:
+            globs:
+              - influxdb_exporter-*.linux-amd64.tar.gz
+      - task: update_influxdb_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: influxdb_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         influxdb_exporter
+            BLOB_NAME:        influxdb_exporter
+            BLOB_BINARY:      influxdb_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/prometheus/influxdb_exporter
+            BLOB_CLEANUP:     influxdb_exporter/influxdb_exporter.*
+            BLOB_DESTINATION: influxdb_exporter/influxdb_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of influxdb_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: influxdb_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: statsd_exporter
     public: true
     serial: true
@@ -810,6 +890,12 @@ resources:
     source:
       user:         prometheus
       repository:   haproxy_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: influxdb_exporter
+    type: github-release
+    source:
+      user:         prometheus
+      repository:   influxdb_exporter
       access_token: (( grab meta.github.access_token ))
   - name: statsd_exporter
     type: github-release
