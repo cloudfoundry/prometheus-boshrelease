@@ -15,10 +15,8 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
-  value:
-    name: mysql_alerts
-    release: prometheus
+  path: /instance_groups/name=prometheus/jobs/name=mysql_alerts?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
@@ -26,10 +24,8 @@
 
 # Grafana Dashboards
 - type: replace
-  path: /instance_groups/name=grafana/jobs/-
-  value:
-    name: mysql_dashboards
-    release: prometheus
+  path: /instance_groups/name=grafana/jobs/name=mysql_dashboards?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-

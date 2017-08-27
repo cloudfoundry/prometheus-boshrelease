@@ -16,10 +16,8 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
-  value:
-    name: bosh_alerts
-    release: prometheus
+  path: /instance_groups/name=prometheus/jobs/name=bosh_alerts?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
@@ -27,10 +25,8 @@
 
 # Grafana Dashboards
 - type: replace
-  path: /instance_groups/name=grafana/jobs/-
-  value:
-    name: bosh_dashboards
-    release: prometheus
+  path: /instance_groups/name=grafana/jobs/name=bosh_dashboards?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-

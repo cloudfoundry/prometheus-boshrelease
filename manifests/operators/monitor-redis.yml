@@ -13,10 +13,8 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
-  value:
-    name: redis_alerts
-    release: prometheus
+  path: /instance_groups/name=prometheus/jobs/name=redis_alerts?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
@@ -24,10 +22,8 @@
 
 # Grafana Dashboards
 - type: replace
-  path: /instance_groups/name=grafana/jobs/-
-  value:
-    name: redis_dashboards
-    release: prometheus
+  path: /instance_groups/name=grafana/jobs/name=redis_dashboards?/release
+  value: prometheus
 
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
