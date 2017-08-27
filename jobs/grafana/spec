@@ -99,8 +99,17 @@ properties:
 
   grafana.session.provider:
     description: "Either 'memory', 'file', 'redis', 'mysql', 'postgres'"
+    default: "file"
   grafana.session.provider_config:
-    description: "Provider config options"
+    description: "(MySQL, PostgreSQL & Redis only) Provider config options. If not set, a 'database' link is expected"
+  grafana.session.provider_port:
+    description: "(MySQL, PostgreSQL & Redis only) Provider database port"
+  grafana.session.provider_name:
+    description: "(MySQL, PostgreSQL & Redis only) Provider database name"
+  grafana.session.provider_user:
+    description: "(MySQL & PostgreSQL only) Provider database user"
+  grafana.session.provider_password:
+    description: "(MySQL, PostgreSQL & Redis only) Provider database password"
   grafana.session.cookie_name:
     description: "Session cookie name"
   grafana.session.cookie_secure:
