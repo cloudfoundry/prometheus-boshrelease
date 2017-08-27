@@ -73,6 +73,8 @@ groups:
       - update_memcached_exporter
       - mysqld_exporter
       - update_mysqld_exporter
+      - rabbitmq_exporter
+      - update_rabbitmq_exporter
       - shield_exporter
       - update_shield_exporter
       - stackdriver_exporter
@@ -1408,6 +1410,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: rabbitmq_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: rabbitmq_exporter
+          trigger: true
+          params:
+            globs:
+              - rabbitmq_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of rabbitmq_exporter was detected. " meta.slack.blob_update ))'
+          text_file: rabbitmq_exporter/version
+
+  - name: update_rabbitmq_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: rabbitmq_exporter
+          trigger: false
+          passed:
+            - rabbitmq_exporter
+          params:
+            globs:
+              - rabbitmq_exporter-*.linux-amd64.tar.gz
+      - task: update_rabbitmq_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: rabbitmq_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         rabbitmq_exporter
+            BLOB_NAME:        rabbitmq_exporter
+            BLOB_BINARY:      rabbitmq_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/kbudde/rabbitmq_exporter
+            BLOB_CLEANUP:     rabbitmq_exporter/rabbitmq_exporter.*
+            BLOB_DESTINATION: rabbitmq_exporter/rabbitmq_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of rabbitmq_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: rabbitmq_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: shield_exporter
     public: true
     serial: true
@@ -1475,7 +1555,7 @@ jobs:
             channel:   (( grab meta.slack.channel ))
             username:  (( grab meta.slack.username ))
             icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of shield_exporterr was updated in master. " meta.slack.blob_release ))'
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of shield_exporter was updated in master. " meta.slack.blob_release ))'
             text_file: shield_exporter/version
     on_failure:
       do:
@@ -1744,6 +1824,12 @@ resources:
     source:
       user:         prometheus
       repository:   mysqld_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: rabbitmq_exporter
+    type: github-release
+    source:
+      user:         kbudde
+      repository:   rabbitmq_exporter
       access_token: (( grab meta.github.access_token ))
   - name: shield_exporter
     type: github-release
