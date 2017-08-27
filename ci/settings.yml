@@ -47,6 +47,10 @@ groups:
       - update_pushgateway
       - blackbox_exporter
       - update_blackbox_exporter
+      - bosh_exporter
+      - update_bosh_exporter
+      - bosh_tsdb_exporter
+      - update_bosh_tsdb_exporter
       - collectd_exporter
       - update_collectd_exporter
       - consul_exporter
@@ -369,6 +373,162 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of blackbox_exporter was updated in master. " meta.slack.blob_release ))'
             text_file: blackbox_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
+  - name: bosh_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: bosh_exporter
+          trigger: true
+          params:
+            globs:
+              - bosh_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_exporter was detected. " meta.slack.blob_update ))'
+          text_file: bosh_exporter/version
+
+  - name: update_bosh_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: bosh_exporter
+          trigger: false
+          passed:
+            - bosh_exporter
+          params:
+            globs:
+              - bosh_exporter-*.linux-amd64.tar.gz
+      - task: update_bosh_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: bosh_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         bosh_exporter
+            BLOB_NAME:        bosh_exporter
+            BLOB_BINARY:      bosh_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/cloudfoundry-community/bosh_exporter
+            BLOB_CLEANUP:     bosh_exporter/bosh_exporter.*
+            BLOB_DESTINATION: bosh_exporter/bosh_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: bosh_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
+  - name: bosh_tsdb_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: bosh_tsdb_exporter
+          trigger: true
+          params:
+            globs:
+              - bosh_tsdb_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_tsdb_exporter was detected. " meta.slack.blob_update ))'
+          text_file: bosh_tsdb_exporter/version
+
+  - name: update_bosh_tsdb_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: bosh_tsdb_exporter
+          trigger: false
+          passed:
+            - bosh_tsdb_exporter
+          params:
+            globs:
+              - bosh_tsdb_exporter-*.linux-amd64.tar.gz
+      - task: update_bosh_tsdb_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: bosh_tsdb_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         bosh_tsdb_exporter
+            BLOB_NAME:        bosh_tsdb_exporter
+            BLOB_BINARY:      bosh_tsdb_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/cloudfoundry-community/bosh_tsdb_exporter
+            BLOB_CLEANUP:     bosh_tsdb_exporter/bosh_tsdb_exporter.*
+            BLOB_DESTINATION: bosh_tsdb_exporter/bosh_tsdb_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_tsdb_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: bosh_tsdb_exporter/version
     on_failure:
       do:
         - put: notify
@@ -1026,6 +1186,18 @@ resources:
     source:
       user:         prometheus
       repository:   blackbox_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: bosh_exporter
+    type: github-release
+    source:
+      user:         cloudfoundry-community
+      repository:   bosh_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: bosh_tsdb_exporter
+    type: github-release
+    source:
+      user:         cloudfoundry-community
+      repository:   bosh_tsdb_exporter
       access_token: (( grab meta.github.access_token ))
   - name: collectd_exporter
     type: github-release
