@@ -45,6 +45,8 @@ groups:
       - update_alertmanager
       - pushgateway
       - update_pushgateway
+      - grafana
+      - update_grafana
       - blackbox_exporter
       - update_blackbox_exporter
       - bosh_exporter
@@ -311,6 +313,81 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of pushgateway was updated in master. " meta.slack.blob_release ))'
             text_file: pushgateway/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
+  - name: grafana
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: grafana
+          trigger: true
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana was detected. " meta.slack.blob_update ))'
+          text_file: grafana/version
+
+  - name: update_grafana
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: grafana
+          trigger: false
+          passed:
+            - grafana
+          params:
+            globs:
+              - grafana-*.linux-x64.tar.gz
+      - task: update_grafana
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: grafana
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         grafana
+            BLOB_NAME:        grafana
+            BLOB_BINARY:      grafana*.linux-x64.tar.gz
+            BLOB_URL:         https://github.com/grafana/grafana
+            BLOB_CLEANUP:     grafana/grafana.*
+            BLOB_DESTINATION: grafana/grafana-${VERSION}.linux-x64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana was updated in master. " meta.slack.blob_release ))'
+            text_file: grafana/version
     on_failure:
       do:
         - put: notify
@@ -1821,6 +1898,12 @@ resources:
       user:         prometheus
       repository:   pushgateway
       access_token: (( grab meta.github.access_token ))
+  - name: grafana
+    type: s3
+    source:
+      region_name: us-west-2
+      bucket: grafana-releases
+      regexp: release/grafana-((\d+\.)?(\d+\.)?(\*|\d+)).linux-x64.tar.gz
   - name: blackbox_exporter
     type: github-release
     source:
