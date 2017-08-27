@@ -107,3 +107,7 @@ fi
 
 # so that future steps in the pipeline can push our changes
 cp -a ${REPO_ROOT} ${REPO_OUT}
+
+cat > ${NOTIFICATION_OUT:-notifications}/message <<EOS
+New ${RELEASE_NAME} v${VERSION} released. <https://github.com/${GITHUB_OWNER}/${RELEASE_NAME}-boshrelease/releases/tag/v${VERSION}|Release notes>.
+EOS

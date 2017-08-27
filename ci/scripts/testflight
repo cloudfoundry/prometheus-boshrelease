@@ -67,6 +67,7 @@ header "Cleaning up from any previous deployments..."
 bosh2 -n delete-deployment
 
 header "Creating candidate BOSH release..."
+bosh2 -n reset-release # in case dev_releases/ is in repo accidentally
 bosh2 create-release
 bosh2 upload-release --rebase
 
@@ -78,6 +79,9 @@ vm_type=$(bosh2 int <(bosh2 cloud-config) --path /vm_types/0/name)
 disk_type=$(bosh2 int <(bosh2 cloud-config) --path /disk_types/0/name)
 network=$(bosh2 int <(bosh2 cloud-config) --path /networks/0/name)
 
+release_final_version=$(spruce json dev_releases/*/index.yml | jq -r ".builds[].version" | sed -e "s%+.*%%")
+release_dev_version="${release_final_version}.latest"
+
 cat > tmp/deployment.yml <<YAML
 ---
 - type: replace
@@ -88,7 +92,7 @@ cat > tmp/deployment.yml <<YAML
   path: /releases/name=${release_name}
   value:
     name: ${release_name}
-    version: latest
+    version: ${release_dev_version}
 YAML
 
 for ig_name in $(spruce json ${MANIFEST_PATH} | jq -r ".instance_groups[].name"); do
@@ -124,10 +128,15 @@ bosh2 int ${MANIFEST_PATH} \
 
 bosh2 -n deploy tmp/manifest.yml
 
-if [[ ! -z $TEST_ERRAND ]]; then
-	bosh2 run-errand "$TEST_ERRAND"
+TEST_ERRAND=${TEST_ERRAND:-} # backwards compatibility
+TEST_ERRANDS=${TEST_ERRANDS:-$TEST_ERRAND}
+if [[ -n ${TEST_ERRANDS} ]]; then
+	for errand in ${TEST_ERRANDS}; do
+		header "Running '${errand}' errand"
+		bosh2 -n run-errand ${errand}
+	done
 else
-	echo "No test errand specified, skipping."
+	echo "No test errands specified, skipping."
 fi
 
 echo

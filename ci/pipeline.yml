@@ -20,6 +20,7 @@ meta:
   manifest:
     path:   (( concat "manifests/" meta.name ".yml" ))
     vars:   "--- {}"
+    vars-pr: (( grab meta.manifest.vars ))
     operator_file_paths: "" # comma separated list relative to repo root
 
   image:
@@ -95,7 +96,7 @@ jobs:
             BOSH_CLIENT:          (( grab meta.bosh-lite.username ))
             BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
             BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment ))
-            TEST_ERRAND:          (( grab meta.test-errand || ~ ))
+            TEST_ERRANDS:         (( grab meta.test-errands || meta.test-errand || ~ ))
             MANIFEST_PATH:        (( grab meta.manifest.path ))
             MANIFEST_VARS:        (( grab meta.manifest.vars ))
             MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
@@ -137,9 +138,9 @@ jobs:
             BOSH_CLIENT:          (( grab meta.bosh-lite.username ))
             BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
             BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment-pr ))
-            TEST_ERRAND:          (( grab meta.test-errand || ~ ))
+            TEST_ERRANDS:         (( grab meta.test-errands || meta.test-errand || ~ ))
             MANIFEST_PATH:        (( grab meta.manifest.path ))
-            MANIFEST_VARS:        (( grab meta.manifest.vars ))
+            MANIFEST_VARS:        (( grab meta.manifest.vars-pr ))
             MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
         on_success:
           put: git-pull-requests
@@ -249,6 +250,7 @@ jobs:
           outputs:
             - name: gh
             - name: pushme
+            - name: notifications
           run:
             path: ./git/ci/scripts/shipit
             args: []
@@ -257,6 +259,7 @@ jobs:
             VERSION_FROM: version/number
             RELEASE_ROOT: gh
             REPO_OUT:     pushme
+            NOTIFICATION_OUT: notifications
             BRANCH:       (( grab meta.github.branch ))
             GITHUB_OWNER: (( grab meta.github.owner ))
             MANIFEST_PATH: (( concat "manifests/" meta.name ".yml" ))
@@ -284,6 +287,12 @@ jobs:
         put: version
         params:
           bump: patch
+      - put: notify
+        params:
+          channel:  (( grab meta.slack.channel ))
+          username: (( grab meta.slack.username ))
+          icon_url: (( grab meta.slack.icon ))
+          text_file: notifications/message
       on_failure:
         put: notify
         params:
