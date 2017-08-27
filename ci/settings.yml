@@ -59,6 +59,8 @@ groups:
       - update_influxdb_exporter
       - memcached_exporter
       - update_memcached_exporter
+      - mysqld_exporter
+      - update_mysqld_exporter
       - statsd_exporter
       - update_statsd_exporter
 
@@ -844,6 +846,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: mysqld_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: mysqld_exporter
+          trigger: true
+          params:
+            globs:
+              - mysqld_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of mysqld_exporter was detected. " meta.slack.blob_update ))'
+          text_file: mysqld_exporter/version
+
+  - name: update_mysqld_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: mysqld_exporter
+          trigger: false
+          passed:
+            - mysqld_exporter
+          params:
+            globs:
+              - mysqld_exporter-*.linux-amd64.tar.gz
+      - task: update_mysqld_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: mysqld_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         mysqld_exporter
+            BLOB_NAME:        mysqld_exporter
+            BLOB_BINARY:      mysqld_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/prometheus/mysqld_exporter
+            BLOB_CLEANUP:     mysqld_exporter/mysqld_exporter.*
+            BLOB_DESTINATION: mysqld_exporter/mysqld_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of mysqld_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: mysqld_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: statsd_exporter
     public: true
     serial: true
@@ -982,6 +1062,12 @@ resources:
     source:
       user:         prometheus
       repository:   memcached_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: mysqld_exporter
+    type: github-release
+    source:
+      user:         prometheus
+      repository:   mysqld_exporter
       access_token: (( grab meta.github.access_token ))
   - name: statsd_exporter
     type: github-release
