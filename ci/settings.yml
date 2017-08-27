@@ -51,6 +51,8 @@ groups:
       - update_bosh_exporter
       - bosh_tsdb_exporter
       - update_bosh_tsdb_exporter
+      - cf_exporter
+      - update_cf_exporter
       - collectd_exporter
       - update_collectd_exporter
       - consul_exporter
@@ -529,6 +531,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_tsdb_exporter was updated in master. " meta.slack.blob_release ))'
             text_file: bosh_tsdb_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
+  - name: cf_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: cf_exporter
+          trigger: true
+          params:
+            globs:
+              - cf_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of cf_exporter was detected. " meta.slack.blob_update ))'
+          text_file: cf_exporter/version
+
+  - name: update_cf_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: cf_exporter
+          trigger: false
+          passed:
+            - cf_exporter
+          params:
+            globs:
+              - cf_exporter-*.linux-amd64.tar.gz
+      - task: update_cf_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: cf_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         cf_exporter
+            BLOB_NAME:        cf_exporter
+            BLOB_BINARY:      cf_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/cloudfoundry-community/cf_exporter
+            BLOB_CLEANUP:     cf_exporter/cf_exporter.*
+            BLOB_DESTINATION: cf_exporter/cf_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of cf_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: cf_exporter/version
     on_failure:
       do:
         - put: notify
@@ -1198,6 +1278,12 @@ resources:
     source:
       user:         cloudfoundry-community
       repository:   bosh_tsdb_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: cf_exporter
+    type: github-release
+    source:
+      user:         cloudfoundry-community
+      repository:   cf_exporter
       access_token: (( grab meta.github.access_token ))
   - name: collectd_exporter
     type: github-release
