@@ -75,6 +75,8 @@ groups:
       - update_mysqld_exporter
       - rabbitmq_exporter
       - update_rabbitmq_exporter
+      - redis_exporter
+      - update_redis_exporter
       - shield_exporter
       - update_shield_exporter
       - stackdriver_exporter
@@ -1488,6 +1490,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: redis_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: redis_exporter
+          trigger: true
+          params:
+            globs:
+              - redis_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of redis_exporter was detected. " meta.slack.blob_update ))'
+          text_file: redis_exporter/version
+
+  - name: update_redis_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: redis_exporter
+          trigger: false
+          passed:
+            - redis_exporter
+          params:
+            globs:
+              - redis_exporter-*.linux-amd64.tar.gz
+      - task: update_rabbitmq_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: redis_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         redis_exporter
+            BLOB_NAME:        redis_exporter
+            BLOB_BINARY:      redis_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/oliver006/redis_exporter
+            BLOB_CLEANUP:     redis_exporter/redis_exporter.*
+            BLOB_DESTINATION: redis_exporter/redis_exporter-v${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of redis_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: redis_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: shield_exporter
     public: true
     serial: true
@@ -1830,6 +1910,12 @@ resources:
     source:
       user:         kbudde
       repository:   rabbitmq_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: redis_exporter
+    type: github-release
+    source:
+      user:         oliver006
+      repository:   redis_exporter
       access_token: (( grab meta.github.access_token ))
   - name: shield_exporter
     type: github-release
