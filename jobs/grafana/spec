@@ -13,6 +13,9 @@ templates:
   bin/pre-start: bin/pre-start
   bin/prometheus-dashboards: bin/prometheus-dashboards
   bin/prometheus-datasource: bin/prometheus-datasource
+  config/database_tls_client_ca.pem: config/database_tls_client_ca.pem
+  config/database_tls_client_cert.pem: config/database_tls_client_cert.pem
+  config/database_tls_client_key.pem: config/database_tls_client_key.pem
   config/generic_oauth_tls_client_ca.pem: config/generic_oauth_tls_client_ca.pem
   config/generic_oauth_tls_client_cert.pem: config/generic_oauth_tls_client_cert.pem
   config/generic_oauth_tls_client_key.pem: config/generic_oauth_tls_client_key.pem
@@ -35,6 +38,9 @@ consumes:
     optional: true
   - name: nginx
     type: nginx
+    optional: true
+  - name: database
+    type: database
     optional: true
 
 properties:
@@ -65,25 +71,31 @@ properties:
 
   grafana.database.type:
     description: "Database Type, either 'mysql', 'postgres' or 'sqlite3'"
+    default: "sqlite3"
   grafana.database.host:
-    description: "Database Host"
+    description: "(MySQL & PostgreSQL only) Database Host. If not set, a 'database' link is expected"
+  grafana.database.port:
+    description: "(MySQL & PostgreSQL only) Database Port"
   grafana.database.name:
-    description: "Database Name"
+    description: "(MySQL & PostgreSQL only) Database Name"
   grafana.database.user:
-    description: "Database User"
+    description: "(MySQL & PostgreSQL only) Database User"
   grafana.database.password:
-    description: "Database Password"
-  grafana.database.max_conn:
-    description: "Database max connections"
+    description: "(MySQL & PostgreSQL only) Database Password"
   grafana.database.max_idle_conn:
-    description: "Database max idle connections"
+    description: "(MySQL & PostgreSQL only) Database max idle connections"
   grafana.database.max_open_conn:
-    description: "Database max open connections"
-
+    description: "(MySQL & PostgreSQL only) Database max open connections"
   grafana.database.ssl_mode:
-    description: "For 'postgres' only, either 'disable', 'require' or 'verify-full'"
-  grafana.database.path:
-    description: "For 'sqlite3' only, path relative to data_path setting"
+    description: "(MySQL & PostgreSQL only) For Postgres, use either 'disable', 'require' or 'verify-full'. For MySQL, use either 'true', 'false', or 'skip-verify'"
+  grafana.database.tls_client_ca:
+    description: "(MySQL & PostgreSQL only) Database TLS client CA"
+  grafana.database.tls_client_cert:
+    description: "(MySQL & PostgreSQL only) Database TLS client cert"
+  grafana.database.tls_client_key:
+    description: "(MySQL & PostgreSQL only) Database TLS client key"
+  grafana.database.server_cert_name:
+    description: "(MySQL only) The common name field of the certificate used by the mysql server. Not necessary if ssl_mode is set to 'skip-verify'"
 
   grafana.session.provider:
     description: "Either 'memory', 'file', 'redis', 'mysql', 'postgres'"
