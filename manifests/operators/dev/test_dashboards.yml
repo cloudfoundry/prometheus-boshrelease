@@ -53,6 +53,17 @@
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
   value: /var/vcap/jobs/elasticsearch_dashboards/*.json
 
+# Grafana dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: grafana_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/grafana_dashboards/*.json
+
 # HAProxy dashboards
 - type: replace
   path: /instance_groups/name=grafana/jobs/-
@@ -129,6 +140,17 @@
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
   value: /var/vcap/jobs/probe_dashboards/*.json
+
+# Prometheus dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: prometheus_dashboards
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/prometheus_dashboards/*.json
 
 # RabbitMQ dashboards
 - type: replace

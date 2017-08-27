@@ -53,6 +53,17 @@
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/elasticsearch_alerts/*.alerts
 
+# Grafana alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: grafanay_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/grafana_alerts/*.alerts
+
 # HAProxy alerts
 - type: replace
   path: /instance_groups/name=prometheus/jobs/-
@@ -129,6 +140,17 @@
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/probe_alerts/*.alerts
+
+# Prometheus alerts
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: prometheus_alerts
+    release: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/prometheus_alerts/*.alerts
 
 # RabbitMQ alerts
 - type: replace
