@@ -1,3 +1,4 @@
+## Upgrades
 
-# stackdriver_exporter
-Bumped https://github.com/frodenas/stackdriver_exporter to v0.3.0
+* `kube_state_metrics` to v1.0.1
+* `stackdriver_exporter` to v0.3.0
