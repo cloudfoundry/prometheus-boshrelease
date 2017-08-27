@@ -1,3 +1,4 @@
+---
 name: prometheus
 
 instance_groups:
@@ -40,14 +41,46 @@ instance_groups:
           prometheus:
             rule_files:
               - /var/vcap/jobs/grafana_alerts/*.alerts
+              - /var/vcap/jobs/postgres_alerts/*.alerts
               - /var/vcap/jobs/prometheus_alerts/*.alerts
             scrape_configs:
               - job_name: prometheus
                 static_configs:
                 - targets:
                   - localhost:9090
+      - name: grafana_alerts
+        release: prometheus
+      - name: postgres_alerts
+        release: prometheus
       - name: prometheus_alerts
         release: prometheus
+
+  - name: database
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    persistent_disk_type: 10GB
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: postgres
+        release: postgres
+        properties:
+          databases:
+            port: 5432
+            databases:
+              - name: grafana
+                citext: true
+            roles:
+              - name: grafana
+                password: ((postgres_grafana_password))
+      - name: postgres_exporter
+        release: prometheus
+        properties:
+          postgres_exporter:
+            datasource_name: postgresql://grafana:((postgres_grafana_password))@127.0.0.1:5432/?sslmode=disable
 
   - name: grafana
     azs:
@@ -63,6 +96,18 @@ instance_groups:
         release: prometheus
         properties:
           grafana:
+            database:
+              type: postgres
+              port: 5432
+              name: grafana
+              user: grafana
+              password: ((postgres_grafana_password))
+            session:
+              provider: postgres
+              provider_port: 5432
+              provider_name: grafana
+              provider_user: grafana
+              provider_password: ((postgres_grafana_password))
             security:
               admin_user: admin
               admin_password: ((grafana_password))
@@ -73,6 +118,7 @@ instance_groups:
             prometheus:
               dashboard_files:
                 - /var/vcap/jobs/grafana_dashboards/*.json
+                - /var/vcap/jobs/postgres_dashboards/*.json
                 - /var/vcap/jobs/prometheus_dashboards/*.json
       - name: grafana_exporter
         release: prometheus
@@ -83,6 +129,8 @@ instance_groups:
               username: admin
               password: ((grafana_password))
       - name: grafana_dashboards
+        release: prometheus
+      - name: postgres_dashboards
         release: prometheus
       - name: prometheus_dashboards
         release: prometheus
@@ -113,6 +161,8 @@ variables:
     type: password
   - name: prometheus_password
     type: password
+  - name: postgres_grafana_password
+    type: password
   - name: grafana_password
     type: password
   - name: grafana_secret_key
@@ -131,6 +181,10 @@ stemcells:
     version: latest
 
 releases:
+- name: postgres
+  version: "20"
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=20
+  sha1: 3f378bcab294e20316171d4e656636df88763664
 - name: prometheus
   version: 18.4.0
   url: https://github.com/cloudfoundry-community/prometheus-boshrelease/releases/download/v18.4.0/prometheus-18.4.0.tgz
