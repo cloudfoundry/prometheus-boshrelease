@@ -57,6 +57,8 @@ groups:
       - update_collectd_exporter
       - consul_exporter
       - update_consul_exporter
+      - firehose_exporter
+      - update_firehose_exporter
       - graphite_exporter
       - update_graphite_exporter
       - haproxy_exporter
@@ -774,6 +776,84 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
+  - name: firehose_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: firehose_exporter
+          trigger: true
+          params:
+            globs:
+              - firehose_exporter-*.linux-amd64.tar.gz
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of firehose_exporter was detected. " meta.slack.blob_update ))'
+          text_file: firehose_exporter/version
+
+  - name: update_firehose_exporter
+    serial: true
+    plan:
+      - aggregate:
+        - get: git
+        - get: firehose_exporter
+          trigger: false
+          passed:
+            - firehose_exporter
+          params:
+            globs:
+              - firehose_exporter-*.linux-amd64.tar.gz
+      - task: update_firehose_exporter
+        config:
+          image_resource:
+            type: docker-image
+            source:
+              repository: (( grab meta.image.name ))
+              tag:        (( grab meta.image.tag ))
+          platform: linux
+          inputs:
+            - name: git
+            - name: firehose_exporter
+          outputs:
+            - name: pushme
+          run:
+            path: ./git/ci/scripts/update-blob
+          params:
+            REPO_ROOT:        git
+            REPO_OUT:         pushme
+            BLOB_DIR:         firehose_exporter
+            BLOB_NAME:        firehose_exporter
+            BLOB_BINARY:      firehose_exporter*.linux-amd64.tar.gz
+            BLOB_URL:         https://github.com/cloudfoundry-community/firehose_exporter
+            BLOB_CLEANUP:     firehose_exporter/firehose_exporter.*
+            BLOB_DESTINATION: firehose_exporter/firehose_exporter-${VERSION}.linux-amd64.tar.gz
+            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
+            BRANCH:           (( grab meta.github.branch ))
+      - put: git
+        params:
+          rebase: true
+          repository: pushme/git
+        on_success:
+          put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of firehose_exporter was updated in master. " meta.slack.blob_release ))'
+            text_file: firehose_exporter/version
+    on_failure:
+      do:
+        - put: notify
+          params:
+            channel:   (( grab meta.slack.channel ))
+            username:  (( grab meta.slack.username ))
+            icon_url:  (( grab meta.slack.icon ))
+            text:      (( grab meta.slack.blob_failure ))
+
   - name: graphite_exporter
     public: true
     serial: true
@@ -1296,6 +1376,12 @@ resources:
     source:
       user:         prometheus
       repository:   consul_exporter
+      access_token: (( grab meta.github.access_token ))
+  - name: firehose_exporter
+    type: github-release
+    source:
+      user:         cloudfoundry-community
+      repository:   firehose_exporter
       access_token: (( grab meta.github.access_token ))
   - name: graphite_exporter
     type: github-release
