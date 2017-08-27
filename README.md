@@ -6,6 +6,8 @@ It includes the following [prometheus exporters](https://prometheus.io/docs/inst
 
 It includes the following [grafana plugins](https://grafana.com/plugins): [clock](https://github.com/grafana/clock-panel), [diagram](https://github.com/jdbranham/grafana-diagram), [histogram](https://github.com/mtanda/grafana-histogram-panel), [piechart](https://github.com/grafana/piechart-panel), [status](https://github.com/Vonage/Grafana_Status_panel), [worldmap](https://github.com/grafana/worldmap-panel), [worldping](https://github.com/raintank/worldping-app).
 
+Questions? Pop in our [slack channel](https://cloudfoundry.slack.com/messages/prometheus/)!
+
 ## Table of Contents
 
 * [Usage](https://github.com/cloudfoundry-community/prometheus-boshrelease#usage)
