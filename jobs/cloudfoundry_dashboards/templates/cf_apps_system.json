@@ -149,92 +149,12 @@
           "valueName": "name"
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Application Buildpack",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 9,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "STOPPED",
-              "to": "null"
-            }
-          ],
-          "span": 3,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "count(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(buildpack)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ buildpack }}",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "title": "Buildpack",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "name"
-        },
-        {
           "columns": [],
           "description": "Show the IP address of the Diego Cell where the Application Instance is running.",
           "fontSize": "100%",
           "id": 10,
           "links": [],
-          "pageSize": null,
+          "pageSize": 3,
           "scroll": true,
           "showHeader": true,
           "sort": {
@@ -302,7 +222,7 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 3,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -418,7 +338,7 @@
               "intervalFactor": 2,
               "legendFormat": "CPU Usage",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -498,7 +418,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -601,7 +521,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -609,7 +529,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -688,7 +608,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
               "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -697,7 +617,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -801,7 +721,7 @@
               "intervalFactor": 2,
               "legendFormat": "Used",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -810,7 +730,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -889,7 +809,7 @@
               "intervalFactor": 2,
               "legendFormat": "{{ instance_index }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
               "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
@@ -897,7 +817,7 @@
               "intervalFactor": 2,
               "legendFormat": "Quota",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
