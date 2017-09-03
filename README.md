@@ -78,7 +78,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v bosh_url= \
   -v bosh_username= \
   -v bosh_password= \
-  -v bosh_ca_cert= \
+  --var-file bosh_ca_cert= \
   -v metrics_environment=
 ```
 
@@ -95,7 +95,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v bosh_url= \
   -v bosh_username= \
   -v bosh_password= \
-  -v bosh_ca_cert= \
+  --var-file bosh_ca_cert= \
   -v metrics_environment= \
   -o manifests/operators/monitor-cf.yml \
   -v system_domain= \
@@ -136,9 +136,9 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -o manifests/operators/enable-grafana-uaa.yml \
   -o system_domain= \
   -v uaa_clients_grafana_secret= \
-  -v uaa_ssl.ca= \
-  -v uaa_ssl.certificate= \
-  -v uaa_ssl.private_key=
+  --var-file uaa_ssl.ca= \
+  --var-file uaa_ssl.certificate= \
+  --var-file uaa_ssl.private_key=
 ```
 
 ### Operations files
