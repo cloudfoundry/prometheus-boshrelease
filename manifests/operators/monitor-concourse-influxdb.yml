@@ -1,0 +1,10 @@
+# concourse_influxdb job contains dashboards that rely on an external InfluxDB database (not an influxdb_exporter)
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=concourse_influxdb_dashboards?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/concourse_influxdb_dashboards/*.json
