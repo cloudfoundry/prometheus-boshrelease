@@ -1,3 +1,11 @@
+## Fixes
 
-# bosh_exporter
-Bumped https://github.com/cloudfoundry-community/bosh_exporter to v2.4.4
+* Fixed `cadvisor` binary not having execution permissions
+* Fixed `bosh_exporter` leaking tcp connections
+* Fixed `add-prometheus-uaa-clients.yml` ops file to add `scope` to clients (required by newer versions of UAA)
+* Fixed `add-grafana-uaa-clients.yml` ops file to add `redirect-uri` to client (required by newer versions of UAA)
+
+## Upgrades
+
+* `bosh_exporter` to v2.4.4
+
