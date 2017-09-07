@@ -14,6 +14,7 @@ templates:
   bin/pre-start: bin/pre-start
   bin/prometheus-dashboards: bin/prometheus-dashboards
   bin/prometheus-datasource: bin/prometheus-datasource
+  bin/influxdb-datasource: bin/influxdb-datasource
   config/database_tls_client_ca.pem: config/database_tls_client_ca.pem
   config/database_tls_client_cert.pem: config/database_tls_client_cert.pem
   config/database_tls_client_key.pem: config/database_tls_client_key.pem
@@ -444,7 +445,19 @@ properties:
   grafana.influxdb.datasource_input_name:
     description: "Name of the InfluxDB datasource input name"
     default: DS_INFLUXDB
-
+  grafana.influxdb.url:
+    description: "InfluxDB URL to configure as Grafana data source"
+    default: ""
+  grafana.influxdb.database:
+    description: "InfluxDB database to configure as Grafana data source"
+    default: ""
+  grafana.influxdb.username:
+    description: "InfluxDB user to configure as Grafana data source"
+    default: ""
+  grafana.influxdb.password:
+    description: "InfluxDB password to configure as Grafana data source"
+    default: ""
+  
   env.http_proxy:
     description: "HTTP proxy to use"
   env.https_proxy:
