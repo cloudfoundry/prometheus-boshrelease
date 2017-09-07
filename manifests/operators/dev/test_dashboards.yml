@@ -25,6 +25,15 @@
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
   value: /var/vcap/jobs/concourse_dashboards/*.json
 
+# Concourse-influxdb dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=concourse_influxdb_dashboards?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
+  value: /var/vcap/jobs/concourse_influxdb_dashboards/*.json
+
 # Consul dashboards
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=consul_dashboards?/release
