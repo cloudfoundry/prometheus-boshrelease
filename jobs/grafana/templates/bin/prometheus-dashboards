@@ -13,7 +13,8 @@ dashboard_files=$(ls <%= dashboard_file %>)
 for dashboard_file in ${dashboard_files[@]}; do
   filename=$(basename "${dashboard_file}")
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
-  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g;s/\${<%= p('grafana.influxdb.datasource_input_name') %>}/<%= p('grafana.influxdb.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
+  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' \
+    -e 's/\${<%= p('grafana.influxdb.datasource_input_name') %>}/<%= p('grafana.influxdb.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
   echo -e "Validating ${DASHBOARDS_DIR}/${filename}"
   # want stderr going to stdout, don't want stdout at all
   ${JQ_CMD} . < ${DASHBOARDS_DIR}/${filename} 2>&1 > /dev/null
