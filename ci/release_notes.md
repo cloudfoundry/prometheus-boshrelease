@@ -8,4 +8,4 @@
 ## Upgrades
 
 * `bosh_exporter` to v2.4.4
-
+* `stackdriver_exporter` to v0.4.0
