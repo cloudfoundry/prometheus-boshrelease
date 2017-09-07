@@ -1,9 +1,13 @@
+## Manifests
+
+* Added `monitor-concourse-influxdb.yml` ops file to monitor Concourse using an external InfluxDB
+* Fixed `add-prometheus-uaa-clients.yml` ops file to add `scope` to clients (required by newer versions of UAA)
+* Fixed `add-grafana-uaa-clients.yml` ops file to add `redirect-uri` to client (required by newer versions of UAA)
+
 ## Fixes
 
 * Fixed `cadvisor` binary not having execution permissions
 * Fixed `bosh_exporter` leaking tcp connections
-* Fixed `add-prometheus-uaa-clients.yml` ops file to add `scope` to clients (required by newer versions of UAA)
-* Fixed `add-grafana-uaa-clients.yml` ops file to add `redirect-uri` to client (required by newer versions of UAA)
 
 ## Upgrades
 
