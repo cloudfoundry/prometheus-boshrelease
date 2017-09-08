@@ -82,6 +82,18 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metrics_environment=
 ```
 
+**NOTE**: if you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
+
+```
+bosh -d prometheus deploy manifests/prometheus.yml \
+  --vars-store tmp/deployment-vars.yml \
+  -o manifests/operators/monitor-bosh.yml \
+  -o manifests/operators/enable-bosh-uaa.yml \
+  -v bosh_url= \
+  --var-file bosh_ca_cert= \
+  -v metrics_environment=
+```
+
 ### Monitoring Cloud Foundry
 
 If you want to monitor your [Cloud Foundry](https://www.cloudfoundry.org/) platform, first update your [cf-deployment](https://github.com/cloudfoundry/cf-deployment) adding the [add-prometheus-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file. This will add the UAA clients required to gather information from the Cloud Foundry [API](https://apidocs.cloudfoundry.org/268/) and [Firehose](https://docs.cloudfoundry.org/loggregator/architecture.html#firehose).
