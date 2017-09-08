@@ -2,41 +2,35 @@
 
 set -eu
 
-GRAFANA_DATASOURCES_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>/api/datasources"
-GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
-DATASOURCE_ID=""
+<% if_p('grafana.influxdb.url') do |influxdb_url| %>
+  GRAFANA_DATASOURCES_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>/api/datasources"
+  GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
 
-<% if p('grafana.influxdb.url') %>
-  INFLUXDB_URL="<%= p('grafana.influxdb.url') %>"
+  INFLUXDB_URL="<%= grafana.influxdb.url %>"
   INFLUXDB_DATABASE="<%= p('grafana.influxdb.database') %>"
   INFLUXDB_USERNAME="<%= p('grafana.influxdb.username') %>"
   INFLUXDB_PASSWORD="<%= p('grafana.influxdb.password') %>"
+
+  DATASOURCE_NAME="<%= p('grafana.influxdb.datasource_name') %>"
+  DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"influxdb\",\"access\":\"proxy\",\"url\":\"${INFLUXDB_URL}\",\"password\":\"${INFLUXDB_PASSWORD}\",\"user\":\"${INFLUXDB_USERNAME}\",\"database\":\"${INFLUXDB_DATABASE}\",\"isDefault\":false,\"jsonData\":null}"
+    
+  DATASOURCE_ID=$(curl -u ${GRAFANA_CREDENTIALS} -ks ${GRAFANA_DATASOURCES_API} | sed -n 's/^.*"id":\([0-9]*\)[^}]*"name":"'${DATASOURCE_NAME}'".*$/\1/p' )
+
+  if [ -n "${DATASOURCE_ID}" ]; then
+    if curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT ${GRAFANA_DATASOURCES_API}/${DATASOURCE_ID} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
+      echo -e "\nUpdated datasource ${DATASOURCE_NAME} at $(date)"
+    else
+      echo -e "\nFailed to update datasource ${DATASOURCE_NAME} at $(date)"
+      exit 1
+    fi
+  else
+    if curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST ${GRAFANA_DATASOURCES_API} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
+      echo -e "\nCreated datasource ${DATASOURCE_NAME} at $(date)"
+    else
+      echo -e "\nFailed to create datasource ${DATASOURCE_NAME} at $(date)"
+      exit 1
+    fi
+  fi
 <% end %>
-
-if [ ! -n "${INFLUXDB_URL}" ]; then
-  echo -e "\nNo InfluxDB datasource to configure"
-  exit 0
-fi
-
-DATASOURCE_NAME="<%= p('grafana.influxdb.datasource_name') %>"
-DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"influxdb\",\"access\":\"proxy\",\"url\":\"${INFLUXDB_URL}\",\"password\":\"${INFLUXDB_PASSWORD}\",\"user\":\"${INFLUXDB_USERNAME}\",\"database\":\"${INFLUXDB_DATABASE}\",\"isDefault\":false,\"jsonData\":null}"
-  
-DATASOURCE_ID=$(curl -u ${GRAFANA_CREDENTIALS} -ks ${GRAFANA_DATASOURCES_API} | sed -n 's/^.*"id":\([0-9]*\)[^}]*"name":"'${DATASOURCE_NAME}'".*$/\1/p' )
-
-if [ -n "${DATASOURCE_ID}" ]; then
-  if curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT ${GRAFANA_DATASOURCES_API}/${DATASOURCE_ID} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
-    echo -e "\nUpdated datasource ${DATASOURCE_NAME} at $(date)"
-  else
-    echo -e "\nFailed to update datasource ${DATASOURCE_NAME} at $(date)"
-    exit 1
-  fi
-else
-  if curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST ${GRAFANA_DATASOURCES_API} -H 'Content-Type: application/json' -d "${DATASOURCE_DATA}" ; then
-    echo -e "\nCreated datasource ${DATASOURCE_NAME} at $(date)"
-  else
-    echo -e "\nFailed to create datasource ${DATASOURCE_NAME} at $(date)"
-    exit 1
-  fi
-fi
 
 exit 0
