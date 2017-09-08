@@ -1,5 +1,6 @@
 ## Manifests
 
+* Added `enable-bosh-uaa.yml` ops file to enable BOSH UAA authentication
 * Added `monitor-concourse-influxdb.yml` ops file to monitor Concourse using an external InfluxDB
 * Fixed `add-prometheus-uaa-clients.yml` ops file to add `scope` to clients (required by newer versions of UAA)
 * Fixed `add-grafana-uaa-clients.yml` ops file to add `redirect-uri` to client (required by newer versions of UAA)
