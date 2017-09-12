@@ -23,7 +23,7 @@ ALERT ShieldJobRunning1d
   }
 
 ALERT ShieldJobFailed1d
-  IF shield_job_status == 4 and shield_job_paused != 0
+  IF shield_job_status == 4 and shield_job_paused == 0
   FOR <%= p('shield_alerts.job_failed.evaluation_time') %>
   LABELS {
     service = "shield",
