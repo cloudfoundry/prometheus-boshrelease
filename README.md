@@ -82,7 +82,9 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metrics_environment=
 ```
 
-**NOTE**: if you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
+*NOTE: `metrics_environment` is an arbitrary name to identify your environment (`test`, `nyc-prod`, ...)*
+
+If you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
 
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
@@ -110,12 +112,15 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --var-file bosh_ca_cert= \
   -v metrics_environment= \
   -o manifests/operators/monitor-cf.yml \
+  -v metron_deployment_name= \
   -v system_domain= \
   -v uaa_clients_cf_exporter_secret= \
   -v uaa_clients_firehose_exporter_secret= \
   -v traffic_controller_external_port= \
   -v skip_ssl_verify=
 ```
+
+*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
 
 #### Register Cloud Foundry routes
 
