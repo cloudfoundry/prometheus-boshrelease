@@ -24,6 +24,8 @@ set -e
 : ${BOSH_CLIENT_SECRET:?required}
 : ${BOSH_DEPLOYMENT:?required}
 : ${MANIFEST_PATH:?required}
+: ${AWS_ACCESS_KEY:?required}
+: ${AWS_SECRET_KEY:?required}
 
 cd ${REPO_ROOT:?required}
 header "Pulling in any git submodules..."
@@ -68,6 +70,15 @@ bosh2 -n delete-deployment
 
 header "Creating candidate BOSH release..."
 bosh2 -n reset-release # in case dev_releases/ is in repo accidentally
+
+cat > config/private.yml <<YAML
+---
+blobstore:
+  provider: s3
+  options:
+    access_key_id: ${AWS_ACCESS_KEY}
+    secret_access_key: ${AWS_SECRET_KEY}
+YAML
 bosh2 create-release
 bosh2 upload-release --rebase
 
@@ -137,6 +148,13 @@ if [[ -n ${TEST_ERRANDS} ]]; then
 	done
 else
 	echo "No test errands specified, skipping."
+fi
+
+if [[ -z ${SKIP_DELETE_DEPLOYMENT:-} ]]; then
+	header "Cleaning up after successful deployment..."
+	bosh2 -n delete-deployment
+else
+	header "Skipping cleanup of successful deployment."
 fi
 
 echo

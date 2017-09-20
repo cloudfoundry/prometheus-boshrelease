@@ -24,7 +24,9 @@ header() {
 : ${BRANCH:?required}
 : ${GITHUB_OWNER:?required}
 : ${VERSION_FROM:?required}
-: ${MANIFEST_PATH:?required}
+: ${AWS_ACCESS_KEY:?required}
+: ${AWS_SECRET_KEY:?required}
+
 if [[ ! -f ${VERSION_FROM} ]]; then
   echo >&2 "Version file (${VERSION_FROM}) not found.  Did you misconfigure Concourse?"
   exit 2
@@ -47,14 +49,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${REPO_ROOT}
 RELEASE_NAME=$(bosh2 int config/final.yml --path /final_name)
 
-cat > config/private.yml << EOF
+cat > config/private.yml <<YAML
 ---
 blobstore:
   provider: s3
   options:
-    access_key_id: ${AWS_ACCESS_KEY:?required}
-    secret_access_key: ${AWS_SECRET_KEY:?required}
-EOF
+    access_key_id: ${AWS_ACCESS_KEY}
+    secret_access_key: ${AWS_SECRET_KEY}
+YAML
 
 header "Pulling in any git submodules..."
 git submodule update --init --recursive --force
@@ -99,7 +101,9 @@ if [[ -z $(git config --global user.name) ]]; then
 fi
 
 (cd ${REPO_ROOT}
- $DIR/update-manifest $GITHUB_OWNER $RELEASE_NAME $VERSION $SHA1 $MANIFEST_PATH
+ for MANIFEST_PATH in $(ls manifests/*.yml); do
+   $DIR/update-manifest $GITHUB_OWNER $RELEASE_NAME $VERSION $SHA1 $MANIFEST_PATH
+ done
  git merge --no-edit ${BRANCH}
  git add -A
  git status
