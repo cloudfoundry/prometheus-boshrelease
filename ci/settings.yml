@@ -63,8 +63,6 @@ groups:
       - update_elasticsearch_exporter
       - firehose_exporter
       - update_firehose_exporter
-      - grafana_exporter
-      - update_grafana_exporter
       - graphite_exporter
       - update_graphite_exporter
       - haproxy_exporter
@@ -1021,84 +1019,6 @@ jobs:
             icon_url:  (( grab meta.slack.icon ))
             text:      (( grab meta.slack.blob_failure ))
 
-  - name: grafana_exporter
-    public: true
-    serial: true
-    plan:
-      - aggregate:
-        - get: grafana_exporter
-          trigger: true
-          params:
-            globs:
-              - grafana_exporter-*.linux-amd64.tar.gz
-      - put: notify
-        params:
-          channel:   (( grab meta.slack.channel ))
-          username:  (( grab meta.slack.username ))
-          icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana_exporter was detected. " meta.slack.blob_update ))'
-          text_file: grafana_exporter/version
-
-  - name: update_grafana_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: grafana_exporter
-          trigger: false
-          passed:
-            - grafana_exporter
-          params:
-            globs:
-              - grafana_exporter-*.linux-amd64.tar.gz
-      - task: update_grafana_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: grafana_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         grafana_exporter
-            BLOB_NAME:        grafana_exporter
-            BLOB_BINARY:      grafana_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/frodenas/grafana_exporter
-            BLOB_CLEANUP:     grafana_exporter/grafana_exporter.*
-            BLOB_DESTINATION: grafana_exporter/grafana_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: grafana_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
-
   - name: graphite_exporter
     public: true
     serial: true
@@ -1951,12 +1871,6 @@ resources:
     source:
       user:         cloudfoundry-community
       repository:   firehose_exporter
-      access_token: (( grab meta.github.access_token ))
-  - name: grafana_exporter
-    type: github-release
-    source:
-      user:         frodenas
-      repository:   grafana_exporter
       access_token: (( grab meta.github.access_token ))
   - name: graphite_exporter
     type: github-release

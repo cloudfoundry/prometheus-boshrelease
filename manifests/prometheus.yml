@@ -40,7 +40,6 @@ instance_groups:
         properties:
           prometheus:
             rule_files:
-              - /var/vcap/jobs/grafana_alerts/*.alerts
               - /var/vcap/jobs/postgres_alerts/*.alerts
               - /var/vcap/jobs/prometheus_alerts/*.alerts
             scrape_configs:
@@ -48,8 +47,6 @@ instance_groups:
                 static_configs:
                 - targets:
                   - localhost:9090
-      - name: grafana_alerts
-        release: prometheus
       - name: postgres_alerts
         release: prometheus
       - name: prometheus_alerts
@@ -120,14 +117,6 @@ instance_groups:
                 - /var/vcap/jobs/grafana_dashboards/*.json
                 - /var/vcap/jobs/postgres_dashboards/*.json
                 - /var/vcap/jobs/prometheus_dashboards/*.json
-      - name: grafana_exporter
-        release: prometheus
-        properties:
-          grafana_exporter:
-            grafana:
-              uri: http://localhost:3000
-              username: admin
-              password: ((grafana_password))
       - name: grafana_dashboards
         release: prometheus
       - name: postgres_dashboards
