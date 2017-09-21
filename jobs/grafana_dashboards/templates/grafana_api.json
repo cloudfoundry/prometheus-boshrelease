@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.4.1"
+      "version": "4.5.1"
     },
     {
       "type": "panel",
@@ -91,13 +91,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_responses{instance=~\"$instance\"}) by(instance, code)",
+              "expr": "avg(grafana_api_response_status_total{instance=~\"$instance\"}) by(instance, code)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ code }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -172,13 +172,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_page_responses{instance=~\"$instance\"}) by(instance, code)",
+              "expr": "avg(grafana_page_response_status_total{instance=~\"$instance\"}) by(instance, code)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ code }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -253,13 +253,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_proxy_responses{instance=~\"$instance\"}) by(instance, code)",
+              "expr": "avg(grafana_proxy_response_status_total{instance=~\"$instance\"}) by(instance, code)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ code }}",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -344,12 +344,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"count\"}[5m])",
+              "expr": "rate(grafana_api_dataproxy_request_all_milleseconds_sum{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "req/s",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -422,12 +422,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"count\"})",
+              "expr": "avg(grafana_api_dataproxy_request_all_milleseconds_sum{instance=~\"$instance\"})",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -500,36 +500,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"p25\"})",
+              "expr": "avg(grafana_api_dataproxy_request_all_milleseconds{instance=~\"$instance\"}) by(quantile)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p25",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"p75\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p75",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"p90\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p90",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dataproxy_request_all{instance=~\"$instance\", metric=\"p99\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p99",
-              "refId": "D",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -614,13 +590,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"count\"}[5m])",
+              "expr": "rate(grafana_api_dashboard_get_milleseconds_sum{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "req/s",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -693,13 +669,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"count\"})",
+              "expr": "avg(grafana_api_dashboard_get_milleseconds_sum{instance=~\"$instance\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -772,38 +748,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"p25\"})",
+              "expr": "avg(grafana_api_dashboard_get_milleseconds{instance=~\"$instance\"}) by(quantile)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "p25",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"p75\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p75",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"p90\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p90",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_get{instance=~\"$instance\", metric=\"p99\"})",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "p99",
-              "refId": "D",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -888,13 +839,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"count\"}[5m])",
+              "expr": "rate(grafana_api_dashboard_save_milleseconds_sum{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "req/s",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -967,13 +918,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"count\"})",
+              "expr": "avg(grafana_api_dashboard_save_milleseconds_sum{instance=~\"$instance\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -1046,38 +997,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"p25\"})",
+              "expr": "avg(grafana_api_dashboard_save_milleseconds{instance=~\"$instance\"}) by(quantile)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "p25",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"p75\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p75",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"p90\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p90",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_save{instance=~\"$instance\", metric=\"p99\"})",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "p99",
-              "refId": "D",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -1162,13 +1088,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "irate(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"count\"}[5m])",
+              "expr": "rate(grafana_api_dashboard_search_milleseconds_sum{instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "req/s",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -1241,13 +1167,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"count\"})",
+              "expr": "avg(grafana_api_dashboard_search_milleseconds_sum{instance=~\"$instance\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Requests",
               "refId": "A",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -1320,38 +1246,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"p25\"})",
+              "expr": "avg(grafana_api_dashboard_search_milleseconds{instance=~\"$instance\"}) by(quantile)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "p25",
+              "legendFormat": "{{ quantile }}",
               "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"p75\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p75",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"p90\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "p90",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "avg(grafana_metrics_api_dashboard_search{instance=~\"$instance\", metric=\"p99\"})",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "p99",
-              "refId": "D",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -1417,7 +1318,7 @@
         "multi": false,
         "name": "instance",
         "options": [],
-        "query": "label_values(grafana_metrics_last_scrape_timestamp, instance)",
+        "query": "label_values(grafana_stat_total_orgs, instance)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
