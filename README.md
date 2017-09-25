@@ -151,7 +151,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --vars-store tmp/deployment-vars.yml \
   ...
   -o manifests/operators/enable-grafana-uaa.yml \
-  -o system_domain= \
+  -v system_domain= \
   -v uaa_clients_grafana_secret= \
   --var-file uaa_ssl.ca= \
   --var-file uaa_ssl.certificate= \
