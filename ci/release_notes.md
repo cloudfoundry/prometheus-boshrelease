@@ -11,3 +11,4 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 ## Upgrades
 
 * `blackbox_exporter` to v0.9.1
+* `grafana` to v4.5.2
