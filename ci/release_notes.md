@@ -10,6 +10,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 
 ## Upgrades
 
+* `alertmanager` to v0.9.0
 * `blackbox_exporter` to v0.9.1
 * `grafana` to v4.5.2
 * `prometheus` to v1.7.2
