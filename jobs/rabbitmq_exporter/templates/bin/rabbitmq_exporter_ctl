@@ -22,14 +22,21 @@ case $1 in
     <% if_p('rabbitmq_exporter.log_level') do |log_level| %>
     export LOG_LEVEL="<%= log_level %>"
     <% end %>
-    <% if_p('rabbitmq_exporter.rabbitmq.url') do |rabbitmq_url| %>
-    export RABBIT_URL="<%= rabbitmq_url %>"
+    <% if_p('rabbitmq_exporter.output_format') do |output_format| %>
+    export OUTPUT_FORMAT="<%= output_format %>"
     <% end %>
-    <% if_p('rabbitmq_exporter.rabbitmq.user') do |rabbitmq_user| %>
-    export RABBIT_USER="<%= rabbitmq_user %>"
+    <% if_p('rabbitmq_exporter.exporters') do |exporterst| %>
+    export RABBIT_EXPORTERS="<%= exporters %>"
     <% end %>
-    <% if_p('rabbitmq_exporter.rabbitmq.password') do |rabbitmq_password| %>
-    export RABBIT_PASSWORD="<%= rabbitmq_password %>"
+
+    <% if_p('rabbitmq_exporter.rabbitmq.url') do |url| %>
+    export RABBIT_URL="<%= url %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.user') do |user| %>
+    export RABBIT_USER="<%= user %>"
+    <% end %>
+    <% if_p('rabbitmq_exporter.rabbitmq.password') do |password| %>
+    export RABBIT_PASSWORD="<%= password %>"
     <% end %>
     <% if_p('rabbitmq_exporter.rabbitmq.ca_cert') do %>
     export CAFILE="/var/vcap/jobs/rabbitmq_exporter/config/ca_cert.pem"
@@ -43,9 +50,10 @@ case $1 in
     <% if_p('rabbitmq_exporter.rabbitmq.skip_tls_verify') do |skip_tls_verify| %>
     export SKIPVERIFY="<%= skip_tls_verify %>"
     <% end %>
-    <% if_p('rabbitmq_exporter.output_format') do |output_format| %>
-    export OUTPUT_FORMAT="<%= output_format %>"
+    <% if_p('rabbitmq_exporter.rabbitmq.capabilities') do |capabilities| %>
+    export RABBIT_CAPABILITIES="<%= capabilities %>"
     <% end %>
+
 
     export PUBLISH_PORT="<%= p('rabbitmq_exporter.web.port') %>"
 

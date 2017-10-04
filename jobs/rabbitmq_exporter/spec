@@ -11,6 +11,11 @@ templates:
 properties:
   rabbitmq_exporter.log_level:
     description: "Log level ('debug', 'info', 'warning', 'error', 'fatal', or 'panic')"
+  rabbitmq_exporter.output_format:
+    description: "Log output format"
+  rabbitmq_exporter.exporters:
+    description: "List of enabled modules ('connections', 'exchange', 'node', 'overview', 'queue')"
+
   rabbitmq_exporter.rabbitmq.url:
     description: "RabbitMQ url"
   rabbitmq_exporter.rabbitmq.user:
@@ -25,8 +30,9 @@ properties:
     description: "Regex, matching queue names are not exported (useful for short-lived rpc queues)"
   rabbitmq_exporter.rabbitmq.skip_tls_verify:
     description: "Will skip hostname/certificate check at all"
-  rabbitmq_exporter.output_format:
-    description: "Log output format"
+  rabbitmq_exporter.rabbitmq.capabilities:
+    description: "Comma-separated list of extended scraping capabilities supported by the target RabbitMQ server"
+
   rabbitmq_exporter.web.port:
     description: "Port on which to expose web interface and telemetry"
     default: "9125"
