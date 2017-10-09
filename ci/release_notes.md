@@ -12,6 +12,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 
 * `alertmanager` to v0.9.1
 * `blackbox_exporter` to v0.9.1
+* `firehose_exporter` to v4.2.4
 * `grafana` to v4.5.2
 * `prometheus` to v1.7.2
 * `rabbitmq_exporter` to v0.22.0
