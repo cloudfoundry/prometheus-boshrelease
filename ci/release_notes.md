@@ -8,6 +8,15 @@ The `grafana_dashboards` have been updated to use the metric names that come dir
 
 If you were using the [manifest](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/prometheus.yml) and [operator files](https://github.com/cloudfoundry-community/prometheus-boshrelease/tree/master/manifests/operators) from this [BOSH](http://bosh.io/) release, no change is needed, as they have been updated appropriately.
 
+## Fixes
+
+* Fixed a typo at the "CF: Garden Linux" dashboard
+
+## Manifests
+
+* Added `use-sqlite3.yml` op file to use `sqlite3` instead of `postgres` for the Grafana database
+* Added `alertmanager-web-external-url.yml` op file to allow configuring the URL under which `alertmanager` is externally reachable
+
 ## Upgrades
 
 * `alertmanager` to v0.9.1
