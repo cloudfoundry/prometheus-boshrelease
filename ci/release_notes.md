@@ -14,5 +14,5 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * `blackbox_exporter` to v0.10.0
 * `firehose_exporter` to v4.2.4
 * `grafana` to v4.5.2
-* `prometheus` to v1.8.0
+* `prometheus` to v1.8.1
 * `rabbitmq_exporter` to v0.23.0
