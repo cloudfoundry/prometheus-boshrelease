@@ -59,6 +59,18 @@ case $1 in
       <% if_p('cadvisor.docker') do |docker| %> \
       -docker="<%= docker %>" \
       <% end %> \
+      <% if_p('cadvisor.docker_tls') do |docker_tls| %> \
+      -docker-tls="<%= docker_tls %>" \
+      <% end %> \
+      <% if_p('cadvisor.docker_tls_ca') do %> \
+      -docker-tls-ca=/var/vcap/jobs/cadvisor/config/docker_tls_ca.pem \
+      <% end %> \
+      <% if_p('cadvisor.docker_tls_cert') do %> \
+      -docker-tls-cert=/var/vcap/jobs/cadvisor/config/docker_tls_cert.pem \
+      <% end %> \
+      <% if_p('cadvisor.docker_tls_key') do %> \
+      -docker-tls-key=/var/vcap/jobs/cadvisor/config/docker_tls_key.pem \
+      <% end %> \
       <% if_p('cadvisor.docker_env_metadata_whitelist') do |docker_env_metadata_whitelist| %> \
       -docker_env_metadata_whitelist="<%= docker_env_metadata_whitelist %>" \
       <% end %> \
@@ -141,6 +153,9 @@ case $1 in
       <% end %> \
       <% if_p('cadvisor.storage_driver_host') do |storage_driver_host| %> \
       -storage_driver_host="<%= storage_driver_host %>" \
+      <% end %> \
+      <% if_p('cadvisor.storage_driver_influxdb_retention_policy') do |storage_driver_influxdb_retention_policy| %> \
+      -storage_driver_influxdb_retention_policy="<%= storage_driver_influxdb_retention_policy %>" \
       <% end %> \
       <% if_p('cadvisor.storage_driver_kafka_broker_list') do |storage_driver_kafka_broker_list| %> \
       -storage_driver_kafka_broker_list="<%= storage_driver_kafka_broker_list %>" \
