@@ -21,7 +21,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 
 * `alertmanager` to v0.9.1
 * `blackbox_exporter` to v0.10.0
-* `firehose_exporter` to v4.2.4
+* `firehose_exporter` to v4.2.5
 * `fontconfig` to v2.12.6
 * `freetype` to v2.8.1
 * `golang` to v1.9.2
