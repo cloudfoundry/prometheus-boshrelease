@@ -24,5 +24,6 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * `firehose_exporter` to v4.2.4
 * `golang` to v1.9.2
 * `grafana` to v4.5.2
+* `kube-state-metrics` to v1.1.0
 * `prometheus` to v1.8.1
 * `rabbitmq_exporter` to v0.23.0
