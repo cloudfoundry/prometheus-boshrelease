@@ -27,6 +27,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * `freetype` to v2.8.1
 * `golang` to v1.9.2
 * `grafana` to v4.6.0
+* `Grafana Status Panel` to v1.0.5
 * `kube-state-metrics` to v1.1.0
 * `postgres_exporter` to v0.3.0
 * `prometheus` to v1.8.1
