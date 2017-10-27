@@ -28,6 +28,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * `golang` to v1.9.2
 * `grafana` to v4.6.0
 * `kube-state-metrics` to v1.1.0
+* `postgres_exporter` to v0.3.0
 * `prometheus` to v1.8.1
 * `rabbitmq_exporter` to v0.23.0
 * `redis_exporter` to v0.13.0
