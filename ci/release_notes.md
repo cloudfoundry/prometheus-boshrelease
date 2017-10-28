@@ -34,6 +34,7 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * Grafana `Pie Chart` panel plugin to 34386db
 * Grafana `Status` panel plugin to v1.0.5
 * Grafana `World Map` panel plugin to v0.0.21
+* Grafana `World Ping` panel plugin to cd92ae1
 * `kube-state-metrics` to v1.1.0
 * `postgres_exporter` to v0.3.0
 * `prometheus` to v1.8.1
