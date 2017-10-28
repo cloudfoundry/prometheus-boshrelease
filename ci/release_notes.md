@@ -30,8 +30,9 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 * `freetype` to v2.8.1
 * `golang` to v1.9.2
 * `grafana` to v4.6.0
-* `Grafana Status Panel` plugin to v1.0.5
-* `Grafana Diagram` plugin to 1461bd2
+* Grafana `Diagram` panel plugin to 1461bd2
+* Grafana `Pie Chart` panel plugin to 34386db
+* Grafana `Status` panel plugin to v1.0.5
 * `kube-state-metrics` to v1.1.0
 * `postgres_exporter` to v0.3.0
 * `prometheus` to v1.8.1
