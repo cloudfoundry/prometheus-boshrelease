@@ -22,21 +22,21 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 
 ## Upgrades
 
-* `alertmanager` to v0.9.1
-* `blackbox_exporter` to v0.10.0
-* `cadvisor` to v0.27.2
-* `firehose_exporter` to v4.2.5
+* `alertmanager` to [v0.9.1](https://github.com/prometheus/alertmanager/releases/tag/v0.9.1)
+* `blackbox_exporter` to [v0.10.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.10.0)
+* `cadvisor` to [v0.27.2](https://github.com/google/cadvisor/releases/tag/v0.27.2)
+* `firehose_exporter` to [v4.2.5](https://github.com/cloudfoundry-community/firehose_exporter/releases/tag/v4.2.5)
 * `fontconfig` to v2.12.6
 * `freetype` to v2.8.1
 * `golang` to v1.9.2
-* `grafana` to v4.6.0
+* `grafana` to [v4.6.0](https://github.com/grafana/grafana/releases/tag/v4.6.0)
 * Grafana `Diagram` panel plugin to 1461bd2
 * Grafana `Pie Chart` panel plugin to 34386db
-* Grafana `Status` panel plugin to v1.0.5
+* Grafana `Status` panel plugin to [v1.0.5](https://github.com/Vonage/Grafana_Status_panel/releases/tag/1.0.5)
 * Grafana `World Map` panel plugin to v0.0.21
 * Grafana `World Ping` panel plugin to cd92ae1
-* `kube-state-metrics` to v1.1.0
-* `postgres_exporter` to v0.3.0
-* `prometheus` to v1.8.1
-* `rabbitmq_exporter` to v0.23.0
-* `redis_exporter` to v0.13.0
+* `kube-state-metrics` to [v1.1.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.1.0)
+* `postgres_exporter` to [v0.3.0](https://github.com/wrouesnel/postgres_exporter/releases/tag/v0.3.0)
+* `prometheus` to [1.8.1](https://github.com/prometheus/prometheus/releases/tag/v1.8.1)
+* `rabbitmq_exporter` to [v0.23.0](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.23.0)
+* `redis_exporter` to [v0.13](https://github.com/oliver006/redis_exporter/releases/tag/v0.13)
