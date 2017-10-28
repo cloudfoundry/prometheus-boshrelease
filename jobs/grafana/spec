@@ -19,6 +19,7 @@ templates:
   config/database_tls_client_ca.pem: config/database_tls_client_ca.pem
   config/database_tls_client_cert.pem: config/database_tls_client_cert.pem
   config/database_tls_client_key.pem: config/database_tls_client_key.pem
+  config/gcs_key.json: config/gcs_key.json
   config/generic_oauth_tls_client_ca.pem: config/generic_oauth_tls_client_ca.pem
   config/generic_oauth_tls_client_cert.pem: config/generic_oauth_tls_client_cert.pem
   config/generic_oauth_tls_client_key.pem: config/generic_oauth_tls_client_key.pem
@@ -444,12 +445,18 @@ properties:
   grafana.external_image_storage.provider:
     description: "Used for uploading images to public servers so they can be included in slack/email messages (s3, webdav)"
 
-  grafana.external_image_storage.s3.bucket_url:
-    description: "S3 Bucket URL"
   grafana.external_image_storage.s3.access_key:
     description: "S3 Access Key"
   grafana.external_image_storage.s3.secret_key:
     description: "S3 Secret Key"
+  grafana.external_image_storage.s3.bucket_url:
+    description: "S3 Bucket URL"
+  grafana.external_image_storage.s3.bucket:
+    description: "S3 Bucket"
+  grafana.external_image_storage.s3.region:
+    description: "S3 Region"
+  grafana.external_image_storage.s3.path:
+    description: "S3 Bucket Path"
 
   grafana.external_image_storage.webdav.url:
     description: "Webdav URL"
@@ -459,6 +466,11 @@ properties:
     description: "Webdav Password"
   grafana.external_image_storage.webdav.public_url:
     description: "Webdav public URL"
+
+  grafana.external_image_storage.gcs.json_key:
+    description: "GCS JSON Key"
+  grafana.external_image_storage.gcs.bucket:
+    description: "GCS bucket"
 
   grafana.prometheus.datasource_name:
     description: "Name of the Prometheus datasource"
