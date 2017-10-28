@@ -16,6 +16,9 @@ If you were using the [manifest](https://github.com/cloudfoundry-community/prome
 
 * Added `use-sqlite3.yml` op file to use `sqlite3` instead of `postgres` for the Grafana database
 * Added `alertmanager-web-external-url.yml` op file to allow configuring the URL under which `alertmanager` is externally reachable
+* Fixed `monitor-postgres.yml` op file
+* Upgraded `postgres` release to v21
+* Upgraded `cf-routing` release to v0.165.0 at `route-registrar.yml` op file
 
 ## Upgrades
 
