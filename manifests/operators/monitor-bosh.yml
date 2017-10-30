@@ -200,13 +200,13 @@
     relabel_configs:
       - source_labels:
         - __meta_bosh_job_process_name
-        regex: grafana_exporter
+        regex: grafana
         action: keep
       - source_labels:
         - __address__
         regex: "(.*)"
         target_label: __address__
-        replacement: "${1}:9261"
+        replacement: "${1}:3000"
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
@@ -410,6 +410,7 @@
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
   value:
     job_name: pushgateway
+    honor_labels: true
     file_sd_configs:
       - files:
         - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"

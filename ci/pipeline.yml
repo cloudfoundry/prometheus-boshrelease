@@ -29,6 +29,7 @@ meta:
 
   aws:
     bucket:     (( concat meta.pipeline "-pipeline" ))
+    region_name: us-east-1
     access_key: (( param "Please set your AWS Access Key ID for your pipeline S3 Bucket" ))
     secret_key: (( param "Please set your AWS Secret Key ID for your pipeline S3 Bucket" ))
 
@@ -97,6 +98,8 @@ jobs:
             BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
             BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment ))
             TEST_ERRANDS:         (( grab meta.test-errands || meta.test-errand || ~ ))
+            AWS_ACCESS_KEY:       (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:       (( grab meta.aws.secret_key ))
             MANIFEST_PATH:        (( grab meta.manifest.path ))
             MANIFEST_VARS:        (( grab meta.manifest.vars ))
             MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
@@ -139,6 +142,8 @@ jobs:
             BOSH_CLIENT_SECRET:   (( grab meta.bosh-lite.password ))
             BOSH_DEPLOYMENT:      (( grab meta.bosh-lite.deployment-pr ))
             TEST_ERRANDS:         (( grab meta.test-errands || meta.test-errand || ~ ))
+            AWS_ACCESS_KEY:       (( grab meta.aws.access_key ))
+            AWS_SECRET_KEY:       (( grab meta.aws.secret_key ))
             MANIFEST_PATH:        (( grab meta.manifest.path ))
             MANIFEST_VARS:        (( grab meta.manifest.vars-pr ))
             MANIFEST_OP_PATHS:    (( grab meta.manifest.operator_file_paths ))
@@ -260,9 +265,8 @@ jobs:
             RELEASE_ROOT: gh
             REPO_OUT:     pushme
             NOTIFICATION_OUT: notifications
-            BRANCH:       (( grab meta.github.branch ))
-            GITHUB_OWNER: (( grab meta.github.owner ))
-            MANIFEST_PATH: (( concat "manifests/" meta.name ".yml" ))
+            BRANCH:        (( grab meta.github.branch ))
+            GITHUB_OWNER:  (( grab meta.github.owner ))
 
             AWS_ACCESS_KEY:       (( grab meta.aws.access_key ))
             AWS_SECRET_KEY:       (( grab meta.aws.secret_key ))
@@ -287,12 +291,14 @@ jobs:
         put: version
         params:
           bump: patch
-      - put: notify
-        params:
-          channel:  (( grab meta.slack.channel ))
-          username: (( grab meta.slack.username ))
-          icon_url: (( grab meta.slack.icon ))
-          text_file: notifications/message
+      - name: notify
+        aggregate:
+        - put: notify
+          params:
+            channel:  (( grab meta.slack.channel ))
+            username: (( grab meta.slack.username ))
+            icon_url: (( grab meta.slack.icon ))
+            text_file: notifications/message
       on_failure:
         put: notify
         params:
@@ -333,6 +339,7 @@ resources:
     source :
       driver:            s3
       bucket:            (( grab meta.aws.bucket ))
+      region_name:       (( grab meta.aws.region_name ))
       key:               version
       access_key_id:     (( grab meta.aws.access_key ))
       secret_access_key: (( grab meta.aws.secret_key ))
@@ -354,6 +361,7 @@ resources:
     type: s3
     source:
       bucket:            (( grab meta.aws.bucket ))
+      region_name:       (( grab meta.aws.region_name ))
       regexp:            (( concat meta.name "-(.*).tgz" ))
       access_key_id:     (( grab meta.aws.access_key ))
       secret_access_key: (( grab meta.aws.secret_key ))

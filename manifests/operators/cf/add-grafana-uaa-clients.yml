@@ -4,10 +4,12 @@
 - type: replace
   path: /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/clients/grafana?
   value:
+    override: true
     authorized-grant-types: authorization_code
     authorities: uaa.none
     scope: openid
     secret: "((uaa_clients_grafana_secret))"
+    redirect-uri: "((grafana_redirect_uri))"
 
 - type: replace
   path: /variables/-

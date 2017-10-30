@@ -1,0 +1,11 @@
+# Apply ./bosh/add-bosh-exporter-uaa-clients.yml to your bosh-deployment
+
+# Use bosh_exporter UAA client
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=bosh_exporter/properties/bosh_exporter/bosh
+  value:
+    url: "((bosh_url))"
+    uaa:
+      client_id: bosh_exporter
+      client_secret: "((uaa_bosh_exporter_client_secret))"
+    ca_cert: "((bosh_ca_cert))"

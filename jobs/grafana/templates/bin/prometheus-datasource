@@ -15,11 +15,13 @@ GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.secu
   pbasic_auth = "false"
   pbasic_auth_user = ""
   pbasic_auth_password = ""
+  pjson_data = "null"
 
-  # If prometheus is using an external url, use it instead of the prometheus instance private ip addresses
+  # If we specified to use the prometheus external url and the property is set, use it instead of the prometheus instance private ip addresses
   if p('grafana.prometheus.use_external_url') then
     prometheus.if_p('prometheus.web.external_url') do |prometheus_external_url|
       purl = prometheus_external_url
+      # If prometheus is secured by nginx basic auth, set the credentials
       if_link('nginx') do |nginx|
         # If prometheus is secured by basic auth, set the credentials
         nginx.if_p('nginx.prometheus.auth_users') do |prometheus_auth_users|
@@ -30,6 +32,10 @@ GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.secu
           end
         end
       end
+      # If prometheus external url is secured by TLS, set if we must skip TLS verification
+      if_p('grafana.prometheus.tls_skip_verify') do |tls_skip_verify|
+        pjson_data = "{\\\"tlsSkipVerify\\\":#{tls_skip_verify}}"
+      end
     end
   end
 %>
@@ -39,7 +45,8 @@ PROMETHEUS_BASIC_AUTH_USER="<%= pbasic_auth_user %>"
 PROMETHEUS_BASIC_AUTH_PASSWORD="<%= pbasic_auth_password %>"
 
 DATASOURCE_NAME="<%= p('grafana.prometheus.datasource_name') %>"
-DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"prometheus\",\"access\":\"proxy\",\"url\":\"${PROMETHEUS_URL}\",\"password\":\"\",\"user\":\"\",\"database\":\"\",\"basicAuth\":${PROMETHEUS_BASIC_AUTH},\"basicAuthUser\":\"${PROMETHEUS_BASIC_AUTH_USER}\",\"basicAuthPassword\":\"${PROMETHEUS_BASIC_AUTH_PASSWORD}\",\"isDefault\":true,\"jsonData\":null}"
+DATASOURCE_JSON_DATA="<%= pjson_data %>"
+DATASOURCE_DATA="{\"name\":\"${DATASOURCE_NAME}\",\"type\":\"prometheus\",\"access\":\"proxy\",\"url\":\"${PROMETHEUS_URL}\",\"password\":\"\",\"user\":\"\",\"database\":\"\",\"basicAuth\":${PROMETHEUS_BASIC_AUTH},\"basicAuthUser\":\"${PROMETHEUS_BASIC_AUTH_USER}\",\"basicAuthPassword\":\"${PROMETHEUS_BASIC_AUTH_PASSWORD}\",\"isDefault\":true,\"jsonData\":${DATASOURCE_JSON_DATA}}"
 
 DATASOURCE_ID=$(curl -u ${GRAFANA_CREDENTIALS} -ks ${GRAFANA_DATASOURCES_API} | sed -n 's/^.*"id":\([0-9]*\)[^}]*"name":"'${DATASOURCE_NAME}'".*$/\1/p' )
 

@@ -30,7 +30,23 @@ case $1 in
       <% if_p('kube_state_metrics_exporter.kubeconfig') do %> \
       --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
       <% end %> \
+      <% if_p('kube_state_metrics_exporter.log_backtrace_at') do |log_backtrace_at| %> \
+      --log_backtrace_at="<%= log_backtrace_at %>" \
+      <% end %> \
+      --log_dir=${LOG_DIR} \
+      <% if_p('kube_state_metrics_exporter.namespace') do |namespacet| %> \
+      --namespace="<%= namespace %>" \
+      <% end %> \
       --port=<%= p('kube_state_metrics_exporter.port') %> \
+      <% if_p('kube_state_metrics.stderrthreshold') do |stderrthreshold| %> \
+      --stderrthreshold="<%= stderrthreshold %>" \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.v') do |v| %> \
+      --v="<%= v %>" \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.vmodule') do |vmodule| %> \
+      --vmodule="<%= vmodule %>" \
+      <% end %> \
       >>  ${LOG_DIR}/kube_state_metrics_exporter.stdout.log \
       2>> ${LOG_DIR}/kube_state_metrics_exporter.stderr.log
     ;;

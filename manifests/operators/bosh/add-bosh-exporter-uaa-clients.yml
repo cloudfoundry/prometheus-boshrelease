@@ -1,0 +1,17 @@
+# Apply to your bosh-deployment
+
+# UAA client for bosh_exporter
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/clients/bosh_exporter?
+  value:
+    override: true
+    authorized-grant-types: client_credentials,refresh_token
+    authorities: bosh.read
+    scope: bosh.read
+    secret: "((uaa_bosh_exporter_client_secret))"
+
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_bosh_exporter_client_secret
+    type: password

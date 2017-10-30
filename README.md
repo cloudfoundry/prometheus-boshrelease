@@ -2,7 +2,7 @@
 
 This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io/), [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/), and [Grafana](https://grafana.com/).
 
-It includes the following [prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/cloudfoundry-community/bosh_exporter), [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter), [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Github](https://github.com/infinityworksltd/github-exporter), [Grafana](https://github.com/frodenas/grafana_exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/cloudfoundry-community/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter).
+It includes the following [prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/cloudfoundry-community/bosh_exporter), [BOSH TSDB](https://github.com/cloudfoundry-community/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter), [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Github](https://github.com/infinityworksltd/github-exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/cloudfoundry-community/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter).
 
 It includes the following [grafana plugins](https://grafana.com/plugins): [clock](https://github.com/grafana/clock-panel), [diagram](https://github.com/jdbranham/grafana-diagram), [histogram](https://github.com/mtanda/grafana-histogram-panel), [piechart](https://github.com/grafana/piechart-panel), [status](https://github.com/Vonage/Grafana_Status_panel), [worldmap](https://github.com/grafana/worldmap-panel), [worldping](https://github.com/raintank/worldping-app).
 
@@ -82,6 +82,20 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metrics_environment=
 ```
 
+*NOTE: `metrics_environment` is an arbitrary name to identify your environment (`test`, `nyc-prod`, ...)*
+
+If you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
+
+```
+bosh -d prometheus deploy manifests/prometheus.yml \
+  --vars-store tmp/deployment-vars.yml \
+  -o manifests/operators/monitor-bosh.yml \
+  -o manifests/operators/enable-bosh-uaa.yml \
+  -v bosh_url= \
+  --var-file bosh_ca_cert= \
+  -v metrics_environment=
+```
+
 ### Monitoring Cloud Foundry
 
 If you want to monitor your [Cloud Foundry](https://www.cloudfoundry.org/) platform, first update your [cf-deployment](https://github.com/cloudfoundry/cf-deployment) adding the [add-prometheus-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file. This will add the UAA clients required to gather information from the Cloud Foundry [API](https://apidocs.cloudfoundry.org/268/) and [Firehose](https://docs.cloudfoundry.org/loggregator/architecture.html#firehose).
@@ -98,12 +112,15 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --var-file bosh_ca_cert= \
   -v metrics_environment= \
   -o manifests/operators/monitor-cf.yml \
+  -v metron_deployment_name= \
   -v system_domain= \
   -v uaa_clients_cf_exporter_secret= \
   -v uaa_clients_firehose_exporter_secret= \
   -v traffic_controller_external_port= \
   -v skip_ssl_verify=
 ```
+
+*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
 
 #### Register Cloud Foundry routes
 
@@ -134,7 +151,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --vars-store tmp/deployment-vars.yml \
   ...
   -o manifests/operators/enable-grafana-uaa.yml \
-  -o system_domain= \
+  -v system_domain= \
   -v uaa_clients_grafana_secret= \
   --var-file uaa_ssl.ca= \
   --var-file uaa_ssl.certificate= \
@@ -156,6 +173,8 @@ Please review the op files before deploying them to check the requeriments, depe
 | [alertmanager-slack-receiver.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-slack-receiver.yml) | Configures a [Slack](https://slack.com/) receiver for `alertmanager` | | | |
 | [alertmanager-victorops-receiver.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-victorops-receiver.yml) | Configures a [VictorOps](https://victorops.com/) receiver for `alertmanager` | | | |
 | [alertmanager-webhook-receiver.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-webhook-receiver.yml) | Configures a generic webhook receiver for `alertmanager` | | | |
+| [alertmanager-web-external-url.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-web-external-url.yml) | Configures the URL under which `alertmanager` is externally reachable | | | |
+| [enable-bosh-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) | Configures [monitor-bosh.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-bosh.yml) to use an UAA client (you must apply the [add-bosh-exporter-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment)) | | | |
 | [enable-cf-route-registrar.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-cf-route-registrar.yml) | Registers `alertmanager`, `grafana`, and `prometheus` as [Cloud Foundry routes](https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html) (under your `system domain`) | | | |
 | [enable-grafana-uaa.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/enable-grafana-uaa.yml) | Configures `grafana` user authentication to use [Cloud Foundry UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) (you must apply the [add-grafana-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/cf/add-grafana-uaa-clients.yml) op file to your [cf-deployment](https://github.com/cloudfoundry/cf-deployment)) | | | |
 | [monitor-bosh.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-bosh.yml) | Enables monitoring [BOSH](https://github.com/cloudfoundry-community/bosh_exporter) `jobs` and `processes` and enables [Service Discovery](https://github.com/cloudfoundry-community/bosh_exporter/blob/master/FAQ.md#how-can-i-use-the-service-discovery) | x | x | x |
@@ -163,6 +182,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-cf.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) | Enables monitoring [Cloud Foundry](https://www.cloudfoundry.org/) via the [Cloud Foundry](https://github.com/cloudfoundry-community/cf_exporter) and [Cloud Foundry Firehose](https://github.com/cloudfoundry-community/firehose_exporter) exporters (you must apply the [add-prometheus-uaa-clients.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file to your [cf-deployment](https://github.com/cloudfoundry/cf-deployment)) | x | x | x |
 | [monitor-collectd.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-collectd.yml) | Enables monitoring [Collectd](https://github.com/prometheus/collectd_exporter) | x | | |
 | [monitor-concourse.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse.yml) | Enables monitoring [Concourse CI](http://concourse.ci/) (requires the [monitor-influxdb.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-influxdb.yml) op file) | | x | x |
+| [monitor-concourse-influxdb.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse-influxdb.yml) | Enables monitoring [Concourse CI](http://concourse.ci/). Requires [node exporter](https://github.com/cloudfoundry-community/node-exporter-boshrelease) on Concourse VMs (probably as a BOSH add-on) and InfluxDB to be deployed independently and configured as a data source in Grafana as well as Concourse configured to send events to InfluxDB | | x |  |
 | [monitor-consul.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-consul.yml) | Enables monitoring [Consul](https://github.com/prometheus/consul_exporter) | x | x | x |
 | [monitor-elasticsearch.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-elasticsearch.yml) | Enables monitoring [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter) | x | x | x |
 | [monitor-github.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-github.yml) | Enables monitoring [Github](https://github.com/infinityworksltd/github-exporter) | x | | |
@@ -175,7 +195,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-mongodb.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-mongodb.yml) | Enables monitoring [MongoDB](https://github.com/dcu/mongodb_exporter) | x | | |
 | [monitor-mysql.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-mysql.yml) | Enables monitoring [MySQL](https://github.com/prometheus/mysqld_exporter) | x | x | x |
 | [monitor-nats.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-nats.yml) | Enables monitoring [NATS](https://github.com/lovoo/nats_exporter) | x | | |
-| [monitor-node.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-node.yml) | Enables monitoring system metrics via the [node](https://github.com/cloudfoundry-community/node-exporter-boshrelease) exporter | | x | |
+| [monitor-node.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-node.yml) | Enables monitoring system metrics via the [node exporter](https://github.com/cloudfoundry-community/node-exporter-boshrelease) | | x | |
 | [monitor-p-rabbitmq.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-p-rabbitmq.yml) | Enables monitoring [RabbitMQ for PCF](https://network.pivotal.io/products/p-rabbitmq/) (requires the [monitor-cf.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) op file) | | x | x |
 | [monitor-p-redis.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-p-redis.yml) | Enables monitoring [Redis for PCF](https://network.pivotal.io/products/p-redis/) (requires the [monitor-cf.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) op file) | | x | x |
 | [monitor-postgres.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-postgres.yml) | Enables monitoring [PostgreSQL](https://github.com/wrouesnel/postgres_exporter) | x | x | x |
@@ -185,6 +205,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-shield.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-shield.yml) | Enables monitoring [Shield](https://github.com/cloudfoundry-community/shield_exporter) | x | x | x |
 | [monitor-stackdriver.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-stackdriver.yml) | Enables monitoring [Stackdriver](https://github.com/frodenas/stackdriver_exporter) | x | | |
 | [monitor-statsd.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/monitor-statsd.yml) | Enables monitoring [Statsd](https://github.com/prometheus/statsd_exporter) | x | | |
+| [use-sqlite3.yml](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) | Use sqlite3 instead of postgres |  | | |
 
 ### Deployment variables and the var-store
 

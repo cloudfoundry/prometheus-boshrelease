@@ -13,27 +13,14 @@ dashboard_files=$(ls <%= dashboard_file %>)
 for dashboard_file in ${dashboard_files[@]}; do
   filename=$(basename "${dashboard_file}")
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
-  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g' "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
+  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g;
+       s/\${<%= p('grafana.influxdb.datasource_input_name') %>}/<%= p('grafana.influxdb.datasource_name') %>/g' \
+      "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
   echo -e "Validating ${DASHBOARDS_DIR}/${filename}"
   # want stderr going to stdout, don't want stdout at all
   ${JQ_CMD} . < ${DASHBOARDS_DIR}/${filename} 2>&1 > /dev/null
 done
 <% end %>
-<% end %>
-
-<% if_p('grafana.dashboards.custom_homepage_json') do |homepage_json| %>
-GRAFANA_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>"
-GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
-upsert_dash_resp="$(curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST "${GRAFANA_API}/api/dashboards/db" \
-  -H 'Content-Type: application/json' \
-  -d '{ "dashboard": <%= homepage_json %>, "overwrite": true }')"
-dash_slug="$( ${JQ_CMD} -r .slug <<< "${upsert_dash_resp}" )"
-get_dash_resp="$(curl -u ${GRAFANA_CREDENTIALS} -ksf -X GET "${GRAFANA_API}/api/dashboards/db/${dash_slug}" \
-  -H 'Content-Type: application/json')"
-dash_id="$( ${JQ_CMD} -r .dashboard.id <<< "${get_dash_resp}" )"
-curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT "${GRAFANA_API}/api/org/preferences" \
-  -H 'Content-Type: application/json' \
-  -d "{ \"homeDashboardId\": ${dash_id} }"
 <% end %>
 <% end %>
 

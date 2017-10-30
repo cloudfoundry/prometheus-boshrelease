@@ -7,6 +7,9 @@ packages:
 templates:
   bin/cadvisor_ctl: bin/cadvisor_ctl
   config/bq_credentials.pem: config/bq_credentials.pem
+  config/docker_tls_ca.pem: config/docker_tls_ca.pem
+  config/docker_tls_cert.pem: config/docker_tls_cert.pem
+  config/docker_tls_key.pem: config/docker_tls_key.pem
   config/http_auth: config/http_auth
   config/http_digest: config/http_digest
   config/kafka_ssl_ca.pem: config/kafka_ssl_ca.pem
@@ -40,6 +43,14 @@ properties:
     description: "comma-separated list of metrics to be disabled. Options are 'disk', 'network', 'tcp'"
   cadvisor.docker:
     description: "docker endpoint"
+  cadvisor.docker_tls:
+    description: "Use TLS to connect to docker"
+  cadvisor.docker_tls_ca:
+    description: "Docker TLS ca (PEM format)"
+  cadvisor.docker_tls_cert:
+    description: "Docker TLS certificate (PEM format)"
+  cadvisor.docker_tls_key:
+    description: "Docker TLS private key (PEM format)"
   cadvisor.docker_env_metadata_whitelist:
     description: "a comma-separated list of environment variable keys that needs to be collected for docker containers"
   cadvisor.docker_only:
@@ -97,6 +108,8 @@ properties:
     description: "ElasticSearch type name"
   cadvisor.storage_driver_host:
     description: "database host:port"
+  cadvisor.storage_driver_influxdb_retention_policy:
+    description: "influxdb retention policy"
   cadvisor.storage_driver_kafka_broker_list:
     description: "kafka broker(s) csv"
   cadvisor.storage_driver_kafka_ssl_ca:

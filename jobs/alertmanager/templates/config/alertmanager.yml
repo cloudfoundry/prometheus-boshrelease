@@ -23,6 +23,10 @@ global:
   smtp_auth_secret: <%= auth_secret %>
   <% end %>
 
+  <% if_p('alertmanager.smtp.auth_identity') do |auth_identity| %>
+  smtp_auth_identity: <%= auth_identity %>
+  <% end %>
+
   <% if_p('alertmanager.smtp.require_tls') do |require_tls| %>
   smtp_require_tls: <%= require_tls %>
   <% end %>

@@ -16,13 +16,19 @@ export no_proxy="<%= no_proxy %>"
 <% end %>
 
 echo "[$(date)] Resetting grafana admin password ..."
-/var/vcap/packages/grafana/bin/grafana-cli admin reset-admin-password --homepath=/var/vcap/packages/grafana --config=/var/vcap/jobs/grafana/config/grafana.ini <%= p("grafana.security.admin_password") %>
+$(dirname $0)/grafana-admin-password
+
+echo "[$(date)] Calling 'grafana-homepage' ..."
+$(dirname $0)/grafana-homepage
 
 echo "[$(date)] Calling 'grafana-users' ..."
 $(dirname $0)/grafana-users
 
 echo "[$(date)] Calling 'prometheus-datasource' ..."
 $(dirname $0)/prometheus-datasource
+
+echo "[$(date)] Calling 'influxdb-datasource' ..."
+$(dirname $0)/influxdb-datasource
 
 echo "[$(date)] Calling 'prometheus-dashboards' ..."
 $(dirname $0)/prometheus-dashboards
