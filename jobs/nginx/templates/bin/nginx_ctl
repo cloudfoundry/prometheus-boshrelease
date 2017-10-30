@@ -31,64 +31,58 @@ case $1 in
       rm "$prometheus_auth_file"
     fi
 
-    <% if_p('nginx.alertmanager.auth_username', 'nginx.alertmanager.auth_password') do |auth_username, auth_password| %>
-    echo "<%= auth_username %>:`openssl passwd -1 -quiet "<%= auth_password %>"`" > "$alertmanager_auth_file"
-      <% p('nginx.alertmanager.auth_users').each do |user| %>
-        <%
-          username = user['name']
-          password = user['password']
+    [ -f "$alertmanager_auth_file" ] && rm "$alertmanager_auth_file"
+    <% p('nginx.alertmanager.auth_users').each do |user| %>
+      <%
+        username = user['name']
+        password = user['password']
 
-          if username.nil? || username.empty?
-            raise "User must be configured with a 'name' attribute. '#{user}'"
-          end
+        if username.nil? || username.empty?
+          raise "User must be configured with a 'name' attribute. '#{user}'"
+        end
 
-          if password.nil? || password.empty?
-            raise "User must be configured with a 'password' attribute. '#{user}'"
-          end
-        %>
+        if password.nil? || password.empty?
+          raise "User must be configured with a 'password' attribute. '#{user}'"
+        end
+      %>
 
     echo "<%= username %>:`openssl passwd -1 -quiet "<%= password %>"`" >> "$alertmanager_auth_file"
-      <% end %>
     <% end %>
 
-    <% if_p('nginx.grafana.auth_username', 'nginx.grafana.auth_password') do |auth_username, auth_password| %>
-    echo "<%= auth_username %>:`openssl passwd -1 -quiet "<%= auth_password %>"`" > "$grafana_auth_file"
-      <% p('nginx.grafana.auth_users').each do |user| %>
-        <%
-          username = user['name']
-          password = user['password']
+    [ -f "$grafana_auth_file" ] && rm "$grafana_auth_file"
+    <% p('nginx.grafana.auth_users').each do |user| %>
+      <%
+        username = user['name']
+        password = user['password']
 
-          if username.nil? || username.empty?
-            raise "User must be configured with a 'name' attribute. '#{user}'"
-          end
+        if username.nil? || username.empty?
+          raise "User must be configured with a 'name' attribute. '#{user}'"
+        end
 
-          if password.nil? || password.empty?
-            raise "User must be configured with a 'password' attribute. '#{user}'"
-          end
-        %>
+        if password.nil? || password.empty?
+          raise "User must be configured with a 'password' attribute. '#{user}'"
+        end
+      %>
 
     echo "<%= username %>:`openssl passwd -1 -quiet "<%= password %>"`" >> "$grafana_auth_file"
-      <% end %>
     <% end %>
 
-    <% if_p('nginx.prometheus.auth_username', 'nginx.prometheus.auth_password') do |auth_username, auth_password| %>
-    echo "<%= auth_username %>:`openssl passwd -1 -quiet "<%= auth_password %>"`" > "$prometheus_auth_file"
-      <% p('nginx.prometheus.auth_users').each do |user| %>
-        <%
-          username = user['name']
-          password = user['password']
+    [ -f "$prometheus_auth_file" ] && rm "$prometheus_auth_file"
+    <% p('nginx.prometheus.auth_users').each do |user| %>
+      <%
+        username = user['name']
+        password = user['password']
 
-          if username.nil? || username.empty?
-            raise "User must be configured with a 'name' attribute. '#{user}'"
-          end
+        if username.nil? || username.empty?
+          raise "User must be configured with a 'name' attribute. '#{user}'"
+        end
 
-          if password.nil? || password.empty?
-            raise "User must be configured with a 'password' attribute. '#{user}'"
-          end
-        %>
+        if password.nil? || password.empty?
+          raise "User must be configured with a 'password' attribute. '#{user}'"
+        end
+      %>
 
     echo "<%= username %>:`openssl passwd -1 -quiet "<%= password %>"`" >> "$prometheus_auth_file"
-      <% end %>
     <% end %>
 
     exec nginx \

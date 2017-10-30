@@ -148,11 +148,13 @@ instance_groups:
         properties:
           nginx:
             alertmanager:
-              auth_username: admin
-              auth_password: ((alertmanager_password))
+              users:
+                - name: admin
+                  password: ((alertmanager_password))
             prometheus:
-              auth_username: admin
-              auth_password: ((prometheus_password))
+              users:
+                - name: admin
+                  password: ((prometheus_password))
 
 variables:
   - name: alertmanager_password
