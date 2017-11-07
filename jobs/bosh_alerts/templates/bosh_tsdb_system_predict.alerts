@@ -11,7 +11,7 @@ ALERT BOSHTSDBJobSystemDiskPredictWillFill
   }
 
 ALERT BOSHTSDBJobEphemeralDiskPredictWillFill
-  IF predict_linear(bosh_tsdb_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}[1h], <%= p('bosh_alerts.job_predict_ephemeral_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_ephemeral_disk_full.threshold') %>
+  IF predict_linear(bosh_tsdb_job_ephemeral_disk_percent{bosh_job_name!~"^(compilation|smoke-tests).*"}[1h], <%= p('bosh_alerts.job_predict_ephemeral_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_ephemeral_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_predict_ephemeral_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
