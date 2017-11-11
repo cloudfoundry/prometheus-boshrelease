@@ -1,3 +1,9 @@
+## Fixes
+
+* Ignore smoke-test VMs on `BOSHJobEphemeralDiskPredictWillFill` alerts
+* Allow skipping TLS verification when using grafana generic oauth
+* Fix prometheus `storage.local.checkpoint-dirty-series-limit` property not being correctly parsed
+
 ## Upgrades
 
 * `alertmanager` to [v0.10.0](https://github.com/prometheus/alertmanager/releases/tag/v0.10.0)
