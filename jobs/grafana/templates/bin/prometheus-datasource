@@ -23,10 +23,13 @@ GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.secu
       purl = prometheus_external_url
       # If prometheus is secured by nginx basic auth, set the credentials
       if_link('nginx') do |nginx|
-        nginx.if_p('nginx.prometheus.auth_username', 'nginx.prometheus.auth_password') do |prometheus_auth_username, prometheus_auth_password|
-          pbasic_auth = "true"
-          pbasic_auth_user = prometheus_auth_username
-          pbasic_auth_password = prometheus_auth_password
+        # If prometheus is secured by basic auth, set the credentials
+        nginx.if_p('nginx.prometheus.auth_users') do |prometheus_auth_users|
+          if prometheus_auth_users.any?
+            pbasic_auth = "true"
+            pbasic_auth_user = prometheus_auth_users[0]['name']
+            pbasic_auth_password = prometheus_auth_users[0]['password']
+          end
         end
       end
       # If prometheus external url is secured by TLS, set if we must skip TLS verification

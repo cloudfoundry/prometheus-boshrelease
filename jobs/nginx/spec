@@ -17,8 +17,7 @@ provides:
   - name: nginx
     type: nginx
     properties:
-      - nginx.prometheus.auth_username
-      - nginx.prometheus.auth_password
+      - nginx.prometheus.auth_users
 
 consumes:
   - name: alertmanager
@@ -85,10 +84,15 @@ properties:
   nginx.alertmanager.path:
     description: "Alertmanager path"
     default: "/"
-  nginx.alertmanager.auth_username:
-    description: "Alertmanager auth username"
-  nginx.alertmanager.auth_password:
-    description: "Alertmanager auth password"
+  nginx.alertmanager.auth_users:
+    description: |
+      Array with basic auth users for Alertmanager.
+    default: []
+    example:
+      - name: user1
+        password: password
+      - name: user2
+        password: secret
 
   nginx.grafana.server_name:
     description: "Server name that proxy will listen on for Grafana HTTP(S) connections"
@@ -102,10 +106,16 @@ properties:
   nginx.grafana.path:
     description: "Grafana path"
     default: "/"
-  nginx.grafana.auth_username:
-    description: "Grafana auth username"
-  nginx.grafana.auth_password:
-    description: "Grafana auth password"
+  nginx.grafana.auth_users:
+    description: |
+      Array with basic auth users for Grafana. Keep this in sync with all users
+      from grafana.security.admin_user and grafana.users.seeded_global_users.
+    default: []
+    example:
+      - name: user1
+        password: password
+      - name: user2
+        password: secret
 
   nginx.prometheus.server_name:
     description: "Server name that proxy will listen on for Prometheus HTTP(S) connections"
@@ -119,7 +129,13 @@ properties:
   nginx.prometheus.path:
     description: "Prometheus path"
     default: "/"
-  nginx.prometheus.auth_username:
-    description: "Prometheus auth username"
-  nginx.prometheus.auth_password:
-    description: "Prometheus auth password"
+  nginx.prometheus.auth_users:
+    description: |
+      Array with basic auth users for Prometheus. The first one in the array is
+      used for Grafana datasource authentication.
+    default: []
+    example:
+      - name: user1
+        password: password
+      - name: user2
+        password: secret
