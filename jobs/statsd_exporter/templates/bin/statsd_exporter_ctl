@@ -26,10 +26,8 @@ case $1 in
       <% if_p('statsd_exporter.log_level') do |log_level| %> \
       -log.level="<%= log_level %>" \
       <% end %> \
-      <% if_p('statsd_exporter.statsd.add_suffix') do |add_suffix| %> \
-      -statsd.add-suffix="<%= add_suffix %>" \
-      <% end %> \
-      -statsd.listen-address=":<%= p('statsd_exporter.statsd.port') %>" \
+      -statsd.listen-tcp=":<%= p('statsd_exporter.statsd.tcp_port') %>" \
+      -statsd.listen-udp=":<%= p('statsd_exporter.statsd.udp_port') %>" \
       -statsd.mapping-config="/var/vcap/jobs/statsd_exporter/config/statsd_mapping.conf" \
       <% if_p('statsd_exporter.statsd.read_buffer') do |read_buffer| %> \
       -statsd.read-buffer="<%= read_buffer %>" \
