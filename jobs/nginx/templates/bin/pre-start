@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -eu
+
+STORE_DIR=/var/vcap/store/nginx
+mkdir -p ${STORE_DIR}
+
+<%
+def check_auth_user(user)
+  username = user['name']
+  if username.nil? || username.empty?
+    raise "User must be configured with a 'name' attribute: '#{user}'"
+  end
+
+  password = user['password']
+  if password.nil? || password.empty?
+    raise "User must be configured with a 'password' attribute: '#{user}'"
+  end
+end
+%>
+
+# Alertmanager nginx htpasswd
+alertmanager_auth_file="${STORE_DIR}/htpasswd_alertmanager"
+[ -f "$alertmanager_auth_file" ] && rm "$alertmanager_auth_file"
+<% p('nginx.alertmanager.auth_users', []).each do |user| %>
+<% check_auth_user(user) %>
+echo "<%= user['name'] %>:`openssl passwd -1 -quiet "<%= user['password'] %>"`" >> "$alertmanager_auth_file"
+<% end %>
+
+# Grafana nginx htpasswd
+grafana_auth_file="${STORE_DIR}/htpasswd_grafana"
+[ -f "$grafana_auth_file" ] && rm "$grafana_auth_file"
+<% p('nginx.grafana.auth_users', []).each do |user| %>
+<% check_auth_user(user) %>
+echo "<%= user['name'] %>:`openssl passwd -1 -quiet "<%= user['password'] %>"`" >> "$grafana_auth_file"
+<% end %>
+
+# Prometheus nginx htpasswd
+prometheus_auth_file="${STORE_DIR}/htpasswd_prometheus"
+[ -f "$prometheus_auth_file" ] && rm "$prometheus_auth_file"
+<% p('nginx.prometheus.auth_users', []).each do |user| %>
+<% check_auth_user(user) %>
+echo "<%= user['name'] %>:`openssl passwd -1 -quiet "<%= user['password'] %>"`" >> "$prometheus_auth_file"
+<% end %>
+
+exit 0

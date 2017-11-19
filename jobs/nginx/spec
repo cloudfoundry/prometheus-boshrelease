@@ -6,6 +6,7 @@ packages:
 
 templates:
   bin/nginx_ctl: bin/nginx_ctl
+  bin/pre-start: bin/pre-start
   config/alertmanager_location.conf: config/alertmanager_location.conf
   config/grafana_location.conf: config/grafana_location.conf
   config/nginx.conf: config/nginx.conf
@@ -17,6 +18,8 @@ provides:
   - name: nginx
     type: nginx
     properties:
+      - nginx.alertmanager.auth_users
+      - nginx.grafana.auth_users
       - nginx.prometheus.auth_users
 
 consumes:
@@ -85,14 +88,12 @@ properties:
     description: "Alertmanager path"
     default: "/"
   nginx.alertmanager.auth_users:
-    description: |
-      Array with basic auth users for Alertmanager.
-    default: []
+    description: "Array of Alertmanager auth users"
     example:
       - name: user1
-        password: password
+        password: password1
       - name: user2
-        password: secret
+        password: password2
 
   nginx.grafana.server_name:
     description: "Server name that proxy will listen on for Grafana HTTP(S) connections"
@@ -107,15 +108,12 @@ properties:
     description: "Grafana path"
     default: "/"
   nginx.grafana.auth_users:
-    description: |
-      Array with basic auth users for Grafana. Keep this in sync with all users
-      from grafana.security.admin_user and grafana.users.seeded_global_users.
-    default: []
+    description: "Array of Grafana auth users"
     example:
       - name: user1
-        password: password
+        password: password1
       - name: user2
-        password: secret
+        password: password2
 
   nginx.prometheus.server_name:
     description: "Server name that proxy will listen on for Prometheus HTTP(S) connections"
@@ -130,12 +128,9 @@ properties:
     description: "Prometheus path"
     default: "/"
   nginx.prometheus.auth_users:
-    description: |
-      Array with basic auth users for Prometheus. The first one in the array is
-      used for Grafana datasource authentication.
-    default: []
+    description: "Array of Prometheus auth users. The first one in the array is used for Grafana datasource authentication"
     example:
       - name: user1
-        password: password
+        password: password1
       - name: user2
-        password: secret
+        password: password2
