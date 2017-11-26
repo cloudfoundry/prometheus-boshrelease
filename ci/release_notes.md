@@ -5,4 +5,5 @@
 * `cf_exporter` to [v0.5.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.5.2)
 * `firehose_exporter` to [v4.2.6](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v4.2.6)
 * `rabbitmq_exporter` to [v0.25.0](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.25.0)
+* `redis_exporter` to [v0.14](https://github.com/oliver006/redis_exporter/releases/tag/v0.14)
 * `shield_exporter` to [v0.2.2](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.2.2)
