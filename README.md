@@ -31,7 +31,7 @@ In order to use this BOSH release you will need:
 
 * [BOSH CLI v2](https://bosh.io/docs/cli-v2.html)
 * An already deployed [BOSH environment](http://bosh.io/docs/init.html)
-* A compatible [cloud-config](http://bosh.io/docs/terminology.html#cloud-config) with a `default` option for `network` and `vm_types` (you can use the example that comes from [cf-deployment](https://github.com/cloudfoundry/cf-deployment/blob/master/bosh-lite/cloud-config.yml))
+* A compatible [cloud-config](http://bosh.io/docs/terminology.html#cloud-config) with a `default` option for `network` and `vm_types` (you can use the example that comes from [cf-deployment](https://github.com/cloudfoundry/cf-deployment/blob/master/iaas-support/bosh-lite/cloud-config.yml))
 
 Although not mandatory, it is recommended to deploy the [node exporter addon](https://github.com/bosh-prometheus/node-exporter-boshrelease) in order to get system metrics.
 
