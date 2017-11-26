@@ -4,3 +4,4 @@
 * `bosh_tsdb_exporter` to [v0.1.1](https://github.com/bosh-prometheus/bosh_tsdb_exporter/releases/tag/v0.1.1)
 * `cf_exporter` to [v0.5.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.5.2)
 * `firehose_exporter` to [v4.2.6](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v4.2.6)
+* `shield_exporter` to [v0.2.2](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.2.2)
