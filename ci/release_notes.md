@@ -1,3 +1,7 @@
+## Breaking changes
+
+Control scripts no longer tees the output to syslog and the log files are now written inside the job's log directory.
+
 ### Updates
 
 * `bosh_exporter` to [v2.4.5](https://github.com/bosh-prometheus/bosh_exporter/releases/tag/v2.4.5)

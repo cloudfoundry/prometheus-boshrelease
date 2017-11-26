@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu
 
@@ -11,6 +11,8 @@ mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 PIDFILE=${RUN_DIR}/blackbox_exporter.pid
 
 source /var/vcap/packages/blackbox_exporter/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
 
 export PATH=/var/vcap/packages/blackbox_exporter/bin:${PATH}
 
