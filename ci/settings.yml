@@ -4,85 +4,56 @@ meta:
   target:  sw
   url:     https://ci.starkandwayne.com
 
-  initial_version: 1.1.0
-
-  manifest:
-    operator_file_paths: "manifests/operators/dev/test-alerts.yml,manifests/operators/dev/test-dashboards.yml"
-
-  bosh-lite:
-    target: https://10.58.111.49:25555
-    username: (( vault "secret/bosh-lites/lite49/users/admin:username" ))
-    password: (( vault "secret/bosh-lites/lite49/users/admin:password" ))
-    cacert:   (( vault "secret/bosh-lites/lite49/certs:rootCA.pem" ))
-
   aws:
-    bucket: prometheus-boshrelease
-    access_key: (( vault "secret/aws/cfcommunity:access" ))
-    secret_key: (( vault "secret/aws/cfcommunity:secret" ))
+    bucket:      prometheus-boshrelease
+    region_name: us-east-1
+    access_key:  (( vault "secret/aws/cfcommunity:access" ))
+    secret_key:  (( vault "secret/aws/cfcommunity:secret" ))
+
+  docker:
+    username:     (( vault "secret/pipelines/prometheus-boshrelease/docker:username" ))
+    password:     (( vault "secret/pipelines/prometheus-boshrelease/docker:password" ))
+    organization: boshprometheus
+
+  git:
+    email: (( vault "secret/pipelines/prometheus-boshrelease/github:email" ))
+    name:  (( vault "secret/pipelines/prometheus-boshrelease/github:name" ))
 
   github:
-    owner:  cloudfoundry-community
-    repo:   (( concat meta.name "-boshrelease" ))
-    branch: master
-    private_key:  (( vault "secret/pipelines/shared/github:private_key" ))
-    access_token: (( vault "secret/pipelines/shared/github:access_token" ))
+    owner:        bosh-prometheus
+    branch:       master
+    private_key:  (( vault "secret/pipelines/prometheus-boshrelease/github:private" ))
+    access_token: (( vault "secret/pipelines/prometheus-boshrelease/github:token" ))
 
   slack:
-    webhook:       (( vault "secret/pipelines/prometheus-boshrelease/slack:webhook" ))
-    channel:       '#prometheus'
-    username:      starkandwayne-ci
-    icon:          https://www.starkandwayne.com/assets/images/shield-blue-50x50.png
-    blob_update:  '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME?groups=blobs| Update blob?>" ))'
-    blob_release: '(( concat "<" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME?groups=blobs| Cut a new release?>" ))'
-    blob_failure: '(( concat "$BUILD_PIPELINE_NAME: :airplane_arriving: <" meta.url "/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| Failed to update blob at $BUILD_JOB_NAME>" ))'
+    webhook: (( vault "secret/pipelines/prometheus-boshrelease/slack:webhook" ))
+    channel: '#prometheus'
 
 groups:
   - name: blobs
     jobs:
       - prometheus
-      - update_prometheus
       - alertmanager
-      - update_alertmanager
       - pushgateway
-      - update_pushgateway
       - grafana
-      - update_grafana
       - blackbox_exporter
-      - update_blackbox_exporter
       - bosh_exporter
-      - update_bosh_exporter
       - bosh_tsdb_exporter
-      - update_bosh_tsdb_exporter
       - cf_exporter
-      - update_cf_exporter
       - collectd_exporter
-      - update_collectd_exporter
       - consul_exporter
-      - update_consul_exporter
       - elasticsearch_exporter
-      - update_elasticsearch_exporter
       - firehose_exporter
-      - update_firehose_exporter
       - graphite_exporter
-      - update_graphite_exporter
       - haproxy_exporter
-      - update_haproxy_exporter
       - influxdb_exporter
-      - update_influxdb_exporter
       - memcached_exporter
-      - update_memcached_exporter
       - mysqld_exporter
-      - update_mysqld_exporter
       - rabbitmq_exporter
-      - update_rabbitmq_exporter
       - redis_exporter
-      - update_redis_exporter
       - shield_exporter
-      - update_shield_exporter
       - stackdriver_exporter
-      - update_stackdriver_exporter
       - statsd_exporter
-      - update_statsd_exporter
 
 jobs:
   - name: prometheus
@@ -95,74 +66,14 @@ jobs:
           params:
             globs:
               - prometheus-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of prometheus was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: prometheus/version
-
-  - name: update_prometheus
-    public: true
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: prometheus
-          trigger: false
-          passed:
-            - prometheus
-          params:
-            globs:
-              - prometheus-*.linux-amd64.tar.gz
-      - task: update_prometheus
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: prometheus
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         prometheus
-            BLOB_NAME:        prometheus
-            BLOB_BINARY:      prometheus*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/prometheus
-            BLOB_CLEANUP:     prometheus/prometheus.*
-            BLOB_DESTINATION: prometheus/prometheus-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of prometheus was updated in master. " meta.slack.blob_release ))'
-            text_file: prometheus/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: alertmanager
     public: true
@@ -174,73 +85,14 @@ jobs:
           params:
             globs:
               - alertmanager-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of alertmanager was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: alertmanager/version
-
-  - name: update_alertmanager
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: alertmanager
-          trigger: false
-          passed:
-            - alertmanager
-          params:
-            globs:
-              - alertmanager-*.linux-amd64.tar.gz
-      - task: update_alertmanager
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: alertmanager
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         alertmanager
-            BLOB_NAME:        alertmanager
-            BLOB_BINARY:      alertmanager*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/alertmanager
-            BLOB_CLEANUP:     alertmanager/alertmanager.*
-            BLOB_DESTINATION: alertmanager/alertmanager-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of alertmanager was updated in master. " meta.slack.blob_release ))'
-            text_file: alertmanager/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: pushgateway
     public: true
@@ -252,73 +104,14 @@ jobs:
           params:
             globs:
               - pushgateway-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of pushgateway was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: pushgateway/version
-
-  - name: update_pushgateway
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: pushgateway
-          trigger: false
-          passed:
-            - pushgateway
-          params:
-            globs:
-              - pushgateway-*.linux-amd64.tar.gz
-      - task: update_pushgateway
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: pushgateway
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         pushgateway
-            BLOB_NAME:        pushgateway
-            BLOB_BINARY:      pushgateway*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/pushgateway
-            BLOB_CLEANUP:     pushgateway/pushgateway.*
-            BLOB_DESTINATION: pushgateway/pushgateway-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of pushgateway was updated in master. " meta.slack.blob_release ))'
-            text_file: pushgateway/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: grafana
     public: true
@@ -327,73 +120,14 @@ jobs:
       - aggregate:
         - get: grafana
           trigger: true
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: grafana/version
-
-  - name: update_grafana
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: grafana
-          trigger: false
-          passed:
-            - grafana
-          params:
-            globs:
-              - grafana-*.linux-x64.tar.gz
-      - task: update_grafana
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: grafana
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         grafana
-            BLOB_NAME:        grafana
-            BLOB_BINARY:      grafana*.linux-x64.tar.gz
-            BLOB_URL:         https://github.com/grafana/grafana
-            BLOB_CLEANUP:     grafana/grafana.*
-            BLOB_DESTINATION: grafana/grafana-${VERSION}.linux-x64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of grafana was updated in master. " meta.slack.blob_release ))'
-            text_file: grafana/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: blackbox_exporter
     public: true
@@ -405,73 +139,14 @@ jobs:
           params:
             globs:
               - blackbox_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of blackbox_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: blackbox_exporter/version
-
-  - name: update_blackbox_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: blackbox_exporter
-          trigger: false
-          passed:
-            - blackbox_exporter
-          params:
-            globs:
-              - blackbox_exporter-*.linux-amd64.tar.gz
-      - task: update_blackbox_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: blackbox_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         blackbox_exporter
-            BLOB_NAME:        blackbox_exporter
-            BLOB_BINARY:      blackbox_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/blackbox_exporter
-            BLOB_CLEANUP:     blackbox_exporter/blackbox_exporter.*
-            BLOB_DESTINATION: blackbox_exporter/blackbox_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of blackbox_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: blackbox_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: bosh_exporter
     public: true
@@ -483,73 +158,14 @@ jobs:
           params:
             globs:
               - bosh_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: bosh_exporter/version
-
-  - name: update_bosh_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: bosh_exporter
-          trigger: false
-          passed:
-            - bosh_exporter
-          params:
-            globs:
-              - bosh_exporter-*.linux-amd64.tar.gz
-      - task: update_bosh_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: bosh_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         bosh_exporter
-            BLOB_NAME:        bosh_exporter
-            BLOB_BINARY:      bosh_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/cloudfoundry-community/bosh_exporter
-            BLOB_CLEANUP:     bosh_exporter/bosh_exporter.*
-            BLOB_DESTINATION: bosh_exporter/bosh_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: bosh_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: bosh_tsdb_exporter
     public: true
@@ -561,73 +177,14 @@ jobs:
           params:
             globs:
               - bosh_tsdb_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_tsdb_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: bosh_tsdb_exporter/version
-
-  - name: update_bosh_tsdb_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: bosh_tsdb_exporter
-          trigger: false
-          passed:
-            - bosh_tsdb_exporter
-          params:
-            globs:
-              - bosh_tsdb_exporter-*.linux-amd64.tar.gz
-      - task: update_bosh_tsdb_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: bosh_tsdb_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         bosh_tsdb_exporter
-            BLOB_NAME:        bosh_tsdb_exporter
-            BLOB_BINARY:      bosh_tsdb_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/cloudfoundry-community/bosh_tsdb_exporter
-            BLOB_CLEANUP:     bosh_tsdb_exporter/bosh_tsdb_exporter.*
-            BLOB_DESTINATION: bosh_tsdb_exporter/bosh_tsdb_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of bosh_tsdb_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: bosh_tsdb_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: cf_exporter
     public: true
@@ -639,73 +196,14 @@ jobs:
           params:
             globs:
               - cf_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of cf_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: cf_exporter/version
-
-  - name: update_cf_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: cf_exporter
-          trigger: false
-          passed:
-            - cf_exporter
-          params:
-            globs:
-              - cf_exporter-*.linux-amd64.tar.gz
-      - task: update_cf_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: cf_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         cf_exporter
-            BLOB_NAME:        cf_exporter
-            BLOB_BINARY:      cf_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/cloudfoundry-community/cf_exporter
-            BLOB_CLEANUP:     cf_exporter/cf_exporter.*
-            BLOB_DESTINATION: cf_exporter/cf_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of cf_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: cf_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: collectd_exporter
     public: true
@@ -717,73 +215,14 @@ jobs:
           params:
             globs:
               - collectd_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of collectd_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: collectd_exporter/version
-
-  - name: update_collectd_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: collectd_exporter
-          trigger: false
-          passed:
-            - collectd_exporter
-          params:
-            globs:
-              - collectd_exporter-*.linux-amd64.tar.gz
-      - task: update_collectd_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: collectd_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         collectd_exporter
-            BLOB_NAME:        collectd_exporter
-            BLOB_BINARY:      collectd_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/collectd_exporter
-            BLOB_CLEANUP:     collectd_exporter/collectd_exporter.*
-            BLOB_DESTINATION: collectd_exporter/collectd_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of collectd_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: collectd_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: consul_exporter
     public: true
@@ -795,73 +234,14 @@ jobs:
           params:
             globs:
               - consul_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of consul_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: consul_exporter/version
-
-  - name: update_consul_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: consul_exporter
-          trigger: false
-          passed:
-            - consul_exporter
-          params:
-            globs:
-              - consul_exporter-*.linux-amd64.tar.gz
-      - task: update_consul_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: consul_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         consul_exporter
-            BLOB_NAME:        consul_exporter
-            BLOB_BINARY:      consul_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/consul_exporter
-            BLOB_CLEANUP:     consul_exporter/consul_exporter.*
-            BLOB_DESTINATION: consul_exporter/consul_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of consul_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: consul_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: elasticsearch_exporter
     public: true
@@ -873,73 +253,14 @@ jobs:
           params:
             globs:
               - elasticsearch_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of elasticsearch_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: elasticsearch_exporter/version
-
-  - name: update_elasticsearch_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: elasticsearch_exporter
-          trigger: false
-          passed:
-            - elasticsearch_exporter
-          params:
-            globs:
-              - elasticsearch_exporter-*.linux-amd64.tar.gz
-      - task: update_elasticsearch_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: elasticsearch_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         elasticsearch_exporter
-            BLOB_NAME:        elasticsearch_exporter
-            BLOB_BINARY:      elasticsearch_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/justwatchcom/elasticsearch_exporter
-            BLOB_CLEANUP:     elasticsearch_exporter/elasticsearch_exporter.*
-            BLOB_DESTINATION: elasticsearch_exporter/elasticsearch_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of elasticsearch_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: elasticsearch_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: firehose_exporter
     public: true
@@ -951,73 +272,14 @@ jobs:
           params:
             globs:
               - firehose_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of firehose_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: firehose_exporter/version
-
-  - name: update_firehose_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: firehose_exporter
-          trigger: false
-          passed:
-            - firehose_exporter
-          params:
-            globs:
-              - firehose_exporter-*.linux-amd64.tar.gz
-      - task: update_firehose_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: firehose_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         firehose_exporter
-            BLOB_NAME:        firehose_exporter
-            BLOB_BINARY:      firehose_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/cloudfoundry-community/firehose_exporter
-            BLOB_CLEANUP:     firehose_exporter/firehose_exporter.*
-            BLOB_DESTINATION: firehose_exporter/firehose_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of firehose_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: firehose_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: graphite_exporter
     public: true
@@ -1029,73 +291,14 @@ jobs:
           params:
             globs:
               - graphite_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of graphite_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: graphite_exporter/version
-
-  - name: update_graphite_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: graphite_exporter
-          trigger: false
-          passed:
-            - graphite_exporter
-          params:
-            globs:
-              - graphite_exporter-*.linux-amd64.tar.gz
-      - task: update_graphite_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: graphite_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         graphite_exporter
-            BLOB_NAME:        graphite_exporter
-            BLOB_BINARY:      graphite_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/graphite_exporter
-            BLOB_CLEANUP:     graphite_exporter/graphite_exporter.*
-            BLOB_DESTINATION: graphite_exporter/graphite_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of graphite_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: graphite_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: haproxy_exporter
     public: true
@@ -1107,73 +310,14 @@ jobs:
           params:
             globs:
               - haproxy_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of haproxy_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: haproxy_exporter/version
-
-  - name: update_haproxy_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: haproxy_exporter
-          trigger: false
-          passed:
-            - haproxy_exporter
-          params:
-            globs:
-              - haproxy_exporter-*.linux-amd64.tar.gz
-      - task: update_haproxy_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: haproxy_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         haproxy_exporter
-            BLOB_NAME:        haproxy_exporter
-            BLOB_BINARY:      haproxy_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/haproxy_exporter
-            BLOB_CLEANUP:     haproxy_exporter/haproxy_exporter.*
-            BLOB_DESTINATION: haproxy_exporter/haproxy_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of haproxy_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: haproxy_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: influxdb_exporter
     public: true
@@ -1185,73 +329,14 @@ jobs:
           params:
             globs:
               - influxdb_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of influxdb_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: influxdb_exporter/version
-
-  - name: update_influxdb_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: influxdb_exporter
-          trigger: false
-          passed:
-            - influxdb_exporter
-          params:
-            globs:
-              - influxdb_exporter-*.linux-amd64.tar.gz
-      - task: update_influxdb_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: influxdb_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         influxdb_exporter
-            BLOB_NAME:        influxdb_exporter
-            BLOB_BINARY:      influxdb_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/influxdb_exporter
-            BLOB_CLEANUP:     influxdb_exporter/influxdb_exporter.*
-            BLOB_DESTINATION: influxdb_exporter/influxdb_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of influxdb_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: influxdb_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: memcached_exporter
     public: true
@@ -1263,73 +348,14 @@ jobs:
           params:
             globs:
               - memcached_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of memcached_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: memcached_exporter/version
-
-  - name: update_memcached_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: memcached_exporter
-          trigger: false
-          passed:
-            - memcached_exporter
-          params:
-            globs:
-              - memcached_exporter-*.linux-amd64.tar.gz
-      - task: update_memcached_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: memcached_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         memcached_exporter
-            BLOB_NAME:        memcached_exporter
-            BLOB_BINARY:      memcached_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/memcached_exporter
-            BLOB_CLEANUP:     memcached_exporter/memcached_exporter.*
-            BLOB_DESTINATION: memcached_exporter/memcached_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of memcached_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: memcached_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: mysqld_exporter
     public: true
@@ -1341,73 +367,14 @@ jobs:
           params:
             globs:
               - mysqld_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of mysqld_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: mysqld_exporter/version
-
-  - name: update_mysqld_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: mysqld_exporter
-          trigger: false
-          passed:
-            - mysqld_exporter
-          params:
-            globs:
-              - mysqld_exporter-*.linux-amd64.tar.gz
-      - task: update_mysqld_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: mysqld_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         mysqld_exporter
-            BLOB_NAME:        mysqld_exporter
-            BLOB_BINARY:      mysqld_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/mysqld_exporter
-            BLOB_CLEANUP:     mysqld_exporter/mysqld_exporter.*
-            BLOB_DESTINATION: mysqld_exporter/mysqld_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of mysqld_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: mysqld_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: rabbitmq_exporter
     public: true
@@ -1419,73 +386,14 @@ jobs:
           params:
             globs:
               - rabbitmq_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of rabbitmq_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: rabbitmq_exporter/version
-
-  - name: update_rabbitmq_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: rabbitmq_exporter
-          trigger: false
-          passed:
-            - rabbitmq_exporter
-          params:
-            globs:
-              - rabbitmq_exporter-*.linux-amd64.tar.gz
-      - task: update_rabbitmq_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: rabbitmq_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         rabbitmq_exporter
-            BLOB_NAME:        rabbitmq_exporter
-            BLOB_BINARY:      rabbitmq_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/kbudde/rabbitmq_exporter
-            BLOB_CLEANUP:     rabbitmq_exporter/rabbitmq_exporter.*
-            BLOB_DESTINATION: rabbitmq_exporter/rabbitmq_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of rabbitmq_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: rabbitmq_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: redis_exporter
     public: true
@@ -1497,73 +405,14 @@ jobs:
           params:
             globs:
               - redis_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of redis_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: redis_exporter/version
-
-  - name: update_redis_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: redis_exporter
-          trigger: false
-          passed:
-            - redis_exporter
-          params:
-            globs:
-              - redis_exporter-*.linux-amd64.tar.gz
-      - task: update_rabbitmq_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: redis_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         redis_exporter
-            BLOB_NAME:        redis_exporter
-            BLOB_BINARY:      redis_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/oliver006/redis_exporter
-            BLOB_CLEANUP:     redis_exporter/redis_exporter.*
-            BLOB_DESTINATION: redis_exporter/redis_exporter-v${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of redis_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: redis_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: shield_exporter
     public: true
@@ -1575,73 +424,14 @@ jobs:
           params:
             globs:
               - shield_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of shield_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: shield_exporter/version
-
-  - name: update_shield_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: shield_exporter
-          trigger: false
-          passed:
-            - shield_exporter
-          params:
-            globs:
-              - shield_exporter-*.linux-amd64.tar.gz
-      - task: update_shield_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: shield_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         shield_exporter
-            BLOB_NAME:        shield_exporter
-            BLOB_BINARY:      shield_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/cloudfoundry-community/shield_exporter
-            BLOB_CLEANUP:     shield_exporter/shield_exporter.*
-            BLOB_DESTINATION: shield_exporter/shield_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of shield_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: shield_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: stackdriver_exporter
     public: true
@@ -1653,73 +443,14 @@ jobs:
           params:
             globs:
               - stackdriver_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of stackdriver_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: stackdriver_exporter/version
-
-  - name: update_stackdriver_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: stackdriver_exporter
-          trigger: false
-          passed:
-            - stackdriver_exporter
-          params:
-            globs:
-              - stackdriver_exporter-*.linux-amd64.tar.gz
-      - task: update_stackdriver_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: stackdriver_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         stackdriver_exporter
-            BLOB_NAME:        stackdriver_exporter
-            BLOB_BINARY:      stackdriver_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/frodenas/stackdriver_exporter
-            BLOB_CLEANUP:     stackdriver_exporter/stackdriver_exporter.*
-            BLOB_DESTINATION: stackdriver_exporter/stackdriver_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of stackdriver_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: stackdriver_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
   - name: statsd_exporter
     public: true
@@ -1731,73 +462,14 @@ jobs:
           params:
             globs:
               - statsd_exporter-*.linux-amd64.tar.gz
+
       - put: notify
         params:
           channel:   (( grab meta.slack.channel ))
           username:  (( grab meta.slack.username ))
           icon_url:  (( grab meta.slack.icon ))
-          text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of statsd_exporter was detected. " meta.slack.blob_update ))'
+          text:     '$BUILD_PIPELINE_NAME: New node-exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: statsd_exporter/version
-
-  - name: update_statsd_exporter
-    serial: true
-    plan:
-      - aggregate:
-        - get: git
-        - get: statsd_exporter
-          trigger: false
-          passed:
-            - statsd_exporter
-          params:
-            globs:
-              - statsd_exporterr-*.linux-amd64.tar.gz
-      - task: update_statsd_exporter
-        config:
-          image_resource:
-            type: docker-image
-            source:
-              repository: (( grab meta.image.name ))
-              tag:        (( grab meta.image.tag ))
-          platform: linux
-          inputs:
-            - name: git
-            - name: statsd_exporter
-          outputs:
-            - name: pushme
-          run:
-            path: ./git/ci/scripts/update-blob
-          params:
-            REPO_ROOT:        git
-            REPO_OUT:         pushme
-            BLOB_DIR:         statsd_exporter
-            BLOB_NAME:        statsd_exporter
-            BLOB_BINARY:      statsd_exporter*.linux-amd64.tar.gz
-            BLOB_URL:         https://github.com/prometheus/statsd_exporter
-            BLOB_CLEANUP:     statsd_exporter/statsd_exporter.*
-            BLOB_DESTINATION: statsd_exporter/statsd_exporter-${VERSION}.linux-amd64.tar.gz
-            AWS_ACCESS_KEY:   (( grab meta.aws.access_key ))
-            AWS_SECRET_KEY:   (( grab meta.aws.secret_key ))
-            BRANCH:           (( grab meta.github.branch ))
-      - put: git
-        params:
-          rebase: true
-          repository: pushme/git
-        on_success:
-          put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      '(( concat "$BUILD_PIPELINE_NAME: New version $TEXT_FILE_CONTENT of statsd_exporter was updated in master. " meta.slack.blob_release ))'
-            text_file: statsd_exporter/version
-    on_failure:
-      do:
-        - put: notify
-          params:
-            channel:   (( grab meta.slack.channel ))
-            username:  (( grab meta.slack.username ))
-            icon_url:  (( grab meta.slack.icon ))
-            text:      (( grab meta.slack.blob_failure ))
 
 resources:
   - name: prometheus
@@ -1806,126 +478,147 @@ resources:
       user:         prometheus
       repository:   prometheus
       access_token: (( grab meta.github.access_token ))
+
   - name: alertmanager
     type: github-release
     source:
       user:         prometheus
       repository:   alertmanager
       access_token: (( grab meta.github.access_token ))
+
   - name: pushgateway
     type: github-release
     source:
       user:         prometheus
       repository:   pushgateway
       access_token: (( grab meta.github.access_token ))
+
   - name: grafana
     type: s3
     source:
       region_name: us-west-2
       bucket: grafana-releases
       regexp: release/grafana-((\d+\.)?(\d+\.)?(\*|\d+)).linux-x64.tar.gz
+
   - name: blackbox_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   blackbox_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: bosh_exporter
     type: github-release
     source:
       user:         cloudfoundry-community
       repository:   bosh_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: bosh_tsdb_exporter
     type: github-release
     source:
       user:         cloudfoundry-community
       repository:   bosh_tsdb_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: cf_exporter
     type: github-release
     source:
       user:         cloudfoundry-community
       repository:   cf_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: collectd_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   collectd_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: consul_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   consul_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: elasticsearch_exporter
     type: github-release
     source:
       user:         justwatchcom
       repository:   elasticsearch_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: firehose_exporter
     type: github-release
     source:
       user:         cloudfoundry-community
       repository:   firehose_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: graphite_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   graphite_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: haproxy_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   haproxy_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: influxdb_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   influxdb_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: memcached_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   memcached_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: mysqld_exporter
     type: github-release
     source:
       user:         prometheus
       repository:   mysqld_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: rabbitmq_exporter
     type: github-release
     source:
       user:         kbudde
       repository:   rabbitmq_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: redis_exporter
     type: github-release
     source:
       user:         oliver006
       repository:   redis_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: shield_exporter
     type: github-release
     source:
       user:         cloudfoundry-community
       repository:   shield_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: stackdriver_exporter
     type: github-release
     source:
       user:         frodenas
       repository:   stackdriver_exporter
       access_token: (( grab meta.github.access_token ))
+
   - name: statsd_exporter
     type: github-release
     source:

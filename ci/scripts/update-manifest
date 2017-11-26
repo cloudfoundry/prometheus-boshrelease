@@ -7,14 +7,14 @@ SHA1=$4
 MANIFEST_PATH=$5
 : ${MANIFEST_PATH:?USAGE: ./ci/scripts/update-manifest GITHUB_OWNER RELEASE_NAME VERSION SHA1 MANIFEST_PATH}
 
-set -e -u
+set -eu
 
-manifest_len=$(wc -l $MANIFEST_PATH | awk '{print $1}')
-manifest_head=$(head -n `expr $manifest_len - 4` $MANIFEST_PATH)
-cat > $MANIFEST_PATH <<YAML
+manifest_len=$(wc -l ${MANIFEST_PATH} | awk '{print $1}')
+manifest_head=$(head -n `expr $manifest_len - 4` ${MANIFEST_PATH})
+cat > ${MANIFEST_PATH} <<EOF
 ${manifest_head}
-- name: $RELEASE_NAME
-  version: $VERSION
+- name: ${RELEASE_NAME}
+  version: ${VERSION}
   url: https://github.com/${GITHUB_OWNER}/${RELEASE_NAME}-boshrelease/releases/download/v${VERSION}/${RELEASE_NAME}-${VERSION}.tgz
-  sha1: $SHA1
-YAML
+  sha1: ${SHA1}
+EOF
