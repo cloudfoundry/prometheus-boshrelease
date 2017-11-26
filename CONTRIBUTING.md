@@ -11,12 +11,12 @@ Here are some ways *you* can contribute:
 * by writing specifications
 * by writing code (**no patch is too small**: fix typos, add comments, clean up inconsistent whitespace)
 * by refactoring code
-* by closing [issues](https://github.com/cloudfoundry-community/prometheus-boshrelease/issues)
+* by closing [issues](https://github.com/bosh-prometheus/prometheus-boshrelease/issues)
 * by reviewing patches
 
 ## Submitting an Issue
 
-We use the [GitHub issue tracker](https://github.com/cloudfoundry-community/prometheus-boshrelease/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. You can indicate support for an existing issue by voting it up. When submitting a bug report, please include a [Gist](http://gist.github.com/) that includes a stack trace and any details that may be necessary to reproduce the bug,. Ideally, a bug report should include a pull request with failing specs.
+We use the [GitHub issue tracker](https://github.com/bosh-prometheus/prometheus-boshrelease/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. You can indicate support for an existing issue by voting it up. When submitting a bug report, please include a [Gist](http://gist.github.com/) that includes a stack trace and any details that may be necessary to reproduce the bug,. Ideally, a bug report should include a pull request with failing specs.
 
 ## Submitting a Pull Request
 
@@ -29,4 +29,4 @@ We use the [GitHub issue tracker](https://github.com/cloudfoundry-community/prom
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cloudfoundry-community/prometheus-boshrelease/blob/master/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
