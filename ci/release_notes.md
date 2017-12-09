@@ -5,6 +5,7 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 ## Features
 
 * The test alert sent periodically (if enabled) will be tagged with the name `TestAlert`
+* Added [prometheus-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/prometheus-web-external-url.yml) op file to configures the URL under which `prometheus` is externally reachable
 
 ### Updates
 

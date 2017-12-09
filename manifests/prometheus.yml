@@ -3,11 +3,9 @@ name: prometheus
 
 instance_groups:
   - name: alertmanager
-    azs:
-      - z1
     instances: 1
     vm_type: default
-    persistent_disk_type: 1GB
+    persistent_disk_type: default
     stemcell: default
     networks:
       - name: default
@@ -26,11 +24,9 @@ instance_groups:
               daily: true
 
   - name: prometheus
-    azs:
-      - z1
     instances: 1
     vm_type: default
-    persistent_disk_type: 10GB
+    persistent_disk_type: default
     stemcell: default
     networks:
       - name: default
@@ -47,44 +43,11 @@ instance_groups:
                 static_configs:
                 - targets:
                   - localhost:9090
-      - name: postgres_alerts
-        release: prometheus
-      - name: prometheus_alerts
-        release: prometheus
-
-  - name: database
-    azs:
-      - z1
-    instances: 1
-    vm_type: default
-    persistent_disk_type: 10GB
-    stemcell: default
-    networks:
-      - name: default
-    jobs:
-      - name: postgres
-        release: postgres
-        properties:
-          databases:
-            port: 5432
-            databases:
-              - name: grafana
-                citext: true
-            roles:
-              - name: grafana
-                password: ((postgres_grafana_password))
-      - name: postgres_exporter
-        release: prometheus
-        properties:
-          postgres_exporter:
-            datasource_name: postgresql://grafana:((postgres_grafana_password))@127.0.0.1:5432/?sslmode=disable
 
   - name: grafana
-    azs:
-      - z1
     instances: 1
     vm_type: default
-    persistent_disk_type: 1GB
+    persistent_disk_type: default
     stemcell: default
     networks:
       - name: default
@@ -93,18 +56,8 @@ instance_groups:
         release: prometheus
         properties:
           grafana:
-            database:
-              type: postgres
-              port: 5432
-              name: grafana
-              user: grafana
-              password: ((postgres_grafana_password))
             session:
-              provider: postgres
-              provider_port: 5432
-              provider_name: grafana
-              provider_user: grafana
-              provider_password: ((postgres_grafana_password))
+              provider: file
             security:
               admin_user: admin
               admin_password: ((grafana_password))
@@ -117,34 +70,21 @@ instance_groups:
                 - /var/vcap/jobs/grafana_dashboards/*.json
                 - /var/vcap/jobs/postgres_dashboards/*.json
                 - /var/vcap/jobs/prometheus_dashboards/*.json
+                - /var/vcap/jobs/system_dashboards/*.json
+                - /var/vcap/jobs/haproxy_dashboards/*.json
+                - /var/vcap/jobs/rabbitmq_dashboards/*.json
       - name: grafana_dashboards
         release: prometheus
       - name: postgres_dashboards
         release: prometheus
       - name: prometheus_dashboards
         release: prometheus
-
-  - name: nginx
-    azs:
-      - z1
-    instances: 1
-    vm_type: default
-    stemcell: default
-    networks:
-      - name: default
-    jobs:
-      - name: nginx
+      - name: system_dashboards
         release: prometheus
-        properties:
-          nginx:
-            alertmanager:
-              auth_users:
-                - name: admin
-                  password: ((alertmanager_password))
-            prometheus:
-              auth_users:
-                - name: admin
-                  password: ((prometheus_password))
+      - name: haproxy_dashboards
+        release: prometheus
+      - name: rabbitmq_dashboards
+        release: prometheus
 
 variables:
   - name: alertmanager_password
@@ -173,10 +113,6 @@ stemcells:
     version: latest
 
 releases:
-- name: postgres
-  version: "21"
-  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=21
-  sha1: b37916b709fb45ac7de3e195456301cb01a1ae22
 - name: prometheus
   version: 20.0.0
   url: https://github.com/bosh-prometheus/prometheus-boshrelease/releases/download/v20.0.0/prometheus-20.0.0.tgz
