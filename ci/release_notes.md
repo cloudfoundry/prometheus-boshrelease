@@ -2,6 +2,10 @@
 
 Control scripts no longer tees the output to syslog and the log files are now written inside the job's log directory.
 
+## Features
+
+* The test alert sent periodically (if enabled) will be tagged with the name `TestAlert`
+
 ### Updates
 
 * `blackbox_exporter` to [v0.11.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.11.0)
