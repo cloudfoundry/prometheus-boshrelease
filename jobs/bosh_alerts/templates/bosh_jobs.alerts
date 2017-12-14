@@ -10,7 +10,7 @@ ALERT BOSHJobUnhealthy
     description = "BOSH Job `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is being reported unhealthy",
   }
 
-ALERT BOSHJobExtentedUnhealthy
+ALERT BOSHJobExtendedUnhealthy
   IF max(bosh_job_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) < 1
   FOR <%= p('bosh_alerts.job_extended_unhealthy.evaluation_time') %>
   LABELS {
