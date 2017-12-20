@@ -1,0 +1,38 @@
+global:
+  <% if_p('prometheus.scrape_interval') do |scrape_interval| %>
+  # How frequently to scrape targets by default.
+  scrape_interval: <%= scrape_interval %>
+  <% end %>
+
+  <% if_p('prometheus.scrape_timeout') do |scrape_timeout| %>
+  # How long until a scrape request times out.
+  scrape_timeout: <%= scrape_timeout %>
+  <% end %>
+
+  <% if_p('prometheus.evaluation_interval') do |evaluation_interval| %>
+  # How frequently to evaluate rules by default.
+  evaluation_interval: <%= evaluation_interval %>
+  <% end %>
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels: <%= p('prometheus.external_labels', {}).to_json %>
+
+# Rule files specifies a list of files from which rules are read.
+rule_files: <%= p('prometheus.rule_files', []).push('/var/vcap/jobs/prometheus2/config/custom.rules').to_json %>
+
+# A list of scrape configurations.
+scrape_configs: <%= p('prometheus.scrape_configs', []).to_json %>
+
+# Alerting specifies settings related to the Alertmanager.
+alerting: <%= p('prometheus.alerting', {}).to_json %>
+
+<% if_p('prometheus.remote_write') do |remote_write| %>
+# Settings related to the experimental remote write feature.
+remote_write: <%= remote_write.to_json %>
+<% end %>
+
+<% if_p('prometheus.remote_read') do |remote_read| %>
+# Settings related to the experimental remote read feature.
+remote_read: <%= remote_read.to_json %>
+<% end %>

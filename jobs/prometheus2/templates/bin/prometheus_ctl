@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/prometheus2
+LOG_DIR=/var/vcap/sys/log/prometheus2
+TMP_DIR=/var/vcap/sys/tmp/prometheus2
+STORE_DIR=/var/vcap/store/prometheus2
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/prometheus.pid
+
+source /var/vcap/packages/prometheus2/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/prometheus2/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "prometheus"
+    echo $$ > ${PIDFILE}
+
+    ulimit -n 65536
+
+    exec prometheus \
+      --config.file=/var/vcap/jobs/prometheus2/config/prometheus.yml \
+      <% if_p('prometheus.alertmanager.notification_queue_capacity') do |notification_queue_capacity| %> \
+      --alertmanager.notification-queue-capacity="<%= notification_queue_capacity %>" \
+      <% end %> \
+      <% if_p('prometheus.alertmanager.timeout') do |timeout| %> \
+      --alertmanager.timeout="<%= timeout %>" \
+      <% end %> \
+      <% if_p('prometheus.log_level') do |log_level| %> \
+      --log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('prometheus.query.max_concurrency') do |max_concurrency| %> \
+      --query.max-concurrency="<%= max_concurrency %>" \
+      <% end %> \
+      <% if_p('prometheus.query.loopback_delta') do |loopback_delta| %> \
+      --query.loopback-delta="<%= loopback_delta %>" \
+      <% end %> \
+      <% if_p('prometheus.query.timeout') do |timeout| %> \
+      --query.timeout="<%= timeout %>" \
+      <% end %> \
+      --storage.tsdb.path="${STORE_DIR}" \
+      <% if_p('prometheus.storage.tsdb.retention') do |retention| %> \
+      --storage.tsdb.retention="<%= retention %>" \
+      <% end %> \
+      <% if_p('prometheus.storage.tsdb.min_block_duration') do |min_block_duration| %> \
+      --storage.tsdb.min-block-duration="<%= min_block_duration %>" \
+      <% end %> \
+      <% if_p('prometheus.storage.tsdb.max_block_duration') do |max_block_duration| %> \
+      --storage.tsdb.max-block-duration="<%= max_block_duration %>" \
+      <% end %> \
+      <% if_p('prometheus.storage.tsdb.no_lockfile') do |no_lockfile| %> \
+      --storage.tsdb.no-lockfile="<%= no_lockfile %>" \
+      <% end %> \
+      <% if_p('prometheus.web.console.libraries') do |libraries| %> \
+      --web.console.libraries="<%= libraries %>" \
+      <% end %> \
+      <% if_p('prometheus.web.console.templates') do |templates| %> \
+      --web.console.templates="<%= templates %>" \
+      <% end %> \
+      <% if_p('prometheus.web.enable_remote_shutdown') do |enable_remote_shutdown| %> \
+      --web.enable-remote-shutdown="<%= enable_remote_shutdown %>" \
+      <% end %> \
+      <% if_p('prometheus.web.external_url') do |external_url| %> \
+      --web.external-url="<%= external_url %>" \
+      <% end %> \
+      --web.listen-address=":<%= p('prometheus.web.port') %>" \
+      <% if_p('prometheus.web.max_connections') do |max_connections| %> \
+      --web.max-connections="<%= max_connections %>" \
+      <% end %> \
+      <% if_p('prometheus.web.read_timeout') do |read_timeout| %> \
+      --web.read-timeout="<%= read_timeout %>" \
+      <% end %> \
+      <% if_p('prometheus.web.route_prefix') do |route_prefix| %> \
+      --web.route-prefix="<%= route_prefix %>" \
+      <% end %> \
+      <% if_p('prometheus.web.telemetry_path') do |telemetry_path| %> \
+      --web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('prometheus.web.user_assets') do |user_assets| %> \
+      --web.user-assets="<%= user_assets %>" \
+      <% end %> \
+      >>  ${LOG_DIR}/prometheus.stdout.log \
+      2>> ${LOG_DIR}/prometheus.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+
+esac
+exit 0
