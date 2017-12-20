@@ -1,0 +1,91 @@
+---
+name: prometheus2
+
+packages:
+  - prometheus2
+
+templates:
+  bin/prometheus_ctl: bin/prometheus_ctl
+  config/prometheus.yml: config/prometheus.yml
+  config/custom.rules: config/custom.rules
+
+provides:
+  - name: prometheus
+    type: prometheus
+    properties:
+      - prometheus.web.port
+      - prometheus.web.external_url
+
+consumes:
+  - name: alertmanager
+    type: alertmanager
+    optional: true
+
+properties:
+  prometheus.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  prometheus.scrape_interval:
+    description: "How frequently to scrape targets by default"
+  prometheus.scrape_timeout:
+    description: "How long until a scrape request times out"
+  prometheus.evaluation_interval:
+    description: "How frequently to evaluate rules by default"
+  prometheus.external_labels:
+    description: "Attach these labels to any time series or alerts when communicating with external systems"
+  prometheus.rule_files:
+    description: "Array of paths to Prometheus rule files"
+  prometheus.custom_rules:
+    description: Array of custom rules
+  prometheus.scrape_configs:
+    description: "Array of scrape configurations"
+  prometheus.alerting:
+    description: "Alerting configuration"
+  prometheus.remote_write:
+    description: "Remote write storage configuration"
+  prometheus.remote_read:
+    description: "Remote read storage configuration"
+
+  prometheus.alertmanager.notification_queue_capacity:
+    description: "The capacity of the queue for pending alert manager notifications"
+  prometheus.alertmanager.timeout:
+    description: "Alert manager HTTP API timeout"
+
+  prometheus.query.max_concurrency:
+    description: "Maximum number of queries executed concurrently"
+  prometheus.query.loopback_delta:
+    description: "Loopback delta allowance during expression evaluations"
+  prometheus.query.timeout:
+    description: "Maximum time a query may take before being aborted"
+
+  prometheus.storage.tsdb.retention:
+    description: "How long to retain samples in the local storage"
+  prometheus.storage.tsdb.min_block_duration:
+    description: "Minimum duration of a data block before being persisted"
+  prometheus.storage.tsdb.max_block_duration:
+    description: "Maximum duration compacted blocks may span (defaults to 10% of the retention period)"
+  prometheus.storage.tsdb.no_lockfile:
+    description: "Do not create lockfile in data directory"
+
+  prometheus.web.console.libraries:
+    description: "Path to the console library directory"
+    default: "/var/vcap/packages/prometheus/bin/console_libraries"
+  prometheus.web.console.templates:
+    description: "Path to the console template directory, available at /consoles"
+    default: "/var/vcap/packages/prometheus/bin/consoles"
+  prometheus.web.enable_remote_shutdown:
+    description: "Enable remote service shutdown"
+  prometheus.web.external_url:
+    description: "The URL under which Prometheus is externally reachable"
+  prometheus.web.port:
+    description: "Port to listen on for the web interface, API, and telemetry"
+    default: "9090"
+  prometheus.web.max_connections:
+    description: "Maximum number of simultaneous connections"
+  prometheus.web.read_timeout:
+    description: "Maximum duration before timing out read of the request, and closing idle connections"
+  prometheus.web.route_prefix:
+    description: "Prefix for the internal routes of web endpoints"
+  prometheus.web.telemetry_path:
+    description: "Path under which to expose metric"
+  prometheus.web.user_assets:
+    description: "Path to static asset directory, available at /user"
