@@ -96,7 +96,6 @@ cat > tmp/deployment.yml <<EOF
 EOF
 
 VM_TYPE=$(bosh int <(bosh cloud-config) --path /vm_types/0/name)
-DISK_TYPE=$(bosh int <(bosh cloud-config) --path /disk_types/0/name)
 NETWORK=$(bosh int <(bosh cloud-config) --path /networks/0/name)
 AZ=$(bosh int <(bosh cloud-config) --path /azs/0/name)
 for ig_name in $(spruce json ${MANIFEST_PATH} | jq -r ".instance_groups[].name"); do
@@ -104,9 +103,6 @@ cat >> tmp/deployment.yml <<EOF
 - type: replace
   path: /instance_groups/name=${ig_name}/vm_type
   value: ${VM_TYPE}
-- type: replace
-  path: /instance_groups/name=${ig_name}/persistent_disk_type?
-  value: ${DISK_TYPE}
 - type: replace
   path: /instance_groups/name=${ig_name}/networks
   value: [{name: ${NETWORK}}]
