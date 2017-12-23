@@ -18,4 +18,4 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * `grafana` to [v4.6.3](https://github.com/grafana/grafana/releases/tag/v4.6.3)
 * `rabbitmq_exporter` to [v0.25.2](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.25.2)
 * `redis_exporter` to [v0.14](https://github.com/oliver006/redis_exporter/releases/tag/v0.14)
-* `shield_exporter` to [v0.2.2](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.2.2)
+* `shield_exporter` to [v0.2.3](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.2.3)
