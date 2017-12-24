@@ -75,7 +75,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(worker_containers{bosh_deployment=\"$deployment\"}) by(worker)",
+              "expr": "avg(concourse_workers_containers{bosh_deployment=\"$deployment\"}) by(worker)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -151,7 +151,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(worker_volumes{bosh_deployment=\"$deployment\"}) by(worker)",
+              "expr": "avg(concourse_workers_volumes{bosh_deployment=\"$deployment\"}) by(worker)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "",
@@ -449,7 +449,7 @@
         "multi": false,
         "name": "deployment",
         "options": [],
-        "query": "label_values(worker_containers, bosh_deployment)",
+        "query": "label_values(concourse_workers_containers, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
