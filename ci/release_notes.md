@@ -35,4 +35,4 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * `postgres_exporter` to [v0.4.1](https://github.com/wrouesnel/postgres_exporter/releases/tag/v0.4.1)
 * `rabbitmq_exporter` to [v0.25.2](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.25.2)
 * `redis_exporter` to [v0.14](https://github.com/oliver006/redis_exporter/releases/tag/v0.14)
-* `shield_exporter` to [v0.2.3](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.2.3)
+* `shield_exporter` to [v0.3.0](https://github.com/bosh-prometheus/shield_exporter/releases/tag/v0.3.0)

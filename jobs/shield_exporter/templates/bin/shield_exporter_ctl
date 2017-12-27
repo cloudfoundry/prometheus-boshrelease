@@ -43,35 +43,35 @@ case $1 in
     <% end %>
 
     exec shield_exporter \
-      -shield.backend_url="<%= p('shield_exporter.shield.backend_url') %>" \
-      -shield.username="<%= p('shield_exporter.shield.username') %>" \
-      -shield.password="<%= p('shield_exporter.shield.password') %>" \
+      --shield.backend_url="<%= p('shield_exporter.shield.backend_url') %>" \
+      --shield.username="<%= p('shield_exporter.shield.username') %>" \
+      --shield.password="<%= p('shield_exporter.shield.password') %>" \
       <% if_p('shield_exporter.filter.collectors') do |collectors| %> \
-      -filter.collectors="<%= collectors %>" \
+      --filter.collectors="<%= collectors %>" \
       <% end %> \
       <% if_p('shield_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('shield_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
       <% if_p('shield_exporter.metrics.namespace') do |namespace| %> \
-      -metrics.namespace="<%= namespace %>" \
+      --metrics.namespace="<%= namespace %>" \
       <% end %> \
-      -metrics.environment="<%= p('shield_exporter.metrics.environment') %>" \
-      -web.listen-address=":<%= p('shield_exporter.web.port') %>" \
+      --metrics.environment="<%= p('shield_exporter.metrics.environment') %>" \
+      --web.listen-address=":<%= p('shield_exporter.web.port') %>" \
       <% if_p('shield_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       <% if_p('shield_exporter.web.auth_username') do |auth_username| %> \
-      -web.auth.username="<%= auth_username %>" \
+      --web.auth.username="<%= auth_username %>" \
       <% end %> \
       <% if_p('shield_exporter.web.auth_password') do |auth_password| %> \
-      -web.auth.password="<%= auth_password %>" \
+      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('shield_exporter.web.tls_cert', 'shield_exporter.web.tls_key') do %> \
-      -web.tls.cert_file="/var/vcap/jobs/shield_exporter/config/web_tls_cert.pem" \
-      -web.tls.key_file="/var/vcap/jobs/shield_exporter/config/web_tls_key.pem" \
+      --web.tls.cert_file="/var/vcap/jobs/shield_exporter/config/web_tls_cert.pem" \
+      --web.tls.key_file="/var/vcap/jobs/shield_exporter/config/web_tls_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/shield_exporter.stdout.log \
       2>> ${LOG_DIR}/shield_exporter.stderr.log
