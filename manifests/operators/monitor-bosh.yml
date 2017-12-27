@@ -167,10 +167,14 @@
         regex: atc
         action: keep
       - source_labels:
+        - __meta_bosh_deployment
+        regex: "(.*)"
+        target_label: bosh_deployment
+      - source_labels:
         - __address__
         regex: "(.*)"
         target_label: __address__
-        replacement: "${1}:9110"
+        replacement: "${1}:9391"
 
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
