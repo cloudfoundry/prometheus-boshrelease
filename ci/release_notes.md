@@ -24,7 +24,7 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * `alertmanager` to [v0.12.0](https://github.com/prometheus/alertmanager/releases/tag/v0.12.0)
 * `blackbox_exporter` to [v0.11.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.11.0)
 * `bosh_exporter` to [v2.5.0](https://github.com/bosh-prometheus/bosh_exporter/releases/tag/v2.5.0)
-* `bosh_tsdb_exporter` to [v0.1.1](https://github.com/bosh-prometheus/bosh_tsdb_exporter/releases/tag/v0.1.1)
+* `bosh_tsdb_exporter` to [v0.2.0](https://github.com/bosh-prometheus/bosh_tsdb_exporter/releases/tag/v0.2.0)
 * `cadvisor` to [v0.28.3](https://github.com/google/cadvisor/releases/tag/v0.28.3)
 * `cf_exporter` to [v0.5.3](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.5.3)
 * `firehose_exporter` to [v4.2.7](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v4.2.7)
