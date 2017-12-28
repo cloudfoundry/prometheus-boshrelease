@@ -19,7 +19,8 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * Added [enable-prometheus-metrics.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/concourse/enable-prometheus-metrics.yml) op file to be applied to your [concourse-deployment](https://github.com/concourse/concourse-deployment) to allow gathering metrics directly from `concourse` (>= v3.8.0)
 * Added [prometheus-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/prometheus-web-external-url.yml) op file to allow configuring the URL under which `prometheus` is externally reachable
 * Fixed [alertmanager-victorops-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-victorops-receiver.yml) op file to require `routing_key`
-* Removed `postgres` job when using [use-sqlite3.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) op file
+* Removed `postgres` release when using [use-sqlite3.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) op file
+* Upgraded `postgres` release to [v23](https://github.com/cloudfoundry/postgres-release/releases/tag/v23)
 
 ### Updates
 
