@@ -1,6 +1,7 @@
 ## Breaking changes
 
-Control scripts no longer tees the output to syslog and the log files are now written inside the job's log directory.
+* Control scripts no longer tees the output to syslog and the log files are now written inside the job's log directory.
+* If you were rusing the [enable-cf-route-registrar.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-cf-route-registrar.yml) op file, a new variable `cf_deployment_name` is now required
 
 ## Features
 
