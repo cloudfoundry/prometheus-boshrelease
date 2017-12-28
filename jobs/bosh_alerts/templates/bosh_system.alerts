@@ -1,5 +1,5 @@
 ALERT BOSHJobHighCPULoad
-  IF avg(bosh_job_load_avg01{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_high_cpu_load.threshold') %>
+  IF avg(bosh_job_load_avg01{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_high_cpu_load.threshold') %>
   FOR <%= p('bosh_alerts.job_high_cpu_load.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -11,7 +11,7 @@ ALERT BOSHJobHighCPULoad
   }
 
 ALERT BOSHJobLowFreeRAM
-  IF avg(bosh_job_mem_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_low_free_ram.threshold') %>
+  IF avg(bosh_job_mem_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_low_free_ram.threshold') %>
   FOR <%= p('bosh_alerts.job_low_free_ram.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -23,7 +23,7 @@ ALERT BOSHJobLowFreeRAM
   }
 
 ALERT BOSHJobLowSwap
-  IF avg(bosh_job_swap_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_low_swap.threshold') %>
+  IF avg(bosh_job_swap_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_low_swap.threshold') %>
   FOR <%= p('bosh_alerts.job_low_swap.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -35,7 +35,7 @@ ALERT BOSHJobLowSwap
   }
 
 ALERT BOSHJobSystemDiskFull
-  IF avg(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_system_disk_full.threshold') %>
+  IF avg(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_system_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_system_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -47,7 +47,7 @@ ALERT BOSHJobSystemDiskFull
   }
 
 ALERT BOSHJobEphemeralDiskFull
-  IF avg(bosh_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_ephemeral_disk_full.threshold') %>
+  IF avg(bosh_job_ephemeral_disk_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_ephemeral_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_ephemeral_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -59,7 +59,7 @@ ALERT BOSHJobEphemeralDiskFull
   }
 
 ALERT BOSHJobPersistentDiskFull
-  IF avg(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_persistent_disk_full.threshold') %>
+  IF avg(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_persistent_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_persistent_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -71,7 +71,7 @@ ALERT BOSHJobPersistentDiskFull
   }
 
 ALERT BOSHJobPersistentDiskInodesExhausted
-  IF avg(bosh_job_persistent_disk_inode_percent{bosh_job_name!~"^compilation.*"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_persistent_disk_inodes_exhausted.threshold') %>
+  IF avg(bosh_job_persistent_disk_inode_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index) > <%= p('bosh_alerts.job_persistent_disk_inodes_exhausted.threshold') %>
   FOR <%= p('bosh_alerts.job_persistent_disk_inodes_exhausted.evaluation_time') %>
   LABELS {
     service = "bosh-job",
