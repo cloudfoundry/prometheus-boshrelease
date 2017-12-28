@@ -12,6 +12,7 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * Increased `prometheus` stop wait time to allow proper shut down
 * Fixed typo at `BOSHJobExtendedUnhealthy`, `BOSHJobProcessExtendedUnhealthy`, and `BOSHTSDBJobExtendedUnhealthy` alert names
 * Fixed `ElasticHeapUsage` alert summary and description
+* Exclude ephemeral `Pivotal Cloud Foundry Healthwatch` vms from BOSH alerts and dashboards
 
 ## Manifests
 
