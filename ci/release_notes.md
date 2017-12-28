@@ -21,6 +21,7 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * Fixed [alertmanager-victorops-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-victorops-receiver.yml) op file to require `routing_key`
 * Removed `postgres` release when using [use-sqlite3.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) op file
 * Upgraded `postgres` release to [v23](https://github.com/cloudfoundry/postgres-release/releases/tag/v23)
+* Upgraded `routing` release to [v0.169.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.169.0)
 
 ### Updates
 
