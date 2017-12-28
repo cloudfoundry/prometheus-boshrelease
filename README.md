@@ -120,7 +120,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v skip_ssl_verify=
 ```
 
-*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
+*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
 
 #### Register Cloud Foundry routes
 
