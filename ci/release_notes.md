@@ -24,7 +24,7 @@ Control scripts no longer tees the output to syslog and the log files are now wr
 * Upgraded `postgres` release to [v23](https://github.com/cloudfoundry/postgres-release/releases/tag/v23)
 * Upgraded `routing` release to [v0.169.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.169.0)
 
-### Updates
+## Updates
 
 * `alertmanager` to [v0.12.0](https://github.com/prometheus/alertmanager/releases/tag/v0.12.0)
 * `blackbox_exporter` to [v0.11.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.11.0)
