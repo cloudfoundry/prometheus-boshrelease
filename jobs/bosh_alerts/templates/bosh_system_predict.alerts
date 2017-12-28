@@ -1,5 +1,5 @@
 ALERT BOSHJobSystemDiskPredictWillFill
-  IF predict_linear(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*"}[1h], <%= p('bosh_alerts.job_predict_system_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_system_disk_full.threshold') %>
+  IF predict_linear(bosh_job_system_disk_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}[1h], <%= p('bosh_alerts.job_predict_system_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_system_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_predict_system_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
@@ -23,7 +23,7 @@ ALERT BOSHJobSystemDiskPredictWillFill
   }
 
   ALERT BOSHJobPersistentDiskPredictWillFill
-  IF predict_linear(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*"}[1h], <%= p('bosh_alerts.job_predict_persistent_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_persistent_disk_full.threshold') %>
+  IF predict_linear(bosh_job_persistent_disk_percent{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}[1h], <%= p('bosh_alerts.job_predict_persistent_disk_full.predict_time') %>) > <%= p('bosh_alerts.job_predict_persistent_disk_full.threshold') %>
   FOR <%= p('bosh_alerts.job_predict_persistent_disk_full.evaluation_time') %>
   LABELS {
     service = "bosh-job",
