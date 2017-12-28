@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "4.6.3"
     },
     {
       "type": "panel",
@@ -30,7 +30,17 @@
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
@@ -67,6 +77,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Number of container backing store files. Emitted every 30 seconds.",
           "editable": true,
@@ -93,6 +105,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
@@ -119,6 +132,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -158,6 +172,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Number of attached loop devices. Emitted every 30 seconds.",
           "editable": true,
@@ -182,6 +198,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
@@ -208,6 +225,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -247,6 +265,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "description": "Number of directories in the Garden depot. Emitted every 30 seconds.",
           "editable": true,
@@ -271,12 +291,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
               "expr": "avg(firehose_value_metric_garden_linux_depot_dirs{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\", bosh_job_id=~\"$bosh_job_id\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
               "refId": "A",
@@ -296,6 +318,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -347,7 +370,7 @@
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(firehose_value_metric_garden_linux_backing_stores, environment)",
+        "query": "label_values(firehose_value_metric_garden_linux_num_cpus, environment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -367,7 +390,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_garden_linux_backing_stores{environment=~\"$environment\"}, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_garden_linux_num_cpus{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -387,7 +410,7 @@
         "multi": false,
         "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(firehose_value_metric_garden_linux_backing_stores{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
+        "query": "label_values(firehose_value_metric_garden_linux_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -407,7 +430,7 @@
         "multi": false,
         "name": "bosh_job_id",
         "options": [],
-        "query": "label_values(firehose_value_metric_garden_linux_backing_stores{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_id)",
+        "query": "label_values(firehose_value_metric_garden_linux_num_cpus{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}, bosh_job_id)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
