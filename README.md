@@ -131,7 +131,8 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --vars-store tmp/deployment-vars.yml \
   ...
   -o manifests/operators/enable-cf-route-registrar.yml \
-  -v system_domain=
+  -v system_domain= \
+  -v cf_deployment_name=
 ```
 
 The op file will register the following routes:
