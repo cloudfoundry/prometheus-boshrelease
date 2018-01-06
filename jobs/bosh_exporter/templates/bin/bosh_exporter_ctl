@@ -35,61 +35,61 @@ case $1 in
     <% end %>
 
     exec bosh_exporter \
-      -bosh.url="<%= p('bosh_exporter.bosh.url') %>" \
+      --bosh.url="<%= p('bosh_exporter.bosh.url') %>" \
       <% if_p('bosh_exporter.bosh.username') do |username| %> \
-      -bosh.username="<%= username %>" \
+      --bosh.username="<%= username %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.password') do |password| %> \
-      -bosh.password="<%= password %>" \
+      --bosh.password="<%= password %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.uaa.client_id') do |client_id| %> \
-      -bosh.uaa.client-id="<%= client_id %>" \
+      --bosh.uaa.client-id="<%= client_id %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.uaa.client_secret') do |client_secret| %> \
-      -bosh.uaa.client-secret="<%= client_secret %>" \
+      --bosh.uaa.client-secret="<%= client_secret %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.log_level') do |log_level| %> \
-      -bosh.log-level="<%= log_level %>" \
+      --bosh.log-level="<%= log_level %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.ca_cert') do %> \
-      -bosh.ca-cert-file="/var/vcap/jobs/bosh_exporter/config/bosh_ca_cert.pem" \
+      --bosh.ca-cert-file="/var/vcap/jobs/bosh_exporter/config/bosh_ca_cert.pem" \
       <% end %> \
       <% if_p('bosh_exporter.filter.deployments') do |deployments| %> \
-      -filter.deployments="<%= deployments %>" \
+      --filter.deployments="<%= deployments %>" \
       <% end %> \
       <% if_p('bosh_exporter.filter.azs') do |azs| %> \
-      -filter.azs="<%= azs %>" \
+      --filter.azs="<%= azs %>" \
       <% end %> \
       <% if_p('bosh_exporter.filter.collectors') do |collectors| %> \
-      -filter.collectors="<%= collectors %>" \
+      --filter.collectors="<%= collectors %>" \
       <% end %> \
       <% if_p('bosh_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('bosh_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
       <% if_p('bosh_exporter.metrics.namespace') do |namespace| %> \
-      -metrics.namespace="<%= namespace %>" \
+      --metrics.namespace="<%= namespace %>" \
       <% end %> \
-      -metrics.environment="<%= p('bosh_exporter.metrics.environment') %>" \
-      -sd.filename="${STORE_DIR}/bosh_target_groups.json" \
+      --metrics.environment="<%= p('bosh_exporter.metrics.environment') %>" \
+      --sd.filename="${STORE_DIR}/bosh_target_groups.json" \
       <% if_p('bosh_exporter.sd.processes_regexp') do |processes_regexp| %> \
-      -sd.processes_regexp="<%= namespace %>" \
+      --sd.processes_regexp="<%= namespace %>" \
       <% end %> \
-      -web.listen-address=":<%= p('bosh_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('bosh_exporter.web.port') %>" \
       <% if_p('bosh_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       <% if_p('bosh_exporter.web.auth_username') do |auth_username| %> \
-      -web.auth.username="<%= auth_username %>" \
+      --web.auth.username="<%= auth_username %>" \
       <% end %> \
       <% if_p('bosh_exporter.web.auth_password') do |auth_password| %> \
-      -web.auth.password="<%= auth_password %>" \
+      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('bosh_exporter.web.tls_cert', 'bosh_exporter.web.tls_key') do %> \
-      -web.tls.cert_file="/var/vcap/jobs/bosh_exporter/config/web_tls_cert.pem" \
-      -web.tls.key_file="/var/vcap/jobs/bosh_exporter/config/web_tls_key.pem" \
+      --web.tls.cert_file="/var/vcap/jobs/bosh_exporter/config/web_tls_cert.pem" \
+      --web.tls.key_file="/var/vcap/jobs/bosh_exporter/config/web_tls_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/bosh_exporter.stdout.log \
       2>> ${LOG_DIR}/bosh_exporter.stderr.log

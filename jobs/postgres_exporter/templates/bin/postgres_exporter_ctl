@@ -25,17 +25,17 @@ case $1 in
 
     exec postgres_exporter \
       <% if_p('postgres_exporter.custom_queries') do %> \
-      -extend.query-path="/var/vcap/jobs/postgres_exporter/config/custom_queries.sql" \
+      --extend.query-path="/var/vcap/jobs/postgres_exporter/config/custom_queries.sql" \
       <% end %> \
       <% if_p('postgres_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('postgres_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('postgres_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('postgres_exporter.web.port') %>" \
       <% if_p('postgres_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/postgres_exporter.stdout.log \
       2>> ${LOG_DIR}/postgres_exporter.stderr.log

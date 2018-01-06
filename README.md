@@ -120,7 +120,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v skip_ssl_verify=
 ```
 
-*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Elastic Runtime](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
+*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
 
 #### Register Cloud Foundry routes
 
@@ -131,7 +131,8 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   --vars-store tmp/deployment-vars.yml \
   ...
   -o manifests/operators/enable-cf-route-registrar.yml \
-  -v system_domain=
+  -v system_domain= \
+  -v cf_deployment_name=
 ```
 
 The op file will register the following routes:
@@ -181,8 +182,8 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-cadvisor.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cadvisor.yml) | Enables monitoring [cAdvisor](https://github.com/google/cadvisor) | x | | |
 | [monitor-cf.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) | Enables monitoring [Cloud Foundry](https://www.cloudfoundry.org/) via the [Cloud Foundry](https://github.com/bosh-prometheus/cf_exporter) and [Cloud Foundry Firehose](https://github.com/bosh-prometheus/firehose_exporter) exporters (you must apply the [add-prometheus-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file to your [cf-deployment](https://github.com/cloudfoundry/cf-deployment)) | x | x | x |
 | [monitor-collectd.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-collectd.yml) | Enables monitoring [Collectd](https://github.com/prometheus/collectd_exporter) | x | | |
-| [monitor-concourse.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse.yml) | Enables monitoring [Concourse CI](http://concourse.ci/) (requires the [monitor-influxdb.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-influxdb.yml) op file) | | x | x |
-| [monitor-concourse-influxdb.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse-influxdb.yml) | Enables monitoring [Concourse CI](http://concourse.ci/). Requires [node exporter](https://github.com/bosh-prometheus/node-exporter-boshrelease) on Concourse VMs (probably as a BOSH add-on) and InfluxDB to be deployed independently and configured as a data source in Grafana as well as Concourse configured to send events to InfluxDB | | x |  |
+| [monitor-concourse.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse.yml) | Enables monitoring [Concourse CI](http://concourse.ci/) >= v3.8.0 (you must apply the [enable-prometheus-metrics.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/concourse/enable-prometheus-metrics.yml) op file to your [concourse-deployment](https://github.com/concourse/concourse-deployment)) | | x | x |
+| [monitor-concourse-influxdb.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-concourse-influxdb.yml) | Enables monitoring [Concourse CI](http://concourse.ci/) < v3.8.0. Requires [node exporter](https://github.com/bosh-prometheus/node-exporter-boshrelease) on Concourse VMs (probably as a BOSH add-on) and InfluxDB to be deployed independently and configured as a data source in Grafana as well as Concourse configured to send events to InfluxDB | | x |  |
 | [monitor-consul.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-consul.yml) | Enables monitoring [Consul](https://github.com/prometheus/consul_exporter) | x | x | x |
 | [monitor-elasticsearch.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-elasticsearch.yml) | Enables monitoring [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter) | x | x | x |
 | [monitor-github.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-github.yml) | Enables monitoring [Github](https://github.com/infinityworksltd/github-exporter) | x | | |

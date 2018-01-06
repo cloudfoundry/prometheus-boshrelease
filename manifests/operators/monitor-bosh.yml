@@ -157,6 +157,28 @@
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
   value:
+    job_name: concourse
+    file_sd_configs:
+      - files:
+        - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+    relabel_configs:
+      - source_labels:
+        - __meta_bosh_job_process_name
+        regex: atc
+        action: keep
+      - source_labels:
+        - __meta_bosh_deployment
+        regex: "(.*)"
+        target_label: bosh_deployment
+      - source_labels:
+        - __address__
+        regex: "(.*)"
+        target_label: __address__
+        replacement: "${1}:9391"
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value:
     job_name: firehose
     file_sd_configs:
       - files:
