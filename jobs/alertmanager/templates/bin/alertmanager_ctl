@@ -35,27 +35,30 @@ case $1 in
     <% end %>
 
     exec alertmanager \
-      -config.file="/var/vcap/jobs/alertmanager/config/alertmanager.yml" \
+      --config.file="/var/vcap/jobs/alertmanager/config/alertmanager.yml" \
+      <% if_p('alertmanager.alerts.gc_interval') do |gc_interval| %> \
+      --alerts.gc-interval="<%= gc_interval %>" \
+      <% end %> \
       <% if_p('alertmanager.data.retention') do |retention| %> \
-      -data.retention="<%= retention %>" \
+      --data.retention="<%= retention %>" \
       <% end %> \
       <% if_p('alertmanager.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -mesh.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port')}" %> \
+      --mesh.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port')}" %> \
       <% if_p('alertmanager.mesh.password') do |password| %> \
-      -mesh.password="<%= password %>" \
+      --mesh.password="<%= password %>" \
       <% end %> \
       <% link('alertmanager').instances.each do |instance|  %> \
-      -mesh.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port')}" %>" \
+      --mesh.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port')}" %>" \
       <% end %> \
-      -storage.path="${STORE_DIR}" \
+      --storage.path="${STORE_DIR}" \
       <% if_p('alertmanager.web.external_url') do |external_url| %> \
-      -web.external-url="<%= external_url %>" \
+      --web.external-url="<%= external_url %>" \
       <% end %> \
-      -web.listen-address=":<%= p('alertmanager.web.port') %>" \
+      --web.listen-address=":<%= p('alertmanager.web.port') %>" \
       <% if_p('alertmanager.web.route_prefix') do |route_prefix| %> \
-      -web.route-prefix="<%= route_prefix %>" \
+      --web.route-prefix="<%= route_prefix %>" \
       <% end %> \
       >>  ${LOG_DIR}/alertmanager.stdout.log \
       2>> ${LOG_DIR}/alertmanager.stderr.log
