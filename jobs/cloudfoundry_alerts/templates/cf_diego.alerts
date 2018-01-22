@@ -1,5 +1,5 @@
 ALERT CFLRPAuctionsFailedTooHigh
-  IF avg(irate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.lrp_auctions_failed.threshold') %>
+  IF avg(irate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.lrp_auctions_failed.threshold') %>
   FOR <%= p('cloudfoundry_alerts.lrp_auctions_failed.evaluation_time') %>
   LABELS {
     service = "cf",
