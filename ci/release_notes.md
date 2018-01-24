@@ -1,6 +1,12 @@
 ### Features
 
+* Added basic `grootfs` alerts
 * Use BOSH vendored [golang-1.9](https://github.com/bosh-packages/golang-release) package
+
+### Fixes
+
+* Fix `CFLRPAuctionsFailedTooHigh` alert
+* Removed nginx URL path for `grafana`
 
 ### Upgrades
 
