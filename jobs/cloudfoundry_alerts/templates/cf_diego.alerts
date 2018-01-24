@@ -129,3 +129,27 @@ ALERT CFNsyncBulkerSyncDurationTooHigh
     summary = "Diego Nsync bulker desired LRP sync duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec",
     description = "Diego Nsync bulker at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a desired LRP sync duration of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.evaluation_time') %>",
   }
+
+ALERT GrootFSCreateFailTooHigh
+  IF avg(irate(firehose_counter_event_grootfs_grootfs_create_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_create_fail.threshold') %>
+  FOR <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>
+  LABELS {
+    service = "cf",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}",
+    description = "The number of GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>",
+  }
+
+ALERT GrootFSDeleteFailTooHigh
+  IF avg(irate(firehose_counter_event_grootfs_grootfs_delete_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_delete_fail.threshold') %>
+  FOR <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>
+  LABELS {
+    service = "cf",
+    severity = "warning",
+  }
+  ANNOTATIONS {
+    summary = "GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}",
+    description = "The number of GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>",
+  }
