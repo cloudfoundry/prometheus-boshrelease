@@ -34,6 +34,9 @@ case $1 in
       <% if_p('redis_exporter.namespace') do |namespace| %> \
       -namespace="<%= namespace %>" \
       <% end %> \
+      <% if p('redis_exporter.redis_only_metrics') %> \
+      -redis-only-metrics \
+      <% end %> \
       <% if_p('redis_exporter.redis.address') do |address| %> \
       -redis.addr="<%= address %>" \
       <% end %> \
