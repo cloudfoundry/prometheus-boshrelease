@@ -11,7 +11,7 @@ ALERT CFCellUnhealthy
   }
 
 ALERT CFCellsOverallAvailableMemoryTooLow
-  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) / sum(avg(firehose_value_metric_rep_capacity_total_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment)) * 100 < <%= p('cloudfoundry_alerts.overall_available_memory.threshold') %>
+  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_memory.threshold') %>
   FOR <%= p('cloudfoundry_alerts.overall_available_memory.evaluation_time') %>
   LABELS {
     service = "cf",
@@ -23,7 +23,7 @@ ALERT CFCellsOverallAvailableMemoryTooLow
   }
 
 ALERT CFCellsMaxAvailableMemoryTooLow
-  IF max(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) < <%= p('cloudfoundry_alerts.max_available_memory.threshold') %>
+  IF max(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_memory.threshold') %>
   FOR <%= p('cloudfoundry_alerts.max_available_memory.evaluation_time') %>
   LABELS {
     service = "cf",
@@ -35,7 +35,7 @@ ALERT CFCellsMaxAvailableMemoryTooLow
   }
 
 ALERT CFCellsOverallAvailableDiskTooLow
-  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) / sum(avg(firehose_value_metric_rep_capacity_total_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment)) * 100 < <%= p('cloudfoundry_alerts.overall_available_disk.threshold') %>
+  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_disk.threshold') %>
   FOR <%= p('cloudfoundry_alerts.overall_available_disk.evaluation_time') %>
   LABELS {
     service = "cf",
@@ -47,7 +47,7 @@ ALERT CFCellsOverallAvailableDiskTooLow
   }
 
 ALERT CFCellsMaxAvailableDiskTooLow
-  IF max(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) < <%= p('cloudfoundry_alerts.max_available_disk.threshold') %>
+  IF max(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_disk.threshold') %>
   FOR <%= p('cloudfoundry_alerts.max_available_disk.evaluation_time') %>
   LABELS {
     service = "cf",
@@ -59,7 +59,7 @@ ALERT CFCellsMaxAvailableDiskTooLow
   }
 
 ALERT CFCellsOverallAvailableContainersTooLow
-  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) / sum(avg(firehose_value_metric_rep_capacity_total_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment)) * 100 < <%= p('cloudfoundry_alerts.overall_available_containers.threshold') %>
+  IF (sum(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_containers.threshold') %>
   FOR <%= p('cloudfoundry_alerts.overall_available_containers.evaluation_time') %>
   LABELS {
     service = "cf",
@@ -71,7 +71,7 @@ ALERT CFCellsOverallAvailableContainersTooLow
   }
 
 ALERT CFCellsMaxAvailableContainersTooLow
-  IF max(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment) < <%= p('cloudfoundry_alerts.max_available_containers.threshold') %>
+  IF max(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_containers.threshold') %>
   FOR <%= p('cloudfoundry_alerts.max_available_containers.evaluation_time') %>
   LABELS {
     service = "cf",
