@@ -22,16 +22,19 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec memcached_exporter \
-      -memcached.address="<%= p('memcached_exporter.memcached.address') %>" \
+      --memcached.address="<%= p('memcached_exporter.memcached.address') %>" \
       <% if_p('memcached_exporter.memcached.timeout') do |timeout| %> \
-      -memcached.timeout="<%= timeout %>" \
+      --memcached.timeout="<%= timeout %>" \
       <% end %> \
       <% if_p('memcached.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('memcached_exporter.web.port') %>" \
+      <% if_p('memcached.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
+      --web.listen-address=":<%= p('memcached_exporter.web.port') %>" \
       <% if_p('memcached_exporter.web.metrics_path') do |metrics_path| %> \
-      -web.metrics-path="<%= metrics_path %>" \
+      --web.metrics-path="<%= metrics_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/memcached_exporter.stdout.log \
       2>> ${LOG_DIR}/memcached_exporter.stderr.log

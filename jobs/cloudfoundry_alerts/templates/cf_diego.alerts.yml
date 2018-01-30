@@ -2,7 +2,7 @@ groups:
 - name: cf-diego
   rules:
   - alert: CFLRPAuctionsFailedTooHigh
-    expr: avg(irate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.lrp_auctions_failed.threshold') %>
+    expr: avg(irate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.lrp_auctions_failed.threshold') %>
     for: <%= p('cloudfoundry_alerts.lrp_auctions_failed.evaluation_time') %>
     labels:
       service: cf
@@ -100,3 +100,21 @@ groups:
     annotations:
       description: Diego Nsync bulker at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a desired LRP sync duration of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.evaluation_time') %>
       summary: 'Diego Nsync bulker desired LRP sync duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec'
+  - alert: GrootFSCreateFailTooHigh
+    expr: avg(irate(firehose_counter_event_grootfs_grootfs_create_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_create_fail.threshold') %>
+    for: <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>
+    labels:
+      service: cf
+      severity: warning
+    annotations:
+      summary: GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}
+      description: The number of GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>
+  - alert: GrootFSDeleteFailTooHigh
+    expr: avg(irate(firehose_counter_event_grootfs_grootfs_delete_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_delete_fail.threshold') %>
+    for: <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>
+    labels:
+      service: cf
+      severity: warning
+    annotations:
+      summary: GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}
+      description: The number of GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>

@@ -22,23 +22,26 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec collectd_exporter \
-      -collectd.auth-file="/var/vcap/jobs/collectd_exporter/config/collectd_auth.conf" \
-      -collectd.listen-address=":<%= p('collectd_exporter.collectd.port') %>" \
+      --collectd.auth-file="/var/vcap/jobs/collectd_exporter/config/collectd_auth.conf" \
+      --collectd.listen-address=":<%= p('collectd_exporter.collectd.port') %>" \
       <% if_p('collectd_exporter.collectd.security_level') do |security_level| %> \
-      -collectd.security-level="<%= security_level %>" \
+      --collectd.security-level="<%= security_level %>" \
+      <% end %> \
+      <% if_p('collectd_exporter.collectd.udp_buffer') do |udp_buffer| %> \
+      --collectd.udp-buffer="<%= udp_buffer %>" \
       <% end %> \
       <% if_p('collectd_exporter.collectord.push_path') do |push_path| %> \
-      -web.collectd-push-path="<%= push_path %>" \
+      --web.collectd-push-path="<%= push_path %>" \
       <% end %> \
       <% if_p('collectd_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('collectd_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('collectd_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('collectd_exporter.web.port') %>" \
       <% if_p('collectd_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/collectd_exporter.stdout.log \
       2>> ${LOG_DIR}/collectd_exporter.stderr.log
