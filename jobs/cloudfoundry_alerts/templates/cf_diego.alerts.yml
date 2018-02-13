@@ -107,7 +107,7 @@ groups:
       service: cf
       severity: warning
     annotations:
-      summary: GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}
+      summary: 'GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}'
       description: The number of GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>
   - alert: GrootFSDeleteFailTooHigh
     expr: avg(irate(firehose_counter_event_grootfs_grootfs_delete_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_delete_fail.threshold') %>
@@ -116,5 +116,5 @@ groups:
       service: cf
       severity: warning
     annotations:
-      summary: GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}
+      summary: 'GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}'
       description: The number of GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>
