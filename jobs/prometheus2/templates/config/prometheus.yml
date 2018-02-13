@@ -25,7 +25,19 @@ rule_files: <%= p('prometheus.rule_files', []).push('/var/vcap/jobs/prometheus2/
 scrape_configs: <%= p('prometheus.scrape_configs', []).to_json %>
 
 # Alerting specifies settings related to the Alertmanager.
-alerting: <%= p('prometheus.alerting', {}).to_json %>
+<%
+  alerting = p('prometheus.alerting', {})
+  if_link('alertmanager') do |alertmanager|
+    targets = alertmanager.instances.map do |instance|
+      URI.join("#{instance.address}:#{alertmanager.p('alertmanager.web.port')}", "#{alertmanager.p('alertmanager.web.route_prefix', "")}")
+    end
+    alertmanagers = [{'static_configs': [{'targets': targets}]}]
+    if !alerting.has_key? 'alertmanagers'
+      alerting['alertmanagers'] = alertmanagers
+    end
+  end
+%>
+alerting: <%= alerting.to_json %>
 
 <% if_p('prometheus.remote_write') do |remote_write| %>
 # Settings related to the experimental remote write feature.
