@@ -74,169 +74,15 @@
       "panels": [
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "#299c46",
+            "#d44a3a",
             "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
+            "#299c46"
           ],
           "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 5,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(avg(kube_node_info) by(node))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "",
-          "title": "Number of Nodes",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "avg"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "format": "bytes",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 6,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "node",
-          "targets": [
-            {
-              "expr": "min(min(kube_node_status_allocatable_memory_bytes) by(node))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "",
-          "title": "Node with Least Remaining Memory",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -283,16 +129,103 @@
           "tableColumn": "node",
           "targets": [
             {
-              "expr": "bottomk(1, min(kube_node_status_allocatable_memory_bytes) by(node))",
+              "expr": "max(kube_node_spec_unschedulable{node=~\"$node\"})",
               "format": "time_series",
-              "instant": true,
               "intervalFactor": 2,
-              "legendFormat": "{{node}}",
+              "legendFormat": "",
               "refId": "A"
             }
           ],
-          "thresholds": "",
-          "title": "Node with Least Memory",
+          "thresholds": "1,0",
+          "title": "Schedulable",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "OK",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "NOK",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 5,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "avg(kube_node_status_allocatable_pods{node=~\"$node\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "10,50",
+          "title": "Remaining Pods",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -303,7 +236,84 @@
               "value": "null"
             }
           ],
-          "valueName": "name"
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": true,
+          "colorValue": false,
+          "colors": [
+            "#d44a3a",
+            "rgba(237, 129, 40, 0.89)",
+            "#299c46"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "bytes",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 6,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "node",
+          "targets": [
+            {
+              "expr": "avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "2048,4096",
+          "title": "Remaining Memory",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
         }
       ],
       "repeat": null,
@@ -354,7 +364,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_pods) by(node)) - sum(avg(kube_node_status_allocatable_pods) by(node))",
+              "expr": "sum(avg(kube_node_status_capacity_pods{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -363,7 +373,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_pods) by(node))",
+              "expr": "sum(avg(kube_node_status_allocatable_pods{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Allocatable",
@@ -457,7 +467,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_memory_bytes) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes) by(node))",
+              "expr": "sum(avg(kube_node_status_capacity_memory_bytes{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Used",
@@ -465,7 +475,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes) by(node))",
+              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "Allocatable",
@@ -560,7 +570,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_cpu_cores) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores) by(node))",
+              "expr": "sum(avg(kube_node_status_capacity_cpu_cores{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -569,7 +579,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores) by(node))",
+              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -599,12 +609,11 @@
           },
           "yaxes": [
             {
-              "decimals": 0,
               "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": "0",
+              "min": null,
               "show": true
             },
             {
@@ -666,7 +675,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_nvidia_gpu_cards) by(node)) - sum(avg(kube_node_status_allocatable_nvidia_gpu_cards) by(node))",
+              "expr": "sum(avg(kube_node_status_capacity_nvidia_gpu_cards{node=~\"$node\"}) by(node)) - sum(avg(kube_node_status_allocatable_nvidia_gpu_cards{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -675,7 +684,7 @@
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_nvidia_gpu_cards) by(node))",
+              "expr": "sum(avg(kube_node_status_allocatable_nvidia_gpu_cards{node=~\"$node\"}) by(node))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -705,12 +714,11 @@
           },
           "yaxes": [
             {
-              "decimals": 0,
               "format": "short",
-              "label": "",
+              "label": null,
               "logBase": 1,
               "max": null,
-              "min": "0",
+              "min": null,
               "show": true
             },
             {
@@ -739,7 +747,28 @@
     "nodes"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Node",
+        "multi": false,
+        "name": "node",
+        "options": [],
+        "query": "label_values(kube_node_info, node)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -771,6 +800,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes: Nodes Capacity",
+  "title": "Kubernetes: Node Summary",
   "version": 1
 }

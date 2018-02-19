@@ -17,12 +17,6 @@
       "version": "4.6.3"
     },
     {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
@@ -70,19 +64,21 @@
   "rows": [
     {
       "collapse": false,
-      "height": "150px",
+      "height": "200px",
       "panels": [
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "#299c46",
+            "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
+            "rgba(50, 172, 45, 0.97)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "format": "s",
+          "editable": true,
+          "error": false,
+          "format": "none",
           "gauge": {
             "maxValue": 100,
             "minValue": 0,
@@ -90,7 +86,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 4,
+          "id": 1,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -107,7 +103,7 @@
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
-          "postfix": " ago",
+          "postfix": "",
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
@@ -128,14 +124,15 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "time() - max(kube_pod_created{namespace=~\"$namespace\",pod=~\"$pod\"})",
+              "expr": "min(kube_node_status_condition{node=~\"$node\",condition=\"Ready\",status=\"true\"})",
               "format": "time_series",
               "intervalFactor": 2,
-              "refId": "A"
+              "refId": "A",
+              "step": 60
             }
           ],
-          "thresholds": "",
-          "title": "Created",
+          "thresholds": "0.5,1",
+          "title": "Ready",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -144,21 +141,33 @@
               "op": "=",
               "text": "N/A",
               "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "NOK",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "OK",
+              "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         },
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "#299c46",
+            "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "format": "s",
+          "editable": true,
+          "error": false,
+          "format": "none",
           "gauge": {
             "maxValue": 100,
             "minValue": 0,
@@ -166,7 +175,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 5,
+          "id": 9,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -183,7 +192,7 @@
           "maxDataPoints": 100,
           "nullPointMode": "connected",
           "nullText": null,
-          "postfix": " ago",
+          "postfix": "",
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
@@ -204,14 +213,16 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "time() - max(kube_pod_start_time{namespace=~\"$namespace\",pod=~\"$pod\"})",
+              "expr": "min(kube_node_status_condition{node=~\"$node\",condition=\"MemoryPressure\",status=\"true\"})",
               "format": "time_series",
+              "instant": false,
               "intervalFactor": 2,
-              "refId": "A"
+              "refId": "A",
+              "step": 60
             }
           ],
-          "thresholds": "",
-          "title": "Started",
+          "thresholds": "0.5,1",
+          "title": "Memory Pressure",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -220,20 +231,32 @@
               "op": "=",
               "text": "N/A",
               "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "OK",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "NOK",
+              "value": "1"
             }
           ],
-          "valueName": "avg"
+          "valueName": "current"
         },
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "#299c46",
+            "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -270,7 +293,7 @@
               "to": "null"
             }
           ],
-          "span": 6,
+          "span": 3,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -280,15 +303,16 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kube_pod_info{namespace=~\"$namespace\",pod=~\"$pod\"}) by(created_by_kind, created_by_name)",
+              "expr": "min(kube_node_status_condition{node=~\"$node\",condition=\"DiskPressure\",status=\"true\"})",
               "format": "time_series",
+              "instant": false,
               "intervalFactor": 2,
-              "legendFormat": "{{ created_by_kind  }} / {{ created_by_name }}",
-              "refId": "A"
+              "refId": "A",
+              "step": 60
             }
           ],
-          "thresholds": "",
-          "title": "Created By",
+          "thresholds": "0.5,1",
+          "title": "Disk Pressure",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -297,32 +321,32 @@
               "op": "=",
               "text": "N/A",
               "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "OK",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "NOK",
+              "value": "1"
             }
           ],
-          "valueName": "name"
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "150px",
-      "panels": [
+          "valueName": "current"
+        },
         {
           "cacheTimeout": null,
-          "colorBackground": false,
+          "colorBackground": true,
           "colorValue": false,
           "colors": [
-            "#299c46",
+            "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "datasource": "${DS_PROMETHEUS}",
+          "editable": true,
+          "error": false,
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -369,15 +393,191 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kube_pod_info{namespace=~\"$namespace\",pod=~\"$pod\"}) by(host_ip)",
+              "expr": "min(kube_node_status_condition{node=~\"$node\",condition=\"OutOfDisk\",status=\"true\"})",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": "0.5,1",
+          "title": "Out Of Disk",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            },
+            {
+              "op": "=",
+              "text": "OK",
+              "value": "0"
+            },
+            {
+              "op": "=",
+              "text": "NOK",
+              "value": "1"
+            }
+          ],
+          "valueName": "current"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Health",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "s",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 14,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " ago",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "time() - max(kube_node_created{node=~\"$node\"})",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{ host_ip }}",
               "refId": "A"
             }
           ],
           "thresholds": "",
-          "title": "Host IP",
+          "title": "Created",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 11,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(avg(kube_node_info{node=~\"$node\"}) by(node, kubelet_version)) by(kubelet_version)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{kubelet_version}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Kubelet Version",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -408,7 +608,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 6,
+          "id": 10,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -436,7 +636,7 @@
               "to": "null"
             }
           ],
-          "span": 3,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -446,15 +646,104 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kube_pod_info{namespace=~\"$namespace\",pod=~\"$pod\"}) by(pod_ip)",
+              "expr": "sum(avg(kube_node_info{node=~\"$node\"}) by(node, kubeproxy_version)) by(kubeproxy_version)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{ pod_ip }}",
+              "legendFormat": "{{kubeproxy_version}}",
               "refId": "A"
             }
           ],
           "thresholds": "",
-          "title": "Pod IP",
+          "title": "Kubeproxy Version",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "name"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Versions",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 13,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(avg(kube_node_info{node=~\"$node\"}) by(node, os_image)) by(os_image)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{os_image}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "OS Image",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -485,7 +774,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 9,
+          "id": 12,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -513,7 +802,7 @@
               "to": "null"
             }
           ],
-          "span": 6,
+          "span": 4,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -523,15 +812,92 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(kube_pod_info{namespace=~\"$namespace\",pod=~\"$pod\"}) by(node)",
+              "expr": "sum(avg(kube_node_info{node=~\"$node\"}) by(node, kernel_version)) by(kernel_version)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{ node }}",
+              "legendFormat": "{{kernel_version}}",
               "refId": "A"
             }
           ],
           "thresholds": "",
-          "title": "Node",
+          "title": "Kernel Version",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 15,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(avg(kube_node_info{node=~\"$node\"}) by(node, container_runtime_version)) by(container_runtime_version)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{container_runtime_version}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Container Runtime Version",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -549,330 +915,7 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 1,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(kube_pod_status_phase{namespace=~\"$namespace\",pod=~\"$pod\"}) by(namespace, pod, phase)) by(phase)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{ phase }}",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Phase",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Phase",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(kube_pod_status_ready{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"true\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Ready",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_pod_status_ready{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"false\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Not Ready",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_pod_status_ready{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"unknown\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "Unknown",
-              "refId": "C",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Ready Status",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Reasy Status",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(kube_pod_status_scheduled{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"true\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "Scheduled",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_pod_status_scheduled{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"false\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "Not Scheduled",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "sum(avg(kube_pod_status_scheduled{namespace=~\"$namespace\",pod=~\"$pod\",condition=\"unknown\"}) by(namespace, pod, condition)) by(condition)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Unknown",
-              "refId": "C",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Schedule Status",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 0,
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Schedule Status",
+      "title": "Version",
       "titleSize": "h6"
     }
   ],
@@ -880,7 +923,7 @@
   "style": "dark",
   "tags": [
     "kubernetes",
-    "pods"
+    "nodes"
   ],
   "templating": {
     "list": [
@@ -890,37 +933,17 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
-        "label": "Namespace",
+        "label": "Node",
         "multi": false,
-        "name": "namespace",
+        "name": "node",
         "options": [],
-        "query": "label_values(kube_pod_info, namespace)",
+        "query": "label_values(kube_node_info, node)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Pod",
-        "multi": false,
-        "name": "pod",
-        "options": [],
-        "query": "label_values(kube_pod_info{namespace=~\"$namespace\"}, pod)",
-        "refresh": 1,
-        "regex": "",
-        "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       }
@@ -956,6 +979,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes: Pods",
+  "title": "Kubernetes: Node Health",
   "version": 1
 }

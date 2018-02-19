@@ -18,6 +18,12 @@
     },
     {
       "type": "panel",
+      "id": "grafana-piechart-panel",
+      "name": "Pie Chart",
+      "version": "1.1.6"
+    },
+    {
+      "type": "panel",
       "id": "graph",
       "name": "Graph",
       "version": ""
@@ -82,7 +88,6 @@
             "#d44a3a"
           ],
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -91,7 +96,7 @@
             "thresholdLabels": false,
             "thresholdMarkers": true
           },
-          "id": 5,
+          "id": 4,
           "interval": null,
           "links": [],
           "mappingType": 1,
@@ -119,7 +124,7 @@
               "to": "null"
             }
           ],
-          "span": 4,
+          "span": 6,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -129,170 +134,15 @@
           "tableColumn": "",
           "targets": [
             {
-              "expr": "sum(avg(kube_node_info) by(node))",
+              "expr": "sum(kube_pod_container_info{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"}) by(image)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "",
+              "legendFormat": "{{ image }}",
               "refId": "A"
             }
           ],
           "thresholds": "",
-          "title": "Number of Nodes",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "avg"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "format": "bytes",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 6,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "node",
-          "targets": [
-            {
-              "expr": "min(min(kube_node_status_allocatable_memory_bytes) by(node))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "",
-          "title": "Node with Least Remaining Memory",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "#299c46",
-            "rgba(237, 129, 40, 0.89)",
-            "#d44a3a"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 7,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "node",
-          "targets": [
-            {
-              "expr": "bottomk(1, min(kube_node_status_allocatable_memory_bytes) by(node))",
-              "format": "time_series",
-              "instant": true,
-              "intervalFactor": 2,
-              "legendFormat": "{{node}}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": "",
-          "title": "Node with Least Memory",
+          "title": "Image",
           "transparent": true,
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -304,6 +154,84 @@
             }
           ],
           "valueName": "name"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "decimals": 0,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 9,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 6,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "avg(kube_pod_container_status_restarts_total{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "title": "Restarts",
+          "transparent": true,
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
         }
       ],
       "repeat": null,
@@ -319,7 +247,7 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
@@ -327,19 +255,19 @@
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 3,
+          "id": 1,
           "legend": {
             "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
             "rightSide": true,
             "show": true,
             "total": false,
             "values": true
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -349,32 +277,56 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_pods) by(node)) - sum(avg(kube_node_status_allocatable_pods) by(node))",
+              "expr": "avg(kube_pod_container_status_waiting{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Waiting",
               "refId": "A",
               "step": 4
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_pods) by(node))",
+              "expr": "avg(kube_pod_container_status_ready{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Ready",
               "refId": "B",
+              "step": 4
+            },
+            {
+              "expr": "avg(kube_pod_container_status_running{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Running",
+              "refId": "C",
+              "step": 4
+            },
+            {
+              "expr": "avg(kube_pod_container_status_restarts{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "Restarts",
+              "refId": "D",
+              "step": 4
+            },
+            {
+              "expr": "avg(kube_pod_container_status_terminated{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Terminated",
+              "refId": "E",
               "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Pods",
+          "title": "Status",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -392,11 +344,12 @@
           },
           "yaxes": [
             {
+              "decimals": 0,
               "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": null,
+              "min": "0",
               "show": true
             },
             {
@@ -408,41 +361,27 @@
               "show": false
             }
           ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Pods",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+        },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 2,
+          "id": 3,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
+            "max": false,
+            "min": false,
             "show": true,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -452,25 +391,26 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_memory_bytes) by(node)) - sum(avg(kube_node_status_allocatable_memory_bytes) by(node))",
+              "expr": "avg(kube_pod_container_resource_limits_memory_bytes{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Limits",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_memory_bytes) by(node))",
+              "expr": "avg(kube_pod_container_resource_requests_memory_bytes{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Requests",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -494,7 +434,7 @@
           },
           "yaxes": [
             {
-              "format": "decbytes",
+              "format": "bytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -516,7 +456,7 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "Memory",
+      "title": "Status & Memory",
       "titleSize": "h6"
     },
     {
@@ -525,27 +465,24 @@
       "panels": [
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 2,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
+            "max": false,
+            "min": false,
             "show": true,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -555,27 +492,26 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_cpu_cores) by(node)) - sum(avg(kube_node_status_allocatable_cpu_cores) by(node))",
+              "expr": "avg(kube_pod_container_resource_limits_cpu_cores{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Limits",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_cpu_cores) by(node))",
+              "expr": "avg(kube_pod_container_resource_requests_cpu_cores{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Requests",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
@@ -599,7 +535,6 @@
           },
           "yaxes": [
             {
-              "decimals": 0,
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -616,42 +551,27 @@
               "show": false
             }
           ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "CPU Cores",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+        },
         {
           "aliasColors": {},
-          "bars": true,
+          "bars": false,
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
           "editable": true,
           "error": false,
           "fill": 1,
-          "id": 4,
+          "id": 8,
           "legend": {
-            "alignAsTable": true,
-            "avg": true,
+            "avg": false,
             "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
+            "max": false,
+            "min": false,
             "show": true,
             "total": false,
-            "values": true
+            "values": false
           },
-          "lines": false,
+          "lines": true,
           "linewidth": 1,
           "links": [],
           "nullPointMode": "connected",
@@ -661,33 +581,32 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
-          "stack": true,
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(avg(kube_node_status_capacity_nvidia_gpu_cards) by(node)) - sum(avg(kube_node_status_allocatable_nvidia_gpu_cards) by(node))",
+              "expr": "avg(kube_pod_container_resource_limits_nvidia_gpu_devices{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Used",
+              "legendFormat": "Limits",
               "refId": "A",
-              "step": 4
+              "step": 10
             },
             {
-              "expr": "sum(avg(kube_node_status_allocatable_nvidia_gpu_cards) by(node))",
+              "expr": "avg(kube_pod_container_resource_requests_nvidia_gpu_devices{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"})",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Allocatable",
+              "legendFormat": "Requests",
               "refId": "B",
-              "step": 4
+              "step": 10
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "GPU Cards",
+          "title": "GPU Devices",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -705,9 +624,8 @@
           },
           "yaxes": [
             {
-              "decimals": 0,
               "format": "short",
-              "label": "",
+              "label": null,
               "logBase": 1,
               "max": null,
               "min": "0",
@@ -728,7 +646,95 @@
       "repeatIteration": null,
       "repeatRowId": null,
       "showTitle": false,
-      "title": "GPU Cards",
+      "title": "CPUs & GPUs",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "cacheTimeout": null,
+          "combine": {
+            "label": "Others",
+            "threshold": 0
+          },
+          "datasource": "${DS_PROMETHEUS}",
+          "fontSize": "80%",
+          "format": "short",
+          "id": 6,
+          "interval": null,
+          "legend": {
+            "percentage": true,
+            "show": true,
+            "values": true
+          },
+          "legendType": "Under graph",
+          "links": [],
+          "maxDataPoints": 3,
+          "nullPointMode": "connected",
+          "pieType": "pie",
+          "span": 6,
+          "strokeWidth": 1,
+          "targets": [
+            {
+              "expr": "avg(kube_pod_container_status_waiting_reason{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"}) by(namespace, pod, container, reason)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ reason }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Waiting Reasons",
+          "transparent": true,
+          "type": "grafana-piechart-panel",
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {},
+          "cacheTimeout": null,
+          "combine": {
+            "label": "Others",
+            "threshold": 0
+          },
+          "datasource": "${DS_PROMETHEUS}",
+          "fontSize": "80%",
+          "format": "short",
+          "id": 7,
+          "interval": null,
+          "legend": {
+            "percentage": true,
+            "show": true,
+            "values": true
+          },
+          "legendType": "Under graph",
+          "links": [],
+          "maxDataPoints": 3,
+          "nullPointMode": "connected",
+          "pieType": "pie",
+          "span": 6,
+          "strokeWidth": 1,
+          "targets": [
+            {
+              "expr": "avg(kube_pod_container_status_terminated_reason{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"}) by(namespace, pod, container, reason)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ reason }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Terminated Reasons",
+          "transparent": true,
+          "type": "grafana-piechart-panel",
+          "valueName": "current"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Waiting & Terminated Reasons",
       "titleSize": "h6"
     }
   ],
@@ -736,10 +742,71 @@
   "style": "dark",
   "tags": [
     "kubernetes",
-    "nodes"
+    "pods"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Namespace",
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": "label_values(kube_pod_container_info, namespace)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Pod",
+        "multi": false,
+        "name": "pod",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=~\"$namespace\"}, pod)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Container",
+        "multi": false,
+        "name": "container",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=~\"$namespace\",pod=~\"$pod\"}, container)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -771,6 +838,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes: Nodes Capacity",
+  "title": "Kubernetes: Pod Containers",
   "version": 1
 }
