@@ -3,6 +3,10 @@
 * Allow setting custom headers in nginx config
 * Allow `kube-state-metrics` to get properties from [cfcf](https://docs-cfcr.cfapps.io/)
 
+### Manifests
+
+* Bump `postgres` relase to [v26](https://github.com/cloudfoundry/postgres-release/releases/tag/v26)
+
 ### Upgrades
 
 * `alertmanager` to [v0.14.0](https://github.com/prometheus/alertmanager/releases/tag/v0.14.0)
