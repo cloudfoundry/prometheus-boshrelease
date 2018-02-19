@@ -1,0 +1,54 @@
+---
+
+# fork of https://github.com/concourse/influxdb-boshrelease
+# includes influxdb 1.4.3 (prometheus support) and bosh linking
+- type: replace
+  path: /releases/-
+  value:
+    name: influxdb
+    version: 0.1.0-govau
+    sha1: c58eecf07c3d86138bb59453b07f78642fd84328
+    url: https://github.com/govau/influxdb-boshrelease/releases/download/v0.1.0-govau/influxdb-0.1.0-govau.tgz
+
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: influxdb
+    azs:
+      - z1
+    instances: 1
+    vm_type: default
+    persistent_disk: 10_240
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: influxdb
+        release: influxdb
+        provides:
+          influxdb: {as: influxdb}
+        properties:
+          influxdb:
+            database: prometheus
+            user: ((influxdb_user.username))
+            password: ((influxdb_user.password))
+            retention: 30d
+
+# set a key/value in remote_write to help with BOSH template `prometheus.yml`
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/remote_write?/-
+  value:
+    remote_timeout: 30s
+
+# set a key/value in remote_read to help with BOSH template `prometheus.yml`
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/remote_read?/-
+  value:
+    remote_timeout: 30s
+
+# Influxdb username/password
+- type: replace
+  path: /variables/-
+  value:
+    name: influxdb_user
+    type: user
