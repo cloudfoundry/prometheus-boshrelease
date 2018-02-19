@@ -1,6 +1,7 @@
 ### Features
 
 * Allow setting custom headers in nginx config
+* Allow `kube-state-metrics` to get properties from [cfcf](https://docs-cfcr.cfapps.io/)
 
 ### Upgrades
 

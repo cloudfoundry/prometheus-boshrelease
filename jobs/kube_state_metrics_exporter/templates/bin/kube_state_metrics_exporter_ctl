@@ -29,9 +29,7 @@ case $1 in
       --collectors="<%= collectors %>" \
       <% end %> \
       --in-cluster=false \
-      <% if_p('kube_state_metrics_exporter.kubeconfig') do %> \
       --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
-      <% end %> \
       <% if_p('kube_state_metrics_exporter.log_backtrace_at') do |log_backtrace_at| %> \
       --log_backtrace_at="<%= log_backtrace_at %>" \
       <% end %> \

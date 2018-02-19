@@ -6,7 +6,13 @@ packages:
 
 templates:
   bin/kube_state_metrics_exporter_ctl: bin/kube_state_metrics_exporter_ctl
+  config/kubeca.pem: config/kubeca.pem
   config/kubeconfig: config/kubeconfig
+
+consumes:
+  - name: kube-apiserver
+    type: kube-apiserver
+    optional: true
 
 properties:
   kube_state_metrics_exporter.apiserver:
@@ -15,6 +21,8 @@ properties:
     description: "Comma-separated list of collectors to be enabled"
   kube_state_metrics_exporter.kubeconfig:
     description: "Kubernetes configuration"
+  kube_state_metrics_exporter.kubeconfig_tls_ca:
+    description: "Kubernetes TLS CA (pem format)"
   kube_state_metrics_exporter.log_backtrace_at:
     description: "when logging hits line file:N, emit a stack trace (default :0)"
   kube_state_metrics_exporter.namespace:
