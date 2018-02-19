@@ -40,8 +40,11 @@ case $1 in
       --namespace="<%= namespace %>" \
       <% end %> \
       --port=<%= p('kube_state_metrics_exporter.port') %> \
-      <% if_p('kube_state_metrics.stderrthreshold') do |stderrthreshold| %> \
+      <% if_p('kube_state_metrics_exporter.stderrthreshold') do |stderrthreshold| %> \
       --stderrthreshold="<%= stderrthreshold %>" \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.telemetry_port') do |telemetry_port| %> \
+      --telemetry-port="<%= telemetry_port %>" \
       <% end %> \
       <% if_p('kube_state_metrics_exporter.v') do |v| %> \
       --v="<%= v %>" \
