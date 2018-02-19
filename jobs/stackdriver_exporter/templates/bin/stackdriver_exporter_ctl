@@ -39,23 +39,23 @@ case $1 in
     <% end %>
 
     exec stackdriver_exporter \
-      -google.project-id="<%= p('stackdriver_exporter.google.project_id') %>" \
-      -monitoring.metrics-type-prefixes="<%= p('stackdriver_exporter.monitoring.metrics_type_prefixes') %>" \
+      --google.project-id="<%= p('stackdriver_exporter.google.project_id') %>" \
+      --monitoring.metrics-type-prefixes="<%= p('stackdriver_exporter.monitoring.metrics_type_prefixes') %>" \
       <% if_p('stackdriver_exporter.monitoring.metrics_interval') do |metrics_interval| %> \
-      -monitoring.metrics-interval="<%= metrics_interval %>" \
+      --monitoring.metrics-interval="<%= metrics_interval %>" \
       <% end %> \
       <% if_p('stackdriver_exporter.monitoring.metrics_offset') do |metrics_offset| %> \
-      -monitoring.metrics-offset="<%= metrics_offset %>" \
+      --monitoring.metrics-offset="<%= metrics_offset %>" \
       <% end %> \
       <% if_p('stackdriver_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('stackdriver_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('stackdriver_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('stackdriver_exporter.web.port') %>" \
       <% if_p('stackdriver_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/stackdriver_exporter.stdout.log \
       2>> ${LOG_DIR}/stackdriver_exporter.stderr.log
