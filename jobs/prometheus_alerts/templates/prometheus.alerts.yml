@@ -19,15 +19,6 @@ groups:
     annotations:
       description: The Prometheus instance at `{{$labels.instance}}` has failed to reload its configuration during the last <%= p('prometheus_alerts.config_reload_failed.evaluation_time') %>
       summary: Prometheus instance `{{$labels.instance}}` config reload failed
-  - alert: PrometheusSkippingScrapes
-    expr: rate(prometheus_target_skipped_scrapes_total[5m]) > <%= p('prometheus_alerts.skipping_scrapes.threshold') %>
-    for: <%= p('prometheus_alerts.skipping_scrapes.evaluation_time') %>
-    labels:
-      service: prometheus
-      severity: warning
-    annotations:
-      description: The Prometheus instance at `{{$labels.instance}}` has been skipping scrapes during the last <%= p('prometheus_alerts.skipping_scrapes.evaluation_time') %>
-      summary: Prometheus instance `{{$labels.instance}}` is skipping scrapes
   - alert: PrometheusExceededSampleLimit
     expr: rate(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > <%= p('prometheus_alerts.exceeded_sample_limit.threshold') %>
     for: <%= p('prometheus_alerts.exceeded_sample_limit.evaluation_time') %>
