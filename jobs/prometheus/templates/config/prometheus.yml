@@ -27,6 +27,19 @@ scrape_configs: <%= p('prometheus.scrape_configs', []).to_json %>
 # Alerting specifies settings related to the Alertmanager.
 alerting: <%= p('prometheus.alerting', {}).to_json %>
 
+<%
+  if_link('influxdb') do |influxdb_link|
+    influxdb_host     = influxdb_link.instances.first.address
+    influxdb_database = influxdb_link.p("influxdb.database")
+    influxdb_username = influxdb_link.p("influxdb.user")
+    influxdb_password = influxdb_link.p("influxdb.password")
+
+    p('prometheus.remote_write')[0][:url] = "http://#{influxdb_host}:8086/api/v1/prom/write?db=#{influxdb_database}&u=#{influxdb_username}&p=#{influxdb_password}"
+    p('prometheus.remote_read')[0][:url] = "http://#{influxdb_host}:8086/api/v1/prom/read?db=#{influxdb_database}&u=#{influxdb_username}&p=#{influxdb_password}"
+
+  end
+%>
+
 <% if_p('prometheus.remote_write') do |remote_write| %>
 # Settings related to the experimental remote write feature.
 remote_write: <%= remote_write.to_json %>
