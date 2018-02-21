@@ -3,10 +3,12 @@
 * Allow setting custom headers in nginx config
 * Allow `kube-state-metrics` to get properties from [cfcf](https://docs-cfcr.cfapps.io/)
 * Allow `kube-state-metrics` to use a proxy
+* Allow `prometheus` to use a proxy
 * Updated `kubernetes` dashboards
 
 ### Manifests
 
+* `monitor-kubernetes` op file now enables kubernetes API servers and kubelets service discovery
 * Added op files to enable proxy properties on several components
 * Bump `cf-routing` release to [v0.172.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.172.0)
 * Bump `postgres` relase to [v26](https://github.com/cloudfoundry/postgres-release/releases/tag/v26)

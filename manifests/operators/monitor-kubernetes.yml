@@ -8,8 +8,64 @@
     release: prometheus
     properties:
       kube_state_metrics_exporter:
-        apiserver: "((kubernetes_apiserver))"
+        apiserver: ((kubernetes_apiserver_scheme))://((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
         kubeconfig: ((kubernetes_kubeconfig))
+
+# Scrape config for kubernetes nodes service discovery (kubelet).
+#
+# Rather than connecting directly to the node, the scrape is proxied though the
+# Kubernetes apiserver. This means it will work if Prometheus is running out of
+# cluster, or can't connect to nodes for some other reason (e.g. because of
+# firewalling).
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value:
+    job_name: kubernetes_nodes
+    scheme: ((kubernetes_apiserver_scheme))
+    bearer_token: ((kubernetes_bearer_token))
+    tls_config:
+      insecure_skip_verify: ((skip_ssl_verify))
+    kubernetes_sd_configs:
+      - role: node
+        api_server: ((kubernetes_apiserver_scheme))://((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
+        bearer_token: ((kubernetes_bearer_token))
+        tls_config:
+          insecure_skip_verify: ((skip_ssl_verify))
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: ((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics
+
+# Scrape config for kubernetes API servers service discovery.
+#
+# Kubernetes exposes API servers as endpoints to the default/kubernetes
+# service so this uses `endpoints` role and uses relabelling to only keep
+# the endpoints associated with the default/kubernetes service using the
+# default named port `https`. This works for single API server deployments as
+# well as HA API server deployments.
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value:
+    job_name: kubernetes_apiservers
+    scheme: ((kubernetes_apiserver_scheme))
+    bearer_token: ((kubernetes_bearer_token))
+    tls_config:
+      insecure_skip_verify: ((skip_ssl_verify))
+    kubernetes_sd_configs:
+      - role: endpoints
+        api_server: ((kubernetes_apiserver_scheme))://((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
+        bearer_token: ((kubernetes_bearer_token))
+        tls_config:
+          insecure_skip_verify: ((skip_ssl_verify))
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
 
 # Prometheus Alerts
 - type: replace
