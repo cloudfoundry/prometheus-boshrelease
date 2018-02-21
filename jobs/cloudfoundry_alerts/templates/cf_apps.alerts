@@ -2,7 +2,7 @@ ALERT CFAppCrashed
   IF sum(cf_application_instances_running{state=~"STARTED"}) by(environment, deployment, organization_name, space_name, application_name) == 0
   FOR <%= p('cloudfoundry_alerts.app_crashed.evaluation_time') %>
   LABELS {
-    service = "<%= p('cloudfoundry_alerts.app_service_name') %>",
+    service = <%= p('cloudfoundry_alerts.app_service_name') %>,
     severity = "critical",
   }
   ANNOTATIONS {
@@ -14,7 +14,7 @@ ALERT CFAppUnhealthy
   IF min(cf_application_instances{state=~"STARTED"} - cf_application_instances_running{state=~"STARTED"}) by(environment, deployment, organization_name, space_name, application_name) > 0
   FOR <%= p('cloudfoundry_alerts.app_unhealthy.evaluation_time') %>
   LABELS {
-    service = "<%= p('cloudfoundry_alerts.app_service_name') %>",
+    service = <%= p('cloudfoundry_alerts.app_service_name') %>,
     severity = "warning",
   }
   ANNOTATIONS {
