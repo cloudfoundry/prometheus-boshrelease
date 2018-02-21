@@ -62,8 +62,11 @@ case $1 in
       <% if_p('prometheus.web.console.templates') do |templates| %> \
       --web.console.templates="<%= templates %>" \
       <% end %> \
-      <% if_p('prometheus.web.enable_remote_shutdown') do |enable_remote_shutdown| %> \
-      --web.enable-remote-shutdown="<%= enable_remote_shutdown %>" \
+      <% if_p('prometheus.web.enable_lifecycle') do |enable_lifecycle| %> \
+      --web.enable-lifecycle="<%= enable_lifecycle %>" \
+      <% end %> \
+      <% if_p('prometheus.web.enable_admin_api') do |enable_admin_api| %> \
+      --web.enable-admin-api="<%= enable_admin_api %>" \
       <% end %> \
       <% if_p('prometheus.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \
@@ -77,9 +80,6 @@ case $1 in
       <% end %> \
       <% if_p('prometheus.web.route_prefix') do |route_prefix| %> \
       --web.route-prefix="<%= route_prefix %>" \
-      <% end %> \
-      <% if_p('prometheus.web.telemetry_path') do |telemetry_path| %> \
-      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       <% if_p('prometheus.web.user_assets') do |user_assets| %> \
       --web.user-assets="<%= user_assets %>" \
