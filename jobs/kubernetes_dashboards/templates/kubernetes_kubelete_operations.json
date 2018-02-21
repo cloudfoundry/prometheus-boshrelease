@@ -72,52 +72,48 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
           "fill": 1,
-          "id": 1,
+          "id": 4,
           "legend": {
-            "alignAsTable": false,
+            "alignAsTable": true,
             "avg": false,
-            "current": false,
-            "hideZero": true,
+            "current": true,
             "max": false,
             "min": false,
-            "rightSide": false,
-            "show": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rest_client_requests_total{job=~\"$job\"})",
+              "expr": "avg(kubelet_runtime_operations{instance=~\"$instance\"}) by(operation_type)",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "Requests",
-              "refId": "A",
-              "step": 4
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests",
+          "title": "Runtime Operations",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -133,11 +129,93 @@
           },
           "yaxes": [
             {
-              "format": "none",
+              "decimals": 0,
+              "format": "short",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": "0",
+              "min": "9",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 6,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(kubelet_docker_operations{instance=~\"$instance\"}) by(operation_type)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Docker Operations",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "9",
               "show": true
             },
             {
@@ -168,26 +246,25 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
           "fill": 1,
-          "id": 4,
+          "id": 5,
           "legend": {
             "alignAsTable": true,
             "avg": false,
             "current": true,
-            "hideZero": true,
             "max": false,
             "min": false,
             "rightSide": true,
             "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
             "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
@@ -199,21 +276,18 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rest_client_requests_total{job=~\"$job\"}) by(code)",
+              "expr": "avg(kubelet_runtime_operations_errors{instance=~\"$instance\"}) by(operation_type)",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ code }}",
-              "refId": "A",
-              "step": 4
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Code",
+          "title": "Runtime Operation Errors",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -229,6 +303,7 @@
           },
           "yaxes": [
             {
+              "decimals": 0,
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -252,15 +327,12 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
           "fill": 1,
-          "id": 5,
+          "id": 7,
           "legend": {
             "alignAsTable": true,
             "avg": false,
             "current": true,
-            "hideZero": true,
             "max": false,
             "min": false,
             "rightSide": true,
@@ -273,7 +345,7 @@
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
@@ -285,21 +357,18 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rest_client_requests_total{job=~\"$job\"}) by(method)",
+              "expr": "avg(kubelet_docker_operations_errors{instance=~\"$instance\"}) by(operation_type)",
               "format": "time_series",
-              "interval": "",
               "intervalFactor": 2,
-              "legendFormat": "{{ method }}",
-              "refId": "A",
-              "step": 4
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Requests by Verb",
+          "title": "Docker Operation Errors",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -315,6 +384,7 @@
           },
           "yaxes": [
             {
+              "decimals": 0,
               "format": "short",
               "label": null,
               "logBase": 1,
@@ -350,146 +420,46 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
           "fill": 1,
-          "id": 2,
-          "legend": {
-            "alignAsTable": false,
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rest_client_request_latency_seconds_sum{job=~\"$job\"} / rest_client_request_latency_seconds_count{job=~\"$job\"})",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "Latency",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Latency",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "s",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 3,
+          "id": 8,
           "legend": {
             "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
             "rightSide": true,
             "show": true,
-            "sort": "avg",
-            "sortDesc": true,
             "total": false,
             "values": true
           },
           "lines": true,
           "linewidth": 1,
           "links": [],
-          "nullPointMode": "connected",
+          "nullPointMode": "null",
           "percentage": false,
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 12,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rest_client_request_latency_seconds_sum{job=~\"$job\"} / rest_client_request_latency_seconds_count{job=~\"$job\"}) by(verb)",
+              "expr": "avg(kubelet_runtime_operations_latency_microseconds_sum{instance=~\"$instance\"} / kubelet_runtime_operations_latency_microseconds_count{instance=~\"$instance\"}) by(operation_type)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{ verb }}",
-              "refId": "A",
-              "step": 4
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Latency by Verb",
+          "title": "Runtime Operations Latency",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
             "sort": 0,
             "value_type": "individual"
@@ -505,7 +475,253 @@
           },
           "yaxes": [
             {
-              "format": "s",
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 9,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(kubelet_docker_operations_latency_microseconds_sum{instance=~\"$instance\"} / kubelet_docker_operations_latency_microseconds_count{instance=~\"$instance\"}) by(operation_type)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Docker Operations Latency",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": "200px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 10,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(kubelet_network_plugin_operations_latency_microseconds_sum{instance=~\"$instance\"} / kubelet_network_plugin_operations_latency_microseconds_count{instance=~\"$instance\"}) by(operation_type)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Network Plugin Operations Latency",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_PROMETHEUS}",
+          "fill": 1,
+          "id": 11,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "avg(kubelet_cgroup_manager_latency_microseconds_sum{instance=~\"$instance\"} / kubelet_cgroup_manager_latency_microseconds_count{instance=~\"$instance\"}) by(operation_type)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ operation_type }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "cgroup Manager Operations Latency",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "µs",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -535,7 +751,7 @@
   "style": "dark",
   "tags": [
     "kubernetes",
-    "rest"
+    "kubelet"
   ],
   "templating": {
     "list": [
@@ -545,11 +761,11 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
-        "label": "Job",
+        "label": "Instance",
         "multi": false,
-        "name": "job",
+        "name": "instance",
         "options": [],
-        "query": "label_values(rest_client_requests_total, job)",
+        "query": "label_values(kubelet_runtime_operations, instance)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -591,6 +807,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes: Rest Client",
+  "title": "Kubernetes: Kubelet Operations",
   "version": 1
 }

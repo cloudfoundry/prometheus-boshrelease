@@ -11,79 +11,48 @@
   ],
   "__requires": [
     {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.6.3"
+    },
+    {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
       "version": ""
     },
     {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.0.2"
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
     }
   ],
-  "id": null,
-  "title": "Kubernetes: Apiserver Requests",
-  "tags": [
-    "kubernetes",
-    "apiserver"
-  ],
-  "style": "dark",
-  "timezone": "browser",
-  "editable": false,
-  "sharedCrosshair": false,
-  "hideControls": true,
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
     ]
   },
-  "templating": {
-    "list": []
-  },
-  "annotations": {
-    "list": []
-  },
-  "refresh": "30s",
-  "schemaVersion": 13,
-  "version": 1,
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "hideControls": true,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -97,14 +66,17 @@
       "type": "dashboards"
     }
   ],
-  "gnetId": null,
+  "refresh": "30s",
   "rows": [
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -128,12 +100,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(apiserver_request_count)",
+              "expr": "sum(apiserver_request_count{scope=~\"$scope\"})",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "Requests",
@@ -154,6 +128,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -179,20 +154,22 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -221,12 +198,14 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(apiserver_request_count) by(code)",
+              "expr": "sum(apiserver_request_count{scope=~\"$scope\"}) by(code)",
+              "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ code }}",
@@ -247,6 +226,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -274,6 +254,8 @@
         {
           "aliasColors": {},
           "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": "${DS_PROMETHEUS}",
           "editable": true,
           "error": false,
@@ -304,12 +286,14 @@
           "seriesOverrides": [
             {}
           ],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(apiserver_request_count) by(verb)",
+              "expr": "sum(apiserver_request_count{scope=~\"$scope\"}) by(verb)",
+              "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ verb }}",
               "refId": "A",
@@ -329,6 +313,7 @@
           "transparent": true,
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -354,16 +339,16 @@
           ]
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     },
     {
-      "title": "Dashboard Row",
+      "collapse": false,
+      "height": "200px",
       "panels": [
         {
           "columns": [
@@ -408,7 +393,9 @@
           ],
           "targets": [
             {
-              "expr": "topk(5, sum(apiserver_request_count) by(resource))",
+              "expr": "topk(5, sum(apiserver_request_count{scope=~\"$scope\"}) by(resource))",
+              "format": "time_series",
+              "instant": false,
               "interval": "",
               "intervalFactor": 2,
               "legendFormat": "{{ resource }}",
@@ -464,7 +451,9 @@
           ],
           "targets": [
             {
-              "expr": "topk(5, sum(apiserver_request_count) by(client))",
+              "expr": "topk(5, sum(apiserver_request_count{scope=~\"$scope\"}) by(client))",
+              "format": "time_series",
+              "instant": false,
               "intervalFactor": 2,
               "legendFormat": "{{ client }}",
               "refId": "A",
@@ -477,13 +466,74 @@
           "type": "table"
         }
       ],
-      "showTitle": false,
-      "titleSize": "h6",
-      "height": "200px",
       "repeat": null,
-      "repeatRowId": null,
       "repeatIteration": null,
-      "collapse": false
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
     }
-  ]
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [
+    "kubernetes",
+    "apiserver"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Scope",
+        "multi": false,
+        "name": "scope",
+        "options": [],
+        "query": "label_values(apiserver_request_count, scope)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Kubernetes: Apiserver Requests",
+  "version": 1
 }

@@ -95,23 +95,23 @@
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "span": 6,
+          "span": 12,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(admission_quota_controller_adds)",
-              "interval": "",
+              "expr": "avg(apiserver_response_sizes_sum{scope=~\"$scope\"} / apiserver_response_sizes_count{scope=~\"$scope\"})",
+              "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Workqueue Adds",
+              "legendFormat": "Size",
               "refId": "A",
-              "step": 10
+              "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Workqueue Adds",
+          "title": "Response Size",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -129,86 +129,7 @@
           },
           "yaxes": [
             {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(admission_quota_controller_depth)",
-              "intervalFactor": 2,
-              "legendFormat": "Workqueue Depth",
-              "refId": "A",
-              "step": 10
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Workqueue Depth",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
+              "format": "decbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -248,13 +169,17 @@
           "fill": 1,
           "id": 2,
           "legend": {
-            "avg": false,
+            "alignAsTable": true,
+            "avg": true,
             "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
@@ -271,9 +196,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(admission_quota_controller_queue_latency_sum / admission_quota_controller_queue_latency_count)",
+              "expr": "avg(apiserver_response_sizes_sum{scope=~\"$scope\"} / apiserver_response_sizes_count{scope=~\"$scope\"}) by(verb)",
+              "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Queue Latency",
+              "legendFormat": "{{ verb }}",
               "refId": "A",
               "step": 4
             }
@@ -281,11 +207,11 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Queue Latency",
+          "title": "Response Size by Verb",
           "tooltip": {
             "msResolution": false,
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "transparent": true,
@@ -299,11 +225,11 @@
           },
           "yaxes": [
             {
-              "format": "ns",
+              "format": "decbytes",
               "label": null,
               "logBase": 1,
               "max": null,
-              "min": "0",
+              "min": null,
               "show": true
             },
             {
@@ -339,13 +265,17 @@
           "fill": 1,
           "id": 3,
           "legend": {
-            "avg": false,
+            "alignAsTable": true,
+            "avg": true,
             "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": true,
           "linewidth": 1,
@@ -362,9 +292,10 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(admission_quota_controller_work_duration_sum / admission_quota_controller_work_duration_count)",
+              "expr": "topk(5, avg(apiserver_response_sizes_sum{scope=~\"$scope\"} / apiserver_response_sizes_count{scope=~\"$scope\"}) by(resource))",
+              "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Work Duration",
+              "legendFormat": "{{ resource }}",
               "refId": "A",
               "step": 4
             }
@@ -372,11 +303,11 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Work Duration",
+          "title": "Top 5 Resources Response Sizes",
           "tooltip": {
             "msResolution": false,
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "transparent": true,
@@ -390,7 +321,7 @@
           },
           "yaxes": [
             {
-              "format": "ns",
+              "format": "decbytes",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -423,7 +354,28 @@
     "apiserver"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Scope",
+        "multi": false,
+        "name": "scope",
+        "options": [],
+        "query": "label_values(apiserver_response_sizes_count, scope)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -455,6 +407,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes: Admission Quota Controller",
+  "title": "Kubernetes: Apiserver Response Sizes",
   "version": 1
 }
