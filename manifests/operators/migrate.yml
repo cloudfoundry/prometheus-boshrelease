@@ -1,0 +1,34 @@
+# Migrate from prometheus 1.x to 2.x
+
+# Configure grafana and nginx to consume links from prometheus 2.x instance
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus2/provides?/prometheus
+  value:
+    as: prometheus2
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/consumes?/prometheus
+  value:
+    from: prometheus2
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=nginx/consumes?/prometheus
+  value:
+    from: prometheus2
+
+# Preserve prometheus 1.x job
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
+  value:
+    name: prometheus
+    release: prometheus
+    properties:
+      prometheus:
+        web:
+          port: 9089
+
+# Scrape from prometheus 1.x instance via `remote_read`
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus2/properties/prometheus/remote_read/-
+  value:
+    url: http://127.0.0.1:9089/api/v1/read
