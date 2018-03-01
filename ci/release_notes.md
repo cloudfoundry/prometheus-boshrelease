@@ -16,6 +16,7 @@
 ### Upgrades
 
 * `alertmanager` to [v0.14.0](https://github.com/prometheus/alertmanager/releases/tag/v0.14.0)
+* `blackbox_exporter` to [v0.12.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.12.0)
 * `cf_exporter` to [v0.6.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.6.2)
 * `firehose_exporter` to [v5.0.2](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.2)
 * `kube-state-metrics` to [v1.2.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.2.0)
