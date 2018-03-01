@@ -19,6 +19,7 @@
 * `blackbox_exporter` to [v0.12.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.12.0)
 * `cf_exporter` to [v0.6.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.6.2)
 * `firehose_exporter` to [v5.0.2](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.2)
+* `grafana` to [v5.0.0](https://github.com/grafana/grafana/releases/tag/v5.0.0)
 * `kube-state-metrics` to [v1.2.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.2.0)
 * `memcached_exporter` to [v0.4.1](https://github.com/prometheus/memcached_exporter/releases/tag/v0.4.1)
 * `rabbitmq_exporter` to [0.26.0](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.26.0)
