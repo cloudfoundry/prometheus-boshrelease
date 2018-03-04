@@ -1,0 +1,70 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: <%= p('grafana.prometheus.datasource_name') %>
+    orgId: 1
+
+<% if_link('prometheus') do |prometheus| %>
+<%
+  # Try to pick the prometheus instance deployed at the same az
+  pinstances = prometheus.instances.select { |instance| instance.az == spec.az }
+  prometheus_ip = pinstances.empty? ? prometheus.instances.first.address : pinstances.first.address
+
+  purl = "http://#{prometheus_ip}:#{prometheus.p('prometheus.web.port')}"
+  pbasic_auth = "false"
+  pbasic_auth_user = ""
+  pbasic_auth_password = ""
+  pjson_data = ""
+
+  # If we specified to use the prometheus external url and the property is set, use it instead of the prometheus instance private ip addresses
+  if p('grafana.prometheus.use_external_url') then
+    prometheus.if_p('prometheus.web.external_url') do |prometheus_external_url|
+      purl = prometheus_external_url
+      # If prometheus is secured by nginx basic auth, set the credentials
+      if_link('nginx') do |nginx|
+        # If prometheus is secured by basic auth, set the credentials
+        prometheus_auth_users = nginx.p('nginx.prometheus.auth_users', [])
+        if prometheus_auth_users.any?
+          pbasic_auth = "true"
+          pbasic_auth_user = prometheus_auth_users.first['name']
+          pbasic_auth_password = prometheus_auth_users.first['password']
+        end
+      end
+      # If prometheus external url is secured by TLS, set if we must skip TLS verification
+      if_p('grafana.prometheus.tls_skip_verify') do |tls_skip_verify|
+        pjson_data = {"tlsSkipVerify" => tls_skip_verify}.to_json
+      end
+    end
+  end
+%>
+
+# list of datasources to insert/update depending
+# whats available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+  - name: <%= p('grafana.prometheus.datasource_name') %>
+    # <int> datasource config version
+    version: 1
+    # <int> org id. will default to orgId 1 if not specified
+    orgId: 1
+    # <string, required> datasource type. Required
+    type: prometheus
+    # <string, required> access mode. direct or proxy. Required
+    access: proxy
+    # <string> url
+    url: <%= purl %>
+    # <bool> enable/disable basic auth
+    basicAuth: <%= pbasic_auth %>
+    # <string> basic auth username
+    basicAuthUser: <%= pbasic_auth_user %>
+    # <string> basic auth password
+    basicAuthPassword: <%= pbasic_auth_password %>
+    # <bool> mark as default datasource. Max one per org
+    isDefault: true
+    # <map> fields that will be converted to json and stored in json_data
+    jsonData: <%= pjson_data %>
+    # <bool> allow users to edit datasources from the UI.
+    editable: false
+<% end %>
