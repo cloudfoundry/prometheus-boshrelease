@@ -21,6 +21,7 @@
 * `cf_exporter` to [v0.6.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.6.2)
 * `firehose_exporter` to [v5.0.2](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.2)
 * `grafana` to [v5.0.4](https://github.com/grafana/grafana/releases/tag/v5.0.4)
+* `Grafana Status panel` to [v1.0.8](https://github.com/Vonage/Grafana_Status_panel/releases/tag/1.0.8)
 * `kube-state-metrics` to [v1.3.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.3.0)
 * `memcached_exporter` to [v0.4.1](https://github.com/prometheus/memcached_exporter/releases/tag/v0.4.1)
 * `pcre` to `v8.42`
