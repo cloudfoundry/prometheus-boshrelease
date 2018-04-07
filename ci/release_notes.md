@@ -17,6 +17,7 @@
 
 * `alertmanager` to [v0.14.0](https://github.com/prometheus/alertmanager/releases/tag/v0.14.0)
 * `blackbox_exporter` to [v0.12.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.12.0)
+* `bosh_exporter` to [v3.0.1](https://github.com/bosh-prometheus/bosh_exporter/releases/tag/v3.0.1)
 * `cf_exporter` to [v0.6.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.6.2)
 * `firehose_exporter` to [v5.0.2](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.2)
 * `grafana` to [v5.0.4](https://github.com/grafana/grafana/releases/tag/v5.0.4)
