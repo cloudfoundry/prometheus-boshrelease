@@ -1,3 +1,7 @@
+### Breaking changes
+
+* The [github_exporter](https://github.com/infinityworks/github-exporter) has been removed
+
 ### Features
 
 * Allow setting custom headers in nginx config
