@@ -1,0 +1,17 @@
+# config file version
+apiVersion: 1
+
+# list of providers to insert/update depending
+# whats available in the database
+providers:
+<% p('grafana.prometheus.dashboard_folders', []).each do |dashboard_folder| %>
+  <% raise "grafana.prometheus.dashboard_folders property must specify a 'name' key" unless dashboard_folder.has_key?("name") %>
+  - name: <%= dashboard_folder["name"] %>
+    type: file
+    orgId: 1
+    folder: <%= dashboard_folder["name"] %>
+    editable: <%= dashboard_folder.has_key?("editable") ? dashboard_folder["editable"] : false %>
+    disableDeletion: <%= dashboard_folder.has_key?("disable_deletion") ? dashboard_folder["disable_deletion"] : false %>
+    options:
+      path: /var/vcap/store/grafana/dashboards/<%= dashboard_folder["name"].downcase.tr(" ", "_") %>
+<% end %>

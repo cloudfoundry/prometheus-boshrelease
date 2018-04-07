@@ -14,6 +14,8 @@ templates:
   bin/post-start: bin/post-start
   bin/pre-start: bin/pre-start
   bin/prometheus-dashboards: bin/prometheus-dashboards
+  config/provisioning/dashboards/default.yml: config/provisioning/dashboards/default.yml
+  config/provisioning/dashboards/folders.yml: config/provisioning/dashboards/folders.yml
   config/provisioning/datasources/influxdb.yml: config/provisioning/datasources/influxdb.yml
   config/provisioning/datasources/prometheus.yml: config/provisioning/datasources/prometheus.yml
   config/database_tls_client_ca.pem: config/database_tls_client_ca.pem
@@ -494,13 +496,21 @@ properties:
   grafana.prometheus.datasource_input_name:
     description: "Name of the Prometehus datasource input name"
     default: DS_PROMETHEUS
-  grafana.prometheus.dashboard_files:
-    description: "Array of dashboard json file locations or glob patterns"
   grafana.prometheus.use_external_url:
     description: "If true and prometheus provides one, use the external url to reach prometheus"
     default: true
   grafana.prometheus.tls_skip_verify:
     description: "Skip TLS verification"
+  grafana.prometheus.dashboard_files:
+    description: "Array of dashboard json file locations or glob patterns"
+  grafana.prometheus.dashboard_folders:
+    description: "Array of grafana folders and dashboard json file locations or glob patterns"
+    example:
+      - name: "My Dashboards"
+        editable: false
+        disable_deletion: true
+        files:
+          - "/var/vcap/packages/my_dashboards/*"
 
   grafana.influxdb.datasource_name:
     description: "Name of the InfluxDB datasource"

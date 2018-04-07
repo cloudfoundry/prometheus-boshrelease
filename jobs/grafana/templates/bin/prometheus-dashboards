@@ -2,11 +2,14 @@
 
 set -eu
 
-DASHBOARDS_DIR=/var/vcap/store/grafana/dashboards/
+DASHBOARDS_DIR=/var/vcap/store/grafana/dashboards
 JQ_CMD=/var/vcap/packages/grafana_jq/bin/jq
 rm -fr ${DASHBOARDS_DIR}/*
 
 <% if_link('prometheus') do |prometheus| %>
+
+dashboard_folder=default
+mkdir -p ${DASHBOARDS_DIR}/${dashboard_folder}
 <% p('grafana.prometheus.dashboard_files', []).each do |dashboard_file| %>
 <% if !dashboard_file.nil? && dashboard_file.strip != "" %>
 dashboard_files=$(ls <%= dashboard_file %>)
@@ -15,13 +18,37 @@ for dashboard_file in ${dashboard_files[@]}; do
   echo -e "Updating dashboard ${dashboard_file} at $(date)"
   sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g;
        s/\${<%= p('grafana.influxdb.datasource_input_name') %>}/<%= p('grafana.influxdb.datasource_name') %>/g' \
-      "${dashboard_file}" > "${DASHBOARDS_DIR}/${filename}"
-  echo -e "Validating ${DASHBOARDS_DIR}/${filename}"
+      "${dashboard_file}" > "${DASHBOARDS_DIR}/${dashboard_folder}/${filename}"
+  echo -e "Validating ${DASHBOARDS_DIR}/${dashboard_folder}/${filename}"
   # want stderr going to stdout, don't want stdout at all
-  ${JQ_CMD} . < ${DASHBOARDS_DIR}/${filename} 2>&1 > /dev/null
+  ${JQ_CMD} . < ${DASHBOARDS_DIR}/${dashboard_folder}/${filename} 2>&1 > /dev/null
 done
 <% end %>
 <% end %>
+
+<% p('grafana.prometheus.dashboard_folders', []).each do |dashboard_folder| %>
+<% raise "grafana.prometheus.dashboard_folders property must specify a 'name' key" unless dashboard_folder.has_key?("name") %>
+<% raise "grafana.prometheus.dashboard_folders property must specify a 'files' key" unless dashboard_folder.has_key?("files") %>
+<% raise "grafana.prometheus.dashboard_folders 'files' key must be an array" unless dashboard_folder["files"].kind_of?(Array) %>
+dashboard_folder=<%= dashboard_folder["name"].downcase.tr(" ", "_") %>
+mkdir -p ${DASHBOARDS_DIR}/${dashboard_folder}
+<% dashboard_folder["files"].each do |dashboard_file| %>
+<% if !dashboard_file.nil? && dashboard_file.strip != "" %>
+dashboard_files=$(ls <%= dashboard_file %>)
+for dashboard_file in ${dashboard_files[@]}; do
+  filename=$(basename "${dashboard_file}")
+  echo -e "Updating dashboard ${dashboard_file} at $(date)"
+  sed 's/\${<%= p('grafana.prometheus.datasource_input_name') %>}/<%= p('grafana.prometheus.datasource_name') %>/g;
+       s/\${<%= p('grafana.influxdb.datasource_input_name') %>}/<%= p('grafana.influxdb.datasource_name') %>/g' \
+      "${dashboard_file}" > "${DASHBOARDS_DIR}/${dashboard_folder}/${filename}"
+  echo -e "Validating ${DASHBOARDS_DIR}/${dashboard_folder}/${filename}"
+  # want stderr going to stdout, don't want stdout at all
+  ${JQ_CMD} . < ${DASHBOARDS_DIR}/${dashboard_folder}/${filename} 2>&1 > /dev/null
+done
+<% end %>
+<% end %>
+<% end %>
+
 <% end %>
 
 exit 0
