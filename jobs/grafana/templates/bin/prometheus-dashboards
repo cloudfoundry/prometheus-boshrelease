@@ -4,7 +4,9 @@ set -eu
 
 DASHBOARDS_DIR=/var/vcap/store/grafana/dashboards
 JQ_CMD=/var/vcap/packages/grafana_jq/bin/jq
+
 rm -fr ${DASHBOARDS_DIR}/*
+mkdir -p ${DASHBOARDS_DIR}
 
 <% if_link('prometheus') do |prometheus| %>
 
