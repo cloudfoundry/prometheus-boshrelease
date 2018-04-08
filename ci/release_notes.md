@@ -46,5 +46,5 @@
 * `postgres_exporter` to [v0.4.5](https://github.com/wrouesnel/postgres_exporter/releases/tag/v0.4.5)
 * `prometheus` to [v2.2.1](https://github.com/prometheus/prometheus/releases/tag/v2.2.1)
 * `rabbitmq_exporter` to [0.27.0](https://github.com/kbudde/rabbitmq_exporter/releases/tag/v0.27.0)
-* `redis_exporter` to [0.17.1](https://github.com/oliver006/redis_exporter/releases/tag/v0.17.1)
+* `redis_exporter` to [0.17.2](https://github.com/oliver006/redis_exporter/releases/tag/v0.17.2)
 * `stackdriver_exporter` to [v0.5.1](https://github.com/frodenas/stackdriver_exporter/releases/tag/v0.5.1)
