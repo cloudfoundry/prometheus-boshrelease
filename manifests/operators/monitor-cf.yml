@@ -61,5 +61,9 @@
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
-  value: /var/vcap/jobs/cloudfoundry_dashboards/*.json
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Cloudfoundry?/files/-
+  value: /var/vcap/jobs/cloudfoundry_dashboards/cf*.json
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Prometheus?/files/-
+  value: /var/vcap/jobs/cloudfoundry_dashboards/prometheus*.json

@@ -45,6 +45,12 @@ cd prometheus-boshrelease
 export BOSH_ENVIRONMENT=<name>
 ```
 
+Then checkout to the [release branch](https://github.com/bosh-prometheus/prometheus-boshrelease/releases) you want to use, so manifest files will be in synch with the release version:
+
+```
+git checkout v...
+```
+
 ### Basic deployment
 
 To deploy a basic `prometheus` server with `alertmanager` and `grafana` (but no exporters) use the following command:

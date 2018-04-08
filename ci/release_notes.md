@@ -12,6 +12,7 @@
 
 ### Manifests
 
+* All `grafana` dashboards have been moved to folders
 * `monitor-kubernetes` op file now enables kubernetes API servers and kubelets service discovery
 * Added op files to enable proxy properties on several components
 * Bump `cf-routing` release to [v0.172.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.172.0)

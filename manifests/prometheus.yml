@@ -113,10 +113,16 @@ instance_groups:
               json:
                 enabled: true
             prometheus:
-              dashboard_files:
-                - /var/vcap/jobs/grafana_dashboards/*.json
-                - /var/vcap/jobs/postgres_dashboards/*.json
-                - /var/vcap/jobs/prometheus_dashboards/*.json
+              dashboard_folders:
+                - name: Grafana
+                  files:
+                    - /var/vcap/jobs/grafana_dashboards/*.json
+                - name: PostgreSQL
+                  files:
+                    - /var/vcap/jobs/postgres_dashboards/*.json
+                - name: Prometheus
+                  files:
+                    - /var/vcap/jobs/prometheus_dashboards/*.json
       - name: grafana_dashboards
         release: prometheus
       - name: postgres_dashboards

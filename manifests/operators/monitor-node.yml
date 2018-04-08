@@ -6,5 +6,9 @@
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_files/-
-  value: /var/vcap/jobs/system_dashboards/*.json
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=BOSH?/files/-
+  value: /var/vcap/jobs/system_dashboards/bosh*.json
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=System?/files/-
+  value: /var/vcap/jobs/system_dashboards/system*.json
