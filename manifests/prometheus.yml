@@ -25,7 +25,7 @@ instance_groups:
             test_alert:
               daily: true
 
-  - name: prometheus
+  - name: prometheus2
     azs:
       - z1
     instances: 1
@@ -35,13 +35,13 @@ instance_groups:
     networks:
       - name: default
     jobs:
-      - name: prometheus
+      - name: prometheus2
         release: prometheus
         properties:
           prometheus:
             rule_files:
-              - /var/vcap/jobs/postgres_alerts/*.alerts
-              - /var/vcap/jobs/prometheus_alerts/*.alerts
+              - /var/vcap/jobs/postgres_alerts/*.alerts.yml
+              - /var/vcap/jobs/prometheus_alerts/*.alerts.yml
             scrape_configs:
               - job_name: prometheus
                 static_configs:
