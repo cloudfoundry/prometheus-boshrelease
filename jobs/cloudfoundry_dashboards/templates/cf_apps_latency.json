@@ -14,29 +14,39 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523189342281,
   "links": [
     {
       "asDropdown": true,
@@ -46,295 +56,287 @@
       "tags": [
         "apps"
       ],
+      "targetBlank": false,
       "title": "Apps",
       "type": "dashboards"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Application Latency.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Application Latency.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Client",
-              "refId": "A",
-              "step": 2
-            },
-            {
-              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Server",
-              "refId": "B",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Latency",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "s",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Client",
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Server",
+          "refId": "B",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Latency",
-      "titleSize": "h6"
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": null,
+      "description": "Client Latency by Quantiles.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 1,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": null,
-          "description": "Client Latency by Quantiles.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 1,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_http_start_stop_client_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ quantile }}",
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Client Latency (quantiles)",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "s",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ quantile }}",
+          "refId": "A",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Client Latency",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Client Latency (quantiles)",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": null,
+      "description": "Server Latency by Quantiles.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": null,
-          "description": "Server Latency by Quantiles.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(firehose_http_start_stop_server_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
-              "intervalFactor": 2,
-              "legendFormat": "{{ quantile }}",
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Server Latency (quantiles)",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "s",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "intervalFactor": 2,
+          "legendFormat": "{{ quantile }}",
+          "refId": "A",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Server Latency",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Server Latency (quantiles)",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "apps"
@@ -494,5 +496,6 @@
   },
   "timezone": "browser",
   "title": "Apps: Latency",
+  "uid": "cf_apps_latency",
   "version": 1
 }

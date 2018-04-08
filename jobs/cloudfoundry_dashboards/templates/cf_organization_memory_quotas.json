@@ -14,29 +14,39 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192704547,
   "links": [
     {
       "asDropdown": true,
@@ -46,6 +56,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -58,191 +69,185 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "400px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 9,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "sort": "current",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "((sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name, application_id) * on (organization_name, application_id) count(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) / on(organization_name) avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name) > 0) * 100 > $quota_limit) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }} ({{ quota_name }})",
-              "metric": "",
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Organization's Memory Quota Consumption",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "percent",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "((sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name, application_id) * on (organization_name, application_id) count(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) / on(organization_name) avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name) > 0) * 100 > $quota_limit) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} ({{ quota_name }})",
+          "metric": "",
+          "refId": "A",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Organization's Memory Quota Consumption",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "400px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 16,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 16,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name, application_id)) by(organization_name) * on (organization_name)  group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }} ({{ quota_name }})",
-              "metric": "",
-              "refId": "B",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Organization's Memory Used",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "decmbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name, application_id)) by(organization_name) * on (organization_name)  group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} ({{ quota_name }})",
+          "metric": "",
+          "refId": "B",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Organization's Memory Used",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decmbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf"
@@ -399,5 +404,6 @@
   },
   "timezone": "browser",
   "title": "CF: Organization Memory Quotas",
+  "uid": "cf_organization_memory_quotas",
   "version": 1
 }

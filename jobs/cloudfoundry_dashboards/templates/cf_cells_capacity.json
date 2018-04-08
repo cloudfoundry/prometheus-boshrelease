@@ -14,41 +14,51 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.4.3"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "grafana-piechart-panel",
       "name": "Pie Chart",
-      "version": "1.1.5"
+      "version": "1.2.0"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     },
     {
       "type": "panel",
       "id": "singlestat",
       "name": "Singlestat",
-      "version": ""
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192027241,
   "links": [
     {
       "asDropdown": true,
@@ -58,6 +68,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -70,559 +81,546 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "125px",
-      "panels": [
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 10,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
-              "intervalFactor": 2,
-              "metric": "firehose_value_metric_rep_capacity_total_containers",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "title": "Number of Cells",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "name": "value to text",
+          "value": 1
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "intervalFactor": 2,
+          "metric": "firehose_value_metric_rep_capacity_total_containers",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
+      "title": "Number of Cells",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "mbytes",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "hideTimeOverride": true,
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "metric": "firehose_value_metric_rep_capacity_remaining_memory",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "2000,4000",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Cell with Least Remaining Memory",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "hideTimeOverride": true,
+      "id": 9,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ bosh_job_ip }}",
+          "metric": "firehose_value_metric_rep_capacity_remaining_memory",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Cell with Least Memory",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "name"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative used and available MiB of memory to allocate to containers.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 3,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Cell Memory",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
           "format": "mbytes",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "hideTimeOverride": true,
-          "id": 8,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "metric": "firehose_value_metric_rep_capacity_remaining_memory",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "2000,4000",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Cell with Least Remaining Memory",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "hideTimeOverride": true,
-          "id": 9,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 4,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ bosh_job_ip }}",
-              "metric": "firehose_value_metric_rep_capacity_remaining_memory",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Cell with Least Memory",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "name"
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Containers",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative used and available MiB of memory to allocate to containers.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 2
-            },
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-              "intervalFactor": 2,
-              "legendFormat": "Available",
-              "refId": "B",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Total Cell Memory",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Memory",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Cumulative used and available MiB of disk to allocate to containers.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 4,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 2
-            },
-            {
-              "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-              "intervalFactor": 2,
-              "legendFormat": "Available",
-              "refId": "B",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Total Cell Disk",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Disk",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": 250,
-      "panels": [
-        {
-          "aliasColors": {},
-          "cacheTimeout": null,
-          "combine": {
-            "label": "Others",
-            "threshold": 0
-          },
-          "datasource": "${DS_PROMETHEUS}",
-          "fontSize": "80%",
           "format": "short",
-          "id": 6,
-          "interval": null,
-          "legend": {
-            "percentage": true,
-            "show": true,
-            "sortDesc": true,
-            "values": true
-          },
-          "legendType": "Under graph",
-          "links": [],
-          "maxDataPoints": 3,
-          "nullPointMode": "connected",
-          "pieType": "pie",
-          "span": 6,
-          "strokeWidth": 1,
-          "targets": [
-            {
-              "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ bosh_job_ip }}",
-              "refId": "A",
-              "step": 2400
-            }
-          ],
-          "title": "Running Containers Per Cell",
-          "transparent": true,
-          "type": "grafana-piechart-panel",
-          "valueName": "current"
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative used and available MiB of disk to allocate to containers.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 2
         },
         {
-          "aliasColors": {},
-          "cacheTimeout": null,
-          "combine": {
-            "label": "Others",
-            "threshold": 0
-          },
-          "datasource": "${DS_PROMETHEUS}",
-          "fontSize": "80%",
-          "format": "mbytes",
-          "id": 7,
-          "interval": null,
-          "legend": {
-            "percentage": true,
-            "show": true,
-            "values": true
-          },
-          "legendType": "Under graph",
-          "links": [],
-          "maxDataPoints": 3,
-          "nullPointMode": "connected",
-          "pieType": "pie",
-          "span": 6,
-          "strokeWidth": 1,
-          "targets": [
-            {
-              "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ bosh_job_ip }}",
-              "refId": "A",
-              "step": 2400
-            }
-          ],
-          "title": "Memory Used Per Cell",
-          "transparent": true,
-          "type": "grafana-piechart-panel",
-          "valueName": "current"
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B",
+          "step": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Cell Disk",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 6,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "sortDesc": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ bosh_job_ip }}",
+          "refId": "A",
+          "step": 2400
+        }
+      ],
+      "title": "Running Containers Per Cell",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "fontSize": "80%",
+      "format": "mbytes",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 7,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ bosh_job_ip }}",
+          "refId": "A",
+          "step": 2400
+        }
+      ],
+      "title": "Memory Used Per Cell",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf",
@@ -723,5 +721,6 @@
   },
   "timezone": "browser",
   "title": "CF: Cells Capacity",
+  "uid": "cf_cells_capacity",
   "version": 1
 }

@@ -14,29 +14,39 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523182469021,
   "links": [
     {
       "asDropdown": true,
@@ -46,174 +56,172 @@
       "tags": [
         "RabbitMQ"
       ],
+      "targetBlank": false,
       "title": "RabbitMQ",
       "type": "dashboards"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 0,
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "fill": 1,
-          "id": 8,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rabbitmq_exchange_messages_published_in_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Published In",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_published_out_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Published Out",
-              "refId": "B",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_confirmed_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Confirmed",
-              "refId": "C",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_delivered_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Delivered",
-              "refId": "D",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_delivered_noack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Delivered noack",
-              "refId": "E",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_get_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Get",
-              "refId": "F",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_get_noack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Get noack",
-              "refId": "G",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_ack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Ack",
-              "refId": "H",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_redelivered_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Redelivered",
-              "refId": "I",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_returned_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Returned",
-              "refId": "J",
-              "step": 4
-            },
-            {
-              "expr": "avg(rabbitmq_exchange_messages_published_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Published",
-              "refId": "K",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Messages",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rabbitmq_exchange_messages_published_in_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Published In",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_published_out_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Published Out",
+          "refId": "B",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_confirmed_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Confirmed",
+          "refId": "C",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_delivered_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Delivered",
+          "refId": "D",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_delivered_noack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Delivered noack",
+          "refId": "E",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_get_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Get",
+          "refId": "F",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_get_noack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Get noack",
+          "refId": "G",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_ack_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Ack",
+          "refId": "H",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_redelivered_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Redelivered",
+          "refId": "I",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_returned_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Returned",
+          "refId": "J",
+          "step": 4
+        },
+        {
+          "expr": "avg(rabbitmq_exchange_messages_published_total{instance=~\"$host\",vhost=~\"$vhost\",exchange=\"$exchange\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Published",
+          "refId": "K",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Messages",
-      "titleSize": "h6"
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "RabbitMQ"
@@ -313,5 +321,6 @@
   },
   "timezone": "browser",
   "title": "RabbitMQ: Exchanges",
+  "uid": "rabbitmq_exchanges",
   "version": 1
 }

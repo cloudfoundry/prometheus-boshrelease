@@ -14,35 +14,45 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     },
     {
       "type": "panel",
       "id": "singlestat",
       "name": "Singlestat",
-      "version": ""
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192198449,
   "links": [
     {
       "asDropdown": true,
@@ -52,6 +62,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -64,296 +75,293 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "150px",
-      "panels": [
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Whether the cf-app domain is up-to-date, so that CF apps from CC have been synchronized with DesiredLRPs for Diego to run. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Whether the cf-app domain is up-to-date, so that CF apps from CC have been synchronized with DesiredLRPs for Diego to run. Emitted every 30 seconds.",
-          "editable": true,
-          "error": false,
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 7,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 6,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "targets": [
-            {
-              "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
-              "intervalFactor": 2,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": "0.9,1",
-          "timeFrom": "1m",
-          "timeShift": null,
-          "title": "CF Apps Synchronized",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "150%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            },
-            {
-              "op": "=",
-              "text": "OK",
-              "value": "1"
-            },
-            {
-              "op": "=",
-              "text": "NOK",
-              "value": "0"
-            }
-          ],
-          "valueName": "current"
+          "name": "value to text",
+          "value": 1
         },
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Whether the cf-tasksdomain is up-to-date, so that CF tasks from CC have been synchronized with tasks for Diego to run. Emitted every 30 seconds.",
-          "editable": true,
-          "error": false,
-          "format": "none",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 8,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 6,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "targets": [
-            {
-              "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
-              "intervalFactor": 2,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": "0.9,1",
-          "timeFrom": "1m",
-          "title": "CF Tasks Synchronized",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "150%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            },
-            {
-              "op": "=",
-              "text": "OK",
-              "value": "1"
-            },
-            {
-              "op": "=",
-              "text": "NOK",
-              "value": "0"
-            }
-          ],
-          "valueName": "current"
+          "name": "range to text",
+          "value": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Cd Apps & Tasks Synchronized",
-      "titleSize": "h6"
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "intervalFactor": 2,
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": "0.9,1",
+      "timeFrom": "1m",
+      "timeShift": null,
+      "title": "CF Apps Synchronized",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "150%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        },
+        {
+          "op": "=",
+          "text": "OK",
+          "value": "1"
+        },
+        {
+          "op": "=",
+          "text": "NOK",
+          "value": "0"
+        }
+      ],
+      "valueName": "current"
     },
     {
-      "collapse": false,
-      "height": "300px",
-      "panels": [
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Whether the cf-tasksdomain is up-to-date, so that CF tasks from CC have been synchronized with tasks for Diego to run. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
         {
-          "aliasColors": {},
-          "bars": true,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Whether the cell has failed to pass its healthcheck against the garden backend. 0 signifies healthy, and 1 signifies unhealthy. Emitted every 30 seconds.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 6,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "hideZero": true,
-            "max": false,
-            "min": false,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 12,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "max(firehose_value_metric_rep_unhealthy_cell{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Unhealthy Cells",
-          "tooltip": {
-            "msResolution": false,
-            "shared": false,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [
-              "total"
-            ]
-          },
-          "yaxes": [
-            {
-              "format": "none",
-              "label": "",
-              "logBase": 1,
-              "max": "1",
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "intervalFactor": 2,
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": "0.9,1",
+      "timeFrom": "1m",
+      "title": "CF Tasks Synchronized",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "150%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        },
+        {
+          "op": "=",
+          "text": "OK",
+          "value": "1"
+        },
+        {
+          "op": "=",
+          "text": "NOK",
+          "value": "0"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Whether the cell has failed to pass its healthcheck against the garden backend. 0 signifies healthy, and 1 signifies unhealthy. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "max(firehose_value_metric_rep_unhealthy_cell{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Unhealthy Cells",
-      "titleSize": "h6"
+      "tooltip": {
+        "msResolution": false,
+        "shared": false,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": "",
+          "logBase": 1,
+          "max": "1",
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf",
@@ -434,5 +442,6 @@
   },
   "timezone": "browser",
   "title": "CF: Diego Health",
+  "uid": "cf_diego_health",
   "version": 1
 }

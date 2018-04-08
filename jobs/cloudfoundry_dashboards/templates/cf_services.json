@@ -14,35 +14,45 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.4.3"
+      "version": "5.0.4"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     },
     {
       "type": "panel",
       "id": "singlestat",
       "name": "Singlestat",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "panel",
       "id": "table",
       "name": "Table",
-      "version": ""
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192883213,
   "links": [
     {
       "asDropdown": true,
@@ -52,6 +62,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -64,288 +75,284 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 0,
+      "description": "Number of Service Instances",
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 0,
-          "description": "Number of Service Instances",
-          "format": "short",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 2,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 3,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "title": "Service Instances",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "0",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
+          "name": "value to text",
+          "value": 1
         },
         {
-          "columns": [],
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Name of the Services Instances",
-          "fontSize": "100%",
-          "id": 1,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "span": 9,
-          "styles": [
-            {
-              "alias": "Organization / Space / Name",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 0,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "expr": "count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_name, space_id) * on(space_id) group_left(space_name, organization_id) count(cf_space_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(space_id, space_name, organization_id) * on(organization_id) group_left(organization_name) count(cf_organization_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_id, organization_name)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ service_instance_name }}",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "title": "Service Instances Names",
-          "transform": "timeseries_aggregations",
-          "transparent": true,
-          "type": "table"
+          "name": "range to text",
+          "value": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
       "title": "Service Instances",
-      "titleSize": "h6"
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "0",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
     },
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "columns": [],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Name of the Services Instances",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 6,
+        "y": 0
+      },
+      "id": 1,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": false
+      },
+      "styles": [
         {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": false,
+          "alias": "Organization / Space / Name",
+          "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_PROMETHEUS}",
           "decimals": 0,
-          "description": "Number of Service Bindings",
-          "format": "short",
-          "gauge": {
-            "maxValue": 100,
-            "minValue": 0,
-            "show": false,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "id": 3,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 3,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": true
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": "sum(min(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_plan_id) min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_plan_id)) ",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "title": "Service Bindings",
-          "transparent": true,
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "0",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "columns": [],
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Name of the Bound Applications",
-          "fontSize": "100%",
-          "id": 4,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "span": 9,
-          "styles": [
-            {
-              "alias": "Organization / Space / Name <- Application Name",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 0,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "expr": "count(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(application_id, service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_instance_name) count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_instance_name) * on(application_id) group_left(organization_name, space_name, application_name)  count(cf_application_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_name, space_name, application_id, application_name)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ service_instance_name }} <- {{ application_name }}",
-              "refId": "A",
-              "step": 4
-            }
-          ],
-          "title": "Bound Applications",
-          "transform": "timeseries_aggregations",
-          "transparent": true,
-          "type": "table"
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
+      "targets": [
+        {
+          "expr": "count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_name, space_id) * on(space_id) group_left(space_name, organization_id) count(cf_space_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(space_id, space_name, organization_id) * on(organization_id) group_left(organization_name) count(cf_organization_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_id, organization_name)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ service_instance_name }}",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Service Instances Names",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 0,
+      "description": "Number of Service Bindings",
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 7
+      },
+      "id": 3,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(min(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_plan_id) min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_plan_id)) ",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
       "title": "Service Bindings",
-      "titleSize": "h6"
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "0",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Name of the Bound Applications",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 6,
+        "y": 7
+      },
+      "id": 4,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Organization / Space / Name <- Application Name",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "count(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(application_id, service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_instance_name) count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_instance_name) * on(application_id) group_left(organization_name, space_name, application_name)  count(cf_application_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_name, space_name, application_id, application_name)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ service_instance_name }} <- {{ application_name }}",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Bound Applications",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf"
@@ -505,5 +512,6 @@
   },
   "timezone": "browser",
   "title": "CF: Services",
+  "uid": "cf_services",
   "version": 1
 }

@@ -14,29 +14,39 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192367721,
   "links": [
     {
       "asDropdown": true,
@@ -46,6 +56,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -58,639 +69,666 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "SetsSuccess and SetsFail operations per second.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "SetsSuccess and SetsFail operations per second.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 3,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Sets per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_sets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "A",
+          "step": 4
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "GetsSuccess and GetsFail operations per second.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 5,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "metric": "",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Gets per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_sets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Sets / Gets",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Sets per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "GetsSuccess and GetsFail operations per second.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "CreateSuccess and CreateFail operation rate.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 1,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_create_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "metric": "",
-              "refId": "A",
-              "step": 10
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_create_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 10
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Creates per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_gets_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "metric": "",
+          "refId": "A",
+          "step": 4
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "UpdateSuccess and UpdateFail operations rate.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_update_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "A",
-              "step": 10
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_update_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 10
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Updates per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "DeleteSuccess and DeleteFail operations per second.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 4,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "A",
-              "step": 10
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 10
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Deletes per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_gets_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Create / Update / Delete",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Gets per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "CreateSuccess and CreateFail operation rate.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 1,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "CompareAndDeleteSuccess and CompareAndDeleteFail operations rate.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 6,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_compare_and_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_compare_and_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Compare & Delete per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_create_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "metric": "",
+          "refId": "A",
+          "step": 10
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "CompareAndSwapSuccess and CompareAndSwapFail operations rate.",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "id": 7,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": false,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_compare_and_swap_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "intervalFactor": 2,
-              "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(rate(firehose_value_metric_etcd_compare_and_swap_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Compare & Swap per second",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(rate(firehose_value_metric_etcd_create_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 10
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Compare & (Delete / Swap)",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Creates per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "UpdateSuccess and UpdateFail operations rate.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 8,
+        "y": 5
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_update_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "A",
+          "step": 10
+        },
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_update_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Updates per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "DeleteSuccess and DeleteFail operations per second.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 5
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "A",
+          "step": 10
+        },
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Deletes per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "CompareAndDeleteSuccess and CompareAndDeleteFail operations rate.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_compare_and_delete_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_compare_and_delete_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Compare & Delete per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "CompareAndSwapSuccess and CompareAndSwapFail operations rate.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_compare_and_swap_fail{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "intervalFactor": 2,
+          "legendFormat": "Fail ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(rate(firehose_value_metric_etcd_compare_and_swap_success{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Success ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Compare & Swap per second",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf",
@@ -771,5 +809,6 @@
   },
   "timezone": "browser",
   "title": "CF: Etcd Operations",
+  "uid": "cf_etcd_operations",
   "version": 1
 }

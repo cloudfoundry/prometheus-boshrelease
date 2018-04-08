@@ -14,35 +14,45 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.2.0"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "grafana-piechart-panel",
       "name": "Pie Chart",
-      "version": "1.1.4"
+      "version": "1.2.0"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523192944753,
   "links": [
     {
       "asDropdown": true,
@@ -52,6 +62,7 @@
       "tags": [
         "cf"
       ],
+      "targetBlank": false,
       "title": "CF",
       "type": "dashboards"
     },
@@ -65,583 +76,595 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Total number of Instances and Quota for this Space.",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Total number of Instances and Quota for this Space.",
-          "fill": 1,
-          "id": 2,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(cf_space_total_app_instances_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Instances",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
         },
         {
-          "aliasColors": {},
-          "cacheTimeout": null,
-          "combine": {
-            "label": "Others",
-            "threshold": 0
-          },
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "State of Applications at this Space.",
-          "fontSize": "80%",
-          "format": "short",
-          "id": 6,
-          "interval": null,
-          "legend": {
-            "percentage": true,
-            "show": true,
-            "values": true
-          },
-          "legendType": "Right side",
-          "links": [],
-          "maxDataPoints": 3,
-          "nullPointMode": "connected",
-          "pieType": "pie",
-          "span": 6,
-          "strokeWidth": 1,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, state)) by(state) ",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ state }}",
-              "refId": "A",
-              "step": 2400
-            }
-          ],
-          "title": "State of Applications",
-          "transparent": true,
-          "type": "grafana-piechart-panel",
-          "valueName": "current"
+          "expr": "avg(cf_space_total_app_instances_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Quota",
+          "refId": "B",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Instances & State of Applications",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Instances",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "State of Applications at this Space.",
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Right side",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": null,
-          "description": "Total Memory Used and Quota for this Space.",
-          "fill": 1,
-          "id": 3,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(cf_space_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "metric": "",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Memory",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Total Disk allocated and Quota for this Space.",
-          "fill": 1,
-          "id": 4,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(cf_space_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Disk",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "mbytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, state)) by(state) ",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ state }}",
+          "refId": "A",
+          "step": 2400
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Memory Usage & Disk Allocated",
-      "titleSize": "h6"
+      "title": "State of Applications",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": null,
+      "description": "Total Memory Used and Quota for this Space.",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 7,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",space_id=~\"$cf_space_id\"}) by(route_id))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(cf_space_total_routes_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Routes",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 8,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",space_id=~\"$cf_space_id\"}) by(service_instance_id))",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 4
-            },
-            {
-              "expr": "avg(cf_space_total_services_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
-              "intervalFactor": 2,
-              "legendFormat": "Quota",
-              "refId": "B",
-              "step": 4
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Service Instances",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": false
-            }
-          ]
+          "expr": "avg(cf_space_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Quota",
+          "metric": "",
+          "refId": "B",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Routes & Service Instances",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Total Disk allocated and Quota for this Space.",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "cacheTimeout": null,
-          "combine": {
-            "label": "Others",
-            "threshold": 0
-          },
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Stacks used at this Space.",
-          "fontSize": "80%",
-          "format": "short",
-          "id": 5,
-          "interval": null,
-          "legend": {
-            "percentage": true,
-            "show": true,
-            "values": true
-          },
-          "legendType": "Under graph",
-          "links": [],
-          "maxDataPoints": 3,
-          "nullPointMode": "connected",
-          "pieType": "pie",
-          "span": 6,
-          "strokeWidth": 1,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(stack_id, stack_name)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ stack_name }}",
-              "refId": "A",
-              "step": 2400
-            }
-          ],
-          "title": "Stacks",
-          "transparent": true,
-          "type": "grafana-piechart-panel",
-          "valueName": "current"
+          "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id))",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
         },
         {
-          "aliasColors": {},
-          "cacheTimeout": null,
-          "combine": {
-            "label": "Others",
-            "threshold": 0
-          },
-          "datasource": "${DS_PROMETHEUS}",
-          "description": "Buildpacks used at this Space.",
-          "fontSize": "80%",
-          "format": "short",
-          "id": 1,
-          "interval": null,
-          "legend": {
-            "percentage": true,
-            "show": true,
-            "values": true
-          },
-          "legendType": "Under graph",
-          "links": [],
-          "maxDataPoints": 3,
-          "nullPointMode": "connected",
-          "pieType": "pie",
-          "span": 6,
-          "strokeWidth": 1,
-          "targets": [
-            {
-              "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, buildpack)) by(buildpack)",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ buildpack }}",
-              "refId": "A",
-              "step": 2400
-            }
-          ],
-          "title": "Buildpacks",
-          "transparent": true,
-          "type": "grafana-piechart-panel",
-          "valueName": "current"
+          "expr": "avg(cf_space_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Quota",
+          "refId": "B",
+          "step": 4
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Stacks & Buildpacks Used",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Disk",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",space_id=~\"$cf_space_id\"}) by(route_id))",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(cf_space_total_routes_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Quota",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Routes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",space_id=~\"$cf_space_id\"}) by(service_instance_id))",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(cf_space_total_services_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Quota",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Service Instances",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Stacks used at this Space.",
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 5,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(stack_id, stack_name)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ stack_name }}",
+          "refId": "A",
+          "step": 2400
+        }
+      ],
+      "title": "Stacks",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Buildpacks used at this Space.",
+      "fontSize": "80%",
+      "format": "short",
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 1,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, buildpack)) by(buildpack)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ buildpack }}",
+          "refId": "A",
+          "step": 2400
+        }
+      ],
+      "title": "Buildpacks",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "cf"
@@ -801,5 +824,6 @@
   },
   "timezone": "browser",
   "title": "CF: Space Summary",
+  "uid": "cf_space_summary",
   "version": 1
 }

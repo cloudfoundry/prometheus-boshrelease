@@ -14,29 +14,39 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.1.1"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": ""
+      "version": "5.0.0"
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "1.0.0"
+      "version": "5.0.0"
     }
   ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": true,
   "id": null,
+  "iteration": 1523185280341,
   "links": [
     {
       "asDropdown": true,
@@ -46,1727 +56,1769 @@
       "tags": [
         "MySQL"
       ],
-      "targetBlank": true,
+      "targetBlank": false,
       "title": "MySQL",
       "type": "dashboards"
     }
   ],
-  "refresh": "30s",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 6,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 43,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 6,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 43,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": true,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Ibuf Merge Ratio",
-              "yaxis": 2
-            }
-          ],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Ibuf Insert",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Ibuf Delete",
-              "metric": "",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Ibuf Delete Mark",
-              "refId": "C",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Ibuf Merges",
-              "refId": "D",
-              "step": 20
-            },
-            {
-              "expr": "(rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]))/rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or (irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m]))/irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Ibuf Merge Ratio",
-              "refId": "E",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Change Buffer Performance",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 44,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"}*0 + on (instance) mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Size",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"} - mysql_info_schema_innodb_metrics_recovery_log_lsn_last_flush{instance=\"$host\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Used",
-              "metric": "",
-              "refId": "A",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Log Buffer Performance",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "bytes",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "alias": "Ibuf Merge Ratio",
+          "yaxis": 2
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Change",
-      "titleSize": "h6"
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Ibuf Insert",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Ibuf Delete",
+          "metric": "",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Ibuf Delete Mark",
+          "refId": "C",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Ibuf Merges",
+          "refId": "D",
+          "step": 20
+        },
+        {
+          "expr": "(rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]))/rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or (irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m]))/irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Ibuf Merge Ratio",
+          "refId": "E",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Change Buffer Performance",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 44,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 45,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Updates Purged",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Deletes Purged",
-              "metric": "",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Pages Purged",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Purge Performance",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"}*0 + on (instance) mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Size",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 48,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Locks Created",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Locks Removed",
-              "metric": "",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Locks Requested",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Locking",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"} - mysql_info_schema_innodb_metrics_recovery_log_lsn_last_flush{instance=\"$host\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Used",
+          "metric": "",
+          "refId": "A",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Purge",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Log Buffer Performance",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "bytes",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 45,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 51,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[5m])/1000000",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Log Flushing",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[5m])/1000000",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Insert Buffer Merging",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[5m])/1000000",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Checkpointing",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Main Thread Utilization",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "percentunit",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "percentunit",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Updates Purged",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 50,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Transacton Commits ",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Transaction Rollbacks",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RO Transaction Commits",
-              "refId": "C",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Non Locking RO Transaction Commits",
-              "refId": "D",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Insert-Update Transaction Commits",
-              "refId": "E",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Transaction IDs Assigned",
-              "refId": "F",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Transactions Information",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Deletes Purged",
+          "metric": "",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Pages Purged",
+          "refId": "C",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Main Thread",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Purge Performance",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 48,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 49,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "mysql_info_schema_innodb_metrics_transaction_trx_rseg_current_size{instance=\"$host\"}*mysql_global_status_innodb_page_size{instance=\"$host\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Innodb Undo Space Used ",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Undo Space Usage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "bytes",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Locks Created",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         },
         {
-          "aliasColors": {
-            "Innodb Activity": "#BA43A9"
-          },
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 53,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "InnoDB Activity",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Activity",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Locks Removed",
+          "metric": "",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Locks Requested",
+          "refId": "C",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Undo",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Locking",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 51,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 55,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks S OS Waits",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks SX OS Waits",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks X OS Waits",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Contention - OS Waits",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[5m])/1000000",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Log Flushing",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 54,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks S Spin Rounds",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks SX Spin Rounds",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "RW Locks X Spin Rounds",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Contention - Spin Rounds",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[5m])/1000000",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Insert Buffer Merging",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[5m])/1000000",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Checkpointing",
+          "refId": "C",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Contention",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Main Thread Utilization",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "percentunit",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 50,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
         {
-          "aliasColors": {
-            "Avg Row Lock Wait Time": "#BF1B00"
-          },
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 47,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": true,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval])/rate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])/irate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Group Commit Batch Size",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Group Commit Batch Size",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "ms"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Transacton Commits ",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 52,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "mysql_info_schema_innodb_metrics_purge_purge_dml_delay_usec{instance=\"$host\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Current Purge Delay",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "mysql_global_variables_innodb_max_purge_lag_delay{instance=\"$host\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Max Purge Delay",
-              "refId": "A",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB Purge Throttling",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "Ã‚Âµs",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "none",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Transaction Rollbacks",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RO Transaction Commits",
+          "refId": "C",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Non Locking RO Transaction Commits",
+          "refId": "D",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Insert-Update Transaction Commits",
+          "refId": "E",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Transaction IDs Assigned",
+          "refId": "F",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Group",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Transactions Information",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     },
     {
-      "collapse": false,
-      "height": "200px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 49,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 57,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "AHI - Hit Ratio",
-              "yaxis": 2
-            }
-          ],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Searches",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Hits",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Hit Ratio",
-              "refId": "C",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB AHI Usage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "percentunit"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "percentunit",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 2,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "leftMin": 0,
-            "rightLogBase": 1,
-            "rightMax": null,
-            "rightMin": 0
-          },
-          "id": 56,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 1,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 6,
-          "stack": false,
-          "steppedLine": true,
-          "targets": [
-            {
-              "calculatedInterval": "2m",
-              "datasourceErrors": {},
-              "errors": {},
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Pages Added",
-              "metric": "",
-              "refId": "B",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Pages Removed",
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "expr": "rate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[$interval]) or irate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Rows Added",
-              "refId": "C",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Rows Removed",
-              "refId": "D",
-              "step": 20
-            },
-            {
-              "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[5m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "AHI - Rows Updated",
-              "refId": "E",
-              "step": 20
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "InnoDB AHI Maintenance",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "transparent": true,
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ]
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "mysql_info_schema_innodb_metrics_transaction_trx_rseg_current_size{instance=\"$host\"}*mysql_global_status_innodb_page_size{instance=\"$host\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Innodb Undo Space Used ",
+          "metric": "",
+          "refId": "B",
+          "step": 20
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "AHI",
-      "titleSize": "h6"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Undo Space Usage",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "bytes",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {
+        "Innodb Activity": "#BA43A9"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 53,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "InnoDB Activity",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Activity",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 55,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks S OS Waits",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks SX OS Waits",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks X OS Waits",
+          "refId": "C",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Contention - OS Waits",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 54,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks S Spin Rounds",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks SX Spin Rounds",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "RW Locks X Spin Rounds",
+          "refId": "C",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Contention - Spin Rounds",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {
+        "Avg Row Lock Wait Time": "#BF1B00"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 25
+      },
+      "id": 47,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval])/rate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])/irate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Group Commit Batch Size",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Group Commit Batch Size",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "ms"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 25
+      },
+      "id": 52,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "mysql_info_schema_innodb_metrics_purge_purge_dml_delay_usec{instance=\"$host\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Current Purge Delay",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "mysql_global_variables_innodb_max_purge_lag_delay{instance=\"$host\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Max Purge Delay",
+          "refId": "A",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB Purge Throttling",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "Ã‚Âµs",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 57,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "AHI - Hit Ratio",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Searches",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Hits",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Hit Ratio",
+          "refId": "C",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB AHI Usage",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "percentunit"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fill": 2,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMax": null,
+        "leftMin": 0,
+        "rightLogBase": 1,
+        "rightMax": null,
+        "rightMin": 0
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 30
+      },
+      "id": 56,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Pages Added",
+          "metric": "",
+          "refId": "B",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Pages Removed",
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "expr": "rate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[$interval]) or irate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Rows Added",
+          "refId": "C",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Rows Removed",
+          "refId": "D",
+          "step": 20
+        },
+        {
+          "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[5m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "AHI - Rows Updated",
+          "refId": "E",
+          "step": 20
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "InnoDB AHI Maintenance",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "30s",
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "MySQL"
@@ -1779,9 +1831,8 @@
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
-          "selected": true,
           "text": "auto",
-          "value": "$__auto_interval"
+          "value": "$__auto_interval_interval"
         },
         "datasource": "Prometheus",
         "hide": 0,
@@ -1794,7 +1845,7 @@
           {
             "selected": true,
             "text": "auto",
-            "value": "$__auto_interval"
+            "value": "$__auto_interval_interval"
           },
           {
             "selected": false,
@@ -1898,5 +1949,6 @@
   },
   "timezone": "browser",
   "title": "MySQL: InnoDB Metrics Advanced",
+  "uid": "mysql_innodb_advanced",
   "version": 1
 }
