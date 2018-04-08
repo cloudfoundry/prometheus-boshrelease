@@ -696,7 +696,7 @@
           "calculatedInterval": "2s",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "sum(rate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[$interval])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"}) or sum(irate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"})",
+          "expr": "sum(rate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[$interval])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"})) or sum(irate(node_cpu{instance=~\"$host(:[0-9]+)?\"}[5m])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=~\"$host(:[0-9]+)?\"}))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ mode }}",
