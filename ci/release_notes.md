@@ -28,7 +28,7 @@
 * Added op files to enable proxy properties on several components
 * Make `cf_exporter` client uses now read only privileges (`cloud_controller.admin_read_only`)
 * Bump `cf-routing` release to [v0.174.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.174.0)
-* Bump `postgres` relase to [v26](https://github.com/cloudfoundry/postgres-release/releases/tag/v26)
+* Bump `postgres` relase to [v28](https://github.com/cloudfoundry/postgres-release/releases/tag/v28)
 
 ### Upgrades
 
