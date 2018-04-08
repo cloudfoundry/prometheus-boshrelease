@@ -1,0 +1,202 @@
+groups:
+  - name: prometheus-cf-exporter
+    rules:
+      - alert: CFExporterApplicationsScrapeError
+        expr: max(cf_last_applications_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Applications scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Applications metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterApplicationsScrapeTooOld
+        expr: (time() - max(cf_last_applications_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Applications scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Applications metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterOrganizationsScrapeError
+        expr: max(cf_last_organizations_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Organizations scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Organizations metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterOrganizationsScrapeTooOld
+        expr: (time() - max(cf_last_organizations_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Organizations scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Organizations metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterRoutesScrapeError
+        expr: max(cf_last_routes_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Routes scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Routes metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterRoutesScrapeTooOld
+        expr: (time() - max(cf_last_routes_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Routes scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Routes metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterServicesScrapeError
+        expr: max(cf_last_services_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Services scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Services metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterServicesScrapeTooOld
+        expr: (time() - max(cf_last_services_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Services scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Services metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterServiceBindingsScrapeError
+        expr: max(cf_last_service_bindings_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Service Bindings scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Service Bindings metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterServiceBindingsScrapeTooOld
+        expr: (time() - max(cf_last_service_bindings_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Service Bindings scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}}s ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Service Bindings metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterServiceInstancesScrapeError
+        expr: max(cf_last_service_instances_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Service Instances scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Service Instances metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterServiceInstancesScrapeTooOld
+        expr: (time() - max(cf_last_service_instances_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Service Instances scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}}s ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Service Instances metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterServicePlansScrapeError
+        expr: max(cf_last_service_plans_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Service Plans scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Service Plans metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterServicePlansScrapeTooOld
+        expr: (time() - max(cf_last_service_plans_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Service Plans scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}}s ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Service Plans metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterSpacesScrapeError
+        expr: max(cf_last_spaces_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Spaces scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Spaces metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterSpacesScrapeTooOld
+        expr: (time() - max(cf_last_spaces_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Spaces scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Spaces metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterSecurityGroupsScrapeError
+        expr: max(cf_last_security_groups_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Security Groups scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Security Groups metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterSecurityGroupsScrapeTooOld
+        expr: (time() - max(cf_last_security_groups_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Security Groups scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Security Groups metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: CFExporterStacksScrapeError
+        expr: max(cf_last_stacks_scrape_error) by(environment, deployment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: critical
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` Stacks scrape error"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` was unable to scrape Stacks metrics during the last <%= p('cloudfoundry_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CFExporterStacksScrapeTooOld
+        expr: (time() - max(cf_last_stacks_scrape_timestamp) by(environment, deployment, instance)) > <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: cf-exporter
+          severity: warning
+        annotations:
+          summary: "cf_exporter `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last Stacks scrape > {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `cf_exporter` at `{{$labels.environment}}/{{$labels.deployment}}/{{$labels.instance}}` last scrape for Stacks metrics was more than {{humanizeDuration <%= p('cloudfoundry_alerts.scrape_too_old.threshold') %>}} ago"

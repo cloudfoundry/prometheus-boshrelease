@@ -1,0 +1,132 @@
+groups:
+  - name: cf-diego
+    rules:
+      - alert: CFLRPAuctionsFailedTooHigh
+        expr: avg(irate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.lrp_auctions_failed.threshold') %>
+        for: <%= p('cloudfoundry_alerts.lrp_auctions_failed.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego LRP auctions failed at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}"
+          description: "The number of Diego LRP auctions that failed to be placed on cells at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.lrp_auctions_failed.evaluation_time') %>"
+
+      - alert: CFTasksAuctionsFailedTooHigh
+        expr: avg(irate(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.task_auctions_failed.threshold') %>
+        for: <%= p('cloudfoundry_alerts.task_auctions_failed.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego Task auctions failed at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}"
+          description: "The number of Diego Task auctions that failed to be placed on cells at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.task_auctions_failed.evaluation_time') %>"
+
+      - alert: CFAuctioneerFetchStatesDurationTooHigh
+        expr: max(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.threshold') %>
+        for: <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego Auctioneer fetch state duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego Auctioneer at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been taken {{$value}} seconds to fetch state from Diego Cells for the last <%= p('cloudfoundry_alerts.auctioneer_fetch_states_duration.evaluation_time') %>"
+
+      - alert: CFBBSConvergenceLRPDurationTooHigh
+        expr: max(firehose_value_metric_bbs_convergence_lrp_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.bbs_convergence_lrp_duration.threshold') %>
+        for: <%= p('cloudfoundry_alerts.bbs_convergence_lrp_duration.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego BBS Convergence LRP duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego BBS at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a convergence LRP duration of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.bbs_convergence_lrp_duration.evaluation_time') %>"
+ 
+      - alert: CFBBSRequestLatencyTooHigh
+        expr: max(firehose_value_metric_bbs_request_latency) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.bbs_request_latency.threshold') %>
+        for: <%= p('cloudfoundry_alerts.bbs_request_latency.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego BBS request latency at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego BBS at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a request latency of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.bbs_request_latency.evaluation_time') %>"
+
+      - alert: CFAppsDomainNotSynchronized
+        expr: avg(firehose_value_metric_bbs_domain_cf_apps) by(environment, bosh_deployment) < 1
+        for: <%= p('cloudfoundry_alerts.apps_not_synchronized.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "`cf-apps` domain at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is not being kept fresh"
+          description: "The `cf-apps` domain at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has not being kept fresh during the last <%= p('cloudfoundry_alerts.apps_not_synchronized.evaluation_time') %>"
+
+      - alert: CFTasksDomainNotSynchronized
+        expr: avg(firehose_value_metric_bbs_domain_cf_tasks) by(environment, bosh_deployment) < 1
+        for: <%= p('cloudfoundry_alerts.tasks_not_synchronized.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "`cf-tasks` domain at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is not being kept fresh"
+          description: "The `cf-tasks` domain at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has not being kept fresh during the last <%= p('cloudfoundry_alerts.tasks_not_synchronized.evaluation_time') %>"
+
+      - alert: CFAppInstancesFewerThanExpected
+        expr: avg(firehose_value_metric_bbs_lr_ps_missing) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.app_instances_fewer_than_expected.threshold') %>
+        for: <%= p('cloudfoundry_alerts.app_instances_fewer_than_expected.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has {{$value}} fewer app instances than expected"
+          description: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has fewer application instances than expected, there has been {{$value}} missing LRPs during the last <%= p('cloudfoundry_alerts.app_instances_fewer_than_expected.evaluation_time') %>"
+
+      - alert: CFAppInstancesMoreThanExpected
+        expr: avg(firehose_value_metric_bbs_lr_ps_extra) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.app_instances_more_than_expected.threshold') %>
+        for: <%= p('cloudfoundry_alerts.app_instances_more_than_expected.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has {{$value}} more app instances than expected"
+          description: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has more application instances than expected, there has been {{$value}} extra LRPs during the last <%= p('cloudfoundry_alerts.app_instances_more_than_expected.evaluation_time') %>"
+
+      - alert: CFRepBulkSynchDurationTooHigh
+        expr: max(firehose_value_metric_rep_rep_bulk_sync_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.threshold') %>
+        for: <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego Rep bulk sync duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego Rep at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been taken {{$value}} seconds to sync the ActualLRPs for the last <%= p('cloudfoundry_alerts.rep_bulk_synch_duration.evaluation_time') %>"
+
+      - alert: CFNsyncBulkerSyncDurationTooHigh
+        expr: max(firehose_value_metric_nsync_bulker_desired_lrp_sync_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.threshold') %>
+        for: <%= p('cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego Nsync bulker desired LRP sync duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego Nsync bulker at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a desired LRP sync duration of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.evaluation_time') %>"
+
+      - alert: GrootFSCreateFailTooHigh
+        expr: avg(irate(firehose_counter_event_grootfs_grootfs_create_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_create_fail.threshold') %>
+        for: <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}"
+          description: "The number of GrootFS failed create executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_create_fail.evaluation_time') %>"
+
+      - alert: GrootFSDeleteFailTooHigh
+        expr: avg(irate(firehose_counter_event_grootfs_grootfs_delete_run_fail_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.grootfs_delete_fail.threshold') %>
+        for: <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}"
+          description: "The number of GrootFS failed delete executions at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been too high during the last <%= p('cloudfoundry_alerts.grootfs_delete_fail.evaluation_time') %>"

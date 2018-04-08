@@ -1,0 +1,22 @@
+groups:
+  - name: probe
+    rules:
+      - alert: ProbeUnsuccessful
+        expr: min(probe_success) by(instance) != 1
+        for: <%= p('probe_alerts.unsuccessful.evaluation_time') %>
+        labels:
+          service: probe
+          severity: critical
+        annotations:
+          summary: "Endpoint `{{$labels.instance}}` unsuccessful probe"
+          description: "The probe against endpoint `{{$labels.instance}}` has been unsuccessful during the last <%= p('probe_alerts.unsuccessful.evaluation_time') %>"
+
+      - alert: ProbeHighDuration
+        expr: avg(probe_duration_seconds) by(instance) > <%= p('probe_alerts.high_duration.threshold') %>
+        for: <%= p('probe_alerts.high_duration.evaluation_time') %>
+        labels:
+          service: probe
+          severity: warning
+        annotations:
+          summary: "Endpoint `{{$labels.instance}}` probe took more than 1 second"
+          description: "The probe against endpoint `{{$labels.instance}}` took {{$value}} seconds during the last <%= p('probe_alerts.high_duration.evaluation_time') %>"

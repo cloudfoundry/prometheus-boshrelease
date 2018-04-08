@@ -1,0 +1,12 @@
+groups:
+  - name: prometheus-postgres-exporter
+    rules:
+      - alert: PostgresExporterScrapeError
+        expr: max(pg_exporter_last_scrape_error) by(instance) != 0
+        for: <%= p('postgres_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: postgres-exporter
+          severity: critical
+        annotations:
+          summary: "postgres_exporter `{{$labels.instance}}` scrape error"
+          description: "The `postgres_exporter` at `{{$labels.instance}}` was unable to scrape metrics during the last <%= p('postgres_alerts.scrape_error.evaluation_time') %>"

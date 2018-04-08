@@ -1,0 +1,44 @@
+groups:
+  - name: cluster
+    rules:
+      - alert: ElasticUp
+        expr: elasticsearch_cluster_health_up != 1
+        for: <%= p("elasticsearch_alerts.cluster_down.evaluation_time") %>
+        labels:
+          service: elasticsearch
+          severity: critical
+        annotations:
+          summary: "Elasticsearch instance {{$labels.instance}} is not responding"
+          description: "Elasticsearch instance {{$labels.instance}} is not responding"
+
+      - alert: ElasticClusterRed
+        expr: elasticsearch_cluster_health_status{color="red"} == 1
+        for: <%= p("elasticsearch_alerts.cluster_red.evaluation_time") %>
+        labels:
+          service: elasticsearch
+          severity: critical
+        annotations:
+          summary: "Cluster {{$labels.cluster}} is red"
+          description: "Cluster {{$labels.cluster}} is red"
+
+      <% if_p("elasticsearch_alerts.cluster_yellow.evaluation_time") do |time| %>
+      - alert: ElasticClusterYellow
+        expr: elasticsearch_cluster_health_status{color="yellow"} == 1
+        for: <%= time %>
+        labels:
+          service: elasticsearch
+          severity: warning
+        annotations:
+          summary: "Cluster {{$labels.cluster}} is yellow"
+          description: "Cluster {{$labels.cluster}} is yellow"
+      <% end %>
+
+      - alert: ElasticHeapUsage
+        expr: elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"} > <%= p('elasticsearch_alerts.heap_usage.threshold') %>
+        for: <%= p("elasticsearch_alerts.heap_usage.evaluation_time") %>
+        labels:
+          service: elasticsearch
+          severity: warning
+        annotations:
+          summary: "Heap usage on node `{{$labels.cluster}}/{{$labels.name}}` has been over <%= p("elasticsearch_alerts.heap_usage.threshold") %> for a long time"
+          description: "Heap usage on node `{{$labels.cluster}}/{{$labels.name}}` has been over <%= p("elasticsearch_alerts.heap_usage.threshold") %> for <%= p("elasticsearch_alerts.heap_usage.evaluation_time") %>"

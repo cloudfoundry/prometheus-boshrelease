@@ -1,0 +1,56 @@
+groups:
+  - name: p-rabbitmq
+    rules:
+      - alert: PRabbitMQServerDown
+        expr: min(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_heartbeat) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) != 1
+        for: <%= p('p_rabbitmq_alerts.server_down.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: critical
+        annotations:
+          summary: "Rabbitmq for PCF Server instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` is down"
+          description: "The RabbitMQ Server instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has been down for the last <%= p('p_rabbitmq_alerts.server_down.evaluation_time') %>"
+
+      - alert: PRabbitMQHaProxyDown
+        expr: min(firehose_value_metric_p_rabbitmq_p_rabbitmq_haproxy_heartbeat) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) != 1
+        for: <%= p('p_rabbitmq_alerts.haproxy_down.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: critical
+        annotations:
+          summary: "Rabbitmq for PCF HAProxy instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` is down"
+          description: "The RabbitMQ HaProxy instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has been down for the last <%= p('p_rabbitmq_alerts.haproxy_down.evaluation_time') %>"
+
+      - alert: PRabbitMQServiceBrokerDown
+        expr: min(firehose_value_metric_p_rabbitmq_p_rabbitmq_service_broker_heartbeat) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) != 1
+        for: <%= p('p_rabbitmq_alerts.service_broker_down.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: critical
+        annotations:
+          summary: "Rabbitmq for PCF Service Broker instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` is down"
+          description: "The RabbitMQ Service Broker instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has been down for the last <%= p('p_rabbitmq_alerts.service_broker_down.evaluation_time') %>"
+
+      <% if_p("p_rabbitmq_alerts.queue_depth.warning") do |threshold| %>
+      - alert: RabbitMQQueueDepth
+        expr: avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
+        for: <%= p('p_rabbitmq_alerts.queue_depth.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: warning
+        annotations:
+          summary: "RabbitMQ Queue depth WARNING"
+          description: "The RabbitMQ Queue depth is above <%= threshold %> messages"
+      <% end %>
+
+      <% if_p("p_rabbitmq_alerts.queue_depth.critical") do |threshold| %>
+      - alert: RabbitMQQueueDepth
+        expot: avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
+        for: <%= p('p_rabbitmq_alerts.queue_depth.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: critical
+        annotations:
+          summary: "RabbitMQ Queue depth CRITICAL"
+          description: "The RabbitMQ Queue depth is above <%= threshold %> messages"
+      <% end %>

@@ -1,0 +1,22 @@
+groups:
+  - name: bosh-processes
+    rules:
+      - alert: BOSHJobProcessUnhealthy
+        expr: max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
+        for: <%= p('bosh_alerts.process_unhealthy.evaluation_time') %>
+        labels:
+          service: bosh-job-process
+          severity: warning
+        annotations:
+          summary: "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` is unhealthy"
+          description: "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` is being reported unhealthy"
+
+      - alert: BOSHJobProcessExtendedUnhealthy
+        expr: max(bosh_job_process_healthy{bosh_job_name!~"^compilation.*",bosh_deployment!="bosh-health-check"}) by(environment, bosh_name, bosh_deployment, bosh_job_name, bosh_job_index, bosh_job_process_name) < 1
+        for: <%= p('bosh_alerts.process_extended_unhealthy.evaluation_time') %>
+        labels:
+          service: bosh-job-process
+          severity: critical
+        annotations:
+          summary: "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` has been unhealthy for a long time"
+          description: "BOSH Job Process `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}/{{$labels.bosh_job_process_name}}` has been reported unhealthy for more than <%= p('bosh_alerts.process_extended_unhealthy.evaluation_time') %>"

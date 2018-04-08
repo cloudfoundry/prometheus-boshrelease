@@ -1,0 +1,62 @@
+groups:
+  - name: p-redis-service-broker
+    rules:
+      - alert: PRedisServiceBrokerDedicatedPlanLowVMsAvailable
+        expr: ((avg(firehose_value_metric_p_redis_p_redis_service_broker_dedicated_vm_plan_available_instances) by(environment,bosh_deployment) / avg(firehose_value_metric_p_redis_p_redis_service_broker_dedicated_vm_plan_total_instances) by(environment,bosh_deployment)) * 100) <  <%= p('p_redis_alerts.sb_dp_low_instances.threshold') %>
+        for: <%= p('p_redis_alerts.sb_dp_low_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` Dedicated Plan has low vms available"
+          description: "There are less than {{$value}}% of vms available for the Dedicated Plan at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRedisServiceBrokerDedicatedPlanNoVMsAvailable
+        expr: avg(firehose_value_metric_p_redis_p_redis_service_broker_dedicated_vm_plan_total_instances) by(environment,bosh_deployment,bosh_job_name) > 0 and avg(firehose_value_metric_p_redis_p_redis_service_broker_dedicated_vm_plan_available_instances) by(environment,bosh_deployment,bosh_job_name) < 1
+        for: <%= p('p_redis_alerts.sb_dp_no_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: critical
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` Dedicated Plan does NOT have any vm available"
+          description: "There are NOT any vms available for the Dedicated Plan at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRedisServiceBrokerSharedPlanLowInstancesAvailable
+        expr: ((avg(firehose_value_metric_p_redis_p_redis_service_broker_shared_vm_plan_available_instances) by(environment,bosh_deployment) / avg(firehose_value_metric_p_redis_p_redis_service_broker_shared_vm_plan_total_instances) by(environment,bosh_deployment)) * 100) < <%= p('p_redis_alerts.sb_sp_low_instances.threshold') %>
+        for: <%= p('p_redis_alerts.sb_sp_low_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` Shared Plan has low instances available"
+          description: "There are less than {{$value}}% of instances available for the Shared Plan at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRedisServiceBrokerSharedPlanNoInstancesAvailable
+        expr: avg(firehose_value_metric_p_redis_p_redis_service_broker_shared_vm_plan_total_instances) by(environment,bosh_deployment) > 0 and avg(firehose_value_metric_p_redis_p_redis_service_broker_shared_vm_plan_available_instances) by(environment,bosh_deployment) < 1
+        for: <%= p('p_redis_alerts.sb_sp_no_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: critical
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` Shared Plan does NOT have any instance available"
+          description: "There are NOT any instances available for the Shared Plan at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRedisServiceBrokerOnDemandLowInstancesAvailable
+        expr: ((avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment) / (avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_total_instances) by(environment,bosh_deployment) + avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment))) * 100) < <%= p('p_redis_alerts.sb_odb_low_instances.threshold') %>
+        for: <%= p('p_redis_alerts.sb_odb_low_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` On Demand Service Broker has low instances available"
+          description: "There are less than {{$value}}% of instances available for the On Demand Service Broker at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRedisServiceBrokerOnDemandNoInstancesAvailable
+        expr: avg(firehose_value_metric_p_redis_on_demand_broker_p_redis_quota_remaining) by(environment,bosh_deployment) < 1
+        for: <%= p('p_redis_alerts.sb_odb_no_instances.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: critical
+        annotations:
+          summary: "Redis for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` On Demand Service Broker does NOT have any instance available"
+          description: "There are NOT any instances available for the On Demand Service Broker at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"

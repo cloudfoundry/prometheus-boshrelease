@@ -1,0 +1,12 @@
+groups:
+  - name: prometheus-mysqld-exporter
+    rules:
+      - alert: MySQLdExporterScrapeError
+        expr: max(mysql_exporter_last_scrape_error) by(instance) != 0
+        for: <%= p('mysql_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: mysqld-exporter
+          severity: critical
+        annotations:
+          summary: "mysqld_exporter `{{$labels.instance}}` scrape error"
+          description: "The `mysqld_exporter` at `{{$labels.instance}}` was unable to scrape metrics during the last <%= p('mysql_alerts.scrape_error.evaluation_time') %>"

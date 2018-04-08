@@ -1,0 +1,72 @@
+groups:
+  - name: cf-cells
+    rules:
+      - alert: CFCellUnhealthy
+        expr: max(firehose_value_metric_rep_unhealthy_cell) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > 0
+        for: <%= p('cloudfoundry_alerts.cell_unhealthy.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF Cell `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` is unhealthy"
+          description: "CF Cell `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has been unhealthy during the last <%= p('cloudfoundry_alerts.cell_unhealthy.evaluation_time') %>"
+
+      - alert: CFCellsOverallAvailableMemoryTooLow
+        expr: (sum(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_memory.threshold') %>
+        for: <%= p('cloudfoundry_alerts.overall_available_memory.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` overall available memory too low: {{$value}}%"
+          description: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had less than {{$value}}% of overall available memory during the last <%= p('cloudfoundry_alerts.overall_available_memory.evaluation_time') %>"
+
+      - alert: CFCellsMaxAvailableMemoryTooLow
+        expr: max(avg(firehose_value_metric_rep_capacity_remaining_memory) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_memory.threshold') %>
+        for: <%= p('cloudfoundry_alerts.max_available_memory.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` cell with max available memory is too low: {{$value}}MiB"
+          description: "The cell at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` with the maximum available memory has been {{$value}}MiB during the last <%= p('cloudfoundry_alerts.max_available_memory.evaluation_time') %>"
+
+      - alert: CFCellsOverallAvailableDiskTooLow
+        expr: (sum(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_disk.threshold') %>
+        for: <%= p('cloudfoundry_alerts.overall_available_disk.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` overall available disk too low: {{$value}}%"
+          description: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had less than {{$value}}% of overall available disk during the last <%= p('cloudfoundry_alerts.overall_available_disk.evaluation_time') %>"
+
+      - alert: CFCellsMaxAvailableDiskTooLow
+        expr: max(avg(firehose_value_metric_rep_capacity_remaining_disk) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_disk.threshold') %>
+        for: <%= p('cloudfoundry_alerts.max_available_disk.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` cell with max available disk is too low: {{$value}}MiB"
+          description: "The cell at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` with the maximum available disk has been {{$value}}MiB during the last <%= p('cloudfoundry_alerts.max_available_disk.evaluation_time') %>"
+
+      - alert: CFCellsOverallAvailableContainersTooLow
+        expr: (sum(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) / sum(avg(firehose_value_metric_rep_capacity_total_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name)) * 100 < <%= p('cloudfoundry_alerts.overall_available_containers.threshold') %>
+        for: <%= p('cloudfoundry_alerts.overall_available_containers.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` overall available containers too low: {{$value}}%"
+          description: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had less than {{$value}}% of overall available containers during the last <%= p('cloudfoundry_alerts.overall_available_containers.evaluation_time') %>"
+
+      - alert: CFCellsMaxAvailableContainersTooLow
+        expr: max(avg(firehose_value_metric_rep_capacity_remaining_containers) by(environment, bosh_deployment, bosh_job_name, bosh_job_id)) by(environment, bosh_deployment, bosh_job_name) < <%= p('cloudfoundry_alerts.max_available_containers.threshold') %>
+        for: <%= p('cloudfoundry_alerts.max_available_containers.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` cell with max available containers is too low: {{$value}}"
+          description: "The cell at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` with the maximum available containers has been {{$value}} during the last <%= p('cloudfoundry_alerts.max_available_containers.evaluation_time') %>"

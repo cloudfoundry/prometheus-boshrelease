@@ -1,0 +1,12 @@
+groups:
+  - name: prometheus-bosh-tsdb-exporter
+    rules:
+      - alert: BOSHTSDBExporterLastMessageTooOld
+        expr: (time() - max(bosh_tsdb_last_received_tsdb_message_timestamp) by(environment, instance)) > <%= p('bosh_alerts.tsdb_message_too_old.threshold') %>
+        for: <%= p('bosh_alerts.tsdb_message_too_old.evaluation_time') %>
+        labels:
+          service: bosh-tsdb-exporter
+          severity: warning
+        annotations:
+          summary: "bosh_tsdb_exporter `{{$labels.environment}}/{{$labels.instance}}` last TSDB message received > {{humanizeDuration <%= p('bosh_alerts.tsdb_message_too_old.threshold') %>}} ago"
+          description: "The `bosh_tsdb_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last TSDB message received from BOSH HM was more than {{humanizeDuration <%= p('bosh_alerts.tsdb_message_too_old.threshold') %>}} ago"

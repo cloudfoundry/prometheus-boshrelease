@@ -1,0 +1,12 @@
+groups:
+  - name: haproxy
+    rules:
+      - alert: HAProxyDown
+        expr: min(haproxy_up) by(instance) != 1
+        for: <%= p('haproxy_alerts.down.evaluation_time') %>
+        labels:
+          service: haproxy
+          severity: critical
+        annotations:
+          summary: "HAProxy instance `{{$labels.instance}}` is down"
+          description: "The HAProxy instance at `{{$labels.instance}}` has been down for the last <%= p('haproxy_alerts.down.evaluation_time') %>"

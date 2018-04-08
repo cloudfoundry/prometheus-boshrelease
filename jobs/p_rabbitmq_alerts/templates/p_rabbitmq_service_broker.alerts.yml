@@ -1,0 +1,22 @@
+groups:
+  - name: p-rabbitmq-service-broker
+    rules:
+      - alert: PRabbitMQServiceBrokerOnDemandLowInstancesAvailable
+        expr: ((avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment) / (avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_total_instances) by(environment,bosh_deployment) + avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment))) * 100) < <%= p('p_rabbitmq_alerts.sb_odb_low_instances.threshold') %>
+        for: <%= p('p_rabbitmq_alerts.sb_odb_low_instances.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: warning
+        annotations:
+          summary: "RabbitMQ for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` On Demand Service Broker has low instances available"
+          description: "There are less than {{$value}}% of instances available for the On Demand Service Broker at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"
+
+      - alert: PRabbitMQServiceBrokerOnDemandNoInstancesAvailable
+        expr: avg(firehose_value_metric_p_rabbitmq_on_demand_broker_p_rabbitmq_quota_remaining) by(environment,bosh_deployment) < 1
+        for: <%= p('p_rabbitmq_alerts.sb_odb_no_instances.evaluation_time') %>
+        labels:
+          service: p-rabbitmq
+          severity: critical
+        annotations:
+          summary: "RabbitMQ for PCF `{{$labels.environment}}/{{$labels.bosh_deployment}}` On Demand Service Broker does NOT have any instance available"
+          description: "There are NOT any instances available for the On Demand Service Broker at the environment `{{$labels.environment}}` and deployment `{{$labels.bosh_deployment}}`"

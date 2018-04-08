@@ -1,0 +1,52 @@
+groups:
+  - name: prometheus
+    rules:
+      - alert: PrometheusScrapeError
+        expr: up == 0
+        for: <%= p('prometheus_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: prometheus
+          severity: warning
+        annotations:
+          summary: "Prometheus instance `{{$labels.instance}}` (scrape job `{{$labels.job}}`) down or not reachable"
+          description: "The Prometheus instance at `{{$labels.instance}}` for scrape job `{{$labels.job}}` has been down or has not been reachable during the last <%= p('prometheus_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: PrometheusConfigReloadFailed
+        expr: prometheus_config_last_reload_successful == 0
+        for: <%= p('prometheus_alerts.config_reload_failed.evaluation_time') %>
+        labels:
+          service: prometheus
+          severity: warning
+        annotations:
+          summary: "Prometheus instance `{{$labels.instance}}` config reload failed"
+          description: "The Prometheus instance at `{{$labels.instance}}` has failed to reload its configuration during the last <%= p('prometheus_alerts.config_reload_failed.evaluation_time') %>"
+
+      - alert: PrometheusExceededSampleLimit
+        expr: rate(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > <%= p('prometheus_alerts.exceeded_sample_limit.threshold') %>
+        for: <%= p('prometheus_alerts.exceeded_sample_limit.evaluation_time') %>
+        labels:
+          service: prometheus
+          severity: warning
+        annotations:
+          summary: "Prometheus instance `{{$labels.instance}}` exceeded the sample limit"
+          description: "The Prometheus instance at `{{$labels.instance}}` exceeded the sample limit during the last <%= p('prometheus_alerts.exceeded_sample_limit.evaluation_time') %>"
+
+      - alert: PrometheusNotificationsDroppedTooHigh
+        expr: rate(prometheus_notifications_dropped_total[5m]) > <%= p('prometheus_alerts.notifications_dropped.threshold') %>
+        for: <%= p('prometheus_alerts.notifications_dropped.evaluation_time') %>
+        labels:
+          service: prometheus
+          severity: warning
+        annotations:
+          summary: "Prometheus instance `{{$labels.instance}}` is dropping notifications"
+          description: "The Prometheus instance at `{{$labels.instance}}` has been dropping to much notifications during the last <%= p('prometheus_alerts.notifications_dropped.evaluation_time') %>"
+
+      - alert: PrometheusNotificationsQueueTooHigh
+        expr: rate(prometheus_notifications_queue_length[5m]) > <%= p('prometheus_alerts.notifications_queue.threshold') %>
+        for: <%= p('prometheus_alerts.notifications_queue.evaluation_time') %>
+        labels:
+          service: prometheus
+          severity: warning
+        annotations:
+          summary: "Prometheus instance `{{$labels.instance}}` notifications queue is too high"
+          description: "The Prometheus instance at `{{$labels.instance}}` notifications queue has been too high during the last <%= p('prometheus_alerts.notifications_queue.evaluation_time') %>"

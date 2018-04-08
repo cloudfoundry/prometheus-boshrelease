@@ -1,0 +1,12 @@
+groups:
+  - name: cf-etcd
+    rules:
+      - alert: CFEtcdMoreThanOneLeader
+        expr: max(count(firehose_value_metric_etcd_is_leader == 1) by(environment, bosh_deployment, instance)) by(environment, bosh_deployment) > 1
+        for: <%= p('cloudfoundry_alerts.etcd_leaders.evaluation_time') %>
+        labels:
+          service: cf
+          severity: critical
+        annotations:
+          summary: "`etcd` cluster at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has ${{value}} leaders"
+          description: "The `etcd` cluster at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had {{$value}} leaders during the last <%= p('cloudfoundry_alerts.etcd_leaders.evaluation_time') %>"
