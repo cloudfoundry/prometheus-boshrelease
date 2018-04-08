@@ -2,7 +2,7 @@
 
 # Exporter jobs
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
+  path: /instance_groups/name=prometheus2/jobs/-
   value:
     name: consul_exporter
     release: prometheus
@@ -12,12 +12,12 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=consul_alerts?/release
+  path: /instance_groups/name=prometheus2/jobs/name=consul_alerts?/release
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/jobs/consul_alerts/*.alerts
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/consul_alerts/*.alerts.yml
 
 # Grafana Dashboards
 - type: replace

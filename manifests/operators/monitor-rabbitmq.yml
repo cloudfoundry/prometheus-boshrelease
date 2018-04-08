@@ -2,7 +2,7 @@
 
 # Exporter jobs
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
+  path: /instance_groups/name=prometheus2/jobs/-
   value:
     name: rabbitmq_exporter
     release: prometheus
@@ -15,12 +15,12 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=rabbitmq_alerts?/release
+  path: /instance_groups/name=prometheus2/jobs/name=rabbitmq_alerts?/release
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/jobs/rabbitmq_alerts/*.alerts
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/rabbitmq_alerts/*.alerts.yml
 
 # Grafana Dashboards
 - type: replace

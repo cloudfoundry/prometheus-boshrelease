@@ -2,7 +2,7 @@
 
 # Exporter jobs
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/-
+  path: /instance_groups/name=prometheus2/jobs/-
   value:
     name: kube_state_metrics_exporter
     release: prometheus
@@ -18,7 +18,7 @@
 # cluster, or can't connect to nodes for some other reason (e.g. because of
 # firewalling).
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
   value:
     job_name: kubernetes_nodes
     scheme: ((kubernetes_apiserver_scheme))
@@ -49,7 +49,7 @@
 # default named port `https`. This works for single API server deployments as
 # well as HA API server deployments.
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
   value:
     job_name: kubernetes_apiservers
     scheme: ((kubernetes_apiserver_scheme))
@@ -69,12 +69,12 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=kubernetes_alerts?/release
+  path: /instance_groups/name=prometheus2/jobs/name=kubernetes_alerts?/release
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
-  value: /var/vcap/jobs/kubernetes_alerts/*.alerts
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/kubernetes_alerts/*.alerts.yml
 
 # Grafana Dashboards
 - type: replace
