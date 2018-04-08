@@ -34,9 +34,10 @@ ALERT PRabbitMQServiceBrokerDown
     description = "The RabbitMQ Service Broker instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has been down for the last <%= p('p_rabbitmq_alerts.service_broker_down.evaluation_time') %>",
   }
 
-<% if_p("p_rabbitmq_alerts.queue_depth.warning") do |threshold|  -%>
+<% if_p("p_rabbitmq_alerts.queue_depth.warning") do |threshold| %>
 ALERT RabbitMQQueueDepth
   IF avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
+  FOR <%= p('p_rabbitmq_alerts.queue_depth.evaluation_time') %>
   LABELS {
     service = "rabbitmq",
     severity = "warning",
@@ -45,10 +46,12 @@ ALERT RabbitMQQueueDepth
     summary = "RabbitMQ Queue depth WARNING",
     description = "The RabbitMQ Queue depth is above <%= threshold %> messages"
   }
-<% end -%>
-<% if_p("p_rabbitmq_alerts.queue_depth.critical") do |threshold|  -%>
+<% end %>
+
+<% if_p("p_rabbitmq_alerts.queue_depth.critical") do |threshold| %>
 ALERT RabbitMQQueueDepth
   IF avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
+  FOR <%= p('p_rabbitmq_alerts.queue_depth.evaluation_time') %>
   LABELS {
     service = "rabbitmq",
     severity = "critical",
@@ -57,4 +60,4 @@ ALERT RabbitMQQueueDepth
     summary = "RabbitMQ Queue depth CRITICAL",
     description = "The RabbitMQ Queue depth is above <%= threshold %> messages"
   }
-<% end -%>
+<% end %>
