@@ -1,0 +1,52 @@
+groups:
+  - name: p-redis
+    rules:
+      - alert: PRedisNoClientsConnected
+        expr: avg(firehose_value_metric_p_redis_p_redis_info_clients_connected_clients) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) < <%= p('p_redis_alerts.connected_clients.threshold') %>
+        for: <%= p('p_redis_alerts.connected_clients.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has NO clients connected"
+          description: "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had less than <%= p('p_redis_alerts.connected_clients.threshold') %> clients connected during the last <%= p('p_redis_alerts.connected_clients.evaluation_time') %>"
+
+      - alert: PRedisRejectedConnections
+        expr: avg(firehose_value_metric_p_redis_p_redis_info_stats_rejected_connections) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.rejected_connections.threshold') %>
+        for: <%= p('p_redis_alerts.rejected_connections.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` may be hitting maxclient limit"
+          description: "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had {{$value}} rejected connections during the last <%= p('p_redis_alerts.rejected_connections.evaluation_time') %>, so it may be hitting the maxclient limit"
+
+      - alert: PRedisHighMemoryFragmentation
+        expr: avg(firehose_value_metric_p_redis_p_redis_info_memory_mem_fragmentation_ratio) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.memory_fragmentation_ratio.threshold') %>
+        for: <%= p('p_redis_alerts.memory_fragmentation_ratio.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` has high memory fragmentation"
+          description: "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` had a memory fragmentation of {{$value}}% during the last <%= p('p_redis_alerts.memory_fragmentation_ratio.evaluation_time') %>, this may lead to performance degradation"
+
+      - alert: PRedisHighAOFRewriteTime
+        expr: avg(firehose_value_metric_p_redis_p_redis_info_persistence_aof_last_rewrite_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.aof_rewrite_duration.threshold') %>
+        for: <%= p('p_redis_alerts.aof_rewrite_duration.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` AOF rewrite took too much time"
+          description: "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{humanizeDuration $value}} to perform an AOF rewrite"
+
+      - alert: PRedisHighRDBBgSaveTime
+        expr: avg(firehose_value_metric_p_redis_p_redis_info_persistence_rdb_last_bgsave_time_sec) by(environment, bosh_deployment, bosh_job_name, bosh_job_ip) > <%= p('p_redis_alerts.bgsave_duration.threshold') %>
+        for: <%= p('p_redis_alerts.bgsave_duration.evaluation_time') %>
+        labels:
+          service: p-redis
+          severity: warning
+        annotations:
+          summary: "Redis for PCF instance `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` RDB bgsave took too much time"
+          description: "The Redis instance at `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_ip}}` took {{humanizeDuration $value}} to perform a RDB bgsave"

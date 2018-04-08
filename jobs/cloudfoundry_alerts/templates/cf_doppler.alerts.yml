@@ -1,0 +1,12 @@
+groups:
+  - name: cf-doppler
+    rules:
+      - alert: CFFirehoseDroppedMessagesTooHigh
+        expr: max(irate(firehose_counter_event_doppler_server_doppler_shed_envelopes_total[5m]) + irate(firehose_counter_event_doppler_server_truncating_buffer_total_dropped_messages_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.firehose_dropped_messages.threshold') %>
+        for: <%= p('cloudfoundry_alerts.firehose_dropped_messages.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Firehose at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is dropping messages at a high rate: ${{value}} msgs/sec"
+          description: "The Firehose at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been dropping {{$value}} messages per second during the last <%= p('cloudfoundry_alerts.firehose_dropped_messages.evaluation_time') %>"

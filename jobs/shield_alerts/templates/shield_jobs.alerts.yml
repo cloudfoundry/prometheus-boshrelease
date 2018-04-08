@@ -1,0 +1,42 @@
+groups:
+  - name: shield-jobs
+    rules:
+      - alert: ShieldJobPending1d
+        expr: shield_job_status == 1
+        for: <%= p('shield_alerts.job_pending.evaluation_time') %>
+        labels:
+          service: shield
+          severity: warning
+        annotations:
+          summary: "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` pending > <%= p('shield_alerts.job_pending.evaluation_time') %>"
+          description: "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `pending` state for more than <%= p('shield_alerts.job_pending.evaluation_time') %>"
+
+      - alert: ShieldJobRunning1d
+        expr: shield_job_status == 2
+        for: <%= p('shield_alerts.job_running.evaluation_time') %>
+        labels:
+          service: shield
+          severity: warning
+        annotations:
+          summary: "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` running > <%= p('shield_alerts.job_running.evaluation_time') %>"
+          description: "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `running` state for more than <%= p('shield_alerts.job_running.evaluation_time') %>"
+
+      - alert: ShieldJobFailed1d
+        expr: shield_job_status == 4 and shield_job_paused == 0
+        for: <%= p('shield_alerts.job_failed.evaluation_time') %>
+        labels:
+          service: shield
+          severity: warning
+        annotations:
+          summary: "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` failed > <%= p('shield_alerts.job_failed.evaluation_time') %>"
+          description: "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `failing` state for more than <%= p('shield_alerts.job_failed.evaluation_time') %>"
+
+      - alert: ShieldJobPaused1d
+        expr: shield_job_paused == 1
+        for: <%= p('shield_alerts.job_paused.evaluation_time') %>
+        labels:
+          service: shield
+          severity: warning
+        annotations:
+          summary: "Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` paused > <%= p('shield_alerts.job_paused.evaluation_time') %>"
+          description: "The Shield Job `{{$labels.job_name}}` at `{{$labels.environment}}/{{$labels.backend_name}}` has been in a `paused` state for more than <%= p('shield_alerts.job_paused.evaluation_time') %>"

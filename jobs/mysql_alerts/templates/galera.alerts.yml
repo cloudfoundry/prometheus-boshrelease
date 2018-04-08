@@ -1,0 +1,112 @@
+groups:
+  - name: galera
+    rules:
+      - alert: MySQLGaleraClusterSize
+        expr: (mysql_global_status_wsrep_cluster_size < <%= p('mysql_alerts.cluster_size.threshold') %>)
+        for: <%= p('mysql_alerts.cluster_size.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera Cluster on `{{$labels.instance}}` < <%= p('mysql_alerts.cluster_size.threshold') %> nodes"
+          description: "Galera Cluster on `{{$labels.instance}}` had less than <%= p('mysql_alerts.cluster_size.threshold') %> nodes ({{$value}}) during the last <%= p('mysql_alerts.cluster_size.evaluation_time') %>"
+
+      - alert: MySQLGaleraClusterEvenNodes
+        expr: (mysql_global_status_wsrep_cluster_size % 2 != 1)
+        for: <%= p('mysql_alerts.cluster_even_nodes.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera Cluster on `{{$labels.instance}}` has even # of nodes"
+          description: "Galera Cluster on `{{$labels.instance}}` had an even number of nodes ({{$value}}) during the last <%= p('mysql_alerts.cluster_even_nodes.evaluation_time') %>"
+
+      - alert: MySQLGaleraNotOperational
+        expr: (mysql_global_status_wsrep_cluster_status != 1)
+        for: <%= p('mysql_alerts.not_operational.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: critical
+        annotations:
+          summary: "Galera Cluster node on `{{$labels.instance}}` not operational"
+          description: "A Galera Cluster node on `{{$labels.instance}}` had not been operational during the last <%= p('mysql_alerts.not_operational.evaluation_time') %>. It may occur in cases of multiple membership changes that result in a loss of quorum or in cases of split-brain situations"
+
+      - alert: MySQLGaleraNotReady
+        expr: (mysql_global_status_wsrep_ready != 1)
+        for: <%= p('mysql_alerts.not_ready.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: critical
+        annotations:
+          summary: "Galera cluster node on `{{$labels.instance}}` not ready"
+          description: "A Galera cluster node on `{{$labels.instance}}` has not been ready during the last <%= p('mysql_alerts.not_ready.evaluation_time') %>"
+
+      - alert: MySQLGaleraNotConnected
+        expr: (mysql_global_status_wsrep_connected != 1)
+        for: <%= p('mysql_alerts.not_connected.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: critical
+        annotations:
+          summary: "Galera cluster node on `{{$labels.instance}}` not connected"
+          description: "A Galera cluster node on `{{$labels.instance}}` has not been connected to the cluster during the last <%= p('mysql_alerts.not_connected.evaluation_time') %>"
+
+      - alert: MySQLGaleraOutOfSync
+        expr: (mysql_global_status_wsrep_local_state != 4 AND mysql_global_variables_wsrep_desync == 0)
+        for: <%= p('mysql_alerts.out_of_sync.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera cluster node on `{{$labels.instance}}` out of sync"
+          description: "A Galera cluster node on `{{$labels.instance}}` has not been in sync ({{$value}} != 4) during the last <%= p('mysql_alerts.out_of_sync.evaluation_time') %>"
+
+      - alert: MySQLGaleraDonorFallingBehind
+        expr: (mysql_global_status_wsrep_local_state == 2 AND mysql_global_status_wsrep_local_recv_queue > <%= p('mysql_alerts.donor_falling_behind.threshold') %>)
+        for: <%= p('mysql_alerts.donor_falling_behind.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera xtradb cluster donor node on `{{$labels.instance}}` falling behind"
+          description: "A Galera cluster node on `{{$labels.instance}}` is a donor (hotbackup) and has been falling behind (queue size {{$value}}) during the last <%= p('mysql_alerts.donor_falling_behind.evaluation_time') %>"
+
+      - alert: MySQLGaleraFlowControlPaused
+        expr: (mysql_global_status_wsrep_flow_control_paused == 1)
+        for: <%= p('mysql_alerts.flow_control_paused.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: critical
+        annotations:
+          summary: "Galera Cluster node on `{{$labels.instance}}` paused due to Flow Control"
+          description: "A Galera Cluster node on `{{$labels.instance}}` has been paused due to flow control during the last <%= p('mysql_alerts.flow_control_paused.evaluation_time') %>"
+
+      - alert: MySQLGaleraFlowControlPauseTooHigh
+        expr: (mysql_global_status_wsrep_flow_control_paused > <%= p('mysql_alerts.flow_control_pause.min_threshold') %> and mysql_global_status_wsrep_flow_control_paused < <%= p('mysql_alerts.flow_control_pause.max_threshold') %>)
+        for: <%= p('mysql_alerts.flow_control_pause.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera Cluster node on `{{$labels.instance}}` flow control pause too high"
+          description: "A Galera Cluster node on `{{$labels.instance}}` had a flow control pause too high ({{$value}}) during the last <%= p('mysql_alerts.flow_control_pause.evaluation_time') %>"
+
+      - alert: MySQLGaleraSendQueueLengthTooHigh
+        expr: (mysql_global_status_wsrep_local_send_queue_avg > <%= p('mysql_alerts.send_queue_length.threshold') %>)
+        for: <%= p('mysql_alerts.send_queue_length.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera Cluster on `{{$labels.instance}}` send queue length too high"
+          description: "Galera Cluster on `{{$labels.instance}}` had a local send queue length too high ({{$value}}) during the last <%= p('mysql_alerts.send_queue_length.evaluation_time') %>, It may indicate that replication throttling or network throughput issues"
+
+      - alert: MySQLGaleraRecvQueueLengthTooHigh
+        expr: (mysql_global_status_wsrep_local_recv_queue_avg > <%= p('mysql_alerts.recv_queue_length.threshold') %>)
+        for: <%= p('mysql_alerts.recv_queue_length.evaluation_time') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "Galera Cluster on `{{$labels.instance}}` recv queue length too high"
+          description: "Galera Cluster on `{{$labels.instance}}` had a local received queue length too high ({{$value}}) during the last <%= p('mysql_alerts.recv_queue_length.evaluation_time') %>. It may indicate that the node cannot apply write-sets as fast as it receives them, which can lead to replication throttling"

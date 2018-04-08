@@ -1,0 +1,12 @@
+groups:
+  - name: concourse
+    rules:
+      - alert: ConcourseHighWorkerContainers
+        expr: avg(concourse_workers_containers) by(bosh_deployment, worker) > <%= p('concourse_alerts.worker_containers.threshold') %>
+        for: <%= p('concourse_alerts.worker_containers.evaluation_time') %>
+        labels:
+          service: concourse
+          severity: warning
+        annotations:
+          summary: "Concourse worker `{{$bosh_deployment}}/{{$worker}}` is reporting too many containers"
+          description: "Concourse worker `{{$bosh_deployment}}/{{$worker}}` is reporting too many containers: {{$value}}"

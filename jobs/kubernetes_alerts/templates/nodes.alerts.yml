@@ -1,0 +1,22 @@
+groups:
+  - name: nodes
+    rules:
+      - alert: KubernetesNodeMemoryRequests
+        expr: sum(kube_pod_container_resource_requests_memory_bytes) by (node) / on (node) kube_node_status_capacity_memory_bytes > <%= p('kubernetes_alerts.node_memory_requests.threshold') %>
+        for: <%= p('kubernetes_alerts.node_memory_requests.evaluation_time') %>
+        labels:
+          service: kubernetes
+          severity: warning
+        annotations:
+          summary: "Kubernetes node `{{$labels.node}}` memory requests too high: {{$value}}"
+          description: "Kubernetes node `{{$labels.node}}` reserved over <%= p('kubernetes_alerts.node_memory_requests.threshold') %> of memory for <%= p('kubernetes_alerts.node_memory_requests.evaluation_time') %>"
+
+      - alert: KubernetesNodeCPURequests
+        expr: sum(kube_pod_container_resource_requests_cpu_cores) by (node) / on (node) kube_node_status_capacity_cpu_cores > <%= p('kubernetes_alerts.node_cpu_requests.threshold') %>
+        for: <%= p('kubernetes_alerts.node_cpu_requests.evaluation_time') %>
+        labels:
+          service: kubernetes
+          severity: warning
+        annotations:
+          summary: "Kubernetes node `{{$labels.node}}` CPU requests too high: {{$value}}"
+          description: "Kubernetes node `{{$labels.node}}` reserved over <%= p('kubernetes_alerts.node_cpu_requests.threshold') %> of CPU cores for <%= p('kubernetes_alerts.node_cpu_requests.evaluation_time') %>"

@@ -1,0 +1,162 @@
+groups:
+  - name: prometheus-shield-exporter
+    rules:
+      - alert: ShieldExporterArchivesScrapeError
+        expr: max(shield_last_archives_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Archives scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Archives metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterArchivesScrapeTooOld
+        expr: (time() - max(shield_last_archives_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Archives scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Archives metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterJobsScrapeError
+        expr: max(shield_last_jobs_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Jobs scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Jobs metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterJobsScrapeTooOld
+        expr: (time() - max(shield_last_jobs_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Jobs scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Jobs metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterRetentionPoliciesScrapeError
+        expr: max(shield_last_retention_policies_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Retention Policies scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Retention Policies metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterRetentionPoliciesScrapeTooOld
+        expr: (time() - max(shield_last_retention_policies_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Retention Policies scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Retention Policiess metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterSchedulesScrapeError
+        expr: max(shield_last_schedules_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Schedules scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Schedules metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterSchedulesScrapeTooOld
+        expr: (time() - max(shield_last_schedules_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Schedules scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Schedules metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterStatusScrapeError
+        expr: max(shield_last_status_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Status scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Status metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterStatusScrapeTooOld
+        expr: (time() - max(shield_last_status_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Status scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Status metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterStoresScrapeError
+        expr: max(shield_last_stores_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Stores scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Stores metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterStoresScrapeTooOld
+        expr: (time() - max(shield_last_stores_scrape_timestamp) by(environment, backend_name, instancee)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Stores scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Stores metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterTargetsScrapeError
+        expr: max(shield_last_targets_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Targets scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Targets metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterTargetsScrapeTooOld
+        expr: (time() - max(shield_last_targets_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Targets scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Targets metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+
+      - alert: ShieldExporterTasksScrapeError
+        expr: max(shield_last_tasks_scrape_error) by(environment, backend_name, instance) != 0
+        for: <%= p('shield_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: critical
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` Tasks scrape error for Shield backend `{{$labels.backend_name}}`"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` was unable to scrape Tasks metrics from Shield backend `{{$labels.backend_name}}` during the last <%= p('shield_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: ShieldExporterTasksScrapeTooOld
+        expr: (time() - max(shield_last_tasks_scrape_timestamp) by(environment, backend_name, instance)) > <%= p('shield_alerts.scrape_too_old.threshold') %>
+        for: <%= p('shield_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: shield-exporter
+          severity: warning
+        annotations:
+          summary: "shield_exporter `{{$labels.environment}}/{{$labels.instance}}` for Shield backend `{{$labels.backend_name}}` last Tasks scrape > {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `shield_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last scrape for Tasks metrics from Shield backend `{{$labels.backend_name}}` was more than {{humanizeDuration <%= p('shield_alerts.scrape_too_old.threshold') %>}} ago"

@@ -1,0 +1,22 @@
+groups:
+  - name: prometheus-bosh-exporter
+    rules:
+      - alert: BOSHExporterScrapeError
+        expr: max(bosh_last_scrape_error) by(environment, bosh_name, instance) != 0
+        for: <%= p('bosh_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: bosh-exporter
+          severity: critical
+        annotations:
+          summary: "bosh_exporter `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` scrape error"
+          description: "The `bosh_exporter` at `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` was unable to scrape metrics during the last <%= p('bosh_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: BOSHExporterScrapeTooOld
+        expr: (time() - max(bosh_last_scrape_timestamp) by(environment, bosh_name, instance)) > <%= p('bosh_alerts.scrape_too_old.threshold') %>
+        for: <%= p('bosh_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: bosh-exporter
+          severity: warning
+        annotations:
+          summary: "bosh_exporter `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` last scrape > {{humanizeDuration <%= p('bosh_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `bosh_exporter` at `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.instance}}` last scrape for metrics was more than {{humanizeDuration <%= p('bosh_alerts.scrape_too_old.threshold') %>}} ago"

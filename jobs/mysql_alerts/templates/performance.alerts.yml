@@ -1,0 +1,11 @@
+groups:
+  - name: performance
+    rules:
+      - alert: MySQLInnoDBLogWaits
+        expr: rate(mysql_global_status_innodb_log_waits[15m]) > <%= p('mysql_alerts.innodb_log_waits.threshold') %>
+        labels:
+          service: mysql
+          severity: warning
+        annotations:
+          summary: "MySQL innodb log writes at `{{$labels.instance}}` stalling"
+          description: "The innodb logs at `{{$labels.instance}}` are waiting for disk at a rate of {{$value}} / second"

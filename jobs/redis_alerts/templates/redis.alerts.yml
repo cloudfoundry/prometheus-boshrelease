@@ -1,0 +1,52 @@
+groups:
+  - name: redis
+    rules:
+      - alert: RedisNoClientsConnected
+        expr: avg(redis_connected_clients) by(addr) < <%= p('redis_alerts.connected_clients.threshold') %>
+        for: <%= p('redis_alerts.connected_clients.evaluation_time') %>
+        labels:
+          service: redis
+          severity: warning
+        annotations:
+          summary: "Redis instance `{{$labels.addr}} < <%= p('redis_alerts.connected_clients.threshold') %> clients connected"
+          description: "The Redis instance at `{{$labels.addr}}` had less than <%= p('redis_alerts.connected_clients.threshold') %> clients connected during the last <%= p('redis_alerts.connected_clients.evaluation_time') %>"
+
+      - alert: RedisRejectedConnections
+        expr: avg(redis_rejected_connections_total) by(addr) > <%= p('redis_alerts.rejected_connections.threshold') %>
+        for: <%= p('redis_alerts.rejected_connections.evaluation_time') %>
+        labels:
+          service: redis
+          severity: warning
+        annotations:
+          summary: "Redis instance `{{$labels.addr}}` may be hitting maxclient limit"
+          description: "The Redis instance at `{{$labels.addr}}` had {{$value}} rejected connections during the last <%= p('redis_alerts.rejected_connections.evaluation_time') %>, so it may be hitting the maxclient limit"
+
+      - alert: RedisHighMemoryFragmentation
+        expr: avg(redis_memory_fragmentation_ratio) by(addr) > <%= p('redis_alerts.memory_fragmentation_ratio.threshold') %>
+        for: <%= p('redis_alerts.memory_fragmentation_ratio.evaluation_time') %>
+        labels:
+          service: redis
+          severity: warning
+        annotations:
+          summary: "Redis instance `{{$labels.addr}}` has high memory fragmentation"
+          description: "The Redis instance at `{{$labels.addr}}` had a memory fragmentation of {{$value}}% during the last <%= p('redis_alerts.memory_fragmentation_ratio.evaluation_time') %>, this may lead to performance degradation"
+
+      - alert: RedisHighAOFRewriteTime
+        expr: avg(redis_aof_last_rewrite_duration_sec) by(addr) > <%= p('redis_alerts.aof_rewrite_duration.threshold') %>
+        for: <%= p('redis_alerts.aof_rewrite_duration.evaluation_time') %>
+        labels:
+          service: redis
+          severity: warning
+        annotations:
+          summary: "Redis instance `{{$labels.addr}}` AOF rewrite took too much time"
+          description: "The Redis instance at `{{$labels.addr}}` took {{humanizeDuration $value}} to perform an AOF rewrite"
+
+      - alert: RedisHighRDBBgSaveTime
+        expr: avg(redis_rdb_last_bgsave_duration_sec) by(addr) > <%= p('redis_alerts.bgsave_duration.threshold') %>
+        for: <%= p('redis_alerts.bgsave_duration.evaluation_time') %>
+        labels:
+          service: redis
+          severity: warning
+        annotations:
+          summary: "Redis instance `{{$labels.addr}}` RDB bgsave took too much time"
+          description: "The Redis instance at `{{$labels.addr}}` took {{humanizeDuration $value}} to perform a RDB bgsave"

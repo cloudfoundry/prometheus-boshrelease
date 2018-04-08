@@ -1,0 +1,12 @@
+groups:
+  - name: prometheus-redis-exporter
+    rules:
+      - alert: RedisExporterScrapeError
+        expr: max(redis_exporter_last_scrape_error) by(instance) != 0
+        for: <%= p('redis_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: redis-exporter
+          severity: critical
+        annotations:
+          summary: "redis_exporter `{{$labels.instance}}` scrape error"
+          description: "The `redis_exporter` at `{{$labels.instance}}` was unable to scrape metrics during the last <%= p('redis_alerts.scrape_error.evaluation_time') %>"

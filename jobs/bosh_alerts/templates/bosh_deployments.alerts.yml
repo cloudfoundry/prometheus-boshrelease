@@ -1,0 +1,14 @@
+<% if_p("bosh_alerts.deployment_stemcell_outdated.version") do |value| %>
+groups:
+  - name: bosh-deployments
+    rules:
+      - alert: BOSHDeploymentStemcells
+        expr: count(bosh_deployment_stemcell_info{bosh_stemcell_version!="<%= version %>"}) by (environment, bosh_name, bosh_deployment) != 0
+        for: <%= p("bosh_alerts.deployment_stemcell_outdated.evaluation_time") %>
+        labels:
+          service: bosh-deployment
+          severity: critical
+        annotations:
+          summary: "BOSH Deployment `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}` has been using an outdated stemcell for a long time"
+          description: "BOSH Deployment `{{$labels.environment}}/{{$labels.bosh_name}}/{{$labels.bosh_deployment}}` has been using using an outdated stemcell for <%= p("bosh_alerts.deployment_stemcell_outdated.evaluation_time") %>"
+<% end %>

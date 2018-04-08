@@ -1,0 +1,32 @@
+groups:
+  - name: consul
+    rules:
+      - alert: ConsulDown
+        expr: min(consul_up) by(instance) < 1
+        for: <%= p('consul_alerts.down.evaluation_time') %>
+        labels:
+          service: consul
+          severity: critical
+        annotations:
+          summary: "Consul instance `{{$labels.instance}}` is down"
+          description: "The Consul instance at `{{$labels.instance}}` has been down during the last <%= p('consul_alerts.down.evaluation_time') %>"
+
+      - alert: ConsulNodeHealthCheckFailing
+        expr: min(consul_health_node_status) by(instance, node, check)  < 1
+        for: <%= p('consul_alerts.node_health.evaluation_time') %>
+        labels:
+          service: consul
+          severity: critical
+        annotations:
+          summary: "Health check `{{$labels.check}}` at Consul node `{{$labels.instance}}/{{$labels.node}}` is failing"
+          description: "The health check `{{$labels.check}}` at Consul node `{{$labels.instance}}/{{$labels.node}}` has been failing during the last <%= p('consul_alerts.node_health.evaluation_time') %>"
+
+      - alert: ConsulMoreThanOneLeader
+        expr: count(consul_raft_leader == 1) by(instance) > 1
+        for: <%= p('consul_alerts.leaders.evaluation_time') %>
+        labels:
+          service: consul
+          severity: critical
+        annotations:
+          summary: "Consul cluster at`{{$labels.instance}}` has ${{value}} leaders"
+          description: "The Consul cluster at `{{$labels.instance}}` had {{$value}} leaders during the last <%= p('consul_alerts.leaders.evaluation_time') %>"

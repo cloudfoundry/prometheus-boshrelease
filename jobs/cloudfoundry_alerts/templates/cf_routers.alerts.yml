@@ -1,0 +1,72 @@
+groups:
+  - name: cf-routers
+    rules:
+      - alert: CFRouterEmitterSyncDurationTooHigh
+        expr: max(firehose_value_metric_route_emitter_route_emitter_sync_duration) by(environment, bosh_deployment) / 1000000000 > <%= p('cloudfoundry_alerts.router_emitter_sync_duration.threshold') %>
+        for: <%= p('cloudfoundry_alerts.router_emitter_sync_duration.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Diego Router Emitter synch duration at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} sec"
+          description: "Diego Router Emitter at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` had a synch duration of {{$value}} seconds during the last <%= p('cloudfoundry_alerts.router_emitter_sync_duration.evaluation_time') %>"
+
+      - alert: CFRouterRequestsTooHigh
+        expr: avg(irate(firehose_counter_event_gorouter_total_requests_total[5m])) by(environment, bosh_deployment, bosh_job_ip) > <%= p('cloudfoundry_alerts.router_requests.threshold') %>
+        for: <%= p('cloudfoundry_alerts.router_requests.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Requests per second at CF Router `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_ip}}` is too high: {{$value}}req/s"
+          description: "CF Router `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_ip}}` has processed {{$value}} requests per second during the last <%= p('cloudfoundry_alerts.router_requests.evaluation_time') %>"
+
+      - alert: CFRoutersLatencyTooHigh
+        expr: avg(firehose_value_metric_gorouter_latency) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.routers_latency.threshold') %>
+        for: <%= p('cloudfoundry_alerts.routers_latency.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Router's latency at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}}ms"
+          description: "The router's latency at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` has been {{$value}}ms during the last <%= p('cloudfoundry_alerts.routers_latency.evaluation_time') %>"
+
+      - alert: CFRoutesNotBeingRegistered
+        expr: max(firehose_value_metric_gorouter_ms_since_last_registry_update) by(environment, bosh_deployment) / 1000 > <%= p('cloudfoundry_alerts.routes_last_registry.threshold') %>
+        for: <%= p('cloudfoundry_alerts.routes_last_registry.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Routes at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` not being registered"
+          description: "Routes at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` are not being registered to apps correctly. It has been at least {{$value}} seconds since a router received a 'router.register' message from an app"
+
+      - alert: CFRouterBadGatewayTooHigh
+        expr: max(irate(firehose_counter_event_gorouter_bad_gateways_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.router_bad_gateway.threshold') %>
+        for: <%= p('cloudfoundry_alerts.router_bad_gateway.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Bad gateway responses per second at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} 5xx res/s"
+          description: "Routers at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` have been returning {{$value}} bad gateway responses per second during the last <%= p('cloudfoundry_alerts.router_bad_gateway.evaluation_time') %>"
+
+      - alert: CFRouter5xxResponsesTooHigh
+        expr: max(irate(firehose_counter_event_gorouter_responses_5_xx_total[5m])) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.router_5xx_responses.threshold') %>
+        for: <%= p('cloudfoundry_alerts.router_5xx_responses.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "5xx responses per second at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too high: {{$value}} 5xx res/s"
+          description: "Routers at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` have been returning {{$value}} 5xx responses per second during the last <%= p('cloudfoundry_alerts.router_5xx_responses.evaluation_time') %>"
+
+      - alert: CFRoutesTooLow
+        expr: avg(firehose_value_metric_gorouter_total_routes) by(environment, bosh_deployment) < <%= p('cloudfoundry_alerts.routes_total.threshold') %>
+        for: <%= p('cloudfoundry_alerts.routes_total.evaluation_time') %>
+        labels:
+          service: cf
+          severity: warning
+        annotations:
+          summary: "Number of routes at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too low: {{$value}}"
+          description: "There has been only {{$value}} routes in the routing table at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` during the last <%= p('cloudfoundry_alerts.routes_total.evaluation_time') %>"

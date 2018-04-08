@@ -1,0 +1,22 @@
+groups:
+  - name: bosh-tsdb-jobs
+    rules:
+      - alert: BOSHTSDBJobUnhealthy
+        expr: max(bosh_tsdb_job_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) < 1
+        for: <%= p('bosh_alerts.job_unhealthy.evaluation_time') %>
+        labels:
+          service: bosh-job
+          severity: warning
+        annotations:
+          summary: "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is unhealthy"
+          description: "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` is being reported unhealthy"
+
+      - alert: BOSHTSDBJobExtendedUnhealthy
+        expr: max(bosh_tsdb_job_healthy{bosh_job_name!~"^compilation.*"}) by(environment, bosh_deployment, bosh_job_name, bosh_job_index) < 1
+        for: <%= p('bosh_alerts.job_extended_unhealthy.evaluation_time') %>
+        labels:
+          service: bosh-job
+          severity: critical
+        annotations:
+          summary: "BOSH Job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been unhealthy for a long time"
+          description: "BOSH job `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_name}}/{{$labels.bosh_job_index}}` has been reported unhealthy for more than <%= p('bosh_alerts.job_extended_unhealthy.evaluation_time') %>"
