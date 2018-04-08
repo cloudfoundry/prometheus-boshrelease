@@ -5,17 +5,29 @@
 ### Features
 
 * Allow setting custom headers in nginx config
-* Allow `kube-state-metrics` to get properties from [cfcf](https://docs-cfcr.cfapps.io/)
-* Allow `kube-state-metrics` to use a proxy
 * Allow `prometheus` to use a proxy
+* Allow `kube-state-metrics` to use a proxy
+* Allow `kube-state-metrics` to get properties from [cfcf](https://docs-cfcr.cfapps.io/)
 * Updated `kubernetes` dashboards
+* Added alerts for `RabbitMQ for PCF` queue depth
+* Added dashboards compatible with `loggregator` version `101.4`
+* Allow organizing `grafana` dashboard in folders
+* Service name for `CF Apps` alerts is now configurable
+
+### Fixes
+
+* Fixes app request at `cloudfoundry` dashboards
+* Fixes expr for unassigned shards and node count at `elasticsearch` dashboards
+* Fixes a problem with a `grafana` script not being compatible with CentOS stemcells
 
 ### Manifests
 
 * All `grafana` dashboards have been moved to folders
-* `monitor-kubernetes` op file now enables kubernetes API servers and kubelets service discovery
+* The alertmanager `slack` configuration now sends alerts when they are resolved
+* `monitor-kubernetes` op file now enables kubernetes `API servers` and `kubelets` service discovery
 * Added op files to enable proxy properties on several components
-* Bump `cf-routing` release to [v0.172.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.172.0)
+* Make `cf_exporter` client uses now read only privileges (`cloud_controller.admin_read_only`)
+* Bump `cf-routing` release to [v0.174.0](https://github.com/cloudfoundry/routing-release/releases/tag/0.174.0)
 * Bump `postgres` relase to [v26](https://github.com/cloudfoundry/postgres-release/releases/tag/v26)
 
 ### Upgrades
