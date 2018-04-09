@@ -36,7 +36,7 @@
 * `blackbox_exporter` to [v0.12.0](https://github.com/prometheus/blackbox_exporter/releases/tag/v0.12.0)
 * `bosh_exporter` to [v3.0.1](https://github.com/bosh-prometheus/bosh_exporter/releases/tag/v3.0.1)
 * `cf_exporter` to [v0.6.2](https://github.com/bosh-prometheus/cf_exporter/releases/tag/v0.6.2)
-* `firehose_exporter` to [v5.0.2](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.2)
+* `firehose_exporter` to [v5.0.3](https://github.com/bosh-prometheus/firehose_exporter/releases/tag/v5.0.3)
 * `grafana` to [v5.0.4](https://github.com/grafana/grafana/releases/tag/v5.0.4)
 * `Grafana Status panel` to [v1.0.8](https://github.com/Vonage/Grafana_Status_panel/releases/tag/1.0.8)
 * `Grafana Pie Chart panel` to `a07f6cf`
