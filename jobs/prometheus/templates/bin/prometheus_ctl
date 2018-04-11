@@ -23,30 +23,8 @@ case $1 in
 
     ulimit -n 65536
 
-    <% if_p('env.http_proxy') do |http_proxy| %>
-    export HTTP_PROXY="<%= http_proxy %>"
-    export http_proxy="<%= http_proxy %>"
-    <% end %>
-    <% if_p('env.https_proxy') do |https_proxy| %>
-    export HTTPS_PROXY="<%= https_proxy %>"
-    export https_proxy="<%= https_proxy %>"
-    <% end %>
-    <% if_p('env.no_proxy') do |no_proxy| %>
-    export NO_PROXY="<%= no_proxy %>"
-    export no_proxy="<%= no_proxy %>"
-    <% end %>
-
     exec prometheus \
       -config.file=/var/vcap/jobs/prometheus/config/prometheus.yml \
-      <% if_p('prometheus.alertmanager.notification_queue_capacity') do |notification_queue_capacity| %> \
-      -alertmanager.notification-queue-capacity="<%= notification_queue_capacity %>" \
-      <% end %> \
-      <% if_p('prometheus.alertmanager.timeout') do |timeout| %> \
-      -alertmanager.timeout="<%= timeout %>" \
-      <% end %> \
-      <% if_link('alertmanager') do |alertmanager| %> \
-      -alertmanager.url="<%= alertmanager.instances.map { |instance| URI.join("http://#{instance.address}:#{alertmanager.p('alertmanager.web.port')}","#{alertmanager.p('alertmanager.web.route_prefix',"")}") }.join(',') %>" \
-      <% end %> \
       <% if_p('prometheus.log_format') do |log_format| %> \
       -log.format="<%= log_format %>" \
       <% end %> \
@@ -116,9 +94,6 @@ case $1 in
       <% end %> \
       <% if_p('prometheus.web.enable_remote_shutdown') do |enable_remote_shutdown| %> \
       -web.enable-remote-shutdown="<%= enable_remote_shutdown %>" \
-      <% end %> \
-      <% if_p('prometheus.web.external_url') do |external_url| %> \
-      -web.external-url="<%= external_url %>" \
       <% end %> \
       -web.listen-address=":<%= p('prometheus.web.port') %>" \
       <% if_p('prometheus.web.max_connections') do |max_connections| %> \
