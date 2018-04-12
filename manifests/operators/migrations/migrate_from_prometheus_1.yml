@@ -1,0 +1,19 @@
+# And that’s it! You can then keep the Prometheus 1.x running until the data its holding is no longer relevant.
+# Any queries to the Prometheus 2.0 will transparently pull data from the Prometheus 1.x as needed.
+# Old prometheus 1 job
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: prometheus
+    azs:
+      - az-1
+    instances: 1
+    vm_type: default
+    persistent_disk: 10_240
+    stemcell: default
+    networks:
+      - name: default
+    jobs:
+      - name: prometheus
+        release: prometheus
+        properties: {}
