@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523185941539,
+  "iteration": 1523736849843,
   "links": [
     {
       "asDropdown": true,
@@ -78,7 +78,7 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total number of scrapes that were skipped because the metric storage was throttled",
+      "description": "The number of alertmanagers discovered and active",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -130,14 +130,15 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "prometheus_target_skipped_scrapes_total{instance=~\"$instance\"}",
+          "expr": "sum(prometheus_notifications_alertmanagers_discovered{instance=~\"$instance\"})",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
       "thresholds": "",
-      "title": "Skipped Scrapes",
+      "title": "Alertmanagers Discovered",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -155,12 +156,14 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": [
-        "rgba(245, 54, 54, 0.9)",
+        "rgba(50, 172, 45, 0.97)",
         "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
+        "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total number of scrapes that hit the sample limit and were rejected",
+      "description": "Total number of alerts sent",
+      "editable": true,
+      "error": false,
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -173,166 +176,6 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 0
-      },
-      "id": 18,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "prometheus_target_scrapes_exceeded_sample_limit_total{instance=~\"$instance\"}",
-          "intervalFactor": 2,
-          "refId": "A",
-          "step": 60
-        }
-      ],
-      "thresholds": "",
-      "title": "Exceeded Sample Limit",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(50, 172, 45, 0.97)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
-      ],
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 0
-      },
-      "id": 15,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "prometheus_notifications_dropped_total{instance=~\"$instance\"}",
-          "intervalFactor": 2,
-          "refId": "A",
-          "step": 60
-        }
-      ],
-      "thresholds": "",
-      "title": "Notifications Dropped",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "70%",
-      "valueMaps": [],
-      "valueName": "current"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(50, 172, 45, 0.97)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
-      ],
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 12,
         "y": 0
       },
       "id": 6,
@@ -372,7 +215,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(prometheus_notifications_sent_total{instance=~\"$instance\"})",
+          "expr": "sum(prometheus_notifications_sent_total{instance=~\"$instance\"})",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -389,6 +233,168 @@
     {
       "cacheTimeout": null,
       "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Total number of errors sending alert notifications",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 18,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(prometheus_notifications_errors_total{instance=~\"$instance\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
+      "title": "Notifications Errors",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(50, 172, 45, 0.97)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(245, 54, 54, 0.9)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Total number of alerts dropped due to errors when sending to Alertmanager",
+      "editable": true,
+      "error": false,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 15,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(prometheus_notifications_dropped_total{instance=~\"$instance\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
+      "title": "Notifications Dropped",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "70%",
+      "valueMaps": [],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
       "colorValue": true,
       "colors": [
         "rgba(50, 172, 45, 0.97)",
@@ -396,6 +402,7 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "${DS_PROMETHEUS}",
+      "description": "The number of alert notifications in the queue",
       "editable": true,
       "error": false,
       "format": "none",
@@ -449,7 +456,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "prometheus_notifications_queue_length{instance=~\"$instance\"}",
+          "expr": "sum(prometheus_notifications_queue_length{instance=~\"$instance\"})",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -480,6 +488,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "decimals": 1,
+      "description": "Latency for sending alert notifications",
       "editable": true,
       "error": false,
       "format": "s",
@@ -533,7 +542,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(prometheus_notifications_latency_seconds{instance=~\"$instance\"})",
+          "expr": "avg(rate(prometheus_notifications_latency_seconds_sum{instance=~\"$instance\"}[5m]) / rate(prometheus_notifications_latency_seconds_count{instance=~\"$instance\"}[5m]))",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -564,7 +574,7 @@
       "fill": 1,
       "gridPos": {
         "h": 5,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 4
       },
@@ -597,6 +607,7 @@
       "targets": [
         {
           "expr": "avg(prometheus_target_scrape_pool_sync_total{instance=~\"$instance\"}) by(scrape_job)",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ scrape_job }}",
@@ -607,7 +618,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Sync Scrape Pool",
+      "title": "Scrape Pool Syncs",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -647,31 +658,33 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "",
-      "editable": true,
-      "error": false,
+      "decimals": 0,
+      "description": "Total number of samples rejected",
       "fill": 1,
-      "grid": {},
       "gridPos": {
         "h": 5,
         "w": 12,
-        "x": 0,
-        "y": 9
+        "x": 12,
+        "y": 4
       },
-      "id": 2,
+      "id": 23,
       "legend": {
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "max": false,
         "min": false,
-        "show": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
-      "linewidth": 2,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -682,22 +695,44 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(prometheus_target_interval_length_seconds_count{instance=~\"$instance\"})",
+          "expr": "sum(prometheus_target_scrapes_exceeded_sample_limit_total{instance=~\"$instance\"})",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Scrapes",
+          "legendFormat": "Exceeded Sample Limit",
           "refId": "A",
-          "step": 10
+          "step": 4
+        },
+        {
+          "expr": "sum(prometheus_target_scrapes_sample_duplicate_timestamp_total{instance=~\"$instance\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Duplicate Timestamps",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(prometheus_target_scrapes_sample_out_of_bounds_total{instance=~\"$instance\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Out of Bounds",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(prometheus_target_scrapes_sample_out_of_order_total{instance=~\"$instance\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Out of Order",
+          "refId": "D"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Scrapes",
+      "title": "Samples Rejected",
       "tooltip": {
         "shared": true,
         "sort": 0,
-        "value_type": "cumulative"
+        "value_type": "individual"
       },
       "transparent": true,
       "type": "graph",
@@ -711,6 +746,7 @@
       "yaxes": [
         {
           "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -718,6 +754,7 @@
         },
         {
           "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -731,7 +768,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "",
+      "description": "Actual intervals between scrapes",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -739,7 +776,7 @@
       "gridPos": {
         "h": 5,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 9
       },
       "id": 14,
@@ -768,10 +805,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(prometheus_target_interval_length_seconds{instance=~\"$instance\",quantile!=\"0.01\",quantile!=\"0.05\"}) by(interval, quantile)",
+          "expr": "avg(rate(prometheus_target_interval_length_seconds_sum{instance=~\"$instance\"}[5m]) / rate(prometheus_target_interval_length_seconds_count{instance=~\"$instance\"}[5m])) by(interval)",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ interval }} ({{ quantile }}) ",
+          "legendFormat": "{{ interval }}",
           "metric": "",
           "refId": "A",
           "step": 10
@@ -818,8 +856,97 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
+      "description": "Actual interval to sync the scrape pool",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(rate(prometheus_target_sync_length_seconds_sum{instance=~\"$instance\"}[5m]) / rate(prometheus_target_sync_length_seconds_count{instance=~\"$instance\"}[5m])) by(scrape_job)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ scrape_job }}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Scrape Pool Sync Interval",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
       "decimals": null,
-      "description": "",
+      "description": "Duration for a rule to execute",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -838,7 +965,7 @@
         "hideEmpty": true,
         "max": false,
         "min": false,
-        "show": true,
+        "show": false,
         "total": false,
         "values": false
       },
@@ -856,10 +983,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(prometheus_evaluator_duration_seconds{instance=~\"$instance\",quantile!=\"0.01\",quantile!=\"0.05\"}) by(quantile)",
+          "expr": "rate(prometheus_rule_evaluation_duration_seconds_sum{instance=~\"$instance\"}[5m]) / rate(prometheus_rule_evaluation_duration_seconds_count{instance=~\"$instance\"}[5m])",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ quantile }}",
+          "legendFormat": "Durarion",
           "refId": "A",
           "step": 10
         }
@@ -867,7 +995,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Evaluator Duration",
+      "title": "Rule Evaluation Duration",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -906,8 +1034,181 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
+      "description": "The total number of scheduled rule group evaluations, executed or missed",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 21,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "prometheus_rule_group_iterations_total{instance=~\"$instance\"} - prometheus_rule_group_iterations_missed_total{instance=~\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Total",
+          "refId": "A"
+        },
+        {
+          "expr": "prometheus_rule_group_iterations_missed_total{instance=~\"$instance\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Missed",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Rule Group Iterations",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "The duration of the last rule group evaulation",
+      "fill": 1,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 22,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(prometheus_rule_group_last_duration_seconds{instance=~\"$instance\"})",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Duration",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Last Rule Group Duration",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
       "decimals": null,
-      "description": "",
+      "description": "Duration of rule group evaluations",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -916,7 +1217,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 19
       },
       "id": 12,
       "legend": {
@@ -926,7 +1227,7 @@
         "hideEmpty": true,
         "max": false,
         "min": false,
-        "show": true,
+        "show": false,
         "total": false,
         "values": false
       },
@@ -944,10 +1245,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(prometheus_rule_evaluation_duration_seconds{instance=~\"$instance\",quantile!=\"0.01\",quantile!=\"0.05\"}) by(quantile)",
+          "expr": "rate(prometheus_rule_group_duration_seconds_sum{instance=~\"$instance\"}[5m]) / rate(prometheus_rule_group_duration_seconds_count{instance=~\"$instance\"}[5m])",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ quantile }}",
+          "legendFormat": "Duration",
           "refId": "A",
           "step": 10
         }
@@ -955,7 +1257,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Rule Evaluation Duration",
+      "title": "Rule Group Duration",
       "tooltip": {
         "shared": true,
         "sort": 0,

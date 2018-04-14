@@ -77,6 +77,7 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "${DS_PROMETHEUS}",
+      "description": "Total number of targets",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -87,7 +88,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 4,
         "x": 0,
         "y": 0
       },
@@ -129,6 +130,7 @@
       "targets": [
         {
           "expr": "count(up)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -158,6 +160,7 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "${DS_PROMETHEUS}",
+      "description": "Total number of targets down",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -168,8 +171,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
+        "w": 4,
+        "x": 4,
         "y": 0
       },
       "id": 21,
@@ -210,6 +213,7 @@
       "targets": [
         {
           "expr": "count(up == 0)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -239,7 +243,7 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total number of scrapes that were skipped because the metric storage was throttled",
+      "description": "Total number of samples rejected due to duplicate timestamps but different values",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -250,11 +254,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
+        "w": 4,
+        "x": 8,
         "y": 0
       },
-      "id": 17,
+      "id": 25,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -291,14 +295,15 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(prometheus_target_skipped_scrapes_total)",
+          "expr": "sum(prometheus_target_scrapes_sample_duplicate_timestamp_total)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
       "thresholds": "",
-      "title": "Skipped Scrapes",
+      "title": "Samples Duplicated",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -321,7 +326,7 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total number of scrapes that hit the sample limit and were rejected",
+      "description": "Total number of samples rejected due to timestamp falling outside of the time bounds",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -332,8 +337,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
+        "w": 4,
+        "x": 12,
         "y": 0
       },
       "id": 18,
@@ -373,14 +378,15 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(prometheus_target_scrapes_exceeded_sample_limit_total)",
+          "expr": "sum(prometheus_target_scrapes_sample_out_of_bounds_total)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
       "thresholds": "",
-      "title": "Exceeded Sample Limit",
+      "title": "Sample Out of Bounds",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -398,13 +404,12 @@
       "colorBackground": false,
       "colorValue": false,
       "colors": [
-        "rgba(50, 172, 45, 0.97)",
+        "rgba(245, 54, 54, 0.9)",
         "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
+        "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
+      "description": "Total number of samples rejected due to not being out of the expected order",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -415,11 +420,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 4
+        "w": 4,
+        "x": 16,
+        "y": 0
       },
-      "id": 6,
+      "id": 26,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -456,38 +461,38 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(prometheus_notifications_sent_total)",
+          "expr": "sum(prometheus_target_scrapes_sample_out_of_order_total)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
       "thresholds": "",
-      "title": "Notifications Sent",
+      "title": "Samples Out of Order",
       "transparent": true,
       "type": "singlestat",
-      "valueFontSize": "70%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
-          "text": "None",
-          "value": "0"
+          "text": "N/A",
+          "value": "null"
         }
       ],
-      "valueName": "current"
+      "valueName": "avg"
     },
     {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
       "colors": [
-        "rgba(50, 172, 45, 0.97)",
+        "rgba(245, 54, 54, 0.9)",
         "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
+        "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
+      "description": "Total number of scrapes that hit the sample limit and were rejected",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -498,11 +503,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 4
+        "w": 4,
+        "x": 20,
+        "y": 0
       },
-      "id": 22,
+      "id": 27,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -539,185 +544,26 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(prometheus_notifications_errors_total)",
+          "expr": "sum(prometheus_target_scrapes_exceeded_sample_limit_total)",
+          "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
       "thresholds": "",
-      "title": "Notifications Errors",
+      "title": "Samples Exceeded Limit",
       "transparent": true,
       "type": "singlestat",
-      "valueFontSize": "70%",
+      "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
-          "text": "None",
-          "value": "0"
-        }
-      ],
-      "valueName": "current"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(50, 172, 45, 0.97)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
-      ],
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 4
-      },
-      "id": 15,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
           "text": "N/A",
-          "to": "null"
+          "value": "null"
         }
       ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sum(prometheus_notifications_dropped_total)",
-          "intervalFactor": 2,
-          "refId": "A",
-          "step": 60
-        }
-      ],
-      "thresholds": "",
-      "title": "Notifications Dropped",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "70%",
-      "valueMaps": [],
-      "valueName": "current"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "rgba(50, 172, 45, 0.97)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
-      ],
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 4
-      },
-      "id": 7,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": true
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sum(prometheus_notifications_queue_length)",
-          "intervalFactor": 2,
-          "refId": "A",
-          "step": 60
-        }
-      ],
-      "thresholds": "500,4000",
-      "title": "Notifications Queue Length",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "70%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "Empty",
-          "value": "0"
-        }
-      ],
-      "valueName": "current"
+      "valueName": "avg"
     },
     {
       "aliasColors": {},
@@ -726,12 +572,13 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
+      "description": "Number of targets per job",
       "fill": 1,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 4
       },
       "id": 20,
       "legend": {
@@ -762,6 +609,7 @@
       "targets": [
         {
           "expr": "count(up) by(job)",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ job }}",
@@ -812,7 +660,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "",
+      "description": "Number of samples scraped",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -821,7 +669,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 9
       },
       "id": 2,
       "legend": {
@@ -852,6 +700,7 @@
       "targets": [
         {
           "expr": "sum(scrape_samples_scraped) by(job)",
+          "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ job }}",
@@ -863,6 +712,95 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Samples Scraped",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Number of samples relabeled post metric",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 24,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(scrape_samples_post_metric_relabeling) by(job)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ job }}",
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Post Metric Relabelling",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -936,7 +874,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Prometheus: Summary",
-  "uid": "prometheus_summary",
+  "title": "Prometheus: Targets",
+  "uid": "prometheus_targets",
   "version": 1
 }
