@@ -76,7 +76,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Number of times the user was not found since the last startup. Emitted every 30 seconds.",
+      "description": "UAA latency reported by Gorouter",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -86,6 +86,178 @@
         "w": 12,
         "x": 0,
         "y": 0
+      },
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(avg(firehose_value_metric_gorouter_latency_uaa{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "UAA Latency",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "UAA Latency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "UAA error rate",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 11,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(avg(rate(firehose_value_metric_uaa_requests_global_status_5_xx_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]) / rate(firehose_value_metric_uaa_requests_global_completed_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "UAA Error Rate",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "UAA Error Rate",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Number of times the user was not found since the last startup. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 5
       },
       "id": 6,
       "legend": {
@@ -171,7 +343,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 5
       },
       "id": 7,
       "legend": {
@@ -257,7 +429,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 5
+        "y": 10
       },
       "id": 2,
       "legend": {
@@ -344,7 +516,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 10
       },
       "id": 3,
       "legend": {
@@ -427,7 +599,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 15
       },
       "id": 8,
       "legend": {
@@ -509,7 +681,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 15
       },
       "id": 9,
       "legend": {
@@ -594,7 +766,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 20
       },
       "id": 4,
       "legend": {
@@ -680,7 +852,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 20
       },
       "id": 5,
       "legend": {
