@@ -45,7 +45,7 @@ groups:
 
       <% if_p("p_rabbitmq_alerts.queue_depth.critical") do |threshold| %>
       - alert: RabbitMQQueueDepth
-        expot: avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
+        expr: avg(firehose_value_metric_p_rabbitmq_p_rabbitmq_rabbitmq_messages_depth) by(environment) >= <%= threshold %>
         for: <%= p('p_rabbitmq_alerts.queue_depth.evaluation_time') %>
         labels:
           service: p-rabbitmq
