@@ -98,6 +98,8 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -o manifests/operators/monitor-bosh.yml \
   -o manifests/operators/enable-bosh-uaa.yml \
   -v bosh_url= \
+  -v uaa_bosh_exporter_client_id=bosh_exporter \
+  -v uaa_bosh_exporter_client_secret= \
   --var-file bosh_ca_cert= \
   -v metrics_environment=
 ```
