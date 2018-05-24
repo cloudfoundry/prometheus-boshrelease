@@ -1,0 +1,19 @@
+---
+- type: replace
+  path: /instance_groups/name=nginx/vm_extensions?
+  value:
+  - prometheus-nginx-network-properties
+
+## if you add a vm extension to your cloud-config, you can attach lbs in an iaas-agnostic way:
+## for example, adding the following to an AWS cloud-config might wire
+## up your nginx vm to an externally provisioned elb with the appropriate target groups:
+#
+# vm_extensions:
+#   - name: prometheus-nginx-network-properties
+#     cloud_properties:
+#       lb_target_groups:
+#       - prometheus3000
+#       - prometheus9090
+#       - prometheus9093
+#       security_groups:
+#       - prometheus-lb-internal-security-group
