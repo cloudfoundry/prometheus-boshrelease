@@ -100,7 +100,22 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -o manifests/operators/monitor-bosh.yml \
   -o manifests/operators/enable-bosh-uaa.yml \
   -v bosh_url= \
-  -v uaa_bosh_exporter_client_id=bosh_exporter \
+  -v uaa_bosh_exporter_client_secret= \
+  --var-file bosh_ca_cert= \
+  -v metrics_environment=
+```
+
+In case the UAA client_id for bosh_exporter is different from `bosh_exporter`,
+run the following command instead:
+
+```
+bosh -d prometheus deploy manifests/prometheus.yml \
+  --vars-store tmp/deployment-vars.yml \
+  -o manifests/operators/monitor-bosh.yml \
+  -o manifests/operators/enable-bosh-uaa.yml \
+  -o manifests/operators/configure-bosh-exporter-uaa-client-id.yml \
+  -v bosh_url= \
+  -v uaa_bosh_exporter_client_id= \
   -v uaa_bosh_exporter_client_secret= \
   --var-file bosh_ca_cert= \
   -v metrics_environment=
