@@ -23,18 +23,21 @@ case $1 in
 
     exec pushgateway \
       <% if_p('pushgateway.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('pushgateway.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -persistence.file="${STORE_DIR}/pushgateway.metrics" \
+      --persistence.file="${STORE_DIR}/pushgateway.metrics" \
       <% if_p('pushgateway.persistence_interval') do |persistence_interval| %> \
-      -persistence.interval="<%= persistence_interval %>" \
+      --persistence.interval="<%= persistence_interval %>" \
       <% end %> \
-      -web.listen-address=":<%= p('pushgateway.web.port') %>" \
+      --web.listen-address=":<%= p('pushgateway.web.port') %>" \
+      <% if_p('pushgateway.web.route_prefix') do |route_prefix| %> \
+      --web.route-prefix="<%= route_prefix %>" \
+      <% end %> \
       <% if_p('pushgateway.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/pushgateway.stdout.log \
       2>> ${LOG_DIR}/pushgateway.stderr.log
