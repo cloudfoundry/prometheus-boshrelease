@@ -55,7 +55,9 @@ case $1 in
     <% if_p('rabbitmq_exporter.rabbitmq.capabilities') do |capabilities| %>
     export RABBIT_CAPABILITIES="<%= capabilities %>"
     <% end %>
-
+    <% if_p('rabbitmq_exporter.rabbitmq.timeout') do |timeout| %>
+    export RABBIT_TIMEOUT="<%= timeout %>"
+    <% end %>
 
     export PUBLISH_PORT="<%= p('rabbitmq_exporter.web.port') %>"
 
