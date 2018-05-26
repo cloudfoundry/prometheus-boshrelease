@@ -222,7 +222,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [monitor-shield.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-shield.yml) | Enables monitoring [Shield](https://github.com/bosh-prometheus/shield_exporter) | x | x | x |
 | [monitor-stackdriver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-stackdriver.yml) | Enables monitoring [Stackdriver](https://github.com/frodenas/stackdriver_exporter) | x | | |
 | [monitor-statsd.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-statsd.yml) | Enables monitoring [Statsd](https://github.com/prometheus/statsd_exporter) | x | | |
-| [nginx_vm_extension.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/nginx_vm_extension.yml) | Adds a [VM Extension](http://bosh.io/docs/cloud-config/#vm-extensions) block to the `nginx` instance, useful to attach a Load Balancer| | | |
+| [nginx-vm-extension.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/nginx-vm-extension.yml) | Adds a [VM Extension](http://bosh.io/docs/cloud-config/#vm-extensions) block to the `nginx` instance, useful to attach a Load Balancer| | | |
 | [prometheus-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/prometheus-web-external-url.yml) | Configures the URL under which `prometheus` is externally reachable | | | |
 | [use-sqlite3.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) | Use sqlite3 instead of postgres | | | |
 
