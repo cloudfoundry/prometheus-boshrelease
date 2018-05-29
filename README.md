@@ -90,7 +90,9 @@ bosh -d prometheus deploy manifests/prometheus.yml \
 
 *NOTE: `metrics_environment` is an arbitrary name to identify your environment (`test`, `nyc-prod`, ...)*
 
-If you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
+If you have configured your [bosh-deployment][bosh-deployment] to use [UAA user management][bosh-uaa] (via the [uaa.yml][bosh-deployment-uaa] ops file),
+we recommend adding the [add-bosh-exporter-uaa-clients.yml][add-bosh-exporter-uaa-clients] op file to your [bosh-deployment][bosh-deployment],
+and then adding the [enable-bosh-uaa.yml][enable-bosh-uaa] ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
 
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
@@ -98,6 +100,23 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -o manifests/operators/monitor-bosh.yml \
   -o manifests/operators/enable-bosh-uaa.yml \
   -v bosh_url= \
+  -v uaa_bosh_exporter_client_secret= \
+  --var-file bosh_ca_cert= \
+  -v metrics_environment=
+```
+
+In case the UAA client_id for bosh_exporter is different from `bosh_exporter`,
+run the following command instead:
+
+```
+bosh -d prometheus deploy manifests/prometheus.yml \
+  --vars-store tmp/deployment-vars.yml \
+  -o manifests/operators/monitor-bosh.yml \
+  -o manifests/operators/enable-bosh-uaa.yml \
+  -o manifests/operators/configure-bosh-exporter-uaa-client-id.yml \
+  -v bosh_url= \
+  -v uaa_bosh_exporter_client_id= \
+  -v uaa_bosh_exporter_client_secret= \
   --var-file bosh_ca_cert= \
   -v metrics_environment=
 ```
@@ -240,3 +259,9 @@ Refer to [CONTRIBUTING.md](https://github.com/bosh-prometheus/prometheus-boshrel
 ## License
 
 Apache License 2.0, see [LICENSE](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/LICENSE).
+
+[bosh-deployment]: https://github.com/cloudfoundry/bosh-deployment
+[bosh-uaa]: http://bosh.io/docs/director-users-uaa.html
+[bosh-deployment-uaa]: (https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml
+[add-bosh-exporter-uaa-clients]: https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml
+[enable-bosh-uaa]: https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml

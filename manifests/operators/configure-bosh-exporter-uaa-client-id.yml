@@ -1,0 +1,8 @@
+# Apply ./bosh/add-bosh-exporter-uaa-clients.yml to your bosh-deployment
+# This should be used together with enable-bosh-uaa.yml
+
+# Configure UAA client_id for bosh_exporter
+- type: replace
+  path: /releases/name=routing/url
+  path: /instance_groups/name=prometheus2/jobs/name=bosh_exporter/properties/bosh_exporter/bosh/uaa/client_id
+  value: ((uaa_bosh_exporter_client_id))
