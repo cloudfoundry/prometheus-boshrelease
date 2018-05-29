@@ -29,11 +29,11 @@ alerting:
   alert_relabel_configs: <%= p('prometheus.alert_relabel_configs', []).to_json %>
   <% if_link('alertmanager') do |alertmanager| %>
   alertmanagers:
-    <% alertmanager.if_p('alertmanager.web.route_prefix') do |route_prefix| %>
-    path_prefix: <%= route_prefix %>
-    <% end %>
     - static_configs:
       - targets: <%= alertmanager.instances.map { |instance| "#{instance.address}:#{alertmanager.p('alertmanager.web.port')}" } %>
+      <% alertmanager.if_p('alertmanager.web.route_prefix') do |route_prefix| %>
+      path_prefix: <%= route_prefix %>
+      <% end %>
   <% end %>
 
 # Settings related to the experimental remote read feature.
