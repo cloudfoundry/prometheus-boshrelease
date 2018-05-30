@@ -98,13 +98,11 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -o manifests/operators/monitor-bosh.yml \
   -o manifests/operators/enable-bosh-uaa.yml \
   -v bosh_url= \
-  -v uaa_bosh_exporter_client_secret= \
   --var-file bosh_ca_cert= \
   -v metrics_environment=
 ```
 
-In case the UAA client_id for bosh_exporter is different from `bosh_exporter`,
-run the following command instead:
+In case you have configured manually an UAA `client_id `for the `bosh_exporter` (different from `bosh_exporter`), then run the following command instead:
 
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
@@ -198,6 +196,7 @@ Please review the op files before deploying them to check the requeriments, depe
 | [alertmanager-victorops-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-victorops-receiver.yml) | Configures a [VictorOps](https://victorops.com/) receiver for `alertmanager` | | | |
 | [alertmanager-webhook-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-webhook-receiver.yml) | Configures a generic webhook receiver for `alertmanager` | | | |
 | [alertmanager-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-web-external-url.yml) | Configures the URL under which `alertmanager` is externally reachable | | | |
+| [configure-bosh-exporter-uaa-client-id.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/configure-bosh-exporter-uaa-client-id.yml) | Configures a custom `bosh_exporter` UAA `client_id` for the [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) op-file | | | |
 | [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) | Configures [monitor-bosh.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-bosh.yml) to use an UAA client (you must apply the [add-bosh-exporter-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment)) | | | |
 | [enable-cf-route-registrar.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-cf-route-registrar.yml) | Registers `alertmanager`, `grafana`, and `prometheus` as [Cloud Foundry routes](https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html) (under your `system domain`) | | | |
 | [enable-grafana-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-grafana-uaa.yml) | Configures `grafana` user authentication to use [Cloud Foundry UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) (you must apply the [add-grafana-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-grafana-uaa-clients.yml) op file to your [cf-deployment](https://github.com/cloudfoundry/cf-deployment)) | | | |
