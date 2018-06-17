@@ -69,6 +69,9 @@ case $1 in
       <% if_p('prometheus.storage.tsdb.no_lockfile') do |no_lockfile| %> \
       --storage.tsdb.no-lockfile="<%= no_lockfile %>" \
       <% end %> \
+      <% if_p('prometheus.storage.remote.flush_deadline') do |flush_deadline| %> \
+      --storage.remote.flush-deadline="<%= flush_deadline %>" \
+      <% end %> \
       <% if_p('prometheus.web.console.libraries') do |libraries| %> \
       --web.console.libraries="<%= libraries %>" \
       <% end %> \
