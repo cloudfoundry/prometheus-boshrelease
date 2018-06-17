@@ -121,7 +121,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
 
 If you want to monitor your [Cloud Foundry](https://www.cloudfoundry.org/) platform, first update your [cf-deployment](https://github.com/cloudfoundry/cf-deployment) adding the [add-prometheus-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file. This will add the UAA clients required to gather information from the Cloud Foundry [API](https://apidocs.cloudfoundry.org/268/) and [Firehose](https://docs.cloudfoundry.org/loggregator/architecture.html#firehose).
 
-Then add the [monitor-cf.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) op file by running the following command (filling the required variables with your own values):
+Then add the [monitor-cf.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) ops file by running the following command (filling the required variables with your own values):
 
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
