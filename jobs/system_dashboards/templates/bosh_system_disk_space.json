@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "5.1.4"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523184285959,
+  "iteration": 1529440633914,
   "links": [
     {
       "asDropdown": true,
@@ -134,7 +134,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "node_filesystem_size{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"} - node_filesystem_avail{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+          "expr": "node_filesystem_size_bytes{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"} - node_filesystem_avail_bytes{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+          "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -147,7 +148,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "node_filesystem_avail{instance=~\"$host(:[0-9]+)?\",  fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+          "expr": "node_filesystem_avail_bytes{instance=~\"$host(:[0-9]+)?\",  fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\", mountpoint=\"$mountpoint\"}",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Free (device {{ device }}, {{ fstype }})",
@@ -192,7 +194,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
@@ -378,7 +384,7 @@
         "multiFormat": "regex values",
         "name": "mountpoint",
         "options": [],
-        "query": "label_values(node_filesystem_avail{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+        "query": "label_values(node_filesystem_avail_bytes{instance=~\"$host(:[0-9]+)?\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",

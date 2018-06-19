@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "5.1.4"
     },
     {
       "type": "panel",
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523184225441,
+  "iteration": 1529440872935,
   "links": [
     {
       "asDropdown": true,
@@ -121,7 +121,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "(rate(node_disk_read_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (irate(node_disk_read_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "expr": "(rate(node_disk_read_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (irate(node_disk_read_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read: {{ device }}",
@@ -134,7 +135,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "(rate(node_disk_write_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (irate(node_disk_write_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "expr": "(rate(node_disk_write_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (irate(node_disk_write_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write: {{ device }}",
@@ -165,7 +167,7 @@
       },
       "yaxes": [
         {
-          "format": "ms",
+          "format": "s",
           "label": "",
           "logBase": 2,
           "max": null,
@@ -173,14 +175,18 @@
           "show": true
         },
         {
-          "format": "ms",
+          "format": "s",
           "label": "",
           "logBase": 1,
           "max": null,
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -233,7 +239,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "expr": "rate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read: {{ device }}",
@@ -246,7 +253,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "expr": "rate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write: {{ device }}",
@@ -292,7 +300,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -345,7 +357,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_bytes_read{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_bytes_read{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "expr": "rate(node_disk_read_bytes_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_read_bytes_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read: {{ device }}",
@@ -358,7 +371,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_bytes_written{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_bytes_written{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "expr": "rate(node_disk_written_bytes_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) or irate(node_disk_written_bytes_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write: {{ device }}",
@@ -404,7 +418,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -455,7 +473,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_read_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_read_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "expr": "rate(node_disk_read_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_read_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read: {{ device }}",
@@ -468,7 +487,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_write_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_write_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "expr": "rate(node_disk_write_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_write_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write: {{ device }}",
@@ -514,7 +534,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -567,7 +591,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_io_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_io_time_ms{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "expr": "rate(node_disk_io_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])/1000 or irate(node_disk_io_time_seconds_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m])/1000",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ device }}",
@@ -613,7 +638,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -664,7 +693,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "(1 + rate(node_disk_reads_merged{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (1 + irate(node_disk_reads_merged{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_reads_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "expr": "(1 + rate(node_disk_reads_merged_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (1 + irate(node_disk_reads_merged_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read Ratio: {{ device }}",
@@ -677,7 +707,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "(1 + rate(node_disk_writes_merged{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (1 + irate(node_disk_writes_merged{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_writes_completed{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "expr": "(1 + rate(node_disk_writes_merged_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[$interval])) or (1 + irate(node_disk_writes_merged_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", instance=~\"$host(:[0-9]+)?\"}[5m]))",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write Ratio: {{ device }}",
@@ -723,7 +754,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {
@@ -777,7 +812,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_sectors_read{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) * 512 / rate(node_disk_reads_completed{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) or irate(node_disk_sectors_read{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) * 512 / irate(node_disk_reads_completed{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) ",
+          "expr": "rate(node_disk_read_bytes_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) / 512 / rate(node_disk_reads_completed_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) or irate(node_disk_read_bytes_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) / 512 / irate(node_disk_reads_completed_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) ",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Read size: {{ device }}",
@@ -790,7 +826,8 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "rate(node_disk_sectors_written{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) * 512 / rate(node_disk_writes_completed{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) or irate(node_disk_sectors_written{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) * 512 / irate(node_disk_writes_completed{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) ",
+          "expr": "rate(node_disk_written_bytes_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) / 512 / rate(node_disk_writes_completed_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[$interval]) or irate(node_disk_written_bytes_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) / 512 / irate(node_disk_writes_completed_total{instance=~\"$host(:[0-9]+)?\", device=~\"$device\"}[5m]) ",
+          "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Write size: {{ device }}",
@@ -836,7 +873,11 @@
           "min": 0,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
@@ -1021,7 +1062,7 @@
         "multiFormat": "regex values",
         "name": "device",
         "options": [],
-        "query": "label_values(node_disk_reads_completed{instance=~\"$host(:[0-9]+)?\", device!~\"dm-.+\"}, device)",
+        "query": "label_values(node_disk_reads_completed_total{instance=~\"$host(:[0-9]+)?\", device!~\"dm-.+\"}, device)",
         "refresh": 1,
         "refresh_on_load": false,
         "regex": "",
