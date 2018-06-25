@@ -45,12 +45,36 @@ case $1 in
       <% if_p('alertmanager.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
-      --mesh.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port')}" %> \
-      <% if_p('alertmanager.mesh.password') do |password| %> \
-      --mesh.password="<%= password %>" \
+      --cluster.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port', 'alertmanager.cluster.port')}" %> \
+      <% if_p('alertmanager.cluster.gossip_interval') do |gossip_interval| %> \
+      --cluster.gossip-interval="<%= gossip_interval %>" \
       <% end %> \
       <% link('alertmanager').instances.each do |instance|  %> \
-      --mesh.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port')}" %>" \
+      --cluster.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port', 'alertmanager.cluster.port')}" %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.peer_timeout') do |peer_timeout| %> \
+      --cluster.peer-timeout="<%= peer_timeout %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.probe_interval') do |probe_interval| %> \
+      --cluster.probe-interval="<%= probe_interval %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.probe_timeout') do |probe_timeout| %> \
+      --cluster.probe-timeout="<%= probe_timeout %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.pushpull_interval') do |pushpull_interval| %> \
+      --cluster.pushpull-interval="<%= pushpull_interval %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.reconnect_interval') do |reconnect_interval| %> \
+      --cluster.reconnect-interval="<%= reconnect_interval %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.reconnect_timeout') do |reconnect_timeout| %> \
+      --cluster.reconnect-timeout="<%= reconnect_timeout %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.settle_timeout') do |settle_timeout| %> \
+      --cluster.settle-timeout="<%= settle_timeout %>" \
+      <% end %> \
+      <% if_p('alertmanager.cluster.tcp_timeout') do |tcp_timeout| %> \
+      --cluster.tcp-timeout="<%= tcp_timeout %>" \
       <% end %> \
       --storage.path="${STORE_DIR}" \
       <% if_p('alertmanager.web.external_url') do |external_url| %> \

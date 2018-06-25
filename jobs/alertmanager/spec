@@ -15,6 +15,7 @@ provides:
     type: alertmanager
     properties:
       - alertmanager.mesh.port
+      - alertmanager.cluster.port
       - alertmanager.web.port
       - alertmanager.web.route_prefix
 
@@ -29,11 +30,29 @@ properties:
     description: "How long to keep data for"
   alertmanager.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  alertmanager.cluster.gossip_interval:
+    description: "Interval between sending gossip messages. By lowering this value (more frequent) gossip messages are propagated across the cluster more quickly at the expense of increased bandwidth"
+  alertmanager.cluster.peer_timeout:
+    description: "Time to wait between peers to send notifications"
   alertmanager.mesh.port:
-    description: "Mesh listen port"
+    description: "Deprecated. Please use alertmanager.cluster.port"
+  alertmanager.cluster.port:
+    description: "Cluster listen port"
     default: 6783
-  alertmanager.mesh.password:
-    description: "Password to join the peer network (empty password disables encryption)"
+  alertmanager.cluster.probe_interval:
+    description: "Interval between random node probes. Setting this lower (more frequent) will cause the cluster to detect failed nodes more quickly at the expense of increased bandwidth usage"
+  alertmanager.cluster.probe_timeout:
+    description: "Timeout to wait for an ack from a probed node before assuming it is unhealthy. This should be set to 99-percentile of RTT (round-trip time) on your network"
+  alertmanager.cluster.pushpull_interval:
+    description: "Interval for gossip state syncs. Setting this interval lower (more frequent) will increase convergence speeds across larger clusters at the expense of increased bandwidth usage"
+  alertmanager.cluster.reconnect_interval:
+    description: "Interval between attempting to reconnect to lost peers"
+  alertmanager.cluster.reconnect_timeout:
+    description: "Length of time to attempt to reconnect to a lost peer"
+  alertmanager.cluster.settle_timeout:
+    description: "Maximum time to wait for cluster connections to settle before evaluating notifications"
+  alertmanager.cluster.tcp_timeout:
+    description: "Timeout for establishing a stream connection with a remote node for a full state sync, and for stream read and write operations"
   alertmanager.web.external_url:
     description: "The URL under which Alertmanager is externally reachable"
   alertmanager.web.port:
