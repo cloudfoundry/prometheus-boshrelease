@@ -20,8 +20,18 @@ properties:
     description: "Collect from SHOW GLOBAL STATUS"
   mysqld_exporter.collect.global_variables:
     description: "Collect from SHOW GLOBAL VARIABLES"
+  mysqld_exporter.collect.heartbeat:
+    description: "Collect from heartbeat"
+  mysqld_exporter.collect.heartbeat_database:
+    description: "Database from where to collect heartbeat data"
+  mysqld_exporter.collect.heartbeat_table:
+    description: "Table from where to collect heartbeat data"
   mysqld_exporter.collect.info_schema.clientstats:
     description: "If running with userstat=1, set to true to collect client statistics"
+  mysqld_exporter.collect.info_schema.innodb_cmp:
+    description: "Collect metrics from information_schema.innodb_cmp"
+  mysqld_exporter.collect.info_schema.innodb_cmpmem:
+    description: "Collect metrics from information_schema.innodb_cmpmem"
   mysqld_exporter.collect.info_schema.innodb_metrics:
     description: "Collect metrics from information_schema.innodb_metrics"
   mysqld_exporter.collect.info_schema.innodb_tablespaces:
@@ -52,22 +62,34 @@ properties:
     description: "Collect metrics from performance_schema.events_waits_summary_global_by_event_name"
   mysqld_exporter.collect.perf_schema.file_events:
     description: "Collect metrics from performance_schema.file_summary_by_event_name"
+  mysqld_exporter.collect.perf_schema.file_instances:
+    description: "Collect metrics from performance_schema.file_summary_by_instance"
+  mysqld_exporter.collect.perf_schema.file_instances_filter:
+    description: "RegEx file_name filter for performance_schema.file_summary_by_instance"
+  mysqld_exporter.collect.perf_schema.file_instances_remove_prefix:
+    description: "Remove path prefix in performance_schema.file_summary_by_instance"
   mysqld_exporter.collect.perf_schema.indexiowaits:
     description: "Collect metrics from performance_schema.table_io_waits_summary_by_index_usage"
+  mysqld_exporter.collect.perf_schema.replication_group_member_stats:
+    description: "Collect metrics from performance_schema.replication_group_member_stats"
   mysqld_exporter.collect.perf_schema.tableiowaits:
     description: "Collect metrics from performance_schema.table_io_waits_summary_by_table"
   mysqld_exporter.collect.perf_schema.tablelocks:
     description: "Collect metrics from performance_schema.table_lock_waits_summary_by_table"
   mysqld_exporter.collect.slave_status:
    description: "Collect from SHOW SLAVE STATUS"
+  mysqld_exporter.collect.slave_hosts:
+    description: "Scrape information from 'SHOW SLAVE HOSTS'"
   mysqld_exporter.my_cnf:
-    description: "Path to .my.cnf file to read MySQL credentials from (default '/root/.my.cnf')"
+    description: "Path to .my.cnf file to read MySQL credentials from"
+  mysqld_exporter.lock_wait_timeout:
+    description: "Set a lock_wait_timeout on the connection to avoid long metadata locking"
   mysqld_exporter.log_format:
-    description: "If set use a syslog logger or JSON logging"
+    description: "Set the log target and format"
   mysqld_exporter.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
   mysqld_exporter.log_slow_filter:
-    description: "Add a log_slow_filter to avoid exessive MySQL slow logging"
+    description: "Add a log_slow_filter to avoid slow query logging of scrapes. NOTE: Not supported by Oracle MySQL"
   mysqld_exporter.web.port:
     description: "Port on which to expose web interface and telemetry"
     default: "9104"
