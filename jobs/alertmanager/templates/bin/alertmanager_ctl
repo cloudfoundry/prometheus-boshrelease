@@ -45,12 +45,12 @@ case $1 in
       <% if_p('alertmanager.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
-      --cluster.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port', 'alertmanager.cluster.port')}" %> \
+      --cluster.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %> \
       <% if_p('alertmanager.cluster.gossip_interval') do |gossip_interval| %> \
       --cluster.gossip-interval="<%= gossip_interval %>" \
       <% end %> \
       <% link('alertmanager').instances.each do |instance|  %> \
-      --cluster.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port', 'alertmanager.cluster.port')}" %>" \
+      --cluster.peer="<%= "#{instance.address}:#{link('alertmanager').p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %>" \
       <% end %> \
       <% if_p('alertmanager.cluster.peer_timeout') do |peer_timeout| %> \
       --cluster.peer-timeout="<%= peer_timeout %>" \
