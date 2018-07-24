@@ -78,9 +78,9 @@ case $1 in
       <% if_p('prometheus.web.console.templates') do |templates| %> \
       --web.console.templates="<%= templates %>" \
       <% end %> \
-      <% if_p('prometheus.web.enable_lifecycle') do |enable_lifecycle| %> \
-      --web.enable-lifecycle="<%= enable_lifecycle %>" \
-      <% end %> \
+      <% if p('prometheus.web.enable_lifecycle') %>
+      --web.enable-lifecycle \
+      <% end %>
       <% if_p('prometheus.web.enable_admin_api') do |enable_admin_api| %> \
       --web.enable-admin-api="<%= enable_admin_api %>" \
       <% end %> \
