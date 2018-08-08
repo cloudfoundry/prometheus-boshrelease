@@ -37,6 +37,9 @@ case $1 in
       <% if_p('postgres_exporter.web.telemetry_path') do |telemetry_path| %> \
       --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
+     <% if p('postgres_exporter.disable_default_metrics')  %> \
+      --disable-default-metrics \
+      <% end %> \
       >>  ${LOG_DIR}/postgres_exporter.stdout.log \
       2>> ${LOG_DIR}/postgres_exporter.stderr.log
     ;;
