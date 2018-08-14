@@ -63,9 +63,8 @@ global:
   hipchat_auth_token: <%= auth_token %>
   <% end %>
 
-  <% if_p('alertmanager.http_config.proxy_url') do |proxy_url| %>
-  http_config:
-    proxy_url: <%= proxy_url %>
+  <% if_p('alertmanager.http_config) do |http_config| %>
+  http_config: <%= http_config %>
   <% end %>
 
 # The directory from which notification templates are read.
