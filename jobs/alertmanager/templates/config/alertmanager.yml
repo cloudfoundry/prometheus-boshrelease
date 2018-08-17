@@ -63,6 +63,10 @@ global:
   hipchat_auth_token: <%= auth_token %>
   <% end %>
 
+  <% if_p('alertmanager.http_config') do |http_config| %>
+  http_config: <%= http_config %>
+  <% end %>
+
 # The directory from which notification templates are read.
 templates:
   <% p('alertmanager.templates', []).each do |template_path| %>
