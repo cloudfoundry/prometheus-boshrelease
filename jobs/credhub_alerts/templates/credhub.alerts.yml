@@ -1,0 +1,20 @@
+groups:
+  - name: credhub
+    rules:
+      - alert: CredhubCrendentialAging
+        expr: max(round((time() - max_over_time(credhub_credential_created_at{}[1h])) / 86400)) by (deployment, environment, path) > <%= p('credhub_alerts.credential_expire.threshold') %>
+        for: <%= p('credhub_alerts.credential_expire.evaluation_time') %>
+        labels:
+          severity: warning
+        annotations:
+          summary: "Credhub credential `{{$labels.path}}` is `{{$value}}` days old"
+          description: "Credhub credential `{{$labels.path}}` at environment `{{$labels.environment}}`, deployment `{{$labels.deployment}}` has not been rotated in the last <%= p('credhub_alerts.credential_expire.threshold') %> days"
+
+      - alert: CredhubCertificateWillExpire
+        expr: min(round((max_over_time(credhub_certificate_expires_at{}[1h]) - time()) / 86400)) by (deployment, environment, path) < <%= p('credhub_alerts.certificate_expire.threshold') %>
+        for: <%= p('credhub_alerts.certificate_expire.evaluation_time') %>
+        labels:
+          severity: critical
+        annotations:
+          summary: "Credhub certificate `{{$labels.path}}` will expire in `{{$value}}` days"
+          description: "Credhub certificate `{{$labels.path}}` will soon expire at environment `{{$labels.environment}}`, deployment `{{$labels.deployment}}` will expire in less than <%= p('credhub_alerts.certificate_expire.threshold') %> days"

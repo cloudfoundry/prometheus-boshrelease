@@ -1,0 +1,64 @@
+---
+name: credhub_exporter
+
+packages:
+  - credhub_exporter
+
+templates:
+  bin/credhub_exporter_ctl: bin/credhub_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+  config/credhub_tls_ca_cert.pem: config/credhub_tls_ca_cert.pem
+
+consumes:
+- name: credhub
+  type: credhub
+  optional: true
+
+properties:
+  credhub_exporter.credhub.api_url:
+    description: "Credhub API URL"
+  credhub_exporter.credhub.client_id:
+    description: "Credhub Client ID"
+  credhub_exporter.credhub.client_secret:
+    description: "Credhub Client Secret"
+  credhub_exporter.credhub.ca_certs:
+    description: "Credhub CA certificates (PEM format)"
+  credhub_exporter.metrics.deployment:
+    description: "Deployment name to be reported as a metric label"
+  credhub_exporter.metrics.environment:
+    description: "Environment label to be attached to metrics"
+  credhub_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  credhub_exporter.filters.generic-certificates:
+    description: "Json list of <regexp> to match generic credentials paths that may contains certificates"
+  credhub_exporter.filters.name-like:
+    description: "Fetch credentials whose name contains the query string (fetch all credentials when empty)"
+  credhub_exporter.filters.path:
+    description: "Fetch credentials that exist under the provided path"
+  credhub_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  credhub_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  credhub_exporter.skip_ssl_verify:
+    description: "Disable SSL Verify"
+    default: false
+  credhub_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9358"
+  credhub_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
+  credhub_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  credhub_exporter.web.auth_password:
+    description: "Password for web interface basic auth"
+  credhub_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  credhub_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"

@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/credhub_exporter
+LOG_DIR=/var/vcap/sys/log/credhub_exporter
+TMP_DIR=/var/vcap/sys/tmp/credhub_exporter
+STORE_DIR=/var/vcap/store/credhub_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/credhub_exporter.pid
+
+source /var/vcap/packages/credhub_exporter/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/credhub_exporter/bin:${PATH}
+
+case $1 in
+  start)
+  pid_guard ${PIDFILE} "credhub_exporter"
+    echo $$ > ${PIDFILE}
+
+    <% if_p('env.http_proxy') do |http_proxy| %>
+    export HTTP_PROXY="<%= http_proxy %>"
+    export http_proxy="<%= http_proxy %>"
+    <% end %>
+    <% if_p('env.https_proxy') do |https_proxy| %>
+    export HTTPS_PROXY="<%= https_proxy %>"
+    export https_proxy="<%= https_proxy %>"
+    <% end %>
+    <% if_p('env.no_proxy') do |no_proxy| %>
+    export NO_PROXY="<%= no_proxy %>"
+    export no_proxy="<%= no_proxy %>"
+    <% end %>
+
+    <%
+       url = ""
+       ca_certs = ""
+       if_link("credhub") do |link|
+         url      = sprintf("https://%s:%d", link.p('internal_url'), link.p('port'))
+         ca_certs = link.p('ca_certificate')
+       end.else do
+         url      = p("credhub_exporter.credhub.api_url")
+         ca_certs = p("credhub_exporter.credhub.ca_certs", "")
+      end
+    %>
+
+    exec credhub_exporter \
+      --credhub.api-url="<%= url %>" \
+      --credhub.client-id="<%= p('credhub_exporter.credhub.client_id') %>" \
+      --credhub.client-secret="<%= p('credhub_exporter.credhub.client_secret') %>" \
+      <% if not ca_certs.empty? %> \
+      --credhub.ca-certs-path="/var/vcap/jobs/credhub_exporter/config/credhub_tls_ca_cert.pem" \
+      <% end %> \
+      <% if_p('credhub_exporter.filters.generic-certificates') do |list| %> \
+      --filters.generic-certificates='<%= list.to_json %>' \
+      <% end %> \
+      <% if_p('credhub_exporter.filters.name-like') do |name| %> \
+      --filters.name-like='<%= name %>' \
+      <% end %> \
+      <% if_p('credhub_exporter.filters.path') do |path| %> \
+      --filters.path='<%= path %>' \
+      <% end %> \
+      <% if_p('credhub_exporter.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('credhub_exporter.log_level') do |log_level| %> \
+      --log.level="<%= log_level %>" \
+      <% end %> \
+      --metrics.deployment-name="<%= p('credhub_exporter.metrics.deployment') %>" \
+      --metrics.environment="<%= p('credhub_exporter.metrics.environment') %>" \
+      <% if_p('credhub_exporter.metrics.namespace') do |namespace| %> \
+      --metrics.namespace="<%= namespace %>" \
+      <% end %> \
+      <% if p('credhub_exporter.skip_ssl_verify') %> \
+      --skip-ssl-verify \
+      <% end %> \
+      --web.listen-address=":<%= p('credhub_exporter.web.port') %>" \
+      <% if_p('credhub_exporter.web.telemetry_path') do |telemetry_path| %> \
+      --web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('credhub_exporter.web.auth_username') do |auth_username| %> \
+      --web.auth.username="<%= auth_username %>" \
+      <% end %> \
+      <% if_p('credhub_exporter.web.auth_password') do |auth_password| %> \
+      --web.auth.password="<%= auth_password %>" \
+      <% end %> \
+      <% if_p('credhub_exporter.web.tls_cert', 'credhub_exporter.web.tls_key') do %> \
+      --web.tls.cert_file="/var/vcap/jobs/credhub_exporter/config/web_tls_cert.pem" \
+      --web.tls.key_file="/var/vcap/jobs/credhub_exporter/config/web_tls_key.pem" \
+      <% end %> \
+      >>  ${LOG_DIR}/credhub_exporter.stdout.log \
+      2>> ${LOG_DIR}/credhub_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
