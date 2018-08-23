@@ -82,7 +82,9 @@ case $1 in
       --web.enable-lifecycle="<%= enable_lifecycle %>" \
       <% end %> \
       <% if_p('prometheus.web.enable_admin_api') do |enable_admin_api| %> \
-      --web.enable-admin-api="<%= enable_admin_api %>" \
+        <% if enable_admin_api %> \
+      --web.enable-admin-api \
+        <% end %> \
       <% end %> \
       <% if_p('prometheus.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \
