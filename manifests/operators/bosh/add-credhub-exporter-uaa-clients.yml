@@ -1,0 +1,18 @@
+# Apply to your bosh-deployment
+
+# UAA client for bosh_exporter
+- type: replace
+  path: /instance_groups/name=bosh/jobs/name=uaa/properties/uaa/clients/credhub_exporter?
+  value:
+    access-token-validity: 3600
+    authorities: credhub.read,credhub.write
+    authorized-grant-types: client_credentials,refresh_token
+    override: true
+    scope: ""
+    secret: "((uaa_credhub_exporter_client_secret))"
+
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_credhub_exporter_client_secret
+    type: password

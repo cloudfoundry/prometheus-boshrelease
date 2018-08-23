@@ -1,0 +1,22 @@
+groups:
+  - name: prometheus-credhub-exporter
+    rules:
+      - alert: CredhubExporterApplicationsScrapeError
+        expr: max(max_over_time(credhub_last_scrape_error{}[1h])) by(director, environment) != 0
+        for: <%= p('credhub_alerts.scrape_error.evaluation_time') %>
+        labels:
+          service: credhub-exporter
+          severity: critical
+        annotations:
+          summary: "credhub_exporter `{{$labels.environment}}/{{$labels.director}}` scrape error"
+          description: "The `credhub_exporter` at `{{$labels.environment}}/{{$labels.director}}` was unable to scrape metrics during the last <%= p('credhub_alerts.scrape_error.evaluation_time') %>"
+
+      - alert: CredhubExporterScrapeTooOld
+        expr: (time() - max(max_over_time(credhub_last_scrape_timestamp{}[1h])) by(environment, deployment)) > <%= p('credhub_alerts.scrape_too_old.threshold') %>
+        for: <%= p('credhub_alerts.scrape_too_old.evaluation_time') %>
+        labels:
+          service: credhub-exporter
+          severity: warning
+        annotations:
+          summary: "credhub_exporter `{{$labels.environment}}/{{$labels.director}}` last scrape > {{humanizeDuration <%= p('credhub_alerts.scrape_too_old.threshold') %>}} ago"
+          description: "The `credhub_exporter` at `{{$labels.environment}}/{{$labels.director}}` last scrape metrics was more than {{humanizeDuration <%= p('credhub_alerts.scrape_too_old.threshold') %>}} ago"
