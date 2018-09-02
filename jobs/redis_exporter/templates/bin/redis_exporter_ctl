@@ -25,6 +25,9 @@ case $1 in
       <% if_p('redis_exporter.redis.check_keys') do |check_keys| %> \
       -check-keys="<%= check_keys %>" \
       <% end %> \
+      <% if_p('redis_exporter.redis.check_single_keys') do |check_single_keys| %> \
+      -check-single-keys="<%= check_single_keys %>" \
+      <% end %> \
       <% if p('redis_exporter.debug') %> \
       -debug \
       <% end %> \
@@ -45,6 +48,9 @@ case $1 in
       <% end %> \
       <% if_p('redis_exporter.redis.password') do |password| %> \
       -redis.password="<%= password %>" \
+      <% end %> \
+      <% if_p('redis_exporter.redis.script') do |script| %> \
+      -script="/var/vcap/jobs/redis_exporter/config/script" \
       <% end %> \
       <% if_p('redis_exporter.redis.separator') do |separator| %> \
       -separator="<%= separator %>" \

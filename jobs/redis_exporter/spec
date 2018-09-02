@@ -6,10 +6,13 @@ packages:
 
 templates:
   bin/redis_exporter_ctl: bin/redis_exporter_ctl
+  config/script: config/script
 
 properties:
   redis_exporter.redis.check_keys:
-    description: "Comma separated list of keys to export value and length/size"
+    description: "Comma separated list of key-patterns to export value and length/size, searched for with SCAN"
+  redis_exporter.redis.check_single_keys:
+    description: "Comma separated list of single keys to export value and length/size"
   redis_exporter.debug:
     description: "Output verbose debug information"
     default: false
@@ -26,6 +29,8 @@ properties:
     description: "Redis instance alias for one or more redis nodes, separated by separator"
   redis_exporter.redis.password:
     description: "Password for one or more redis nodes, separated by separator"
+  redis_exporter.redis.script:
+    description: "Lua Redis script for collecting extra metrics"
   redis_exporter.redis.separator:
     description: "separator used to split redis.addr and redis.password into several elements"
   redis_exporter.web.port:
