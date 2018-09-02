@@ -22,42 +22,52 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec consul_exporter \
+      <% if_p('consul_exporter.consul_allow_stale') do |consul_allow_stale| %> \
+        <% if consul_allow_stale %> \
+      --consul.allow_stale \
+        <% end %> \
+      <% end %> \
       <% if_p('consul_exporter.consul_ca') do %> \
-      -consul.ca-file="/var/vcap/jobs/consul_exporter/config/consul_ca.pem" \
+      --consul.ca-file="/var/vcap/jobs/consul_exporter/config/consul_ca.pem" \
       <% end %> \
       <% if_p('consul_exporter.consul_cert') do %> \
-      -consul.cert-file="/var/vcap/jobs/consul_exporter/config/consul_cert.pem" \
+      --consul.cert-file="/var/vcap/jobs/consul_exporter/config/consul_cert.pem" \
       <% end %> \
       <% if_p('consul_exporter.consul_key') do %> \
-      -consul.key-file="/var/vcap/jobs/consul_exporter/config/consul_key.pem" \
+      --consul.key-file="/var/vcap/jobs/consul_exporter/config/consul_key.pem" \
       <% end %> \
       <% if_p('consul_exporter.consul_health_summary') do |consul_health_summary| %> \
-      -consul.health-summary="<%= consul_health_summary %>" \
+      --consul.health-summary="<%= consul_health_summary %>" \
+      <% end %> \
+      <% if_p('consul_exporter.consul_require_consistent') do |consul_require_consistent| %> \
+        <% if consul_require_consistent %> \
+      --consul.require_consistent \
+        <% end %> \
       <% end %> \
       <% if_p('consul_exporter.consul_server') do |consul_server| %> \
-      -consul.server="<%= consul_server %>" \
+      --consul.server="<%= consul_server %>" \
       <% end %> \
       <% if_p('consul_exporter.consul_server_name') do |consul_server_name| %> \
-      -consul.server-name="<%= consul_server_name %>" \
+      --consul.server-name="<%= consul_server_name %>" \
       <% end %> \
       <% if_p('consul_exporter.consul_timeout') do |consul_timeout| %> \
-      -consul.timeout="<%= consul_timeout %>" \
+      --consul.timeout="<%= consul_timeout %>" \
       <% end %> \
       <% if_p('consul_exporter.kv_filter') do |kv_filter| %> \
-      -kv.filter="<%= kv_filter %>" \
+      --kv.filter="<%= kv_filter %>" \
       <% end %> \
       <% if_p('consul_exporter.kv_prefix') do |kv_prefix| %> \
-      -kv.prefix="<%= kv_prefix %>" \
+      --kv.prefix="<%= kv_prefix %>" \
       <% end %> \
       <% if_p('consul_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('consul_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('consul_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('consul_exporter.web.port') %>" \
       <% if_p('consul_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/consul_exporter.stdout.log \
       2>> ${LOG_DIR}/consul_exporter.stderr.log

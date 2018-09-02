@@ -11,6 +11,8 @@ templates:
   config/consul_key.pem: config/consul_key.pem
 
 properties:
+  consul_exporter.consul_allow_stale:
+    description: "Allows any Consul server (non-leader) to service a read"
   consul_exporter.consul_ca:
     description: "PEM-encoded certificate authority used to validate the authenticity of a server certificate"
   consul_exporter.consul_cert:
@@ -19,6 +21,8 @@ properties:
     description: "PEM-encoded private key used with the certificate to verify the exporter's authenticity"
   consul_exporter.consul_health_summary:
     description: "Generate a health summary for each service instance. Needs n+1 queries to collect all information"
+  consul_exporter.consul_require_consistent:
+    description: "Forces the read to be fully consistent"
   consul_exporter.consul_server:
     description: "HTTP API address of a Consul server or agent"
   consul_exporter.consul_server_name:
