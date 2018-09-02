@@ -41,11 +41,27 @@ case $1 in
       <% if_p('kube_state_metrics_exporter.collectors') do |collectors| %> \
       --collectors="<%= collectors %>" \
       <% end %> \
+      <% if_p('kube_state_metrics_exporter.disable_node_non_generic_resource_metrics') do |disable_node_non_generic_resource_metrics| %> \
+        <% if disable_node_non_generic_resource_metrics %> \
+      --disable-node-non-generic-resource-metrics="<%= collectors %>" \
+        <% end %> \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.disable_pod_non_generic_resource_metrics') do |disable_pod_non_generic_resource_metrics| %> \
+        <% if disable_pod_non_generic_resource_metrics %> \
+      --disable-pod-non-generic-resource-metrics \
+        <% end %> \
+      <% end %> \
       --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
       <% if_p('kube_state_metrics_exporter.log_backtrace_at') do |log_backtrace_at| %> \
       --log_backtrace_at="<%= log_backtrace_at %>" \
       <% end %> \
       --log_dir=${LOG_DIR} \
+      <% if_p('kube_state_metrics_exporter.metric_blacklist') do |metric_blacklist| %> \
+      --metric-blacklist="<%= metric_blacklist %>" \
+      <% end %> \
+      <% if_p('kube_state_metrics_exporter.metric_whitelist') do |metric_whitelist| %> \
+      --metric-whitelist="<%= metric_whitelist %>" \
+      <% end %> \
       <% if_p('kube_state_metrics_exporter.namespace') do |namespace| %> \
       --namespace="<%= namespace %>" \
       <% end %> \
