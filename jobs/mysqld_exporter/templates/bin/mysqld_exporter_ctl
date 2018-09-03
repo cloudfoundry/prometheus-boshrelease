@@ -28,26 +28,26 @@ case $1 in
     export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{p('mysqld_exporter.mysql.protocol')}(#{p('mysqld_exporter.mysql.address')}:#{p('mysqld_exporter.mysql.port')})/" %>"
 
     exec mysqld_exporter \
-      <% if_p('mysqld_exporter.collect.auto_increment_columns') do |auto_increment_columns| %> \
-      --collect.auto_increment.columns="<%= auto_increment_columns %>" \
+      <% if_p('mysqld_exporter.collect.auto_increment_columns') do |enabled| %> \
+      <%= enabled ? "--collect.auto_increment.columns" : "--no-collect.auto_increment.columns" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.binlog_size') do |binlog_size| %> \
-      --collect.binlog_size="<%= binlog_size %>" \
+      <% if_p('mysqld_exporter.collect.binlog_size') do |enabled| %> \
+      <%= enabled ? "--collect.binlog_size" : "--no-collect.binlog_size" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.engine_innodb_status') do |engine_innodb_status| %> \
-      --collect.engine_innodb_status="<%= engine_innodb_status %>" \
+      <% if_p('mysqld_exporter.collect.engine_innodb_status') do |enabled| %> \
+      <%= enabled ? "--collect.engine_innodb_status" : "--no-collect.engine_innodb_status" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.engine_tokudb_status') do |engine_tokudb_status| %> \
-      --collect.engine_tokudb_status="<%= engine_tokudb_status %>" \
+      <% if_p('mysqld_exporter.collect.engine_tokudb_status') do |enabled| %> \
+      <%= enabled ? "--collect.engine_tokudb_status" : "--no-collect.engine_tokudb_status" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.global_status') do |global_status| %> \
-      --collect.global_status="<%= global_status %>" \
+      <% if_p('mysqld_exporter.collect.global_status') do |enabled| %> \
+      <%= enabled ? "--collect.global_status" : "--no-collect.global_status" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.global_variables') do |global_variables| %> \
-      --collect.global_variables="<%= global_variables %>" \
+      <% if_p('mysqld_exporter.collect.global_variables') do |enabled| %> \
+      <%= enabled ? "--collect.global_variables" : "--no-collect.global_variables" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.heartbeat') do |heartbeat| %> \
-      --collect.heartbeat="<%= heartbeat %>" \
+      <% if_p('mysqld_exporter.collect.heartbeat') do |enabled| %> \
+      <%= enabled ? "--collect.heartbeat" : "--no-collect.heartbeat" %> \
       <% end %> \
       <% if_p('mysqld_exporter.collect.heartbeat_database') do |database| %> \
       --collect.heartbeat.database="<%= database %>" \
@@ -55,44 +55,44 @@ case $1 in
       <% if_p('mysqld_exporter.collect.heartbeat_table') do |table| %> \
       --collect.heartbeat.table="<%= table %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.clientstats') do |clientstats| %> \
-      --collect.info_schema.clientstats="<%= clientstats %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.clientstats') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.clientstats" : "--no-collect.info_schema.clientstats" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.innodb_cmp') do |innodb_cmp| %> \
-      --collect.info_schema.innodb_cmp="<%= innodb_cmp %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_cmp') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.innodb_cmp" : "--no-collect.info_schema.innodb_cmp" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.innodb_cmpmem') do |innodb_cmpmem| %> \
-      --collect.info_schema.innodb_cmpmem="<%= innodb_cmpmem %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_cmpmem') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.innodb_cmpmem" : "--no-collect.info_schema.innodb_cmpmem" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.innodb_metrics') do |innodb_metrics| %> \
-      --collect.info_schema.innodb_metrics="<%= innodb_metrics %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_metrics') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.innodb_metrics" : "--no-collect.info_schema.innodb_metrics" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.innodb_tablespaces') do |innodb_tablespaces| %> \
-      --collect.info_schema.innodb_tablespaces="<%= innodb_tablespaces %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.innodb_tablespaces') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.innodb_tablespaces" : "--no-collect.info_schema.innodb_tablespaces" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.processlist') do |processlist| %> \
-      --collect.info_schema.processlist="<%= processlist %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.processlist') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.processlist" : "--no-collect.info_schema.processlist" %> \
       <% end %> \
       <% if_p('mysqld_exporter.collect.info_schema.processlist_min_time') do |processlist_min_time| %> \
       --collect.info_schema.processlist.min_time="<%= processlist_min_time %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.query_response_time') do |query_response_time| %> \
-      --collect.info_schema.query_response_time="<%= query_response_time %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.query_response_time') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.query_response_time" : "--no-collect.info_schema.query_response_time" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.tables') do |tables| %> \
-      --collect.info_schema.tables="<%= tables %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.tables') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.tables" : "--no-collect.info_schema.tables" %> \
       <% end %> \
       <% if_p('mysqld_exporter.collect.info_schema.tables_databases') do |tables_databases| %> \
       --collect.info_schema.tables.databases="<%= tables_databases %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.tablestats') do |tablestats| %> \
-      --collect.info_schema.tablestats="<%= tablestats %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.tablestats') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.tablestats" : "--no-collect.info_schema.tablestats" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.info_schema.userstats') do |userstats| %> \
-      --collect.info_schema.userstats="<%= userstats %>" \
+      <% if_p('mysqld_exporter.collect.info_schema.userstats') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.userstats" : "--no-collect.info_schema.userstats" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements') do |eventsstatements| %> \
-      --collect.perf_schema.eventsstatements="<%= eventsstatements %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.eventsstatements" : "--no-collect.perf_schema.eventsstatements" %> \
       <% end %> \
       <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements_digest_text_limit') do |eventsstatements_digest_text_limit| %> \
       --collect.perf_schema.eventsstatements.digest_text_limit="<%= eventsstatements_digest_text_limit %>" \
@@ -103,38 +103,38 @@ case $1 in
       <% if_p('mysqld_exporter.collect.perf_schema.eventsstatements_timelimit') do |eventsstatements_timelimit| %> \
       --collect.perf_schema.eventsstatements.timelimit="<%= eventsstatements_timelimit %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.eventswaits') do |eventswaits| %> \
-      --collect.perf_schema.eventswaits="<%= eventswaits %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.eventswaits') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.eventswaits" : "--no-collect.perf_schema.eventswaits" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.file_events') do |file_events| %> \
-      --collect.perf_schema.file_events="<%= file_events %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.file_events') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.file_events" : "--no-collect.perf_schema.file_events" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.file_instances') do |file_instances| %> \
-      --collect.perf_schema.file_instances="<%= file_instances %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.file_instances') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.file_instances" : "--no-collect.perf_schema.file_instances" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.file_instances.filter') do |filter| %> \
-      --collect.perf_schema.file_instances_filter="<%= filter %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.file_instances_filter') do |filter| %> \
+      --collect.perf_schema.file_instances.filter="<%= filter %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.file_instances.remove_prefix') do |remove_prefix| %> \
-      --collect.perf_schema.file_instances_remove_prefix="<%= remove_prefix %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.file_instances_remove_prefix') do |remove_prefix| %> \
+      --collect.perf_schema.file_instances.remove_prefix="<%= remove_prefix %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.indexiowaits') do |indexiowaits| %> \
-      --collect.perf_schema.indexiowaits="<%= indexiowaits %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.indexiowaits') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.indexiowaits" : "--no-collect.perf_schema.indexiowaits" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.replication_group_member_stats') do |replication_group_member_stats| %> \
-      --collect.perf_schema.replication_group_member_stats="<%= replication_group_member_stats %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.replication_group_member_stats') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.replication_group_member_stats" : "--no-collect.perf_schema.replication_group_member_stats" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.tableiowaits') do |tableiowaits| %> \
-      --collect.perf_schema.tableiowaits="<%= tableiowaits %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.tableiowaits') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.tableiowaits" : "--no-collect.perf_schema.tableiowaits" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.perf_schema.tablelocks') do |tablelocks| %> \
-      --collect.perf_schema.tablelocks="<%= tablelocks %>" \
+      <% if_p('mysqld_exporter.collect.perf_schema.tablelocks') do |enabled| %> \
+      <%= enabled ? "--collect.perf_schema.tablelocks" : "--no-collect.perf_schema.tablelocks" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.slave_status') do |slave_status| %> \
-      --collect.slave_status="<%= slave_status %>" \
+      <% if_p('mysqld_exporter.collect.slave_status') do |enabled| %> \
+      <%= enabled ? "--collect.slave_status" : "--no-collect.slave_status" %> \
       <% end %> \
-      <% if_p('mysqld_exporter.collect.slave_hosts') do |slave_hosts| %> \
-      --collect.slave_hosts="<%= slave_hosts %>" \
+      <% if_p('mysqld_exporter.collect.slave_hosts') do |enabled| %> \
+      <%= enabled ? "--collect.slave_hosts" : "--no-collect.slave_hosts" %> \
       <% end %> \
       <% if_p('mysqld_exporter.my_cnf') do |my_cnf| %> \
       --config.my-cnf="<%= my_cnf %>" \
@@ -148,8 +148,8 @@ case $1 in
       <% if_p('mysqld_exporter.lock_wait_timeout') do |lock_wait_timeout| %> \
       --exporter.lock_wait_timeout="<%= lock_wait_timeout %>" \
       <% end %> \
-      <% if_p('mysqld_exporter.log_slow_filter') do |log_slow_filter| %> \
-      --exporter.log_slow_filter="<%= log_slow_filter %>" \
+      <% if_p('mysqld_exporter.log_slow_filter') do |enabled| %> \
+      <%= enabled ? "--exporter.log_slow_filter" : "--no-exporter.log_slow_filter" %> \
       <% end %> \
       --web.listen-address=":<%= p('mysqld_exporter.web.port') %>" \
       <% if_p('mysqld_exporter.web.telemetry_path') do |telemetry_path| %> \
