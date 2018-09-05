@@ -12,7 +12,7 @@ groups:
           description: "The Consul instance at `{{$labels.instance}}` has been down during the last <%= p('consul_alerts.down.evaluation_time') %>"
 
       - alert: ConsulNodeHealthCheckFailing
-        expr: min(consul_health_node_status) by(instance, node, check)  < 1
+        expr: min(consul_health_node_status{status="passing"}) by(instance, node, check)  < 1
         for: <%= p('consul_alerts.node_health.evaluation_time') %>
         labels:
           service: consul
