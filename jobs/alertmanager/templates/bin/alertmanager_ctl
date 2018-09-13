@@ -45,7 +45,10 @@ case $1 in
       <% if_p('alertmanager.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
-      --cluster.listen-address=<%= "#{spec.ip}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %> \
+      --cluster.listen-address=<%= "#{p('alertmanager.cluster.listen_address', spec.ip)}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %> \
+      <% if_p('alertmanager.cluster.advertise_address') do |address| %> \
+      --cluster.advertise-address="<%= "#{address}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %>" \
+      <% end %> \
       <% if_p('alertmanager.cluster.gossip_interval') do |gossip_interval| %> \
       --cluster.gossip-interval="<%= gossip_interval %>" \
       <% end %> \
