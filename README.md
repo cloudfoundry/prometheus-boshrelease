@@ -1,4 +1,4 @@
-# Prometheus BOSH Release [![Build Status](https://ci.starkandwayne.com/api/v1/teams/main/pipelines/prometheus-boshrelease/jobs/testflight/badge)](https://ci.starkandwayne.com/teams/main/pipelines/prometheus-boshrelease?groups=prometheus-boshrelease)
+# Prometheus BOSH Release
 
 This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io/), [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/), and [Grafana](https://grafana.com/).
 
