@@ -11,8 +11,8 @@ tar xzvf ${BOSH_COMPILE_TARGET}/grafana/grafana-5.2.4.linux-x64.tar.gz
 cp -a ${BOSH_COMPILE_TARGET}/grafana-5.2.4/* ${BOSH_INSTALL_TARGET}
 
 # Compile freetype (fontconfig dependency)
-tar xzvf ${BOSH_COMPILE_TARGET}/freetype/freetype-2.8.1.tar.gz
-pushd freetype-2.8.1
+tar xzvf ${BOSH_COMPILE_TARGET}/freetype/freetype-2.9.1.tar.gz
+pushd freetype-2.9.1
 ./configure --prefix=${BOSH_INSTALL_TARGET}
 make
 make install
@@ -26,9 +26,31 @@ make
 make install
 popd
 
+# Compile libxml2 (fontconfig dependency)
+tar xzvf ${BOSH_COMPILE_TARGET}/libxml2/libxml2-2.9.8.tar.gz
+pushd libxml2-2.9.8
+./configure --prefix=${BOSH_INSTALL_TARGET} --with-python=no
+make
+make install
+popd
+
+# Compile util-linux (fontconfig dependency)
+tar xzvf ${BOSH_COMPILE_TARGET}/util-linux/util-linux-2.32.tar.gz
+pushd util-linux-2.32
+./configure --prefix=${BOSH_INSTALL_TARGET} --disable-all-programs --enable-libuuid
+make
+make install
+popd
+
 # Compile fontconfig package
-tar xzvf ${BOSH_COMPILE_TARGET}/fontconfig/fontconfig-2.12.6.tar.gz
-pushd fontconfig-2.12.6
+tar xzvf ${BOSH_COMPILE_TARGET}/fontconfig/fontconfig-2.13.1.tar.gz
+pushd fontconfig-2.13.1
+export FREETYPE_CFLAGS="-I${BOSH_INSTALL_TARGET}/include/freetype2"
+export FREETYPE_LIBS="-L${BOSH_INSTALL_TARGET}/lib -lfreetype"
+export LIBXML2_CFLAGS="-I${BOSH_INSTALL_TARGET}/include/libxml2"
+export LIBXML2_LIBS="-L${BOSH_INSTALL_TARGET}/lib -lxml2"
+export UUID_CFLAGS="-I${BOSH_INSTALL_TARGET}/include"
+export UUID_LIBS="-L${BOSH_INSTALL_TARGET}/lib -luuid"
 export PKG_CONFIG_PATH=${BOSH_INSTALL_TARGET}/lib/pkgconfig
 export PATH=${BOSH_INSTALL_TARGET}/bin:$PATH
 ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-libxml2
