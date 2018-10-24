@@ -42,13 +42,13 @@ case $1 in
       --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       <% if_p('vault_exporter.vault_tls_cacert') do |vault_tls_cacert| %> \
-      --vault-tls-cacert="<%= vault_tls_cacert %>" \
+      --vault-tls-cacert="/var/vcap/jobs/vault_exporter/config/vault_ca.pem" \
       <% end %> \
       <% if_p('vault_exporter.vault_tls_client_cert') do |vault_tls_client_cert| %> \
-      --vault-tls-client-cert="<%= vault_tls_client_cert %>" \
+      --vault-tls-client-cert="/var/vcap/jobs/vault_exporter/config/vault_cert.pem" \
       <% end %> \
       <% if_p('vault_exporter.vault_tls_client_key') do |vault_tls_client_key| %> \
-      --vault-tls-client-key="<%= vault_tls_client_key %>" \
+      --vault-tls-client-key="/var/vcap/jobs/vault_exporter/config/vault_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/vault_exporter.stdout.log \
       2>> ${LOG_DIR}/vault_exporter.stderr.log
