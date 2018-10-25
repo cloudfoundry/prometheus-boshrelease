@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/vault_exporter
+LOG_DIR=/var/vcap/sys/log/vault_exporter
+TMP_DIR=/var/vcap/sys/tmp/vault_exporter
+STORE_DIR=/var/vcap/store/vault_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/vault_exporter.pid
+
+source /var/vcap/packages/vault_exporter/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/vault_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "vault_exporter"
+    echo $$ > ${PIDFILE}
+
+    <% if_p('vault_exporter.vault_address') do |vault_address| %> \
+    export VAULT_ADDR="<%= vault_address %>"
+    <% end %>
+
+    exec vault_exporter \
+      <% if_p('vault_exporter.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
+      <% if_p('vault_exporter.log_level') do |log_level| %> \
+      --log.level="<%= log_level %>" \
+      <% end %> \
+      <% if p('vault_exporter.insecure_ssl') %> \
+      --insecure-ssl \
+      <% end %> \
+      <% if_p('vault_exporter.web.listen_address') do |listen_address| %> \
+      --web.listen-address="<%= listen_address %>" \
+      <% end %> \
+      <% if_p('vault_exporter.web.telemetry-path') do |telemetry_path| %> \
+      --web.telemetry-path="<%= telemetry_path %>" \
+      <% end %> \
+      <% if_p('vault_exporter.vault_tls_cacert') do |vault_tls_cacert| %> \
+      --vault-tls-cacert="/var/vcap/jobs/vault_exporter/config/vault_ca.pem" \
+      <% end %> \
+      <% if_p('vault_exporter.vault_tls_client_cert') do |vault_tls_client_cert| %> \
+      --vault-tls-client-cert="/var/vcap/jobs/vault_exporter/config/vault_cert.pem" \
+      <% end %> \
+      <% if_p('vault_exporter.vault_tls_client_key') do |vault_tls_client_key| %> \
+      --vault-tls-client-key="/var/vcap/jobs/vault_exporter/config/vault_key.pem" \
+      <% end %> \
+      >>  ${LOG_DIR}/vault_exporter.stdout.log \
+      2>> ${LOG_DIR}/vault_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0
