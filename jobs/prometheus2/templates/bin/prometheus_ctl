@@ -50,11 +50,23 @@ case $1 in
       <% if_p('prometheus.query.max_concurrency') do |max_concurrency| %> \
       --query.max-concurrency="<%= max_concurrency %>" \
       <% end %> \
+      <% if_p('prometheus.query.max_samples') do |max_samples| %> \
+      --query.max-samples="<%= max_samples %>" \
+      <% end %> \
       <% if_p('prometheus.query.lookback_delta') do |lookback_delta| %> \
       --query.lookback-delta="<%= lookback_delta %>" \
       <% end %> \
       <% if_p('prometheus.query.timeout') do |timeout| %> \
       --query.timeout="<%= timeout %>" \
+      <% end %> \
+      <% if_p('prometheus.rules.alert.for_outage_tolerance') do |for_outage_tolerance| %> \
+      --rules.alert.for-outage-tolerance="<%= for_outage_tolerance %>" \
+      <% end %> \
+      <% if_p('prometheus.rules.alert.for_grace_period') do |for_grace_period| %> \
+      --rules.alert.for-grace-period="<%= for_grace_period %>" \
+      <% end %> \
+      <% if_p('prometheus.rules.alert.resend_delay') do |resend_delay| %> \
+      --rules.alert.resend-delay="<%= resend_delayt %>" \
       <% end %> \
       --storage.tsdb.path="${STORE_DIR}" \
       <% if_p('prometheus.storage.tsdb.retention') do |retention| %> \
@@ -71,6 +83,12 @@ case $1 in
       <% end %> \
       <% if_p('prometheus.storage.remote.flush_deadline') do |flush_deadline| %> \
       --storage.remote.flush-deadline="<%= flush_deadline %>" \
+      <% end %> \
+      <% if_p('prometheus.storage.remote.read_sample_limit') do |read_sample_limit| %> \
+      --storage.remote.read-sample-limit="<%= read_sample_limit %>" \
+      <% end %> \
+      <% if_p('prometheus.storage.remote.read_concurrent_limit') do |read_concurrent_limit| %> \
+      --storage.remote.read-concurrent-limit="<%= read_concurrent_limit %>" \
       <% end %> \
       <% if_p('prometheus.web.console.libraries') do |libraries| %> \
       --web.console.libraries="<%= libraries %>" \

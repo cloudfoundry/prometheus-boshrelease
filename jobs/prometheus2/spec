@@ -55,10 +55,19 @@ properties:
 
   prometheus.query.max_concurrency:
     description: "Maximum number of queries executed concurrently"
+  prometheus.query.max_samples:
+    description: "Maximum number of samples a single query can load into memory"
   prometheus.query.lookback_delta:
     description: "The delta difference allowed for retrieving metrics during expression evaluations"
   prometheus.query.timeout:
     description: "Maximum time a query may take before being aborted"
+
+  prometheus.rules.alert.for_outage_tolerance:
+    description: "Max time to tolerate prometheus outage for restoring 'for' state of alert"
+  prometheus.rules.alert.for_grace_period:
+    description: "Minimum duration between alert and restored 'for' state"
+  prometheus.rules.alert.resend_delay:
+    description: "Minimum amount of time to wait before resending an alert to Alertmanager"
 
   prometheus.storage.tsdb.retention:
     description: "How long to retain samples in the storage"
@@ -70,6 +79,10 @@ properties:
     description: "Do not create lockfile in data directory"
   prometheus.storage.remote.flush_deadline:
     description: "How long to wait flushing sample on shutdown or config reload"
+  prometheus.storage.remote.read_sample_limit:
+    description: "Maximum overall number of samples to return via the remote read interface, in a single query"
+  prometheus.storage.remote.read_concurrent_limit:
+    description: "Maximum number of concurrent remote read calls:
 
   prometheus.web.console.libraries:
     description: "Path to the console library directory"
