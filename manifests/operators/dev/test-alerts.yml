@@ -141,3 +141,12 @@
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/shield_alerts/*.alerts.yml
+
+  # Vault alerts
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=vault_alerts?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/vault_alerts/*.alerts.yml

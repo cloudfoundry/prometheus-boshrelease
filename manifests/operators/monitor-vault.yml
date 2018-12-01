@@ -1,0 +1,20 @@
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/-
+  value:
+    name: vault_exporter
+    release: prometheus
+    properties:
+      vault_exporter:
+        vault_address: "((vault_address))"
+
+# Prometheus Alerts
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=vault_alerts?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/vault_alerts/*.alerts.yml
