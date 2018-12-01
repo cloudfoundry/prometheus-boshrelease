@@ -10,3 +10,57 @@ groups:
         annotations:
           summary: "Rabbitmq Server instance `{{$labels.instance}}` is down"
           description: "The RabbitMQ Server instance at `{{$labels.instance}}` has been down the last <%= p('rabbitmq_alerts.server_down.evaluation_time') %>"
+      - alert: RabbitMqClusterNotAllNodesRunning
+        expr: (sum(rabbitmq_up{job=~".*rabbitmq.*"})  by (job))  < (sum(up{job=~".*rabbitmq.*"})  by (job))
+        for: <%= p('rabbitmq_alerts.rabbitmq_up.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: Some RabbitMQ Cluster Nodes Are Down in job {{`{{ $labels.instance }}`}}/{{`{{ $labels.job}}`}}
+          summary: Some RabbitMQ Cluster Nodes Are Down in job {{`{{ $labels.instance }}`}}/{{`{{ $labels.job}}`}}
+      - alert: RabbitMqDiskSpaceAlarm
+        expr: rabbitmq_node_disk_free_alarm{job=~".*rabbitmq.*"} == 1
+        for: <%= p('rabbitmq_alerts.rabbitmq_node_disk_free_alarm.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: RabbitMQ {{`{{ $labels.instance }}`}} Disk Space Alarm is going off.  Which means the node hit highwater mark and has cut off network connectivity, see RabbitMQ WebUI
+          summary: RabbitMQ is Out of Disk Space
+      - alert: RabbitMqMemoryAlarm
+        expr: rabbitmq_node_mem_alarm{job=~".*rabbitmq.*"} == 1
+        for: <%= p('rabbitmq_alerts.rabbitmq_node_mem_alarm.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: RabbitMQ {{`{{ $labels.instance }}`}} High Memory Alarm is going off.  Which means the node hit highwater mark and has cut off network connectivity, see RabbitMQ WebUI
+          summary: RabbitMQ is Out of Memory
+      - alert: RabbitMqMemoryUsageHigh
+        expr: (rabbitmq_node_mem_used{job=~".*rabbitmq.*"} / rabbitmq_node_mem_limit{job=~".*rabbitmq.*"}) > .9
+        for: <%= p('rabbitmq_alerts.rabbitmq_node_mem_used.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: RabbitMQ {{`{{ $labels.instance }}`}} Memory Usage > 90%
+          summary: RabbitMQ Node > 90% Memory Usage
+      - alert: RabbitMqFileDescriptorsLow
+        expr: (rabbitmq_fd_used{job=~".*rabbitmq.*"} / rabbitmq_fd_total{job=~".*rabbitmq.*"}) > .9
+        for: <%= p('rabbitmq_alerts.rabbitmq_fd_used.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: RabbitMQ {{`{{ $labels.instance }}`}} File Descriptor Usage > 90%
+          summary: RabbitMQ Low File Descriptor Available
+      - alert: RabbitMqDiskSpaceLow
+        expr: predict_linear(rabbitmq_node_disk_free{job=~".*rabbitmq.*"}[15m], 1 * 60 * 60) < rabbitmq_node_disk_free_limit{job=~".*rabbitmq.*"}
+        for: <%= p('rabbitmq_alerts.rabbitmq_node_disk_free.evaluation_time') %>
+        labels:
+          job: rabbitmq
+          severity: critical
+        annotations:
+          description: RabbitMQ {{`{{ $labels.instance }}`}} will hit disk limit in the next hr based on last 15 mins trend.
+          summary: RabbitMQ is Low on Disk Space and will Run Out in the next hour
