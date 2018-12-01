@@ -24,6 +24,9 @@ case $1 in
     export DATA_SOURCE_NAME="<%= p('postgres_exporter.datasource_name') %>"
 
     exec postgres_exporter \
+      <% if_p('postgres_exporter.constant_labels') do |constant_labels| %> \
+      --constantLabels="<%= constant_labels %>" \
+      <% end %> \
       <% if_p('postgres_exporter.custom_queries') do %> \
       --extend.query-path="/var/vcap/jobs/postgres_exporter/config/custom_queries.sql" \
       <% end %> \
@@ -37,7 +40,7 @@ case $1 in
       <% if_p('postgres_exporter.web.telemetry_path') do |telemetry_path| %> \
       --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
-     <% if p('postgres_exporter.disable_default_metrics')  %> \
+      <% if p('postgres_exporter.disable_default_metrics')  %> \
       --disable-default-metrics \
       <% end %> \
       >>  ${LOG_DIR}/postgres_exporter.stdout.log \
