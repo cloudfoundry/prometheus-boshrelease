@@ -34,6 +34,15 @@
   path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/consul_alerts/*.alerts.yml
 
+# Credhub alerts
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=crehub_alerts?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/credhub_alerts/*.alerts.yml
+
 # Elasticsearch alerts
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=elasticsearch_alerts?/release

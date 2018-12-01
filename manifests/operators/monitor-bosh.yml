@@ -143,6 +143,26 @@
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
   value:
+    job_name: credhub
+    scrape_interval: 30m
+    scrape_timeout: 4m
+    file_sd_configs:
+      - files:
+        - "/var/vcap/store/bosh_exporter/bosh_target_groups.json"
+    relabel_configs:
+      - source_labels:
+        - __meta_bosh_job_process_name
+        regex: credhub_exporter
+        action: keep
+      - source_labels:
+        - __address__
+        regex: "(.*)"
+        target_label: __address__
+        replacement: "${1}:9358"
+
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
+  value:
     job_name: elasticsearch
     file_sd_configs:
       - files:

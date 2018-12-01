@@ -21,20 +21,11 @@
           generic-certificates:
             - "/static/.*"
 
-- type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
-  value:
-    job_name: credhub
-    scrape_interval: 30m
-    scrape_timeout: 4m
-    static_configs:
-    - targets:
-      - localhost:9358
-
 # Prometheus Alerts
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=credhub_alerts?/release
   value: prometheus
+
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/credhub_alerts/*.alerts.yml
