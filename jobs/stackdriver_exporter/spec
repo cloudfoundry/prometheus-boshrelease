@@ -9,20 +9,41 @@ templates:
   config/goole_application_credentials.json: config/goole_application_credentials.json
 
 properties:
+  stackdriver_exporter.collector.fill_missing_labels:
+    description: "Fill missing metrics labels with empty string to avoid label dimensions inconsistent failure"
+    default: false
+
   stackdriver_exporter.google.project_id:
     description: "Google Project ID"
   stackdriver_exporter.google.application_credentials:
     description: "Google JSON key"
+
+  stackdriver_exporter.monitoring.drop_delegated_projects:
+    description: "Drop metrics from attached projects and fetch `project_id` only"
+    default: false
   stackdriver_exporter.monitoring.metrics_type_prefixes:
     description: "Comma separated Google Stackdriver Monitoring Metric Type prefixes"
   stackdriver_exporter.monitoring.metrics_interval:
     description: "Interval to request the Google Stackdriver Monitoring Metrics for"
   stackdriver_exporter.monitoring.metrics_offset:
     description: "Offset for the Google Stackdriver Monitoring Metrics interval into the past"
+
   stackdriver_exporter.log_format:
     description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
   stackdriver_exporter.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+
+  stackdriver_exporter.stackdriver.max_retries:
+    description: "Max number of retries that should be attempted on 503 errors from stackdriver"
+  stackdriver_exporter.stackdriver.http_timeout:
+    description: "How long should stackdriver_exporter wait for a result from the Stackdriver API"
+  stackdriver_exporter.stackdriver.max_backoff:
+    description: "Max time between each request in an exp backoff scenario"
+  stackdriver_exporter.stackdriver.backoff_jitter:
+    description: "The amount of jitter to introduce in a exp backoff scenario"
+  stackdriver_exporter.stackdriver.retry_statuses:
+    description: "The HTTP statuses that should trigger a retry"
+
   stackdriver_exporter.web.port:
     description: "Port on which to expose web interface and telemetry"
     default: "9255"

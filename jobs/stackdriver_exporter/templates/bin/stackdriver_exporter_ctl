@@ -39,7 +39,13 @@ case $1 in
     <% end %>
 
     exec stackdriver_exporter \
+      <% if p('stackdriver_exporter.collector.fill_missing_labels') %> \
+      --collector.fill-missing-labels \
+      <% end %> \
       --google.project-id="<%= p('stackdriver_exporter.google.project_id') %>" \
+      <% if p('stackdriver_exporter.monitoring.drop_delegated_projectsh') %> \
+      --monitoring.drop-delegated-projects ]
+      <% end %> \
       --monitoring.metrics-type-prefixes="<%= p('stackdriver_exporter.monitoring.metrics_type_prefixes') %>" \
       <% if_p('stackdriver_exporter.monitoring.metrics_interval') do |metrics_interval| %> \
       --monitoring.metrics-interval="<%= metrics_interval %>" \
@@ -52,6 +58,21 @@ case $1 in
       <% end %> \
       <% if_p('stackdriver_exporter.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('stackdriver_exporter.stackdriver.max_retries') do |max_retries| %> \
+      --stackdriver.max-retries="<%= max_retries %>" \
+      <% end %> \
+      <% if_p('stackdriver_exporter.stackdriver.http_timeout') do |http_timeout| %> \
+      --stackdriver.http-timeout="<%= http_timeout %>" \
+      <% end %> \
+      <% if_p('stackdriver_exporter.stackdriver.max_backoff') do |max_backoff| %> \
+      --stackdriver.max-backoff="<%= max_backoff %>" \
+      <% end %> \
+      <% if_p('stackdriver_exporter.stackdriver.backoff_jitter') do |backoff_jitter| %> \
+      --stackdriver.backoff-jitter="<%= backoff_jitter %>" \
+      <% end %> \
+      <% if_p('stackdriver_exporter.stackdriver.retry_statuses') do |retry_statuses| %> \
+      --stackdriver.retry-statuses="<%= retry_statuses %>" \
       <% end %> \
       --web.listen-address=":<%= p('stackdriver_exporter.web.port') %>" \
       <% if_p('stackdriver_exporter.web.telemetry_path') do |telemetry_path| %> \
