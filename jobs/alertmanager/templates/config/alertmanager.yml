@@ -64,7 +64,8 @@ global:
   <% end %>
 
   <% if_p('alertmanager.http_config') do |http_config| %>
-  http_config: <%= http_config %>
+  http_config: <%= http_config.to_s.gsub( "=>", ":") %>
+
   <% end %>
 
 # The directory from which notification templates are read.
