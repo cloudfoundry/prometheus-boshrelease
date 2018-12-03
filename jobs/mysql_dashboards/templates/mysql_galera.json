@@ -69,7 +69,7 @@
   "panels": [
     {
       "cacheTimeout": null,
-      "colorBackground": false,
+      "colorBackground": true,
       "colorValue": false,
       "colors": [
         "rgba(245, 54, 54, 0.9)",
@@ -129,12 +129,13 @@
       "targets": [
         {
           "expr": "mysql_global_status_wsrep_cluster_size{instance=~\"$host\"}",
+          "format": "time_series",            
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
         }
       ],
-      "thresholds": "",
+      "thresholds": "2,3",
       "title": "Cluster Size",
       "transparent": true,
       "type": "singlestat",
@@ -146,7 +147,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -786,11 +787,51 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_job_name=\"mysql\"}, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Galera-node",
+        "multi": false,
+        "name": "galeranode",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"mysql\"}, bosh_job_ip)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
         "label": "Host",
         "multi": false,
         "name": "host",
         "options": [],
-        "query": "label_values(mysql_up, instance)",
+        "query": "label_values(mysql_up{instance=~\"$galeranode:.*\"}, instance)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -834,5 +875,5 @@
   "timezone": "browser",
   "title": "MySQL: Galera",
   "uid": "mysql_galera",
-  "version": 1
+  "version": 2
 }

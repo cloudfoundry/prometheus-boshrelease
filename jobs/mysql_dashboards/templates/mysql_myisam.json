@@ -481,24 +481,19 @@
   "templating": {
     "list": [
       {
-        "allFormat": "glob",
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
-          "text": "auto",
-          "value": "$__auto_interval_interval"
+          "text": "1m",
+          "value": "1m"
         },
-        "datasource": "prometheus",
         "hide": 0,
-        "includeAll": false,
         "label": "Interval",
-        "multi": false,
-        "multiFormat": "glob",
         "name": "interval",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "auto",
             "value": "$__auto_interval_interval"
           },
@@ -513,7 +508,7 @@
             "value": "5s"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1m",
             "value": "1m"
           },
@@ -543,7 +538,46 @@
         "type": "interval"
       },
       {
-        "allFormat": "glob",
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_job_name=\"mysql\"}, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Galera-node",
+        "multi": false,
+        "name": "galeranode",
+        "options": [],
+        "query": "label_values(bosh_job_healthy{bosh_deployment=~\"$bosh_deployment\",bosh_job_name=\"mysql\"}, bosh_job_ip)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
@@ -551,17 +585,15 @@
         "includeAll": false,
         "label": "Host",
         "multi": false,
-        "multiFormat": "regex values",
         "name": "host",
         "options": [],
-        "query": "label_values(mysql_up, instance)",
+        "query": "label_values(mysql_up{instance=~\"$galeranode:.*\"}, instance)",
         "refresh": 1,
-        "refresh_on_load": false,
         "regex": "",
         "sort": 1,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       }
