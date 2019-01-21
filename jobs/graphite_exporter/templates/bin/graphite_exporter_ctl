@@ -22,25 +22,25 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec graphite_exporter \
-      -graphite.listen-address=":<%= p('graphite_exporter.graphite.port') %>" \
+      --graphite.listen-address=":<%= p('graphite_exporter.graphite.port') %>" \
       <% if_p('graphite_exporter.graphite.mapping_config') do %> \
-      -graphite.mapping-config="/var/vcap/jobs/graphite_exporter/config/graphite_mapping.conf" \
+      --graphite.mapping-config="/var/vcap/jobs/graphite_exporter/config/graphite_mapping.conf" \
       <% end %> \
       <% if_p('graphite_exporter.graphite.mapping_strict_match') do |mapping_strict_match| %> \
-      -graphite.mapping-strict-match="<%= mapping_strict_match %>" \
+      --graphite.mapping-strict-match="<%= mapping_strict_match %>" \
       <% end %> \
       <% if_p('graphite_exporter.graphite.sample_expiry') do |sample_expiry| %> \
-      -graphite.sample-expiry="<%= sample_expiry %>" \
+      --graphite.sample-expiry="<%= sample_expiry %>" \
       <% end %> \
       <% if_p('graphite_exporter.log_format') do |log_format| %> \
-      -log.format="<%= log_format %>" \
+      --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('graphite_exporter.log_level') do |log_level| %> \
-      -log.level="<%= log_level %>" \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      -web.listen-address=":<%= p('graphite_exporter.web.port') %>" \
+      --web.listen-address=":<%= p('graphite_exporter.web.port') %>" \
       <% if_p('graphite_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/graphite_exporter.stdout.log \
       2>> ${LOG_DIR}/graphite_exporter.stderr.log
