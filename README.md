@@ -30,7 +30,7 @@ Questions? Pop in our [slack channel](https://cloudfoundry.slack.com/messages/pr
 In order to use this BOSH release you will need:
 
 * [BOSH CLI v2](https://bosh.io/docs/cli-v2.html)
-* An already deployed [BOSH environment](http://bosh.io/docs/init.html)
+* An already deployed [BOSH environment](http://bosh.io/docs/init.html), please check [BOSH deployment security groups](https://github.com/cloudfoundry/bosh-deployment#security-groups) because Prometheus will connect to BOSH (ports: `25555` - Director API, `8443` - UAA API)
 * A compatible [cloud-config](http://bosh.io/docs/terminology.html#cloud-config) with a `default` option for `network` and `vm_types` (you can use the example that comes from [cf-deployment](https://github.com/cloudfoundry/cf-deployment/blob/master/iaas-support/bosh-lite/cloud-config.yml))
 
 Although not mandatory, it is recommended to deploy the [node exporter addon](https://github.com/bosh-prometheus/node-exporter-boshrelease) in order to get system metrics.
@@ -88,7 +88,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metrics_environment=
 ```
 
-*NOTE: `metrics_environment` is an arbitrary name to identify your environment (`test`, `nyc-prod`, ...)*
+> *NOTE:* `metrics_environment` is an arbitrary name to identify your environment (`test`, `nyc-prod`, ...)
 
 If you have configured your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) to use [UAA user management](http://bosh.io/docs/director-users-uaa.html) (via the [uaa.yml](https://github.com/cloudfoundry/bosh-deployment/blob/master/uaa.yml) ops file) we recommend adding the [add-bosh-exporter-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) and then adding the [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) ops file to the prometheus deployment by running the following command (filling the required variables with your own values):
 
@@ -141,7 +141,11 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v skip_ssl_verify=
 ```
 
-*NOTE: `metron_deployment_name` property should match the `deployment` property of your `metron_agent` jobs ([cf-deployment](https://github.com/cloudfoundry/cf-deployment) uses your `system_domain` and [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime) hardcodes `cf`)*
+>*NOTE:* `metron_deployment_name` property should match the `deployment` property of your `metron_agent` or `loggregator_agent` jobs.
+> Use:
+>- your `system_domain` (`metron_agent`) for [cf-deployment](https://github.com/cloudfoundry/cf-deployment) before [v2.0.0](https://github.com/cloudfoundry/cf-deployment/releases/tag/v2.0.0)
+>- `cf` (`loggregator_agent`) for [cf-deployment](https://github.com/cloudfoundry/cf-deployment) starting from the [v2.0.0](https://github.com/cloudfoundry/cf-deployment/commit/b4e761fa257740a2cbca2574b40ae78bcfe2178b#diff-1c845aa8da14326552b37f043a621ccaR3)
+>- `cf` for [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime)
 
 #### Register Cloud Foundry routes
 
