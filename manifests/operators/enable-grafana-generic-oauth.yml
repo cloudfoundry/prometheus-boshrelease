@@ -1,0 +1,19 @@
+---
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/auth?/generic_oauth
+  value:
+    enabled: true
+    allow_sign_up: true
+    allowed_domains: "((grafana_oauth_allowed_domains))"
+    api_url: "((grafana_oauth_api_url))"
+    auth_url: "((grafana_oauth_auth_url))"
+    client_id: "((grafana_oauth_client_id))"
+    client_secret: "((grafana_oauth_client_secret))"
+    name: "((grafana_oauth_name))"
+    scopes: "((grafana_oauth_scopes))"
+    team_ids: "((grafana_oauth_team_ids))"
+    tls_client_ca: "((grafana_oauth_tls_client_ca))"
+    tls_client_cert: "((grafana_oauth_tls_client_cert))"
+    tls_client_key: "((grafana_oauth_tls_client_key))"
+    tls_skip_verify_insecure: ((grafana_oauth_tls_skip_verify_insecure))
+    token_url: "((grafana_oauth_token_url))"
