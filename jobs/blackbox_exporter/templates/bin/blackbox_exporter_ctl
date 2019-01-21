@@ -36,6 +36,9 @@ case $1 in
 
     exec blackbox_exporter \
       --config.file="/var/vcap/jobs/blackbox_exporter/config/blackbox.yml" \
+      <% if_p('blackbox_exporter.history_limit') do |history_limit| %> \
+      --history.limit="<%= history_limit %>" \
+      <% end %> \
       <% if_p('blackbox_exporter.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
