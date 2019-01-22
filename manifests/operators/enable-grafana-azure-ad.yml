@@ -1,0 +1,24 @@
+# This file is based on the example for enabling uaa authentication for Grafana. Both uaa and Azure AD use the Grafana generic Oauth integration.
+# The original uaa file is located here: https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-grafana-uaa.yml
+
+# Grafana provides details for integrating with Azure AD here: http://docs.grafana.org/auth/generic-oauth/#set-up-oauth2-with-azure-active-directory
+# Based onthe example described, api_url and tls related values below are not used. 
+
+# Grafana Generic OAuth
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/auth?/generic_oauth
+  value:
+    enabled: true
+    allow_sign_up: true
+    client_id: ((client_id))
+    client_secret: "((client_secret))"
+    scopes: "openid email name"
+    auth_url: ((auth_url))
+    token_url: ((token_url))
+    name: Azure AD Generic Oauth
+    tls_skip_verify_insecure: ((skip_ssl_verify))
+
+# Grafana URL
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/server?/root_url
+  value: ((grafana_root_url))
