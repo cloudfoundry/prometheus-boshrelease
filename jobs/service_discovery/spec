@@ -1,0 +1,26 @@
+---
+
+name: service_discovery
+
+packages: []
+
+templates:
+  firehose_exporter_target_groups.json.erb: firehose_exporter_target_groups.json
+  grafana_target_groups.json.erb: grafana_target_groups.json
+  prometheus_target_groups.json.erb: prometheus_target_groups.json
+
+consumes:
+  - name: firehose_exporter
+    type: firehose_exporter
+    optional: true
+  - name: grafana
+    type: grafana
+    optional: true
+  - name: prometheus
+    type: prometheus
+    optional: true
+
+properties:
+  service_discovery.az_affinity:
+    description: "If true then only instances from the same availability zone will be included in the generated JSON files"
+    default: true
