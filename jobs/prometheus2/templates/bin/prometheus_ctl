@@ -96,6 +96,9 @@ case $1 in
       <% if_p('prometheus.web.console.templates') do |templates| %> \
       --web.console.templates="<%= templates %>" \
       <% end %> \
+      <% if_p('prometheus.web.cors_origin') do |cors_origin| %> \
+      --web.cors.origin="<%= cors_origin %>" \
+      <% end %> \
       <% if_p('prometheus.web.enable_lifecycle') do |enable_lifecycle| %> \
         <% if enable_lifecycle %> \
       --web.enable-lifecycle \
