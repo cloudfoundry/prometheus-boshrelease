@@ -1,0 +1,23 @@
+<%=
+
+instances = []
+
+if_link("prometheus") do |link|
+  instances = link.instances
+end
+
+if p("service_discovery.az_affinity")
+  instances = instances.select{ |inst| inst.az == spec.az }
+end
+
+result = {
+  "targets" => instances.map { |inst| inst.address },
+  "labels" => {
+    "__meta_bosh_deployment" => spec.deployment,
+    "__meta_bosh_job_process_name" => "prometheus2"
+  }
+}
+
+JSON.dump([result])
+
+%>
