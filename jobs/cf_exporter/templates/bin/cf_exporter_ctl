@@ -52,6 +52,9 @@ case $1 in
       <% if_p('cf_exporter.cf.api_v3_enabled') do |api_v3_enabled| %> \
       --cf.api-v3-enabled="<%= api_v3_enabled %>" \
       <% end %> \
+      <% if_p('cf_exporter.events.query') do |query| %> \
+      --events.query="<%= query %>" \
+      <% end %> \
       <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
       --filter.collectors="<%= collectors %>" \
       <% end %> \
