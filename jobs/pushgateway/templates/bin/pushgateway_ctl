@@ -33,6 +33,9 @@ case $1 in
       --persistence.interval="<%= persistence_interval %>" \
       <% end %> \
       --web.listen-address=":<%= p('pushgateway.web.port') %>" \
+      <% if_p('pushgateway.web.external_url') do |external_url| %> \
+      --web.external-url="<%= external_url %>" \
+      <% end %> \
       <% if_p('pushgateway.web.route_prefix') do |route_prefix| %> \
       --web.route-prefix="<%= route_prefix %>" \
       <% end %> \
