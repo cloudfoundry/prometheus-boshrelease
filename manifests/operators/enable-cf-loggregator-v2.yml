@@ -1,0 +1,9 @@
+# This file assumes firehose_exporter is being used: ./monitor-cf.yml
+
+- type: replace
+  path: /instance_groups/name=firehose/jobs/name=firehose_exporter/properties/firehose_exporter/logging/url?
+  value: https://log-stream.((system_domain))
+
+- type: replace
+  path: /instance_groups/name=firehose/jobs/name=firehose_exporter/properties/firehose_exporter/logging/use_legacy_firehose?
+  value: false
