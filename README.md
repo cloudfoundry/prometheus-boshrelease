@@ -192,6 +192,7 @@ Please review the op files before deploying them to check the requeriments, depe
 
 | File | Description | exporter | dashboards | alerts |
 | ---- | ----------- |:--------:|:----------:|:------:|
+| [alertmanager-group-by-alertname.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-group-by-alertname.yml) | Groups `alertmanager` alerts by name | | | |
 | [alertmanager-hipchat-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-hipchat-receiver.yml) | Configures a [HipChat](https://www.hipchat.com/) receiver for `alertmanager` | | | |
 | [alertmanager-opsgenie-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-opsgenie-receiver.yml) | Configures a [OpsGenie](https://www.opsgenie.com/) receiver for `alertmanager` | | | |
 | [alertmanager-pagerduty-receiver.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-pagerduty-receiver.yml) | Configures a [PagerDuty](https://www.pagerduty.com/) receiver for `alertmanager` | | | |
