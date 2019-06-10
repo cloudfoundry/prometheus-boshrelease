@@ -13,8 +13,18 @@ properties:
     description: "Comma separated list of key-patterns to export value and length/size, searched for with SCAN"
   redis_exporter.redis.check_single_keys:
     description: "Comma separated list of single keys to export value and length/size"
+  redis_exporter.redis.config_command:
+    description: "What to use for the CONFIG command"
+  redis_exporter.redis.connection_timeout:
+    description: "Timeout for connection to Redis instance"
   redis_exporter.debug:
     description: "Output verbose debug information"
+    default: false
+  redis_exporter.include_system_metrics:
+    description: "Whether to include system metrics like e.g. redis_total_system_memory_bytes"
+    default: false
+  redis_exporter.is_tile38:
+    description: "Whether to scrape Tile38 specific metrics"
     default: false
   redis_exporter.log_format:
     description: "Log format, valid options are txt and json"
@@ -25,14 +35,13 @@ properties:
     default: false
   redis_exporter.redis.address:
     description: "Address of one or more redis nodes, separated by separator"
-  redis_exporter.redis.alias:
-    description: "Redis instance alias for one or more redis nodes, separated by separator"
   redis_exporter.redis.password:
     description: "Password for one or more redis nodes, separated by separator"
   redis_exporter.redis.script:
     description: "Lua Redis script for collecting extra metrics"
-  redis_exporter.redis.separator:
-    description: "separator used to split redis.addr and redis.password into several elements"
+  redis_exporter.redis.skip_tls_verification:
+    description: "Whether to to skip TLS verification"
+    default: false
   redis_exporter.web.port:
     description: "Port on which to expose web interface and telemetry"
     default: "9121"

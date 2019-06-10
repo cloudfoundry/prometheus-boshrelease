@@ -28,8 +28,20 @@ case $1 in
       <% if_p('redis_exporter.redis.check_single_keys') do |check_single_keys| %> \
       -check-single-keys="<%= check_single_keys %>" \
       <% end %> \
+      <% if_p('redis_exporter.redis.config_command') do |config_command| %> \
+      -config-command="<%= config_command %>" \
+      <% end %> \
+      <% if_p('redis_exporter.redis.connection_timeout') do |connection_timeout| %> \
+      -connection-timeout="<%= connection_timeout %>" \
+      <% end %> \
       <% if p('redis_exporter.debug') %> \
       -debug \
+      <% end %> \
+      <% if p('redis_exporter.include_system_metrics') %> \
+      -include-system-metrics \
+      <% end %> \
+      <% if p('redis_exporter.is_tile38') %> \
+      -is-tile38 \
       <% end %> \
       <% if_p('redis_exporter.log_format') do |log_format| %> \
       -log-format="<%= log_format %>" \
@@ -43,17 +55,14 @@ case $1 in
       <% if_p('redis_exporter.redis.address') do |address| %> \
       -redis.addr="<%= address %>" \
       <% end %> \
-      <% if_p('redis_exporter.redis.alias') do |redis_alias| %> \
-      -redis.alias="<%= redis_alias %>" \
-      <% end %> \
       <% if_p('redis_exporter.redis.password') do |password| %> \
       -redis.password="<%= password %>" \
       <% end %> \
       <% if_p('redis_exporter.redis.script') do |script| %> \
       -script="/var/vcap/jobs/redis_exporter/config/script" \
       <% end %> \
-      <% if_p('redis_exporter.redis.separator') do |separator| %> \
-      -separator="<%= separator %>" \
+      <% if p('redis_exporter.redis.skip_tls_verification') %> \
+      -skip-tls-verification \
       <% end %> \
       -web.listen-address=":<%= p('redis_exporter.web.port') %>" \
       <% if_p('redis_exporter.web.telemetry_path') do |telemetry_path| %> \
