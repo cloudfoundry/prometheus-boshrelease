@@ -84,8 +84,14 @@ case $1 in
       --web.external-url="<%= external_url %>" \
       <% end %> \
       --web.listen-address=":<%= p('alertmanager.web.port') %>" \
+      <% if_p('alertmanager.web.get_concurrency') do |get_concurrency| %> \
+      --web.get-concurrency="<%= get_concurrency %>" \
+      <% end %> \
       <% if_p('alertmanager.web.route_prefix') do |route_prefix| %> \
       --web.route-prefix="<%= route_prefix %>" \
+      <% end %> \
+      <% if_p('alertmanager.web.timeout') do |timeout| %> \
+      --web.timeout="<%= timeout %>" \
       <% end %> \
       >>  ${LOG_DIR}/alertmanager.stdout.log \
       2>> ${LOG_DIR}/alertmanager.stderr.log
