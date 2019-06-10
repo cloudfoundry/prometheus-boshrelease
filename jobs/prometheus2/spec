@@ -8,6 +8,7 @@ templates:
   bin/prometheus_ctl: bin/prometheus_ctl
   config/prometheus.yml: config/prometheus.yml
   config/custom.rules.yml: config/custom.rules.yml
+  config/remote_write_ca.crt: config/remote_write_ca.crt
 
 provides:
   - name: prometheus
@@ -22,6 +23,9 @@ consumes:
     optional: true
   - name: prometheus-remote-read
     type: prometheus-remote-read
+    optional: true
+  - name: prometheus-remote-write
+    type: prometheus-remote-write
     optional: true
 
 properties:

@@ -44,7 +44,12 @@ remote_read:
 remote_read: <%= p('prometheus.remote_read', []).to_json %>
 <% end %>
 
-<% if_p('prometheus.remote_write') do |remote_write| %>
 # Settings related to the experimental remote write feature.
-remote_write: <%= remote_write.to_json %>
+<% if_link('prometheus-remote-write') do |prometheus_remote_write| %>
+remote_write:
+  <% prometheus_remote_write.instances.each do |instance| %>
+  - url: http://<%= instance.address %>:<%= prometheus_remote_write.p('web.port') %>/api/v1/write
+  <% end %>
+<% end.else do %>
+remote_write: <%= p('prometheus.remote_write', []).to_json %>
 <% end %>
