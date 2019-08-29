@@ -43,6 +43,12 @@ case $1 in
       <% if p('postgres_exporter.disable_default_metrics')  %> \
       --disable-default-metrics \
       <% end %> \
+      <% if p('postgres_exporter.disable_settings_metrics') %> \
+      --disable-settings-metrics \
+      <% end %> \
+      <% if p('postgres_exporter.auto_discover_databases') %> \
+      --auto-discover-databases \
+      <% end %> \
       >>  ${LOG_DIR}/postgres_exporter.stdout.log \
       2>> ${LOG_DIR}/postgres_exporter.stderr.log
     ;;
