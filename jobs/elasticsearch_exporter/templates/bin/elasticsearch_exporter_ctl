@@ -23,26 +23,56 @@ case $1 in
 
     exec elasticsearch_exporter \
       <% if_p('elasticsearch_exporter.es.uri') do |es_uri| %> \
-      -es.uri="<%= es_uri %>" \
-      <% end %> \
-      <% if_p('elasticsearch_exporter.es.all') do |es_all| %> \
-      -es.all="<%= es_all %>" \
-      <% end %> \
-      <% if_p('elasticsearch_exporter.es.timeout') do |es_timeout| %> \
-      -es.timeout="<%= es_timeout %>" \
+      --es.uri="<%= es_uri %>" \
       <% end %> \
       <% if_p('elasticsearch_exporter.es.ca_cert') do %> \
-      -es.ca="/var/vcap/jobs/elasticsearch_exporter/config/es_ca_cert.pem" \
+      --es.ca="/var/vcap/jobs/elasticsearch_exporter/config/es_ca_cert.pem" \
       <% end %> \
       <% if_p('elasticsearch_exporter.es.tls_cert') do %> \
-      -es.client-cert="/var/vcap/jobs/elasticsearch_exporter/config/es_tls_cert.pem" \
+      --es.client-cert="/var/vcap/jobs/elasticsearch_exporter/config/es_tls_cert.pem" \
       <% end %> \
       <% if_p('elasticsearch_exporter.es.tls_key') do %> \
-      -es.client-private-key="/var/vcap/jobs/elasticsearch_exporter/config/es_tls_key.pem" \
+      --es.client-private-key="/var/vcap/jobs/elasticsearch_exporter/config/es_tls_key.pem" \
       <% end %> \
-      -web.listen-address=":<%= p('elasticsearch_exporter.web.port') %>" \
+      <% if p('elasticsearch_exporter.es.ssl_skip_verify') %> \
+      --es.ssl-skip-verify \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.es.node') do |node| %> \
+      --es.node="<%= node %>" \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.es.clusterinfo.interval') do |interval| %> \
+      --es.clusterinfo.interval="<%= interval %>" \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.es.timeout') do |es_timeout| %> \
+      --es.timeout="<%= es_timeout %>" \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.all') %> \
+      --es.all \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.indices') %> \
+      --es.indices \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.indices_settings') %> \
+      --es.indices_settings \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.cluster_settings') %> \
+      --es.cluster_settings \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.shards') %> \
+      --es.shards \
+      <% end %> \
+      <% if p('elasticsearch_exporter.es.snapshots') %> \
+      --es.snapshots \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.log_level') do |log_level| %> \
+      --log.level="<%= log_level %>" \
+      <% end %> \
+      <% if_p('elasticsearch_exporter.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
+      --web.listen-address=":<%= p('elasticsearch_exporter.web.port') %>" \
       <% if_p('elasticsearch_exporter.web.telemetry_path') do |telemetry_path| %> \
-      -web.telemetry-path="<%= telemetry_path %>" \
+      --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
       >>  ${LOG_DIR}/elasticsearch_exporter.stdout.log \
       2>> ${LOG_DIR}/elasticsearch_exporter.stderr.log

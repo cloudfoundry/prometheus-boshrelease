@@ -13,18 +13,45 @@ templates:
 properties:
   elasticsearch_exporter.es.uri:
     description: "HTTP API address of an Elasticsearch node"
-  elasticsearch_exporter.es.all:
-    description: "Enable/disable exporting stats for all nodes in the cluster"
-  elasticsearch_exporter.es.timeout:
-    description: "Timeout for trying to get stats from Elasticsearch"
-  elasticsearch_exporter.web.port:
-    description: "Port on which to expose web interface and telemetry"
-    default: "9114"
-  elasticsearch_exporter.web.telemetry_path:
-    description: "Path under which to expose metrics"
   elasticsearch_exporter.es.ca_cert:
     description: "Trusted CA Certificate (PEM format) for the Elasticsearch connection"
   elasticsearch_exporter.es.tls_cert:
     description: "TLS Certificate (PEM format) for the private key to connect to Elasticsearch"
   elasticsearch_exporter.es.tls_key:
     description: "TLS Private key (PEM format) for client auth when connecting to Elasticsearch"
+  elasticsearch_exporter.es.ssl_skip_verify:
+    description: "Skip SSL verification when connecting to Elasticsearch"
+    default: false
+  elasticsearch_exporter.es.node:
+    description: "Node's name of which metrics should be exposed"
+  elasticsearch_exporter.es.clusterinfo.interval:
+    description: "Cluster info update interval for the cluster label"
+  elasticsearch_exporter.es.timeout:
+    description: "Timeout for trying to get stats from Elasticsearch"
+  elasticsearch_exporter.es.all:
+    description: "Enable/disable exporting stats for all nodes in the cluster"
+    default: false
+  elasticsearch_exporter.es.indices:
+    description: "Export stats for indices in the cluster"
+    default: false
+  elasticsearch_exporter.es.indices_settings:
+    description: "Export stats for settings of all indices of the cluster"
+    default: false
+  elasticsearch_exporter.es.cluster_settings:
+    description: "Export stats for cluster settings"
+    default: false
+  elasticsearch_exporter.es.shards:
+    description: "Export stats for shards in the cluster (implies --es.indices)"
+    default: false
+  elasticsearch_exporter.es.snapshots:
+    description: "Export stats for the cluster snapshots"
+    default: false
+  elasticsearch_exporter.log_level:
+    description: "Sets the loglevel. Valid levels are debug, info, warn, error"
+  elasticsearch_exporter.log_format:
+    description: "Sets the log format. Valid formats are json and logfmt"
+  elasticsearch_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9114"
+  elasticsearch_exporter.web.telemetry_path:
+    description: "Path under which to expose metrics"
