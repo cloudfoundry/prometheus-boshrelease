@@ -28,6 +28,18 @@ case $1 in
       <% if_p('statsd_exporter.statsd.read_buffer') do |read_buffer| %> \
       --statsd.read-buffer="<%= read_buffer %>" \
       <% end %> \
+      <% if_p('statsd_exporter.statsd.cache_size') do |cache_size| %> \
+      --statsd.cache-size="<%= cache_size %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.event_queue_size') do |event_queue_size| %> \
+      --statsd.event-queue-size="<%= event_queue_size %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.event_flush_threshold') do |event_flush_threshold| %> \
+      --statsd.event-flush-threshold="<%= event_flush_threshold %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.event_flush_interval') do |event_flush_interval| %> \
+      --statsd.event-flush-interval="<%= event_flush_interval %>" \
+      <% end %> \
       <% if_p('statsd_exporter.log_format') do |log_format| %> \
       --log.format="<%= log_format %>" \
       <% end %> \
