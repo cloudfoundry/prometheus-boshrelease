@@ -45,6 +45,9 @@ case $1 in
       <% if_p('alertmanager.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
+      <% if_p('alertmanager.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
       --cluster.listen-address=<%= "#{p('alertmanager.cluster.listen_address', spec.ip)}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %> \
       <% if_p('alertmanager.cluster.advertise_address') do |address| %> \
       --cluster.advertise-address="<%= "#{address}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %>" \
