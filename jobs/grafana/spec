@@ -27,6 +27,9 @@ templates:
   config/generic_oauth_tls_client_key.pem: config/generic_oauth_tls_client_key.pem
   config/grafana.ini: config/grafana.ini
   config/ldap.toml: config/ldap.toml
+  config/saml_certificate.pem: config/saml_certificate.pem
+  config/saml_private_key.pem: config/saml_private_key.pem
+  config/saml_ipd_metadata.xml: config/saml_ipd_metadata.xml
   config/ssl_cert.pem: config/ssl_cert.pem
   config/ssl_key.pem: config/ssl_key.pem
   config/smtp_cert.pem: config/smtp_cert.pem
@@ -68,6 +71,8 @@ properties:
     description: "Redirect to correct domain if host header does not match domain"
   grafana.server.root_url:
     description: "The full public facing url"
+  grafana.server.serve_from_sub_path:
+    description: "Serve Grafana from subpath specified in root_url setting"
   grafana.server.router_logging:
     description: "Log web requests"
   grafana.server.static_root_path:
@@ -176,6 +181,20 @@ properties:
     description: "Set to true if you host Grafana behind HTTPS"
   grafana.security.cookie_samesite:
     description: "Set cookie SameSite attribute (lax, strict and none)"
+  grafana.security.allow_embedding:
+    description: "Set to true if you want to allow browsers to render Grafana in a <frame>, <iframe>, <embed> or <object>"
+  grafana.security.strict_transport_security:
+    description: "Set to true if you want to enable http strict transport security (HSTS) response header"
+  grafana.security.cstrict_transport_security_max_age_seconds:
+    description: "Sets how long a browser should cache HSTS. Only applied if strict_transport_security is enabled"
+  grafana.security.strict_transport_security_preload:
+    description: "Set to true if to enable HSTS preloading option. Only applied if strict_transport_security is enabled"
+  grafana.security.strict_transport_security_subdomains:
+    description: "Set to true if to enable the HSTS includeSubDomains option. Only applied if strict_transport_security is enabled"
+  grafana.security.x_content_type_options:
+    description: "Set to true to enable the X-Content-Type-Options response header"
+  grafana.security.x_xss_protection:
+    description: "Set to true to enable the X-XSS-Protection header, which tells browsers to stop pages from loadingwhen they detect reflected cross-site scripting (XSS) attacks"
 
   grafana.snapshots.external_enabled:
     description: "Extenal snaphot enabled"
@@ -183,6 +202,8 @@ properties:
     description: "External snapshot URL"
   grafana.snapshots.external_snapshot_name:
     description: "External snapshot name"
+  grafana.snapshots.public_mode:
+    description: "Set to true to enable this Grafana instance act as an external snapshot server and allow unauthenticated requests for creating and deleting snapshots"
   grafana.snapshots.remove_expired:
     description: "Remove expired snapshots"
 
@@ -195,6 +216,8 @@ properties:
     description: "Allow non admin users to create organizations"
   grafana.users.auto_assign_org:
     description: "Set to true to automatically assign new users to the default organization (id 1)"
+  grafana.users.auto_assign_org_id:
+    description: "Set this value to automatically add new users to the provided organization (if auto_assign_org above is set to true)"
   grafana.users.auto_assign_org_role:
     description: "Default role new users will be automatically assigned (if disabled above is set to true)"
   grafana.users.verify_email_enabled:
@@ -240,6 +263,8 @@ properties:
     description: "URL to redirect the user to after sign out"
   grafana.auth.oauth_auto_login:
     description: "Set to true to attempt login with OAuth automatically, skipping the login screen"
+  grafana.auth.api_key_max_seconds_to_live:
+    description: "Limit of api_key seconds to live before expiration"
 
   grafana.auth.anonymous.enabled:
     description: "enable anonymous access"
@@ -370,6 +395,27 @@ properties:
   grafana.auth.grafanacom.allowed_organizations:
     description: "Grafana.net auth allowed organizations"
 
+  grafana.auth.saml.enabled:
+    description: "Auth SAML enabled"
+  grafana.auth.saml.certificate:
+    description: "Base64-encoded public X.509 certificate. Used to sign requests to the IdP"
+  grafana.auth.saml.private_key:
+    description: "Base64-encoded private key. Used to decrypt assertions from the IdP"
+  grafana.auth.saml.idp_metadata:
+    description: "Base64-encoded IdP SAML metadata XML. Used to verify and obtain binding locations from the IdP"
+  grafana.auth.saml.idp_metadata_url:
+    description: "URL to fetch SAML IdP metadata. Used to verify and obtain binding locations from the IdP"
+  grafana.auth.saml.max_issue_delay:
+    description: "Duration, since the IdP issued a response and the SP is allowed to process it"
+  grafana.auth.saml.metadata_valid_duration:
+    description: "Duration, for how long the SP's metadata should be valid"
+  grafana.auth.saml.assertion_attribute_name:
+    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's name"
+  grafana.auth.saml.assertion_attribute_login:
+    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's login handle"
+  grafana.auth.saml.assertion_attribute_email:
+    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's email"
+
   grafana.auth.basic.enabled:
     description: "Auth basic enabled"
 
@@ -394,6 +440,10 @@ properties:
     description: "LDAP configuration (toml)"
   grafana.auth.ldap.allow_sign_up:
     description: "Auth LDAP allow sign up"
+  grafana.auth.ldap.sync_cron:
+    description: LDAP backround sync (Enterprise only)"
+  grafana.auth.ldap.active_sync_enabled:
+    description: "LDAP backround sync (Enterprise only)"
 
   grafana.smtp.enabled:
     description: "SMTP enabled"
@@ -495,6 +545,12 @@ properties:
     description: "Default setting for how Grafana handles nodata or null values in alerting (alerting, no_data, keep_state, ok)"
   grafana.alerting.concurrent_render_limit:
     description: "This limit will protect the server from render overloading and make sure notifications are sent out quickly"
+  grafana.alerting.evaluation_timeout_seconds:
+    description: "Default setting for alert calculation timeout"
+  grafana.alerting.notification_timeout_seconds:
+    description: "Default setting for alert notification timeout"
+  grafana.alerting.max_attempts:
+    description: "Default setting for max attempts to sending alert notifications"
 
   grafana.explore.enabled:
     description: "Enable the Explore section"
@@ -528,6 +584,10 @@ properties:
     description: "Type specifies the type of the sampler: const, probabilistic, rateLimiting, or remote"
   grafana.tracing.jaeger.sampler_param:
     description: "jaeger samplerconfig param"
+  grafana.tracing.jaeger.zipkin_propagation:
+    description: "Whether or not to use Zipkin span propagation (x-b3- HTTP headers)"
+  grafana.tracing.jaeger.disable_shared_zipkin_spans:
+    description: "Setting this to true disables shared RPC spans"
 
   grafana.external_image_storage.provider:
     description: "Used for uploading images to public servers so they can be included in slack/email messages (s3, webdav, gcs, azure_blob, local)"
@@ -577,6 +637,11 @@ properties:
     description: "Enable alpha panels"
   grafana.panels.disable_sanitize_html:
     description: "Disable sanitize HTML"
+
+  grafana.plugins.enable_alpha:
+    description: "Enable alpha plugins"
+  grafana.plugins.app_tls_skip_verify_insecure:
+    description: "Skip verify insecure for app tls"
 
   grafana.enterprise.license:
     description: "Enterprise license"
