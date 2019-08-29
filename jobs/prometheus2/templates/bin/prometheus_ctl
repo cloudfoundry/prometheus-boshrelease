@@ -47,6 +47,9 @@ case $1 in
       <% if_p('prometheus.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
+      <% if_p('prometheus.log_format') do |log_format| %> \
+      --log.format="<%= log_format %>" \
+      <% end %> \
       <% if_p('prometheus.query.max_concurrency') do |max_concurrency| %> \
       --query.max-concurrency="<%= max_concurrency %>" \
       <% end %> \
@@ -81,9 +84,12 @@ case $1 in
       <% if_p('prometheus.storage.tsdb.max_block_duration') do |max_block_duration| %> \
       --storage.tsdb.max-block-duration="<%= max_block_duration %>" \
       <% end %> \
-      <% if_p('prometheus.storage.tsdb.no_lockfile') do |no_lockfile| %> \
-      --storage.tsdb.no-lockfile="<%= no_lockfile %>" \
-      <% end %> \
+      <% if p('prometheus.storage.tsdb.no_lockfile') %> \
+      --storage.tsdb.no-lockfile \
+      <% end %>
+      <% if p('prometheus.storage.tsdb.wal_compression') %> \
+      --storage.tsdb.wal-compression \
+      <% end %>
       <% if_p('prometheus.storage.remote.flush_deadline') do |flush_deadline| %> \
       --storage.remote.flush-deadline="<%= flush_deadline %>" \
       <% end %> \
@@ -102,15 +108,11 @@ case $1 in
       <% if_p('prometheus.web.cors_origin') do |cors_origin| %> \
       --web.cors.origin="<%= cors_origin %>" \
       <% end %> \
-      <% if_p('prometheus.web.enable_lifecycle') do |enable_lifecycle| %> \
-        <% if enable_lifecycle %> \
+      <% if p('prometheus.web.enable_lifecycle') %> \
       --web.enable-lifecycle \
-        <% end %> \
       <% end %> \
-      <% if_p('prometheus.web.enable_admin_api') do |enable_admin_api| %> \
-        <% if enable_admin_api %> \
+      <% if p('prometheus.web.enable_admin_api') %> \
       --web.enable-admin-api \
-        <% end %> \
       <% end %> \
       <% if_p('prometheus.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \

@@ -31,6 +31,8 @@ consumes:
 properties:
   prometheus.log_level:
     description: "Only log messages with the given severity or above. One of: [debug, info, warn, error]"
+  prometheus.log_format:
+    description: "Output format of log messages. One of: [logfmt, json]"
   prometheus.scrape_interval:
     description: "How frequently to scrape targets by default"
   prometheus.scrape_timeout:
@@ -83,6 +85,10 @@ properties:
     description: "Maximum duration compacted blocks may span (defaults to 10% of the retention period)"
   prometheus.storage.tsdb.no_lockfile:
     description: "Do not create lockfile in data directory"
+    default: false
+  prometheus.storage.tsdb.wal_compression:
+    description: "Compress the tsdb WAL"
+    default: false
   prometheus.storage.remote.flush_deadline:
     description: "How long to wait flushing sample on shutdown or config reload"
   prometheus.storage.remote.read_sample_limit:
@@ -100,8 +106,10 @@ properties:
     description: "Regex for CORS origin"
   prometheus.web.enable_lifecycle:
     description: "Enable shutdown and reload via HTTP request"
+    default: false
   prometheus.web.enable_admin_api:
     description: "Enables API endpoints for admin control actions"
+    default: false
   prometheus.web.external_url:
     description: "The URL under which Prometheus is externally reachable"
   prometheus.web.port:
