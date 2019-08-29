@@ -11,6 +11,10 @@ global:
   smtp_smarthost: <%= smarthost %>
   <% end %>
 
+  <% if_p('alertmanager.smtp.hello') do |hello| %>
+  smtp_hello: <%= hello %>
+  <% end %>
+
   <% if_p('alertmanager.smtp.auth_username') do |auth_username| %>
   smtp_auth_username: <%= auth_username %>
   <% end %>
@@ -61,6 +65,18 @@ global:
 
   <% if_p('alertmanager.hipchat.auth_token') do |auth_token| %>
   hipchat_auth_token: <%= auth_token %>
+  <% end %>
+
+  <% if_p('alertmanager.wechat.api_url') do |api_url| %>
+  wechat_api_url: <%= api_url %>
+  <% end %>
+
+  <% if_p('alertmanager.wechat.api_secret') do |api_secret| %>
+  wechat_api_secret: <%= api_secret %>
+  <% end %>
+
+  <% if_p('alertmanager.wechat.api_corp_id') do |api_corp_id| %>
+  wechat_api_corp_id: <%= api_corp_id %>
   <% end %>
 
   <% if_p('alertmanager.http_config') do |http_config| %>
