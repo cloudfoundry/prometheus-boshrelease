@@ -45,8 +45,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1523181477375,
+  "iteration": 1567579109551,
   "links": [
     {
       "asDropdown": true,
@@ -108,15 +107,24 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(concourse_scheduling_full_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
+          "expr": "#Valid until concourse 4.2.1\nmax(concourse_scheduling_full_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
           "format": "time_series",
+          "hide": false,
           "intervalFactor": 2,
           "legendFormat": "Duration",
           "refId": "A"
+        },
+        {
+          "expr": "#Valid starting concourse 4.2.2 and 5.x\nmax(concourse_scheduling_full_duration_seconds_total{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Duration",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Scheduling: Full",
       "tooltip": {
@@ -150,7 +158,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -190,15 +202,23 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(concourse_scheduling_loading_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
+          "expr": "#Valid until concourse 4.2.1\nmax(concourse_scheduling_loading_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Duration",
           "refId": "A"
+        },
+        {
+          "expr": "#Valid starting concourse 4.2.2 and 5.x\nmax(concourse_scheduling_loading_duration_seconds_total{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Duration",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Scheduling: Loading",
       "tooltip": {
@@ -232,7 +252,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -240,7 +264,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Last time taken to calculate the set of valid input versions for a pipeline",
+      "description": "Last time taken to calculate the set of valid input versions for a pipeline. Not present anymore in concourse 5.x",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -272,7 +296,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(concourse_scheduling_job_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
+          "expr": "#Valid until concourse 4.2.1\nmax(concourse_scheduling_job_duration_seconds{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}) by(bosh_deployment, pipeline)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Duration",
@@ -281,6 +305,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Scheduling: Job",
       "tooltip": {
@@ -314,7 +339,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -365,6 +394,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Builds Finished",
       "tooltip": {
@@ -399,7 +429,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -441,7 +475,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(rate(concourse_builds_duration_seconds_sum{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}[5m]) / rate(concourse_builds_duration_seconds_count{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}[5m])) by(bosh_deployment, pipeline)",
+          "expr": "avg(\n  rate(concourse_builds_duration_seconds_sum{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}[5m]) / \n  rate(concourse_builds_duration_seconds_count{bosh_deployment=~\"$bosh_deployment\", pipeline=~\"$pipeline\"}[5m])\n) by(bosh_deployment, pipeline)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Duration",
@@ -450,6 +484,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Build Duration",
       "tooltip": {
@@ -483,11 +518,15 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 18,
   "style": "dark",
   "tags": [
     "concourse"
@@ -496,8 +535,12 @@
     "list": [
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "text": "concourse",
+          "value": "concourse"
+        },
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
@@ -507,6 +550,7 @@
         "query": "label_values(concourse_builds_finished, bosh_deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -516,8 +560,13 @@
       },
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "tags": [],
+          "text": "control-plane",
+          "value": "control-plane"
+        },
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Pipeline",
@@ -527,6 +576,7 @@
         "query": "label_values(concourse_builds_finished{bosh_deployment=~\"$bosh_deployment\"}, pipeline)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
