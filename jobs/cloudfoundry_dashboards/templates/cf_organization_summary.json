@@ -83,7 +83,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total number of Instances and Quota for this Organization.",
+      "description": "Total number of running Instances and Quota for this Organization.",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -115,7 +115,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\",state=\"STARTED\"}) by(application_id))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -220,7 +220,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "decimals": null,
-      "description": "Total Memory Used and Quota for this Organization.",
+      "description": "Total Memory Used by running instances and Quota for this Organization.",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -252,7 +252,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\",state=\"STARTED\"}) by(application_id))",
           "intervalFactor": 2,
           "legendFormat": "Used",
           "refId": "A",
@@ -311,7 +311,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Total Disk allocated and Quota for this Organization.",
+      "description": "Total Disk allocated to running instances for this Organization.",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -343,17 +343,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\",state=\"STARTED\"}) by(application_id))",
           "intervalFactor": 2,
           "legendFormat": "Used",
           "refId": "A",
-          "step": 4
-        },
-        {
-          "expr": "avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"})",
-          "intervalFactor": 2,
-          "legendFormat": "Quota",
-          "refId": "B",
           "step": 4
         }
       ],
