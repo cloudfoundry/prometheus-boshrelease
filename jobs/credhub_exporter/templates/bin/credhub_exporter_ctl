@@ -38,8 +38,8 @@ case $1 in
        url = ""
        ca_certs = ""
        if_link("credhub") do |link|
-         url      = sprintf("https://%s:%d", link.p('internal_url'), link.p('port'))
-         ca_certs = link.p('ca_certificate')
+         url      = sprintf("https://%s:%d", link.p('credhub.internal_url'), link.p('credhub.port'))
+         ca_certs = link.p('credhub.ca_certificate')
        end.else do
          url      = p("credhub_exporter.credhub.api_url")
          ca_certs = p("credhub_exporter.credhub.ca_certs", "")
