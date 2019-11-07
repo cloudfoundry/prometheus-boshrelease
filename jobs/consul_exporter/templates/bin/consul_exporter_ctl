@@ -22,7 +22,7 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec consul_exporter \
-      <% if p('consul_exporter.consul_allow_stale') \
+      <% if p('consul_exporter.consul_allow_stale') %> \
       --consul.allow_stale \
       <% end %> \
       <% if_p('consul_exporter.consul_ca') do %> \
@@ -34,7 +34,7 @@ case $1 in
       <% if_p('consul_exporter.consul_key') do %> \
       --consul.key-file="/var/vcap/jobs/consul_exporter/config/consul_key.pem" \
       <% end %> \
-      <% if p('consul_exporter.consul_health_summary') \
+      <% if p('consul_exporter.consul_health_summary') %> \
       --consul.health-summary \
       <% end %> \
       <% if p('consul_exporter.consul_require_consistent') %> \
@@ -46,7 +46,7 @@ case $1 in
       <% if_p('consul_exporter.consul_server_name') do |consul_server_name| %> \
       --consul.server-name="<%= consul_server_name %>" \
       <% end %> \
-      <% if p('consul_exporter.consul_insecure') \
+      <% if p('consul_exporter.consul_insecure') %> \
       --consul.insecure \
       <% end %> \
       <% if_p('consul_exporter.consul_timeout') do |consul_timeout| %> \
