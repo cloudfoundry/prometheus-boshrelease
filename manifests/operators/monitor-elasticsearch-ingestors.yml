@@ -1,0 +1,10 @@
+# This file assumes you have the ingestor_exporter job running on each of your ingestor VMs as part of your elasticsearch deployment.
+
+# Grafana Dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=ingestor_dashboards?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=ElasticSearch?/files/-
+  value: /var/vcap/jobs/ingestor_dashboards/*.json
