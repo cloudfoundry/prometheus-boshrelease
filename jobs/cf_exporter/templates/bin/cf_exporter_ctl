@@ -34,56 +34,73 @@ case $1 in
     export no_proxy="<%= no_proxy %>"
     <% end %>
 
+    export CF_EXPORTER_CF_API_URL="<%= p('cf_exporter.cf.api_url') %>"
+
+    <% if_p('cf_exporter.cf.username') do |username| %>
+    export CF_EXPORTER_CF_USERNAME="<%= username %>"
+    <% end %>
+
+    <% if_p('cf_exporter.cf.password') do |password| %>
+    export CF_EXPORTER_CF_PASSWORD="<%= password %>"
+    <% end %>
+
+    <% if_p('cf_exporter.cf.client_id') do |client_id| %>
+    export CF_EXPORTER_CF_CLIENT_ID="<%= client_id %>"
+    <% end %>
+
+    <% if_p('cf_exporter.cf.client_secret') do |client_secret| %>
+    export CF_EXPORTER_CF_CLIENT_SECRET="<%= client_secret %>"
+    <% end %>
+
+    export CF_EXPORTER_CF_DEPLOYMENT_NAME="<%= p('cf_exporter.cf.deployment_name') %>"
+
+    <% if p('cf_exporter.cf.api_v3_enabled') %>
+    export CF_EXPORTER_CF_API_V3_ENABLED='true'
+    <% end %>
+
+    <% if_p('cf_exporter.events.query') do |query| %>
+    export CF_EXPORTER_EVENTS_QUERY="<%= query %>"
+    <% end %>
+
+    <% if_p('cf_exporter.filter.collectors') do |collectors| %>
+    export CF_EXPORTER_FILTER_COLLECTORS="<%= collectors %>"
+    <% end %>
+
+    <% if_p('cf_exporter.metrics.namespace') do |namespace| %>
+    export CF_EXPORTER_METRICS_NAMESPACE="<%= namespace %>"
+    <% end %>
+
+    export CF_EXPORTER_METRICS_ENVIRONMENT="<%= p('cf_exporter.metrics.environment') %>"
+
+    <% if p('cf_exporter.skip_ssl_verify') %>
+    export CF_EXPORTER_SKIP_SSL_VERIFY='true'
+    <% end %>
+
+    export CF_EXPORTER_WEB_LISTEN_ADDRESS=":<%= p('cf_exporter.web.port') %>"
+
+    <% if_p('cf_exporter.web.telemetry_path') do |telemetry_path| %>
+    export CF_EXPORTER_WEB_TELEMETRY_PATH="<%= telemetry_path %>"
+    <% end %>
+
+    <% if_p('cf_exporter.web.auth_username') do |auth_username| %>
+    export CF_EXPORTER_WEB_AUTH_USERNAME="<%= auth_username %>"
+    <% end %>
+
+    <% if_p('cf_exporter.web.auth_password') do |auth_password| %>
+    export CF_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
+    <% if_p('cf_exporter.web.tls_cert', 'cf_exporter.web.tls_key') do %>
+    export CF_EXPORTER_WEB_TLS_CERTFILE="/var/vcap/jobs/cf_exporter/config/web_tls_cert.pem"
+    export CF_EXPORTER_WEB_TLS_KEYFILE="/var/vcap/jobs/cf_exporter/config/web_tls_key.pem"
+    <% end %>
+
     exec cf_exporter \
-      --cf.api_url="<%= p('cf_exporter.cf.api_url') %>" \
-      <% if_p('cf_exporter.cf.username') do |username| %> \
-      --cf.username="<%= username %>" \
-      <% end %> \
-      <% if_p('cf_exporter.cf.password') do |password| %> \
-      --cf.password="<%= password %>" \
-      <% end %> \
-      <% if_p('cf_exporter.cf.client_id') do |client_id| %> \
-      --cf.client-id="<%= client_id %>" \
-      <% end %> \
-      <% if_p('cf_exporter.cf.client_secret') do |client_secret| %> \
-      --cf.client-secret="<%= client_secret %>" \
-      <% end %> \
-      --cf.deployment-name="<%= p('cf_exporter.cf.deployment_name') %>" \
-      <% if p('cf_exporter.cf.api_v3_enabled') %> \
-      --cf.api-v3-enabled \
-      <% end %> \
-      <% if_p('cf_exporter.events.query') do |query| %> \
-      --events.query="<%= query %>" \
-      <% end %> \
-      <% if_p('cf_exporter.filter.collectors') do |collectors| %> \
-      --filter.collectors="<%= collectors %>" \
-      <% end %> \
       <% if_p('cf_exporter.log_format') do |log_format| %> \
       --log.format="<%= log_format %>" \
       <% end %> \
       <% if_p('cf_exporter.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
-      <% end %> \
-      <% if_p('cf_exporter.metrics.namespace') do |namespace| %> \
-      --metrics.namespace="<%= namespace %>" \
-      <% end %> \
-      --metrics.environment="<%= p('cf_exporter.metrics.environment') %>" \
-      <% if p('cf_exporter.skip_ssl_verify') %> \
-      --skip-ssl-verify \
-      <% end %> \
-      --web.listen-address=":<%= p('cf_exporter.web.port') %>" \
-      <% if_p('cf_exporter.web.telemetry_path') do |telemetry_path| %> \
-      --web.telemetry-path="<%= telemetry_path %>" \
-      <% end %> \
-      <% if_p('cf_exporter.web.auth_username') do |auth_username| %> \
-      --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('cf_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
-      <% end %> \
-      <% if_p('cf_exporter.web.tls_cert', 'cf_exporter.web.tls_key') do %> \
-      --web.tls.cert_file="/var/vcap/jobs/cf_exporter/config/web_tls_cert.pem" \
-      --web.tls.key_file="/var/vcap/jobs/cf_exporter/config/web_tls_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/cf_exporter.stdout.log \
       2>> ${LOG_DIR}/cf_exporter.stderr.log
