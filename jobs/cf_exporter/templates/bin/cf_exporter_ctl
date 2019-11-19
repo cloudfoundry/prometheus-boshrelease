@@ -34,19 +34,23 @@ case $1 in
     export no_proxy="<%= no_proxy %>"
     <% end %>
 
+    <% if_p('cf_exporter.cf.password') do |password| %>
+    export CF_EXPORTER_CF_PASSWORD="<%= password %>"
+    <% end %>
+    <% if_p('cf_exporter.cf.client_secret') do |client_secret| %>
+    export CF_EXPORTER_CF_CLIENT_SECRET="<%= client_secret %>"
+    <% end %>
+    <% if_p('cf_exporter.web.auth_password') do |auth_password| %>
+    export CF_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
     exec cf_exporter \
       --cf.api_url="<%= p('cf_exporter.cf.api_url') %>" \
       <% if_p('cf_exporter.cf.username') do |username| %> \
       --cf.username="<%= username %>" \
       <% end %> \
-      <% if_p('cf_exporter.cf.password') do |password| %> \
-      --cf.password="<%= password %>" \
-      <% end %> \
       <% if_p('cf_exporter.cf.client_id') do |client_id| %> \
       --cf.client-id="<%= client_id %>" \
-      <% end %> \
-      <% if_p('cf_exporter.cf.client_secret') do |client_secret| %> \
-      --cf.client-secret="<%= client_secret %>" \
       <% end %> \
       --cf.deployment-name="<%= p('cf_exporter.cf.deployment_name') %>" \
       <% if p('cf_exporter.cf.api_v3_enabled') %> \
@@ -77,9 +81,6 @@ case $1 in
       <% end %> \
       <% if_p('cf_exporter.web.auth_username') do |auth_username| %> \
       --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('cf_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('cf_exporter.web.tls_cert', 'cf_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/cf_exporter/config/web_tls_cert.pem" \
