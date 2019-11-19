@@ -1,0 +1,37 @@
+---
+name: ingestor_exporter
+
+templates:
+  bpm.yml.erb: config/bpm.yml
+
+packages:
+- ingestor_exporter
+
+properties:
+  ingestor.protocol:
+    default: "http"
+    description: "The protocol to connect to the ingestor on (http/https)"
+  ingestor.hostname:
+    default: "127.0.0.1"
+    description: "The hostname of the ingestor"
+  ingestor.port:
+    default: "8080"
+    description: "The port of the ingestor"
+  ingestor.path:
+    default: "/stats/app"
+    description: "The path of the ingestor metrics endpoint"
+  ingestor.skip-ssl:
+    default: "false"
+    description: "Should exporter skip ssl to connect to ingestor"
+  ingestor.response-timeout-seconds:
+    default: "10"
+    description: "How long the exporter should wait for a response from the ingestor (seconds)"
+
+  exporter.metrics-endpoint:
+    default: "/metrics"
+    description: "This is the endpoint to reach exporter metrics on"
+  exporter.port:
+    default: "9495"
+    description: "This is the port the exporter runs on"
+  exporter.metrics.environment:
+    description: "Environment label to be attached to metrics"

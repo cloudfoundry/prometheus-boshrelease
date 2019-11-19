@@ -1,0 +1,23 @@
+<%=
+
+env = {}
+env["INGESTOR_PROTOCOL"] = "#{p("ingestor.protocol")}"
+env["INGESTOR_HOSTNAME"] = "#{p("ingestor.hostname")}"
+env["INGESTOR_PORT"] = "#{p("ingestor.port")}"
+env["INGESTOR_PATH"] = "#{p("ingestor.path")}"
+env["INGESTOR_SKIP_SSL"] = "#{p("ingestor.skip-ssl")}"
+env["INGESTOR_RESPONSE_TIMEOUT_SECONDS"] = "#{p("ingestor.response-timeout-seconds")}"
+env["INGESTOR_EXPORTER_METRICS_ENDPOINT"] = "#{p("exporter.metrics-endpoint")}"
+env["INGESTOR_EXPORTER_PORT"] = "#{p("exporter.port")}"
+env["INGESTOR_METRICS_ENVIRONMENT"] = "#{p("exporter.metrics.environment")}"
+
+process = {}
+process["name"] = "ingestor_exporter"
+process["executable"] = "/var/vcap/packages/ingestor_exporter/bin/ingestor_exporter"
+process["env"] = env
+
+config = {}
+config["processes"] = [process]
+
+YAML.dump(config)
+%>

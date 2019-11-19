@@ -47,6 +47,7 @@ groups:
       - graphite_exporter
       - haproxy_exporter
       - influxdb_exporter
+      - ingestor_exporter
       - memcached_exporter
       - mysqld_exporter
       - rabbitmq_exporter
@@ -338,6 +339,25 @@ jobs:
           text:     '$BUILD_PIPELINE_NAME: New influxdb_exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: influxdb_exporter/version
 
+  - name: ingestor_exporter
+    public: true
+    serial: true
+    plan:
+      - aggregate:
+        - get: ingestor_exporter
+          trigger: true
+          params:
+            globs:
+              - ingestor_exporter-*.linux-amd64.tar.gz
+
+      - put: notify
+        params:
+          channel:   (( grab meta.slack.channel ))
+          username:  (( grab meta.slack.username ))
+          icon_url:  (( grab meta.slack.icon ))
+          text:     '$BUILD_PIPELINE_NAME: New ingestor_exporter version $TEXT_FILE_CONTENT has been detected'
+          text_file: ingestor_exporter/ci/versions/ingestor_exporter-version
+
   - name: memcached_exporter
     public: true
     serial: true
@@ -588,6 +608,14 @@ resources:
     source:
       user:         prometheus
       repository:   influxdb_exporter
+      access_token: (( grab meta.github.access_token ))
+      check_every: 30m
+
+  - name: ingestor_exporter
+    type: github-release
+    source:
+      user:         bosh-prometheus
+      repository:   ingestor_exporter
       access_token: (( grab meta.github.access_token ))
       check_every: 30m
 
