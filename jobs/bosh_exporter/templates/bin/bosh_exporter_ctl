@@ -34,19 +34,23 @@ case $1 in
     export no_proxy="<%= no_proxy %>"
     <% end %>
 
+    <% if_p('bosh_exporter.bosh.password') do |password| %>
+    export BOSH_EXPORTER_BOSH_PASSWORD="<%= password %>"
+    <% end %>
+    <% if_p('bosh_exporter.bosh.uaa.client_secret') do |client_secret| %>
+    export BOSH_EXPORTER_BOSH_UAA_CLIENT_SECRET="<%= client_secret %>"
+    <% end %>
+    <% if_p('bosh_exporter.web.auth_password') do |auth_password| %>
+    export BOSH_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
     exec bosh_exporter \
       --bosh.url="<%= p('bosh_exporter.bosh.url') %>" \
       <% if_p('bosh_exporter.bosh.username') do |username| %> \
       --bosh.username="<%= username %>" \
       <% end %> \
-      <% if_p('bosh_exporter.bosh.password') do |password| %> \
-      --bosh.password="<%= password %>" \
-      <% end %> \
       <% if_p('bosh_exporter.bosh.uaa.client_id') do |client_id| %> \
       --bosh.uaa.client-id="<%= client_id %>" \
-      <% end %> \
-      <% if_p('bosh_exporter.bosh.uaa.client_secret') do |client_secret| %> \
-      --bosh.uaa.client-secret="<%= client_secret %>" \
       <% end %> \
       <% if_p('bosh_exporter.bosh.log_level') do |log_level| %> \
       --bosh.log-level="<%= log_level %>" \
@@ -86,9 +90,6 @@ case $1 in
       <% end %> \
       <% if_p('bosh_exporter.web.auth_username') do |auth_username| %> \
       --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('bosh_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('bosh_exporter.web.tls_cert', 'bosh_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/bosh_exporter/config/web_tls_cert.pem" \
