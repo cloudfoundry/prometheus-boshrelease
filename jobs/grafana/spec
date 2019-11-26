@@ -18,6 +18,7 @@ templates:
   config/provisioning/dashboards/folders.yml: config/provisioning/dashboards/folders.yml
   config/provisioning/datasources/influxdb.yml: config/provisioning/datasources/influxdb.yml
   config/provisioning/datasources/prometheus.yml: config/provisioning/datasources/prometheus.yml
+  config/provisioning/datasources/custom.yml: config/provisioning/datasources/custom.yml
   config/database_tls_client_ca.pem: config/database_tls_client_ca.pem
   config/database_tls_client_cert.pem: config/database_tls_client_cert.pem
   config/database_tls_client_key.pem: config/database_tls_client_key.pem
@@ -687,7 +688,12 @@ properties:
     description: "InfluxDB user to configure as Grafana data source"
   grafana.influxdb.password:
     description: "InfluxDB password to configure as Grafana data source"
-  
+
+  grafana.datasources.create:
+    description: "List of datasources in YAML format that Grafana will add or update during start up"
+  grafana.datasources.delete:
+    description: "List of datasources in YAML format that Grafana will delete before inserting/updating those in create list"
+
   env.http_proxy:
     description: "HTTP proxy to use"
   env.https_proxy:
