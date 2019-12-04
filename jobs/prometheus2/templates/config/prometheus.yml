@@ -22,7 +22,15 @@ global:
 rule_files: <%= p('prometheus.rule_files', []).push('/var/vcap/jobs/prometheus2/config/custom.rules.yml').to_json %>
 
 # A list of scrape configurations.
-scrape_configs: <%= p('prometheus.scrape_configs', []).to_json %>
+<% scrape_configs = p('prometheus.scrape_configs', []).map do |scrape_config|
+
+  scrape_config = scrape_config.clone
+  scrape_config['tls_config'] = scrape_config['tls_config'].clone
+  ['ca_contents', 'cert_contents', 'key_contents'].each { |key| scrape_config['tls_config'].delete(key) } if scrape_config['tls_config']
+  scrape_config
+end %>
+
+scrape_configs: <%= scrape_configs.to_json %>
 
 # Alerting specifies settings related to the Alertmanager.
 alerting:
