@@ -21,6 +21,10 @@ case $1 in
     pid_guard ${PIDFILE} "redis_exporter"
     echo $$ > ${PIDFILE}
 
+    <% if_p('redis_exporter.redis.password') do |password| %>
+    export REDIS_PASSWORD="<%= password %>"
+    <% end %>
+
     exec redis_exporter \
       <% if_p('redis_exporter.redis.check_keys') do |check_keys| %> \
       -check-keys="<%= check_keys %>" \
@@ -54,9 +58,6 @@ case $1 in
       <% end %> \
       <% if_p('redis_exporter.redis.address') do |address| %> \
       -redis.addr="<%= address %>" \
-      <% end %> \
-      <% if_p('redis_exporter.redis.password') do |password| %> \
-      -redis.password="<%= password %>" \
       <% end %> \
       <% if_p('redis_exporter.redis.script') do |script| %> \
       -script="/var/vcap/jobs/redis_exporter/config/script" \
