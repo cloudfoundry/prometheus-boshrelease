@@ -42,10 +42,15 @@ case $1 in
     export SHIELD_TRACE="<%= trace %>"
     <% end %>
 
+    export SHIELD_EXPORTER_SHIELD_PASSWORD="<%= p('shield_exporter.shield.password') %>"
+    
+    <% if_p('shield_exporter.web.auth_password') do |auth_password| %>
+    export SHIELD_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
     exec shield_exporter \
       --shield.backend_url="<%= p('shield_exporter.shield.backend_url') %>" \
       --shield.username="<%= p('shield_exporter.shield.username') %>" \
-      --shield.password="<%= p('shield_exporter.shield.password') %>" \
       <% if_p('shield_exporter.filter.collectors') do |collectors| %> \
       --filter.collectors="<%= collectors %>" \
       <% end %> \
@@ -65,9 +70,6 @@ case $1 in
       <% end %> \
       <% if_p('shield_exporter.web.auth_username') do |auth_username| %> \
       --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('shield_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('shield_exporter.web.tls_cert', 'shield_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/shield_exporter/config/web_tls_cert.pem" \
