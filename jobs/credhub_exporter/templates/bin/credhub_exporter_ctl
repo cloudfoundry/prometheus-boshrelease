@@ -46,10 +46,14 @@ case $1 in
       end
     %>
 
+    export CREDHUB_EXPORTER_CLIENT_SECRET="<%= p('credhub_exporter.credhub.client_secret') %>"
+    <% if_p('credhub_exporter.web.auth_password') do |auth_password| %>
+    export CREDHUB_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
     exec credhub_exporter \
       --credhub.api-url="<%= url %>" \
       --credhub.client-id="<%= p('credhub_exporter.credhub.client_id') %>" \
-      --credhub.client-secret="<%= p('credhub_exporter.credhub.client_secret') %>" \
       <% if not ca_certs.empty? %> \
       --credhub.ca-certs-path="/var/vcap/jobs/credhub_exporter/config/credhub_tls_ca_cert.pem" \
       <% end %> \
@@ -82,9 +86,6 @@ case $1 in
       <% end %> \
       <% if_p('credhub_exporter.web.auth_username') do |auth_username| %> \
       --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('credhub_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('credhub_exporter.web.tls_cert', 'credhub_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/credhub_exporter/config/web_tls_cert.pem" \
