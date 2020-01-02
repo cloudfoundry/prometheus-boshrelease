@@ -21,6 +21,10 @@ case $1 in
     pid_guard ${PIDFILE} "bosh_tsdb_exporter"
     echo $$ > ${PIDFILE}
 
+    <% if_p('bosh_tsdb_exporter.web.auth_password') do |auth_password| %>
+    export BOSH_TSDB_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
+    <% end %>
+
     exec bosh_tsdb_exporter \
       <% if_p('bosh_tsdb_exporter.log_format') do |log_format| %> \
       --log.format="<%= log_format %>" \
@@ -39,9 +43,6 @@ case $1 in
       <% end %> \
       <% if_p('bosh_tsdb_exporter.web.auth_username') do |auth_username| %> \
       --web.auth.username="<%= auth_username %>" \
-      <% end %> \
-      <% if_p('bosh_tsdb_exporter.web.auth_password') do |auth_password| %> \
-      --web.auth.password="<%= auth_password %>" \
       <% end %> \
       <% if_p('bosh_tsdb_exporter.web.tls_cert', 'bosh_tsdb_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/bosh_tsdb_exporter/config/web_tls_cert.pem" \
