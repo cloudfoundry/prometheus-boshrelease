@@ -170,7 +170,7 @@
       ],
       "targets": [
         {
-          "expr": "max(round(max_over_time(credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}[1h]))) by (name, path) * 1000",
+          "expr": "min(round(max_over_time(credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}[1h]))) by (name, path) * 1000",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
