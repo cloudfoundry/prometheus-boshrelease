@@ -55,8 +55,17 @@ case $1 in
       <% if_p('cadvisor.container_hints') do |container_hints| %> \
       -container_hints="<%= container_hints %>" \
       <% end %> \
+      <% if_p('cadvisor.containerd') do |containerd| %> \
+      -containerd="<%= containerd %>" \
+      <% end %> \
+      <% if_p('cadvisor.containerd_namespace') do |containerd_namespace| %> \
+      -containerd-namespace="<%= containerd_namespace %>" \
+      <% end %> \
       <% if_p('cadvisor.disable_metrics') do |disable_metrics| %> \
       -disable_metrics="<%= disable_metrics %>" \
+      <% end %> \
+      <% if_p('cadvisor.disable_root_cgroup_stats') do |disable_root_cgroup_stats| %> \
+      -disable_root_cgroup_stats="<%= disable_root_cgroup_stats %>" \
       <% end %> \
       <% if_p('cadvisor.docker') do |docker| %> \
       -docker="<%= docker %>" \
@@ -113,6 +122,12 @@ case $1 in
       -log_cadvisor_usage="<%= log_cadvisor_usage %>" \
       <% end %> \
       -log_dir=${LOG_DIR} \
+      <% if_p('cadvisor.log_file') do |log_file| %> \
+      -log_file="<%= log_file %>" \
+      <% end %> \
+      <% if_p('cadvisor.log_file_max_size') do |log_file_max_size| %> \
+      -log_file_max_size="<%= log_file_max_size %>" \
+      <% end %> \
       <% if_p('cadvisor.machine_id_file') do |machine_id_file| %> \
       -machine_id_file="<%= machine_id_file %>" \
       <% end %> \
@@ -129,8 +144,20 @@ case $1 in
       <% if_p('cadvisor.prometheus_endpoint') do |prometheus_endpoint| %> \
       -prometheus_endpoint="<%= prometheus_endpoint %>" \
       <% end %> \
+      <% if_p('cadvisor.raw_cgroup_prefix_whitelist') do |raw_cgroup_prefix_whitelist| %> \
+      -raw_cgroup_prefix_whitelist="<%= raw_cgroup_prefix_whitelist %>" \
+      <% end %> \
+      <% if_p('cadvisor.skip_headers') do |skip_headers| %> \
+      -skip_headers="<%= skip_headers %>" \
+      <% end %> \
+      <% if_p('cadvisor.skip_log_headers') do |skip_log_headers| %> \
+      -skip_log_headers="<%= rskip_log_headers %>" \
+      <% end %> \
       <% if_p('cadvisor.stderrthreshold') do |stderrthreshold| %> \
       -stderrthreshold="<%= stderrthreshold %>" \
+      <% end %> \
+      <% if_p('cadvisor.store_container_labels') do |store_container_labels| %> \
+      -store_container_labels="<%= store_container_labels %>" \
       <% end %> \
       <% if_p('cadvisor.storage_driver') do |storage_driver| %> \
       -storage_driver="<%= storage_driver %>" \
@@ -192,11 +219,20 @@ case $1 in
       <% if_p('cadvisor.storage_duration') do |storage_duration| %> \
       -storage_duration="<%= storage_duration %>" \
       <% end %> \
+      <% if_p('cadvisor.update_machine_info_interval') do |update_machine_info_interval| %> \
+      -update_machine_info_interval="<%= update_machine_info_interval %>" \
+      <% end %> \
+      <% if_p('cadvisor.url_base_prefix') do |url_base_prefix| %> \
+      -url_base_prefix="<%= url_base_prefix %>" \
+      <% end %> \
       <% if_p('cadvisor.v') do |v| %> \
       -v="<%= v %>" \
       <% end %> \
       <% if_p('cadvisor.vmodule') do |vmodule| %> \
       -vmodule="<%= vmodule %>" \
+      <% end %> \
+      <% if_p('cadvisor.whitelisted_container_labels') do |whitelisted_container_labels| %> \
+      -whitelisted_container_labels="<%= whitelisted_container_labels %>" \
       <% end %> \
       >>  ${LOG_DIR}/cadvisor.stdout.log \
       2>> ${LOG_DIR}/cadvisor.stderr.log
