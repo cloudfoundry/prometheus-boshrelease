@@ -37,6 +37,9 @@ case $1 in
       <% if p('consul_exporter.consul_health_summary') %> \
       --consul.health-summary \
       <% end %> \
+      <% if_p('consul_exporter.consul_request_limit') do |consul_request_limit| %> \
+      --consul.request-limit="<%= consul_request_limit %>" \
+      <% end %> \
       <% if p('consul_exporter.consul_require_consistent') %> \
       --consul.require_consistent \
       <% end %> \
