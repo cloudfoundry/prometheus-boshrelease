@@ -13,12 +13,19 @@ properties:
     description: "Comma separated list of key-patterns to export value and length/size, searched for with SCAN"
   redis_exporter.redis.check_single_keys:
     description: "Comma separated list of single keys to export value and length/size"
+  redis_exporter.redis.check_single_streams:
+    description: "Comma separated list of single streams to export info about streams, groups and consumers"
+  redis_exporter.redis.check_streams:
+    description: "Comma separated list of stream-patterns to export info about streams, groups and consumers, searched for with SCAN"
   redis_exporter.redis.config_command:
     description: "What to use for the CONFIG command"
   redis_exporter.redis.connection_timeout:
     description: "Timeout for connection to Redis instance"
   redis_exporter.debug:
     description: "Output verbose debug information"
+    default: false
+  redis_exporter.export_client_list:
+    description: "Whether to scrape Client List specific metrics"
     default: false
   redis_exporter.include_system_metrics:
     description: "Whether to include system metrics like e.g. redis_total_system_memory_bytes"
@@ -35,6 +42,8 @@ properties:
     default: false
   redis_exporter.redis.address:
     description: "Address of one or more redis nodes, separated by separator"
+  redis_exporter.redis.user:
+    description: "User name to use for authentication (Redis ACL for Redis 6.0 and newer)"
   redis_exporter.redis.password:
     description: "Password for one or more redis nodes, separated by separator"
   redis_exporter.redis.script:

@@ -32,6 +32,12 @@ case $1 in
       <% if_p('redis_exporter.redis.check_single_keys') do |check_single_keys| %> \
       -check-single-keys="<%= check_single_keys %>" \
       <% end %> \
+      <% if_p('redis_exporter.redis.check_single_streams') do |check_single_streams| %> \
+      -check-single-streams="<%= check_single_streams %>" \
+      <% end %> \
+      <% if_p('redis_exporter.redis.check_streams') do |check_streams| %> \
+      -check-streams="<%= check_streams %>" \
+      <% end %> \
       <% if_p('redis_exporter.redis.config_command') do |config_command| %> \
       -config-command="<%= config_command %>" \
       <% end %> \
@@ -40,6 +46,9 @@ case $1 in
       <% end %> \
       <% if p('redis_exporter.debug') %> \
       -debug \
+      <% end %> \
+      <% if p('redis_exporter.export_client_list') %> \
+      -export-client-list \
       <% end %> \
       <% if p('redis_exporter.include_system_metrics') %> \
       -include-system-metrics \
@@ -58,6 +67,9 @@ case $1 in
       <% end %> \
       <% if_p('redis_exporter.redis.address') do |address| %> \
       -redis.addr="<%= address %>" \
+      <% end %> \
+      <% if_p('redis_exporter.redis.user') do |user| %> \
+      -redis.user="<%= user %>" \
       <% end %> \
       <% if_p('redis_exporter.redis.script') do |script| %> \
       -script="/var/vcap/jobs/redis_exporter/config/script" \
