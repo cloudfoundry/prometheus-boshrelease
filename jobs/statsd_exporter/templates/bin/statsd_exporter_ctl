@@ -31,6 +31,9 @@ case $1 in
       <% if_p('statsd_exporter.statsd.cache_size') do |cache_size| %> \
       --statsd.cache-size="<%= cache_size %>" \
       <% end %> \
+      <% if_p('statsd_exporter.statsd.cache_type') do |cache_type| %> \
+      --statsd.cache-type="<%= cache_type %>" \
+      <% end %> \
       <% if_p('statsd_exporter.statsd.event_queue_size') do |event_queue_size| %> \
       --statsd.event-queue-size="<%= event_queue_size %>" \
       <% end %> \
@@ -39,6 +42,18 @@ case $1 in
       <% end %> \
       <% if_p('statsd_exporter.statsd.event_flush_interval') do |event_flush_interval| %> \
       --statsd.event-flush-interval="<%= event_flush_interval %>" \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.parse_dogstatsd_tags') do %> \
+      --statsd.parse-dogstatsd-tags \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.parse_influxdb_tags') do %> \
+      --statsd.parse-influxdb-tags \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.parse_librato_tags') do %> \
+      --statsd.parse-librato-tags \
+      <% end %> \
+      <% if_p('statsd_exporter.statsd.parse_signalfx_tags') do %> \
+      --statsd.parse-signalfx-tags \
       <% end %> \
       <% if_p('statsd_exporter.log_format') do |log_format| %> \
       --log.format="<%= log_format %>" \
