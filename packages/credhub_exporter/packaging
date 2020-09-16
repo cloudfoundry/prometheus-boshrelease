@@ -2,11 +2,6 @@
 
 set -eux
 
-# Copy common utils
-mkdir -p ${BOSH_INSTALL_TARGET}/common
-cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
-
 # Extract credhub_exporter package
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
-tar xzvf ${BOSH_COMPILE_TARGET}/credhub_exporter/credhub_exporter-0.1.6.linux-amd64.tar.gz
-cp -a ${BOSH_COMPILE_TARGET}/credhub_exporter-0.1.6.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin
+unzip credhub_exporter/credhub_exporter-0.2.0-linux_amd64-0.2-0.zip credhub_exporter -d ${BOSH_INSTALL_TARGET}/bin

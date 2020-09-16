@@ -5,10 +5,10 @@ packages:
   - credhub_exporter
 
 templates:
-  bin/credhub_exporter_ctl: bin/credhub_exporter_ctl
-  config/web_tls_cert.pem: config/web_tls_cert.pem
-  config/web_tls_key.pem: config/web_tls_key.pem
-  config/credhub_tls_ca_cert.pem: config/credhub_tls_ca_cert.pem
+  web_tls_cert.pem.erb: config/web_tls_cert.pem
+  web_tls_key.pem.erb: config/web_tls_key.pem
+  credhub_tls_ca_cert.pem.erb: config/credhub_tls_ca_cert.pem
+  bpm.yml.erb: config/bpm.yml
 
 consumes:
 - name: credhub
@@ -24,22 +24,30 @@ properties:
     description: "Credhub Client Secret"
   credhub_exporter.credhub.ca_certs:
     description: "Credhub CA certificates (PEM format)"
+    default: ""
   credhub_exporter.metrics.deployment:
     description: "Deployment name to be reported as a metric label"
   credhub_exporter.metrics.environment:
     description: "Environment label to be attached to metrics"
   credhub_exporter.metrics.namespace:
     description: "Metrics Namespace"
+    default: "credhub"
+  credhub_exporter.metrics.update_interval:
+    description: "Metrics update interval given as golang duration format"
+    default: 6h
   credhub_exporter.filters.generic-certificates:
-    description: "Json list of <regexp> to match generic credentials paths that may contains certificates"
+    description: "List of <regexp> to match generic credentials paths that may contains certificates"
+    default: []
   credhub_exporter.filters.name-like:
     description: "Fetch credentials whose name contains the query string (fetch all credentials when empty)"
   credhub_exporter.filters.path:
     description: "Fetch credentials that exist under the provided path"
   credhub_exporter.log_format:
     description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+    default: logger:stderr
   credhub_exporter.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+    default: info
   credhub_exporter.skip_ssl_verify:
     description: "Disable SSL Verify"
     default: false
@@ -48,6 +56,7 @@ properties:
     default: "9358"
   credhub_exporter.web.telemetry_path:
     description: "Path under which to expose Prometheus metrics"
+    default: "/metrics"
   credhub_exporter.web.auth_username:
     description: "Username for web interface basic auth"
   credhub_exporter.web.auth_password:

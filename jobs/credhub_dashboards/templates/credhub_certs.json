@@ -46,8 +46,8 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1573825587650,
+  "id": 105,
+  "iteration": 1586246148529,
   "links": [
     {
       "asDropdown": true,
@@ -88,7 +88,7 @@
       "pageSize": 150,
       "showHeader": true,
       "sort": {
-        "col": 3,
+        "col": 7,
         "desc": false
       },
       "styles": [
@@ -165,12 +165,12 @@
             "60"
           ],
           "type": "number",
-          "unit": "d"
+          "unit": "s"
         }
       ],
       "targets": [
         {
-          "expr": "min(round(max_over_time(credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}[1h]))) by (name, path) * 1000",
+          "expr": "max by (environment, deployment, index, name, path) (\n  credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} * 1000\n)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -178,7 +178,7 @@
           "refId": "A"
         },
         {
-          "expr": "min(round((max_over_time(credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}[1h]) - time())  / 86400)) by (name, path)",
+          "expr": "max by (environment, deployment, index, name, path) (\n  credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} - time()\n)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -193,7 +193,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 20,
+  "schemaVersion": 21,
   "style": "dark",
   "tags": [
     "bosh"
@@ -267,5 +267,5 @@
   "timezone": "browser",
   "title": "CredHub: Certificate Expiry Date",
   "uid": "OQqSNUJZk",
-  "version": 9
+  "version": 10
 }

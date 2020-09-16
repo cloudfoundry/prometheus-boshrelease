@@ -1,0 +1,73 @@
+<%
+
+credhub_url = nil
+credhub_ca_certs = nil
+if_link("credhub") do |link|
+  credhub_url      = sprintf("https://%s:%d", link.p("credhub.internal_url"), link.p("credhub.port"))
+  credhub_ca_certs = link.p("credhub.ca_certificate")
+end
+unless credhub_url
+  credhub_url      = p("credhub_exporter.credhub.api_url")
+  credhub_ca_certs = p("credhub_exporter.credhub.ca_certs")
+end
+
+args = [
+  "--log.level",  p("credhub_exporter.log_level"),
+  "--log.format", p("credhub_exporter.log_format"),
+]
+
+env = {}
+env["CREDHUB_EXPORTER_API_URL"]                 = credhub_url
+env["CREDHUB_EXPORTER_CLIENT_ID"]               = p("credhub_exporter.credhub.client_id")
+env["CREDHUB_EXPORTER_CLIENT_SECRET"]           = p("credhub_exporter.credhub.client_secret")
+env["CREDHUB_EXPORTER_FILTER_NAMELIKE"]         = p("credhub_exporter.filters.name-like", "")
+env["CREDHUB_EXPORTER_FILTER_PATH"]             = p("credhub_exporter.filters.path", "")
+env["CREDHUB_EXPORTER_GENERIC_CERTIFICATES"]    = p("credhub_exporter.filters.generic-certificates").to_json
+env["CREDHUB_EXPORTER_METRICS_DEPLOYMENT"]      = p("credhub_exporter.metrics.deployment")
+env["CREDHUB_EXPORTER_METRICS_NAMESPACE"]       = p("credhub_exporter.metrics.namespace")
+env["CREDHUB_EXPORTER_METRICS_ENVIRONMENT"]     = p("credhub_exporter.metrics.environment")
+env["CREDHUB_EXPORTER_METRICS_UPDATE_INTERVAL"] = p("credhub_exporter.metrics.update_interval")
+env["CREDHUB_EXPORTER_WEB_LISTEN_ADDRESS"]      = ":#{p("credhub_exporter.web.port")}"
+env["CREDHUB_EXPORTER_WEB_TELEMETRY_PATH"]      = p("credhub_exporter.web.telemetry_path")
+env["CREDHUB_EXPORTER_WEB_AUTH_USERNAME"]       = p("credhub_exporter.web.auth_username", "")
+env["CREDHUB_EXPORTER_WEB_AUTH_PASSWORD"]       = p("credhub_exporter.web.auth_password", "")
+env["CREDHUB_EXPORTER_SKIP_SSL_VERIFY"]         = "false"
+
+if not credhub_ca_certs.empty?
+  env["CREDHUB_EXPORTER_CA_CERTS_PATH"]    = "/var/vcap/jobs/credhub_exporter/config/credhub_tls_ca_cert.pem"
+end
+
+# when property value is true
+# -> not "if property exists"
+# -> always defined since it has a default value in spec
+if p("credhub_exporter.skip_ssl_verify")
+  env["CREDHUB_EXPORTER_SKIP_SSL_VERIFY"] = "true"
+end
+
+if_p("credhub_exporter.web.tls_cert", "credhub_exporter.web.tls_key") do
+  env["CREDHUB_EXPORTER_WEB_TLS_CERTFILE"] = "/var/vcap/jobs/credhub_exporter/config/web_tls_cert.pem"
+  env["CREDHUB_EXPORTER_WEB_TLS_KEYFILE"]  = "/var/vcap/jobs/credhub_exporter/config/web_tls_key.pem"
+end
+
+
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+config = {
+  "processes" => [
+    {
+      "name"       => "credhub_exporter",
+      "executable" => "/var/vcap/packages/credhub_exporter/bin/credhub_exporter",
+      "env"        => env,
+      "args"       => args,
+    }
+  ]
+}
+%>
+
+<%= YAML.dump(config) %>
