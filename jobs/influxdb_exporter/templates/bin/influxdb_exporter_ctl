@@ -36,6 +36,9 @@ case $1 in
       <% if_p('influxdb_exporter.web.telemetry_path') do |telemetry_path| %> \
       --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
+      <% if_p('influxdb_exporter.web.exporter_telemetry_path') do |exporter_telemetry_path| %> \
+      --web.exporter-telemetry-path="<%= exporter_telemetry_path %>" \
+      <% end %> \
       >>  ${LOG_DIR}/influxdb_exporter.stdout.log \
       2>> ${LOG_DIR}/influxdb_exporter.stderr.log
     ;;
