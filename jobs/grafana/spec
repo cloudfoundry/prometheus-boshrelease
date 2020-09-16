@@ -190,6 +190,8 @@ properties:
 
   grafana.dashboards.versions_to_keep:
     description: "Number dashboard versions to keep (per dashboard)"
+  grafana.dashboards.min_refresh_interval:
+    description: "Minimum dashboard refresh interval"
 
   grafana.users.allow_sign_up:
     description: "disable user signup / registration"
@@ -244,6 +246,8 @@ properties:
     description: "URL to redirect the user to after sign out"
   grafana.auth.oauth_auto_login:
     description: "Set to true to attempt login with OAuth automatically, skipping the login screen"
+  grafana.auth.oauth_state_cookie_max_age:
+    description: "Auth state max age cookie duration"
   grafana.auth.api_key_max_seconds_to_live:
     description: "Limit of api_key seconds to live before expiration"
 
@@ -253,6 +257,8 @@ properties:
     description: "specify organization name that should be used for unauthenticated users"
   grafana.auth.anonymous.org_role:
     description: "specify role for unauthenticated users"
+  grafana.auth.anonymous.hide_version:
+    description: "mask the Grafana version number for unauthenticated users"
 
   grafana.auth.github.enabled:
     description: "Github auth enabled"
@@ -270,6 +276,8 @@ properties:
     description: "Github auth token url"
   grafana.auth.github.api_url:
     description: "Github auth api url"
+  grafana.auth.github.allowed_domains:
+    description: "Github auth allowed domains"
   grafana.auth.github.team_ids:
     description: "Github auth team ids"
   grafana.auth.github.allowed_organizations:
@@ -291,6 +299,8 @@ properties:
     description: "Gitlab auth token url"
   grafana.auth.gitlab.api_url:
     description: "Gitlab auth api url"
+  grafana.auth.gitlab.allowed_domains:
+    description: "Gitlab auth allowed domains"
   grafana.auth.gitlab.allowed_groups:
     description: "Gitlab auth allowed groups"
 
@@ -311,46 +321,9 @@ properties:
   grafana.auth.google.api_url:
     description: "Google auth api url"
   grafana.auth.google.allowed_domains:
-    description: "Google auth allowed organizations"
+    description: "Google auth allowed domains"
   grafana.auth.google.hosted_domain:
     description: "Google auth hosted domain"
-
-  grafana.auth.generic_oauth.name:
-    description: "Generic OAuth name"
-  grafana.auth.generic_oauth.enabled:
-    description: "Generic OAuth enabled"
-  grafana.auth.generic_oauth.allow_sign_up:
-    description: "Generic OAuth allow sign up"
-  grafana.auth.generic_oauth.client_id:
-    description: "Generic OAuth client id"
-  grafana.auth.generic_oauth.client_secret:
-    description: "Generic OAuth client secret"
-  grafana.auth.generic_oauth.scopes:
-    description: "Generic OAuth scopes"
-  grafana.auth.generic_oauth.email_attribute_name:
-    description: "Generic OAuth email attribute name"
-  grafana.auth.generic_oauth.email_attribute_path:
-    description: "Generic OAuth email attribute path"
-  grafana.auth.generic_oauth.role_attribute_path:
-    description: "Generic OAuth role attribute path"
-  grafana.auth.generic_oauth.auth_url:
-    description: "Generic OAuth url"
-  grafana.auth.generic_oauth.token_url:
-    description: "Generic OAuth token url"
-  grafana.auth.generic_oauth.api_url:
-    description: "Generic OAuth api url"
-  grafana.auth.generic_oauth.team_ids:
-    description: "Generic OAuth team ids"
-  grafana.auth.generic_oauth.allowed_domains:
-    description: "Generic OAuth allowed organizations"
-  grafana.auth.generic_oauth.tls_client_ca:
-    description: "Generic OAuth TLS Client CA"
-  grafana.auth.generic_oauth.tls_client_cert:
-    description: "Generic OAuth TLS Client cert"
-  grafana.auth.generic_oauth.tls_client_key:
-    description: "Generic OAuth TLS Client key"
-  grafana.auth.generic_oauth.tls_skip_verify_insecure:
-    description: "Generic OAuth TLS skip verification"
 
   grafana.auth.grafananet.enabled:
     description: "Grafana.net auth enabled"
@@ -377,6 +350,89 @@ properties:
     description: "Grafana.net auth scopes"
   grafana.auth.grafanacom.allowed_organizations:
     description: "Grafana.net auth allowed organizations"
+
+  grafana.auth.azuread.name:
+    description: "Azure AD auth name"
+  grafana.auth.azuread.enabled:
+    description: "Azure AD auth enabled"
+  grafana.auth.azuread.allow_sign_up:
+    description: "Azure AD auth allow sign up"
+  grafana.auth.azuread.client_id:
+    description: "Azure AD auth client id"
+  grafana.auth.azuread.client_secret:
+    description: "Azure AD auth client secret"
+  grafana.auth.azuread.scopes:
+    description: "Azure AD auth scopes"
+  grafana.auth.azuread.auth_url:
+    description: "Azure AD auth url"
+  grafana.auth.azuread.token_url:
+    description: "Azure AD auth token url"
+  grafana.auth.azuread.allowed_domains:
+    description: "Azure AD auth allowed domains"
+  grafana.auth.azuread.allowed_groups:
+    description: "Azure AD auth allowed groups"
+
+  grafana.auth.okta.name:
+    description: "Okta auth name"
+  grafana.auth.okta.enabled:
+    description: "Okta auth enabled"
+  grafana.auth.okta.allow_sign_up:
+    description: "Okta auth allow sign up"
+  grafana.auth.okta.client_id:
+    description: "OktaD auth client id"
+  grafana.auth.okta.client_secret:
+    description: "Okta auth client secret"
+  grafana.auth.okta.scopes:
+    description: "Okta auth scopes"
+  grafana.auth.okta.auth_url:
+    description: "Okta auth url"
+  grafana.auth.okta.token_url:
+    description: "Okta auth token url"
+  grafana.auth.okta.allowed_domains:
+    description: "Okta auth allowed domains"
+  grafana.auth.okta.allowed_groups:
+    description: "Okta auth allowed groups"
+  grafana.auth.okta.role_attribute_path:
+    description: "Okta auth role attribute path"
+
+  grafana.auth.generic_oauth.name:
+    description: "Generic OAuth name"
+  grafana.auth.generic_oauth.enabled:
+    description: "Generic OAuth enabled"
+  grafana.auth.generic_oauth.allow_sign_up:
+    description: "Generic OAuth allow sign up"
+  grafana.auth.generic_oauth.client_id:
+    description: "Generic OAuth client id"
+  grafana.auth.generic_oauth.client_secret:
+    description: "Generic OAuth client secret"
+  grafana.auth.generic_oauth.scopes:
+    description: "Generic OAuth scopes"
+  grafana.auth.generic_oauth.email_attribute_name:
+    description: "Generic OAuth email attribute name"
+  grafana.auth.generic_oauth.email_attribute_path:
+    description: "Generic OAuth email attribute path"
+  grafana.auth.generic_oauth.role_attribute_path:
+    description: "Generic OAuth role attribute path"
+  grafana.auth.generic_oauth.auth_url:
+    description: "Generic OAuth url"
+  grafana.auth.generic_oauth.token_url:
+    description: "Generic OAuth token url"
+  grafana.auth.generic_oauth.api_url:
+    description: "Generic OAuth api url"
+  grafana.auth.generic_oauth.allowed_domains:
+    description: "Generic OAuth allowed domains"
+  grafana.auth.generic_oauth.team_ids:
+    description: "Generic OAuth team ids"
+  grafana.auth.generic_oauth.allowed_domains:
+    description: "Generic OAuth allowed organizations"
+  grafana.auth.generic_oauth.tls_client_ca:
+    description: "Generic OAuth TLS Client CA"
+  grafana.auth.generic_oauth.tls_client_cert:
+    description: "Generic OAuth TLS Client cert"
+  grafana.auth.generic_oauth.tls_client_key:
+    description: "Generic OAuth TLS Client key"
+  grafana.auth.generic_oauth.tls_skip_verify_insecure:
+    description: "Generic OAuth TLS skip verification"
 
   grafana.auth.saml.enabled:
     description: "Auth SAML enabled"
@@ -410,7 +466,7 @@ properties:
     description: "Auth proxy header property"
   grafana.auth.proxy.auto_sign_up:
     description: "Auth proxy auto sign up"
-  grafana.auth.proxy.ldap_sync_ttl:
+  grafana.auth.proxy.sync_ttl:
     description: "Auth proxy LDAP sync TTL"
   grafana.auth.proxy.whitelist:
     description: "Auth proxy whitelist"
@@ -450,6 +506,8 @@ properties:
     description: "SMTP from name"
   grafana.smtp.ehlo_identity:
     description: "EHLO identity in SMTP dialog (defaults to instance_name)"
+  grafana.smtp.starttls_policy:
+    description: "SMTP Start TLS policy"
 
   grafana.emails.welcome_email_on_sign_up:
     description: "Welcome email on sign up"
@@ -536,6 +594,8 @@ properties:
     description: "Default setting for alert notification timeout"
   grafana.alerting.max_attempts:
     description: "Default setting for max attempts to sending alert notifications"
+  grafana.alerting.min_interval_seconds:
+    description: "Makes it possible to enforce a minimal interval between evaluations, to reduce load on the backend"
 
   grafana.explore.enabled:
     description: "Enable the Explore section"
@@ -591,6 +651,10 @@ properties:
     description: "S3 Region"
   grafana.external_image_storage.s3.path:
     description: "S3 Bucket Path"
+  grafana.external_image_storage.s3.endpoint:
+    description: "S3 Endpoint"
+  grafana.external_image_storage.s3.path_style_access:
+    description: "S3 Path Style Access"
 
   grafana.external_image_storage.webdav.url:
     description: "Webdav URL"
@@ -619,6 +683,8 @@ properties:
     description: "External image rendering server URL"
   grafana.rendering.callback_url:
     description: "External image rendering callback URL"
+  grafana.rendering.concurrent_render_request_limit:
+    description: "External image rendering concurrent render request limit"
 
   grafana.panels.enable_alpha:
     description: "Enable alpha panels"
@@ -631,6 +697,39 @@ properties:
     description: "Skip verify insecure for app tls"
   grafana.plugins.allow_loading_unsigned_plugins:
     description: "Enter a comma-separated list of plugin identifiers to identify plugins that are allowed to be loaded even if they lack a valid signature"
+
+  grafana.plugin.grafana_image_renderer.rendering_timezone:
+    description: "Instruct headless browser instance to use a default timezone when not provided by Grafana"
+  grafana.plugin.grafana_image_renderer.rendering_language:
+    description: "Instruct headless browser instance to use a default language when not provided by Grafana"
+  grafana.plugin.grafana_image_renderer.rendering_viewport_device_scale_factor:
+    description: "Instruct headless browser instance to use a default device scale factor when not provided by Grafana"
+  grafana.plugin.grafana_image_renderer.rendering_ignore_https_errors:
+    description: "Instruct headless browser instance whether to ignore HTTPS errors during navigation"
+  grafana.plugin.grafana_image_renderer.rendering_verbose_logging:
+    description: "Instruct headless browser instance whether to capture and log verbose information when rendering an image"
+  grafana.plugin.grafana_image_renderer.rendering_dumpio:
+    description: "Instruct headless browser instance whether to output its debug and error messages into running process of remote rendering service"
+  grafana.plugin.grafana_image_renderer.rendering_args:
+    description: "Additional arguments to pass to the headless browser instance"
+  grafana.plugin.grafana_image_renderer.rendering_chrome_bin:
+    description: "You can configure the plugin to use a different browser binary instead of the pre-packaged version of Chromium"
+  grafana.plugin.grafana_image_renderer.rendering_mode:
+    description: "Instruct how headless browser instances are created"
+  grafana.plugin.grafana_image_renderer.rendering_clustering_mode:
+    description: "When rendering_mode = clustered you can instruct how many browsers or incognito pages can execute concurrently"
+  grafana.plugin.grafana_image_renderer.rendering_clustering_max_concurrency:
+    description: "When rendering_mode = clustered you can define maximum number of browser instances/incognito pages that can execute concurrently"
+  grafana.plugin.grafana_image_renderer.rendering_viewport_max_width:
+    description: "Limit the maximum viewport width that can be requested"
+  grafana.plugin.grafana_image_renderer.rendering_viewport_max_height:
+    description: "Limit the maximum viewport height that can be requested"
+  grafana.plugin.grafana_image_renderer.rendering_viewport_max_device_scale_factor:
+    description: "Limit the maximum viewport device scale factor that can be requested"
+  grafana.plugin.grafana_image_renderer.grpc_host:
+    description: "Change the listening host of the gRPC server"
+  grafana.plugin.grafana_image_renderer.grpc_port:
+    description: "Change the listening port of the gRPC server"
 
   grafana.enterprise.license:
     description: "Enterprise license"
