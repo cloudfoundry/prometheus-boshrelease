@@ -39,8 +39,14 @@ properties:
     description: "Key for the collector's certificate"
   cadvisor.container_hints:
     description: "Location of the container hints file"
+  cadvisor.containerd:
+    description: "containerd endpoint"
+  cadvisor.containerd_namespace:
+    description: "containerd namespace"
   cadvisor.disable_metrics:
     description: "comma-separated list of metrics to be disabled. Options are 'disk', 'network', 'tcp'"
+  cadvisor.disable_root_cgroup_stats:
+    description: "Disable collecting root Cgroup stats"
   cadvisor.docker:
     description: "docker endpoint"
   cadvisor.docker_tls:
@@ -77,6 +83,10 @@ properties:
     description: "when logging hits line file:N, emit a stack trace (default :0)"
   cadvisor.log_cadvisor_usage:
     description: "Whether to log the usage of the cAdvisor container"
+  cadvisor.log_file:
+    description: "If non-empty, use this log file"
+  cadvisor.log_file_max_size:
+    description: "Defines the maximum size a log file can grow to. Unit is megabytes. If the value is 0, the maximum file size is unlimited"
   cadvisor.machine_id_file:
     description: "Comma-separated list of files to check for machine-id. Use the first one that exists."
   cadvisor.max_housekeeping_interval:
@@ -90,8 +100,16 @@ properties:
     description: "Enable profiling via web interface host:port/debug/pprof/"
   cadvisor.prometheus_endpoint:
     description: "Endpoint to expose Prometheus metrics on"
+  cadvisor.raw_cgroup_prefix_whitelist:
+    description: "A comma-separated list of cgroup path prefix that needs to be collected even when -docker_only is specified"
+  cadvisor.skip_headers:
+    description: "If true, avoid header prefixes in the log messages"
+  cadvisor.skip_log_headers:
+    description: "If true, avoid headers when openning log files"
   cadvisor.stderrthreshold:
     description: "logs at or above this threshold go to stderr"
+  cadvisor.store_container_labels:
+    description: "convert container labels and environment variables into labels on prometheus metrics for each container"
   cadvisor.storage_driver:
     description: "Storage driver to use. Data is always cached shortly in memory, this controls where data is pushed besides the local cache. Empty means none"
   cadvisor.storage_driver_buffer_duration:
@@ -132,7 +150,13 @@ properties:
     description: "database username"
   cadvisor.storage_duration:
     description: "How long to keep data stored"
+  cadvisor.update_machine_info_interval:
+    description: "Interval between machine info update"
+  cadvisor.url_base_prefix:
+    description: "prefix path that will be prepended to all paths to support some reverse proxies"
   cadvisor.v:
     description: "log level for V logs"
   cadvisor.vmodule:
     description: "comma-separated list of pattern=N settings for file-filtered logging"
+  cadvisor.whitelisted_container_labels:
+    description: "comma separated list of container labels to be converted to labels on prometheus metrics for each container"

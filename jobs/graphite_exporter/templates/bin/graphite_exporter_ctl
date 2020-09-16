@@ -23,6 +23,12 @@ case $1 in
 
     exec graphite_exporter \
       --graphite.listen-address=":<%= p('graphite_exporter.graphite.port') %>" \
+      <% if_p('graphite_exporter.graphite.cache_size') do |cache_size| %> \
+      --graphite.cache-size="<%= cache_size %>" \
+      <% end %> \
+      <% if_p('graphite_exporter.graphite.cache_type') do |cache_type| %> \
+      --graphite.cache-type="<%= cache_type %>" \
+      <% end %> \
       <% if_p('graphite_exporter.graphite.mapping_config') do %> \
       --graphite.mapping-config="/var/vcap/jobs/graphite_exporter/config/graphite_mapping.yml" \
       <% end %> \

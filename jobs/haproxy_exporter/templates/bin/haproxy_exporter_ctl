@@ -31,6 +31,9 @@ case $1 in
       <% if_p('haproxy_exporter.haproxy.server_metric_fields') do |server_metric_fields| %> \
       --haproxy.server-metric-fields="<%= server_metric_fields %>" \
       <% end %> \
+      <% if_p('haproxy_exporter.haproxy.server_exclude_states') do |server_exclude_states| %> \
+      --haproxy.server-exclude-states="<%= server_exclude_states %>" \
+      <% end %> \
       <% if p('haproxy_exporter.haproxy.ssl_verify') %> \
       --haproxy.ssl-verify \
       <% end %> \

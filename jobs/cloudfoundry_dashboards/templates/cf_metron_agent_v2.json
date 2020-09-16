@@ -112,7 +112,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -201,7 +201,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(environment, bosh_deployment, bosh_job_name)",
+          "expr": "max(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(environment, bosh_deployment, bosh_job_name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{bosh_job_name}}",
@@ -289,7 +289,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_loggregator_metron_ingress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_metron_ingress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Messages",
