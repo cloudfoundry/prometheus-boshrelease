@@ -139,7 +139,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id))",
+          "expr": "sum(min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -199,7 +199,7 @@
       ],
       "targets": [
         {
-          "expr": "count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_name, space_id) * on(space_id) group_left(space_name, organization_id) count(cf_space_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(space_id, space_name, organization_id) * on(organization_id) group_left(organization_name) count(cf_organization_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_id, organization_name)",
+          "expr": "count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_name, space_id) * on(space_id) group_left(space_name, organization_id) count(cf_space_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\"}) by(space_id, space_name, organization_id) * on(organization_id) group_left(organization_name) count(cf_organization_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\"}) by(organization_id, organization_name)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -276,7 +276,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(min(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_plan_id) min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_plan_id)) ",
+          "expr": "sum(min(cf_service_binding_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_plan_id) min(cf_service_instance_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_plan_id)) ",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -336,7 +336,7 @@
       ],
       "targets": [
         {
-          "expr": "count(cf_service_binding_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(application_id, service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_instance_name) count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_instance_name) * on(application_id) group_left(organization_name, space_name, application_name)  count(cf_application_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}) by(organization_name, space_name, application_id, application_name)",
+          "expr": "count(cf_service_binding_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(application_id, service_binding_id, service_instance_id) * on(service_instance_id) group_left(service_instance_name) count(cf_service_instance_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\", service_plan_id=~\"$service_plan_id\"}) by(service_instance_id, service_instance_name) * on(application_id) group_left(organization_name, space_name, application_name)  count(cf_application_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_id, application_name)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -409,7 +409,7 @@
         "multi": false,
         "name": "service_name",
         "options": [],
-        "query": "label_values(cf_service_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\"}, service_label)",
+        "query": "label_values(cf_service_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\"}, service_label)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -429,7 +429,7 @@
         "multi": false,
         "name": "service_id",
         "options": [],
-        "query": "label_values(cf_service_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_label=\"$service_name\"}, service_id)",
+        "query": "label_values(cf_service_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\", service_label=\"$service_name\"}, service_id)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -449,7 +449,7 @@
         "multi": false,
         "name": "service_plan_name",
         "options": [],
-        "query": "label_values(cf_service_plan_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_id=~\"$service_id\"}, service_plan_name)",
+        "query": "label_values(cf_service_plan_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\", service_id=~\"$service_id\"}, service_plan_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -469,7 +469,7 @@
         "multi": false,
         "name": "service_plan_id",
         "options": [],
-        "query": "label_values(cf_service_plan_info{environment=~\"$environment\", deployment=~\"$bosh_deployment\", service_id=~\"$service_id\", service_plan_name=\"$service_plan_name\"}, service_plan_id)",
+        "query": "label_values(cf_service_plan_info{environment=~\"$environment\", deployment=~\"${bosh_deployment}\", service_id=~\"$service_id\", service_plan_name=\"$service_plan_name\"}, service_plan_id)",
         "refresh": 2,
         "regex": "",
         "sort": 1,

@@ -112,7 +112,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Sent (Marshaller)",
@@ -120,7 +120,7 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_received_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_received_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Received (Unmarshaller)",
@@ -208,7 +208,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_container_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_container_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Container Metric",
@@ -216,7 +216,7 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_counter_event_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_counter_event_received_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Counter Event",
@@ -224,21 +224,21 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_http_start_stop_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_http_start_stop_received_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "HttpStartStop",
           "refId": "C",
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_log_message_total_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_log_message_total_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Log Message",
           "refId": "D",
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_value_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_value_metric_received_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Value Metric",
@@ -246,7 +246,7 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_error_received_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_unmarshaller_error_received_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Error",
           "refId": "F",
@@ -333,7 +333,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_agent_listener_received_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_agent_listener_received_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Messages",
           "refId": "A",
@@ -418,7 +418,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_agent_listener_received_byte_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_metron_agent_dropsonde_agent_listener_received_byte_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Bytes",

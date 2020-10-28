@@ -112,7 +112,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_loggregator_doppler_container_metric_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_loggregator_doppler_container_metric_sinks{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -121,7 +121,7 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_value_metric_loggregator_doppler_dump_sinks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_loggregator_doppler_dump_sinks{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -211,7 +211,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Messages",
@@ -299,7 +299,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "subscriptions",
@@ -387,7 +387,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by (bosh_job_id)) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_id)) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Dropped Messages",
@@ -476,7 +476,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by (bosh_job_ip))/sum(max(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by (bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))/sum(max(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Dropped Messages (%)",

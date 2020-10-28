@@ -111,7 +111,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Failed LPRs",
           "metric": "",
@@ -119,7 +119,7 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Started LPRs",
@@ -127,14 +127,14 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Failed Tasks",
           "refId": "C",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Started Tasks",
           "refId": "D",
@@ -219,7 +219,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
@@ -227,7 +227,7 @@
           "step": 4
         },
         {
-          "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "avg(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
           "refId": "B",
@@ -313,7 +313,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "avg(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "legendFormat": "Duration",
           "refId": "A",
@@ -399,7 +399,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_auctioneer_request_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "avg(firehose_value_metric_auctioneer_request_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "legendFormat": "Latency",
           "refId": "A",
