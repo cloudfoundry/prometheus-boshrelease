@@ -21,6 +21,18 @@ groups:
           summary: "Requests per second at CF Router `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_ip}}` is too high: {{$value}}req/s"
           description: "CF Router `{{$labels.environment}}/{{$labels.bosh_deployment}}/{{$labels.bosh_job_ip}}` has processed {{$value}} requests per second during the last <%= p('cloudfoundry_alerts.router_requests.evaluation_time') %>"
 
+      - alert: CFRouterRequestsTooLow
+        #Total request rate over past 10 minutes is less than cloudfoundry_alerts.router_requests_drop.threshold% of the past 4 hours,
+        # indicating severe issue at the router
+        expr: (sum(increase(firehose_http_start_stop_requests[10m])) * 24 +0.1)*100/(sum(increase(firehose_http_start_stop_requests[240m])) + 1) <  <%= p('cloudfoundry_alerts.router_requests_drop.threshold') %>
+        for: <%= p('cloudfoundry_alerts.router_requests_drop.evaluation_time') %>
+        labels:
+          service: cf
+          severity: critical
+        annotations:
+          summary: "Total requests per second have dropped too fast"
+          description: "Total requests per second across all routers has dropped below <%= p('cloudfoundry_alerts.router_requests_drop.threshold') %>% during the last <%= p('cloudfoundry_alerts.router_requests_drop.evaluation_time') %>"
+
       - alert: CFRoutersLatencyTooHigh
         expr: avg(firehose_value_metric_gorouter_latency) by(environment, bosh_deployment) > <%= p('cloudfoundry_alerts.routers_latency.threshold') %>
         for: <%= p('cloudfoundry_alerts.routers_latency.evaluation_time') %>
@@ -70,3 +82,4 @@ groups:
         annotations:
           summary: "Number of routes at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` is too low: {{$value}}"
           description: "There has been only {{$value}} routes in the routing table at CF `{{$labels.environment}}/{{$labels.bosh_deployment}}` during the last <%= p('cloudfoundry_alerts.routes_total.evaluation_time') %>"
+
