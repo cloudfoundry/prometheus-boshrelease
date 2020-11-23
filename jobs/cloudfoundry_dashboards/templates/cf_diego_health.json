@@ -140,7 +140,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "refId": "A",
           "step": 2
@@ -236,7 +236,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "refId": "A",
           "step": 2
@@ -311,7 +311,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_rep_garden_health_check_failed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "max(firehose_value_metric_rep_garden_health_check_failed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",

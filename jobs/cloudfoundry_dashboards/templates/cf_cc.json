@@ -109,7 +109,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(rate(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "avg(rate(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -197,35 +197,35 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_cc_http_status_1_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_http_status_1_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "1xx",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_http_status_2_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_http_status_2_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "2xx",
           "refId": "B",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_http_status_3_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_http_status_3_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "3xx",
           "refId": "C",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_http_status_4_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_http_status_4_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "4xx",
           "refId": "D",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_http_status_5_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_http_status_5_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "5xx",
           "refId": "E",
@@ -310,7 +310,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -396,7 +396,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_cc_failed_job_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_cc_failed_job_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -482,14 +482,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Completed",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_requests_outstanding{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_requests_outstanding{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Outstanding",
           "refId": "B",
@@ -574,56 +574,56 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_info{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_info{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "info",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_warn{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_warn{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "warn",
           "refId": "B",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "debug",
           "refId": "C",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_1{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_1{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "debug1",
           "refId": "D",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_2{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_2{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "debug2",
           "refId": "E",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_error{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_error{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "error",
           "refId": "F",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_fatal{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_fatal{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "fatal",
           "refId": "G",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_log_count_off{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_log_count_off{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "off",
           "refId": "H",

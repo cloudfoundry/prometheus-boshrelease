@@ -138,7 +138,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(min(firehose_value_metric_rep_garden_health_check_failed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip) == 1)",
+          "expr": "count(min(firehose_value_metric_rep_garden_health_check_failed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip) == 1)",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -219,7 +219,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "max(firehose_value_metric_bbs_lr_ps_missing{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_bbs_lr_ps_missing{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "metric": "firehose_value_metric_bbs_lr_ps_missing",
           "refId": "A",
@@ -302,7 +302,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "min(firehose_value_metric_bbs_domain_cf_apps{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "hide": false,
           "intervalFactor": 2,
           "legendFormat": "",
@@ -397,7 +397,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "min(firehose_value_metric_bbs_domain_cf_tasks{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "hide": false,
           "intervalFactor": 2,
           "legendFormat": "",
@@ -582,7 +582,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(firehose_value_metric_route_emitter_consul_down_mode{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "min(firehose_value_metric_route_emitter_consul_down_mode{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "legendFormat": "",
           "metric": "firehose_value_metric_route_emitter_consul_down_mode",
@@ -675,7 +675,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(avg_over_time(firehose_value_metric_bbs_lr_ps_running{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1d]))",
+          "expr": "avg(avg_over_time(firehose_value_metric_bbs_lr_ps_running{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[1d]))",
           "intervalFactor": 2,
           "legendFormat": "",
           "metric": "firehose_value_metric_bbs_lr_ps_running",
@@ -759,7 +759,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_gorouter_total_routes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "avg(firehose_value_metric_gorouter_total_routes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "legendFormat": "Routes",
           "metric": "firehose_value_metric_gorouter_total_routes",
@@ -843,7 +843,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_uaa_audit_service_user_authentication_failure_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -908,7 +908,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Least Available Memory",
@@ -917,7 +917,7 @@
           "step": 10
         },
         {
-          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Most Available Memory",
@@ -926,7 +926,7 @@
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Total Available Available Memory",
@@ -1011,7 +1011,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Least Available Disk",
@@ -1020,7 +1020,7 @@
           "step": 10
         },
         {
-          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Most Available Disk",
@@ -1029,7 +1029,7 @@
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Total Available Disk",
@@ -1114,7 +1114,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "min(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Least Available Containers",
@@ -1123,7 +1123,7 @@
           "step": 10
         },
         {
-          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "max(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Cell with Most Available Containers",
@@ -1132,7 +1132,7 @@
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Total Available Containers",
@@ -1215,7 +1215,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "Req/Sec",
           "refId": "A",
@@ -1298,7 +1298,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_bbs_request_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_bbs_request_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Latency",
@@ -1382,7 +1382,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -1392,7 +1392,7 @@
           "step": 10
         },
         {
-          "expr": "max(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
@@ -1475,7 +1475,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_gorouter_total_requests_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "5m",
           "intervalFactor": 2,
           "legendFormat": "Req/Sec",
@@ -1559,7 +1559,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_gorouter_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_gorouter_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "5m",
           "intervalFactor": 2,
           "legendFormat": "Latency",
@@ -1643,7 +1643,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_gorouter_bad_gateways_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_gorouter_bad_gateways_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Resp/sec",
@@ -1727,7 +1727,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Req/sec",
@@ -1810,7 +1810,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Length",
@@ -1893,7 +1893,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_value_metric_cc_http_status_5_xx{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_value_metric_cc_http_status_5_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "5xx resp/sec",
@@ -1976,7 +1976,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
@@ -1985,7 +1985,7 @@
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -2070,28 +2070,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Started LPRs",
           "refId": "A",
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_lrp_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Failed LRPs",
           "refId": "B",
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_started_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Started Tasks",
           "refId": "C",
           "step": 10
         },
         {
-          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_auctioneer_auctioneer_task_auctions_failed_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "Failed Tasks",
           "refId": "D",
@@ -2173,7 +2173,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "max(firehose_value_metric_auctioneer_auctioneer_fetch_states_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "legendFormat": "Duration",
           "refId": "A",
@@ -2255,7 +2255,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(max_over_time(firehose_value_metric_nsync_bulker_desired_lrp_sync_duration{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(max_over_time(firehose_value_metric_nsync_bulker_desired_lrp_sync_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -2339,7 +2339,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_value_metric_bbs_lr_ps_desired{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[30m]))",
+          "expr": "max(rate(firehose_value_metric_bbs_lr_ps_desired{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[30m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs Desired",
@@ -2348,7 +2348,7 @@
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_value_metric_bbs_lr_ps_running{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[30m]))",
+          "expr": "max(rate(firehose_value_metric_bbs_lr_ps_running{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[30m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -2434,7 +2434,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(avg_over_time(firehose_counter_event_stager_staging_requests_failed_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[1h]))",
+          "expr": "max(avg_over_time(firehose_counter_event_stager_staging_requests_failed_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[1h]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "1hr Avg Failed Requests",
@@ -2523,7 +2523,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_doppler_server_listeners_total_received_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_doppler_server_listeners_total_received_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -2533,7 +2533,7 @@
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_doppler_server_truncating_buffer_total_dropped_messages_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_doppler_server_truncating_buffer_total_dropped_messages_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Dropped",
@@ -2617,14 +2617,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_dropsonde_marshaller_sent_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "Marshalled",
           "refId": "A",
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_dropsonde_unmarshaller_received_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_dropsonde_unmarshaller_received_envelopes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Unmarshalled",
@@ -2707,28 +2707,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_udp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_udp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "UDP",
           "refId": "A",
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_tcp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_tcp_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "TCP",
           "refId": "B",
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_tls_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_tls_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "intervalFactor": 2,
           "legendFormat": "TLS",
           "refId": "C",
           "step": 10
         },
         {
-          "expr": "max(rate(firehose_counter_event_metron_agent_grpc_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m]))",
+          "expr": "max(rate(firehose_counter_event_metron_agent_grpc_sent_message_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "GRPC",

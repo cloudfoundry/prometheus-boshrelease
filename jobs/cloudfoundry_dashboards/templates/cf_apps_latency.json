@@ -104,7 +104,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Client",
@@ -112,7 +112,7 @@
           "step": 2
         },
         {
-          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "intervalFactor": 2,
           "legendFormat": "Server",
           "refId": "B",
@@ -200,7 +200,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(quantile)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ quantile }}",
@@ -289,7 +289,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(quantile)",
           "intervalFactor": 2,
           "legendFormat": "{{ quantile }}",
           "refId": "A",
@@ -393,7 +393,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -413,7 +413,7 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -433,7 +433,7 @@
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -453,7 +453,7 @@
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
         "refresh": 1,
         "regex": "",
         "sort": 0,

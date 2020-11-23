@@ -141,7 +141,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_cc_total_users{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "avg(firehose_value_metric_cc_total_users{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -201,7 +201,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_cc_total_users{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"})",
+          "expr": "avg(firehose_value_metric_cc_total_users{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Number of Users",
@@ -311,7 +311,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -372,7 +372,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "intervalFactor": 2,
           "legendFormat": "Number of Applications",
           "metric": "N",
@@ -482,7 +482,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -544,7 +544,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Number of Organizations",
@@ -654,7 +654,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -716,7 +716,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Number of Routes",
@@ -827,7 +827,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
@@ -890,7 +890,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Number of Services",
@@ -1001,7 +1001,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "intervalFactor": 2,
           "refId": "A",
           "step": 60
@@ -1060,7 +1060,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Number of Service Instances",
@@ -1169,7 +1169,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -1233,7 +1233,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_service_binding_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1344,7 +1344,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -1408,7 +1408,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) without(instance))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1519,7 +1519,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -1580,7 +1580,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_security_group_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Number of Security Groups",
@@ -1689,7 +1689,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "refId": "A",
@@ -1748,7 +1748,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) without(instance))",
+          "expr": "sum(avg(cf_stack_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) without(instance))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Number of Stacks",

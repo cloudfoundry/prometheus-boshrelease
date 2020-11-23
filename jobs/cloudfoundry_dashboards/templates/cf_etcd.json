@@ -140,7 +140,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(count(firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"} == 1) by(instance, bosh_job_ip)) by(bosh_job_ip)",
+          "expr": "avg(count(firehose_value_metric_etcd_is_leader{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"} == 1) by(instance, bosh_job_ip)) by(bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_job_ip }}",
@@ -227,7 +227,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_etcd_followers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_etcd_followers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_job_ip))",
           "intervalFactor": 2,
           "legendFormat": "",
           "metric": "",
@@ -290,7 +290,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_watchers{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_watchers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -378,7 +378,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_raft_term{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_raft_term{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -465,7 +465,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_raft_index{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_raft_index{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -553,7 +553,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_receiving_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
@@ -561,7 +561,7 @@
           "step": 4
         },
         {
-          "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_sending_bandwidth_rate{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
@@ -649,14 +649,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_receiving_request_rate{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "intervalFactor": 2,
           "legendFormat": "Receiving ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "avg(firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_sending_request_rate{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Sending ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
@@ -742,7 +742,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_etcd_latency{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_etcd_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -829,7 +829,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(rate(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(rate(firehose_value_metric_etcd_received_append_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Received ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",
@@ -838,7 +838,7 @@
           "step": 4
         },
         {
-          "expr": "avg(rate(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(rate(firehose_value_metric_etcd_sent_append_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m])) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Sent ({{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }})",

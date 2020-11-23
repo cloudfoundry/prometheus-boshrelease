@@ -113,7 +113,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "((sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} * on (organization_name, application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) / on(organization_name) avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}) by(organization_name) > 0) * 100 > $quota_limit) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
+          "expr": "((sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"} * on (organization_name, application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) / on(organization_name) avg(cf_organization_total_memory_mb_quota{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name) > 0) * 100 > $quota_limit) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} ({{ quota_name }})",
@@ -199,7 +199,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} * on (organization_name, application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"$bosh_deployment\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
+          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"} * on (organization_name, application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) * on (organization_name) group_left(quota_name) count(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} ({{ quota_name }})",
@@ -304,7 +304,7 @@
         "multi": true,
         "name": "cf_quota_name",
         "options": [],
-        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, quota_name)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, quota_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
@@ -324,7 +324,7 @@
         "multi": true,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "sort": 1,
