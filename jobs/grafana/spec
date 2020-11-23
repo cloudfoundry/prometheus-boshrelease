@@ -131,6 +131,17 @@ properties:
     description: "Enable data proxy logging"
   grafana.dataproxy.timeout:
     description: "How long the data proxy should wait before timing out"
+  grafana.dataproxy.keep_alive_seconds:
+    description: "How many seconds the data proxy waits before sending a keepalive request"
+  grafana.dataproxy.tls_handshake_timeout_seconds:
+    description: "How many seconds the data proxy waits for a successful TLS Handshake before timing out"
+  grafana.dataproxy.expect_continue_timeout_seconds:
+    description: "How many seconds the data proxy will wait for a server's first response headers after fully writing the request headers if the request has an 'Expect: 100-continue' header"
+  grafana.dataproxy.max_idle_connections:
+    description: "The maximum number of idle connections that Grafana will keep alive"
+  grafana.dataproxy.idle_conn_timeout_seconds:
+    description: "How many seconds the data proxy keeps an idle connection open before timing out"
+
   grafana.dataproxy.send_user_header:
     description: "If enabled and user is not anonymous, data proxy will add X-Grafana-User header with username into the request"
 
@@ -232,10 +243,10 @@ properties:
 
   grafana.auth.login_cookie_name:
     description: "Login cookie name"
-  grafana.auth.login_maximum_inactive_lifetime_days:
-    description: "The lifetime (days) an authenticated user can be inactive before being required to login at next visit"
-  grafana.auth.login_maximum_lifetime_days:
-    description: "he maximum lifetime (days) an authenticated user can be logged in since login time before being required to login"
+  grafana.auth.login_maximum_inactive_lifetime_duration:
+    description: "The maximum lifetime (duration) an authenticated user can be inactive before being required to login at next visit"
+  grafana.auth.login_maximum_lifetime_duration:
+    description: "The maximum lifetime (duration) an authenticated user can be logged in since login time before being required to login"
   grafana.auth.token_rotation_interval_minutes:
     description: "How often should auth tokens be rotated for authenticated users when being active"
   grafana.auth.disable_login_form:
@@ -250,6 +261,8 @@ properties:
     description: "Auth state max age cookie duration"
   grafana.auth.api_key_max_seconds_to_live:
     description: "Limit of api_key seconds to live before expiration"
+  grafana.auth.sigv4_auth_enabled:
+    description: "Set to true to enable SigV4 authentication option for HTTP-based datasources"
 
   grafana.auth.anonymous.enabled:
     description: "enable anonymous access"
@@ -596,6 +609,20 @@ properties:
     description: "Default setting for max attempts to sending alert notifications"
   grafana.alerting.min_interval_seconds:
     description: "Makes it possible to enforce a minimal interval between evaluations, to reduce load on the backend"
+  grafana.alerting.max_annotation_age:
+    description: "Configures for how long alert annotations are stored"
+  grafana.alerting.max_annotations_to_keep:
+    description: "Configures max number of alert annotations that Grafana stores"
+
+  grafana.annotations.dashboard.max_age:
+    description: "Configures how long dashboard annotations are stored"
+  grafana.annotations.dashboard.max_annotations_to_keep:
+    description: "Configures max number of dashboard annotations that Grafana stores"
+
+  grafana.annotations.api.max_age:
+    description: "Configures how long Grafana stores API annotations"
+  grafana.annotations.api.max_annotations_to_keep:
+    description: "Configures max number of API annotations that Grafana keeps"
 
   grafana.explore.enabled:
     description: "Enable the Explore section"
@@ -697,6 +724,8 @@ properties:
     description: "Skip verify insecure for app tls"
   grafana.plugins.allow_loading_unsigned_plugins:
     description: "Enter a comma-separated list of plugin identifiers to identify plugins that are allowed to be loaded even if they lack a valid signature"
+  grafana.plugins.marketplace_url:
+    description: "Marketplace URL"
 
   grafana.plugin.grafana_image_renderer.rendering_timezone:
     description: "Instruct headless browser instance to use a default timezone when not provided by Grafana"
@@ -736,6 +765,25 @@ properties:
 
   grafana.feature_toggles.enable:
     description: "Enable features, separated by spaces"
+
+  grafana.date_formats.full_date:
+    description: "Default system date format used in time range picker and other places where full time is displayed"
+  grafana.date_formats.interval_second:
+    description: "Interval second (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.interval_minute:
+    description: "Interval minute (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.interval_hour:
+    description: "Interval hour (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.interval_day:
+    description: "Interval day (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.interval_month:
+    description: "Interval month (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.interval_year:
+    description: "Interval year (used by graph and other places where we only show small intervals)"
+  grafana.date_formats.use_browser_locale:
+    description: "Use browser local (experimental feature)"
+  grafana.date_formats.default_timezone:
+    description: "Default timezone for user preferences"
 
   grafana.prometheus.datasource_name:
     description: "Name of the Prometheus datasource"
