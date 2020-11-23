@@ -38,6 +38,9 @@ case $1 in
       <% if_p('redis_exporter.redis.check_streams') do |check_streams| %> \
       -check-streams="<%= check_streams %>" \
       <% end %> \
+      <% if_p('redis_exporter.redis.count_keys') do |count_keys| %> \
+      -count-keys="<%= count_keys %>" \
+      <% end %> \
       <% if_p('redis_exporter.redis.config_command') do |config_command| %> \
       -config-command="<%= config_command %>" \
       <% end %> \
