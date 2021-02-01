@@ -32,21 +32,34 @@
     jobs:
       - name: firehose_exporter
         release: prometheus
+        consumes:
+          reverse_log_proxy:
+            deployment: cf
+            from: reverse_log_proxy
         properties:
           firehose_exporter:
             doppler:
               subscription_id: "((metrics_environment))"
-              max_retry_count: 300
             logging:
-              url: wss://doppler.((system_domain)):((traffic_controller_external_port))
-              use_legacy_firehose: true
-            uaa:
-              url: https://uaa.((system_domain))
-              client_id: firehose_exporter
-              client_secret: "((uaa_clients_firehose_exporter_secret))"
+              tls:
+                ca: ((firehose_exporter_to_logs_provider.ca))
+                cert: ((firehose_exporter_to_logs_provider.certificate))
+                key: ((firehose_exporter_to_logs_provider.private_key))
             metrics:
               environment: "((metrics_environment))"
             skip_ssl_verify: ((skip_ssl_verify))
+
+- type: replace
+  path: /variables/-
+  value:
+    name: firehose_exporter_to_logs_provider
+    options:
+      ca: ((loggregator_ca_name)) # generally set it to /bosh-((name))/cf/loggregator_ca
+      common_name: firehose-exporter
+      extended_key_usage:
+        - client_auth
+        - server_auth
+    type: certificate
 
 # Prometheus Alerts
 - type: replace

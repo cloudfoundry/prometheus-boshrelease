@@ -34,46 +34,25 @@ case $1 in
     export no_proxy="<%= no_proxy %>"
     <% end %>
 
-    export FIREHOSE_EXPORTER_UAA_CLIENT_SECRET="<%= p('firehose_exporter.uaa.client_secret') %>"
     <% if_p('firehose_exporter.web.auth_password') do |auth_password| %>
     export FIREHOSE_EXPORTER_WEB_AUTH_PASSWORD="<%= auth_password %>"
     <% end %>
+    export GODEBUG="x509ignoreCN=0" # temporary (15Sep2020) while we wait for upstream (firehose) certs to be updated
 
     exec firehose_exporter \
-      --uaa.url="<%= p('firehose_exporter.uaa.url') %>" \
-      --uaa.client-id="<%= p('firehose_exporter.uaa.client_id') %>" \
-      <% if p('firehose_exporter.doppler.use_unique_subscription_id') %> \
-      --doppler.subscription-id="<%= "#{p('firehose_exporter.doppler.subscription_id')}-#{spec.id}" %>" \
-      <% else %> \
-      --doppler.subscription-id="<%= p('firehose_exporter.doppler.subscription_id') %>" \
-      <% end %> \
-      <% if_p('firehose_exporter.doppler.idle_timeout') do |idle_timeout| %> \
-      --doppler.idle-timeout="<%= idle_timeout %>" \
-      <% end %> \
-      <% if_p('firehose_exporter.doppler.min_retry_delay') do |min_retry_delay| %> \
-      --doppler.min-retry-delay="<%= min_retry_delay %>" \
-      <% end %> \
-      <% if_p('firehose_exporter.doppler.max_retry_delay') do |max_retry_delay| %> \
-      --doppler.max-retry-delay="<%= max_retry_delay %>" \
-      <% end %> \
-      <% if_p('firehose_exporter.doppler.max_retry_count') do |max_retry_count| %> \
-      --doppler.max-retry-count="<%= max_retry_count %>" \
-      <% end %> \
+      --metrics.shard_id="<%= p('firehose_exporter.doppler.subscription_id') %>" \
       <% if_p('firehose_exporter.doppler.metric_expiration') do |metric_expiration| %> \
-      --doppler.metric-expiration="<%= metric_expiration %>" \
+      --metrics.expiration="<%= metric_expiration %>" \
       <% end %> \
-      <% if_p('firehose_exporter.filter.deployments') do |deployments| %> \
-      --filter.deployments="<%= deployments %>" \
+      --metrics.node_index="<%= spec.index %>" \
+      <% if_link('reverse_log_proxy') do |rlp| %> \
+      --logging.url="<%= "#{rlp.address}:#{rlp.p('reverse_log_proxy.egress.port')}" %>" \
+      --logging.tls.ca="/var/vcap/jobs/firehose_exporter/config/rlp_tls_ca.pem" \
+      --logging.tls.cert="/var/vcap/jobs/firehose_exporter/config/rlp_tls_cert.pem" \
+      --logging.tls.key="/var/vcap/jobs/firehose_exporter/config/rlp_tls_key.pem" \
       <% end %> \
-      <% if_p('firehose_exporter.filter.events') do |events| %> \
-      --filter.events="<%= events %>" \
-      <% end %> \
-      --logging.url="<%= p('firehose_exporter.logging.url') %>" \
-      <% if p('firehose_exporter.logging.use_legacy_firehose') %> \
-      --logging.use-legacy-firehose \
-      <% end %> \
-      <% if_p('firehose_exporter.log_format') do |log_format| %> \
-      --log.format="<%= log_format %>" \
+      <% if_p('firehose_exporter.log_in_json') do |log_in_json| %> \
+      --log.in_json \
       <% end %> \
       <% if_p('firehose_exporter.log_level') do |log_level| %> \
       --log.level="<%= log_level %>" \
@@ -82,11 +61,15 @@ case $1 in
       --metrics.namespace="<%= namespace %>" \
       <% end %> \
       --metrics.environment="<%= p('firehose_exporter.metrics.environment') %>" \
-      <% if_p('firehose_exporter.metrics.cleanup_interval') do |cleanup_interval| %> \
-      --metrics.cleanup-interval="<%= cleanup_interval %>" \
-      <% end %> \
+      --metrics.timer_rollup_buffer_size="<%= p('firehose_exporter.metrics.timer_rollup_buffer_size') %>" \
       <% if p('firehose_exporter.skip_ssl_verify') %> \
       --skip-ssl-verify \
+      <% end %> \
+      <% if_p('firehose_exporter.filter.deployments') do |deployments| %> \
+      --filter.deployments="<%= deployments %>" \
+      <% end %> \
+      <% if_p('firehose_exporter.filter.events') do |events| %> \
+      --filter.events="<%= events %>" \
       <% end %> \
       --web.listen-address=":<%= p('firehose_exporter.web.port') %>" \
       <% if_p('firehose_exporter.web.telemetry_path') do |telemetry_path| %> \
@@ -98,6 +81,15 @@ case $1 in
       <% if_p('firehose_exporter.web.tls_cert', 'firehosef_exporter.web.tls_key') do %> \
       --web.tls.cert_file="/var/vcap/jobs/firehose_exporter/config/web_tls_cert.pem" \
       --web.tls.key_file="/var/vcap/jobs/firehose_exporter/config/web_tls_key.pem" \
+      <% end %> \
+      <% if p('firehose_exporter.retro_compat.disable') %> \
+      --retro_compat.disable \
+      <% end %> \
+      <% if p('firehose_exporter.retro_compat.enable_delta') %> \
+      --retro_compat.enable_delta \
+      <% end %> \
+      <% if_p('firehose_exporter.profiler.enable') do |profiler_enable| %> \
+      --profiler.enable \
       <% end %> \
       >>  ${LOG_DIR}/firehose_exporter.stdout.log \
       2>> ${LOG_DIR}/firehose_exporter.stderr.log
