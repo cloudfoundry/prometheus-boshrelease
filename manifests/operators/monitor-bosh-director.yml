@@ -1,0 +1,37 @@
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties?/prometheus/scrape_configs/-
+  value:
+    job_name: bosh_director_metrics
+    metrics_path: /metrics
+    scheme: https
+    scrape_interval: 5m
+    scrape_timeout: 1m
+    static_configs:
+    - targets:
+      - ((bosh_ip)):9091
+    tls_config:
+      ca_contents: ((bosh_metrics_server_client.ca))
+      ca_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_ca.cert
+      cert_contents: ((bosh_metrics_server_client.certificate))
+      cert_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_cert.cert
+      key_contents: ((bosh_metrics_server_client.private_key))
+      key_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_key.cert
+
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties?/prometheus/scrape_configs/-
+  value:
+    job_name: bosh_director_api_metrics
+    metrics_path: /api_metrics
+    scheme: https
+    scrape_interval: 5m
+    scrape_timeout: 1m
+    static_configs:
+    - targets:
+      - ((bosh_ip)):9091
+    tls_config:
+      ca_contents: ((bosh_metrics_server_client.ca))
+      ca_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_ca.cert
+      cert_contents: ((bosh_metrics_server_client.certificate))
+      cert_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_cert.cert
+      key_contents: ((bosh_metrics_server_client.private_key))
+      key_file: /var/vcap/jobs/prometheus2/certs/bosh_metrics_key.cert
