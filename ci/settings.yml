@@ -35,7 +35,6 @@ groups:
       - prometheus
       - alertmanager
       - pushgateway
-      - grafana
       - blackbox_exporter
       - bosh_exporter
       - bosh_tsdb_exporter
@@ -113,22 +112,6 @@ jobs:
           icon_url:  (( grab meta.slack.icon ))
           text:     '$BUILD_PIPELINE_NAME: New pushgateway version $TEXT_FILE_CONTENT has been detected'
           text_file: pushgateway/version
-
-  - name: grafana
-    public: true
-    serial: true
-    plan:
-      - aggregate:
-        - get: grafana
-          trigger: true
-
-      - put: notify
-        params:
-          channel:   (( grab meta.slack.channel ))
-          username:  (( grab meta.slack.username ))
-          icon_url:  (( grab meta.slack.icon ))
-          text:     '$BUILD_PIPELINE_NAME: New grafana version $TEXT_FILE_CONTENT has been detected'
-          text_file: grafana/version
 
   - name: blackbox_exporter
     public: true
@@ -515,13 +498,6 @@ resources:
       repository:   pushgateway
       access_token: (( grab meta.github.access_token ))
       check_every: 30m
-
-  - name: grafana
-    type: s3
-    source:
-      region_name: us-west-2
-      bucket: grafana-releases
-      regexp: release/grafana-((\d+\.)?(\d+\.)?(\*|\d+)).linux-x64.tar.gz
 
   - name: blackbox_exporter
     type: github-release
