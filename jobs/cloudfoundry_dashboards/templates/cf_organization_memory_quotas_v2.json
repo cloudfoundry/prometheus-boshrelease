@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494031352,
+  "iteration": 1629494032694,
   "links": [
     {
       "asDropdown": true,
@@ -88,7 +88,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Cumulative number of messages sent.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -100,13 +99,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 5,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 1,
+      "id": 9,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -115,6 +114,8 @@
         "min": false,
         "rightSide": true,
         "show": true,
+        "sort": "current",
+        "sortDesc": true,
         "total": false,
         "values": true
       },
@@ -136,11 +137,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_metron_egress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-          "format": "time_series",
+          "expr": "((sum(avg(cf_application_memory_mb{deployment=~\"${bosh_deployment}[-0-9a-f]*\"} * on (organization_name, application_id) cf_application_instances{deployment=~\"${bosh_deployment}[-0-9a-f]*\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) / on(organization_name) avg(cf_organization_total_memory_mb_quota{deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name) > 0) * 100 > $quota_limit) * on (organization_name) group_left(quota_name) count(cf_organization_info{deployment=~\"${bosh_deployment}\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Sent (Marshaller)",
+          "legendFormat": "{{ organization_name }} ({{ quota_name }})",
+          "metric": "",
           "refId": "A",
           "step": 2
         }
@@ -149,7 +150,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Metron Egress",
+      "title": "Organization's Memory Quota Consumption",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -167,7 +168,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percent",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -194,9 +195,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Messages sent by job.",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -206,118 +204,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 5
-      },
-      "hiddenSeries": false,
-      "id": 4,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.3",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "max(firehose_counter_event_loggregator_metron_egress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name)",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "{{bosh_job_name}}",
-          "refId": "A",
-          "step": 4
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Metron Egress by Job",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 5,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 10
       },
       "hiddenSeries": false,
-      "id": 3,
+      "id": 16,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -332,7 +225,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
@@ -347,21 +240,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_metron_ingress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-          "format": "time_series",
+          "expr": "sum(avg(cf_application_memory_mb{deployment=~\"${bosh_deployment}[-0-9a-f]*\"} * on (organization_name, application_id) cf_application_instances{deployment=~\"${bosh_deployment}[-0-9a-f]*\",state=\"STARTED\"}) by(organization_name, application_id)) by(organization_name) * on (organization_name) group_left(quota_name) count(cf_organization_info{deployment=~\"${bosh_deployment}\",quota_name=~\"$cf_quota_name\"}) by(organization_name, quota_name)",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Messages",
-          "refId": "A",
-          "step": 4
+          "legendFormat": "{{ organization_name }} ({{ quota_name }})",
+          "metric": "",
+          "refId": "B",
+          "step": 2
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Metron Ingress Total",
+      "title": "Organization's Memory Used",
       "tooltip": {
-        "msResolution": false,
         "shared": true,
         "sort": 0,
         "value_type": "individual"
@@ -377,7 +270,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "mbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -404,7 +297,6 @@
   "style": "dark",
   "tags": [
     "cf",
-    "loggregator",
     "v2"
   ],
   "templating": {
@@ -421,16 +313,101 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_loggregator_metron_egress_total, bosh_deployment)",
+        "query": "label_values(cf_organization_info, deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": null,
+        "tagValuesQuery": "",
         "tags": [],
-        "tagsQuery": null,
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Quota",
+        "multi": true,
+        "name": "cf_quota_name",
+        "options": [],
+        "query": "label_values(cf_organization_info{deployment=~\"${bosh_deployment}\"}, quota_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "development",
+        "tags": [],
+        "tagsQuery": "label_values(cf_organization_info, quota_name)",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Organization",
+        "multi": true,
+        "name": "cf_organization_name",
+        "options": [],
+        "query": "label_values(cf_organization_info{deployment=~\"${bosh_deployment}\"}, organization_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "25",
+          "value": "25"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Consumption above (%)",
+        "multi": false,
+        "name": "quota_limit",
+        "options": [
+          {
+            "selected": true,
+            "text": "25",
+            "value": "25"
+          },
+          {
+            "selected": false,
+            "text": "50",
+            "value": "50"
+          },
+          {
+            "selected": false,
+            "text": "75",
+            "value": "75"
+          },
+          {
+            "selected": false,
+            "text": "90",
+            "value": "90"
+          }
+        ],
+        "query": "25,50,75,90",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -464,7 +441,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "CF: Metron Agent v2",
-  "uid": "cf_metron_agent_v2",
-  "version": 3
+  "title": "CF: Organization Memory Quotas v2",
+  "uid": "cf_organization_memory_quotas_v2",
+  "version": 2
 }

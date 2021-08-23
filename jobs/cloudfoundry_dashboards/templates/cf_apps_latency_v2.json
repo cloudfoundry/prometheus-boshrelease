@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494019960,
+  "iteration": 1629494005015,
   "links": [
     {
       "asDropdown": true,
@@ -54,10 +54,10 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "cf"
+        "apps"
       ],
       "targetBlank": false,
-      "title": "CF",
+      "title": "Apps",
       "type": "dashboards"
     },
     {
@@ -71,14 +71,6 @@
       "targetBlank": true,
       "title": "v2 Dashboards",
       "type": "dashboards"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "CF Component Metrics v2",
-      "type": "link",
-      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
   "panels": [
@@ -88,7 +80,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous number of active goroutines in the process.",
+      "description": "Application Latency.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -101,20 +93,22 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 9,
+      "id": 3,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -134,18 +128,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"})",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
+          "legendFormat": "Client",
           "refId": "A",
-          "step": 4
+          "step": 2
+        },
+        {
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"})",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Server",
+          "refId": "B",
+          "step": 2
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Go Routines",
+      "title": "Latency",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -163,7 +166,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:1649",
+          "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -171,6 +175,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1650",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -190,7 +195,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Duration in nanoseconds of the last garbage collector pause.",
+      "decimals": null,
+      "description": "Client Latency by Quantiles.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -203,120 +209,22 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "hiddenSeries": false,
-      "id": 7,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.3",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "refId": "A",
-          "step": 4
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Garbage Collector Pause Duration",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "ns",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes allocated on the heap and still in use.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 5
       },
       "hiddenSeries": false,
       "id": 1,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -336,19 +244,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
+          "legendFormat": "{{ quantile }}",
           "refId": "A",
-          "step": 4
+          "step": 2
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Heap Memory Usage",
+      "title": "Client Latency (quantiles)",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -366,7 +274,8 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "$$hashKey": "object:1725",
+          "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -374,6 +283,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1726",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -393,7 +303,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes used by the stack allocator.",
+      "decimals": null,
+      "description": "Server Latency by Quantiles.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -406,20 +317,22 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 5
+        "w": 24,
+        "x": 0,
+        "y": 10
       },
       "hiddenSeries": false,
       "id": 2,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -439,20 +352,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{bosh_deployment=~\"${bosh_deployment}\",application_id=~\"$cf_application_id\"}) by(quantile)",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
+          "legendFormat": "{{ quantile }}",
           "refId": "A",
-          "step": 4
+          "step": 2
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Stack Allocator Memory Usage",
+      "title": "Server Latency (quantiles)",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -470,7 +382,8 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "$$hashKey": "object:1801",
+          "format": "s",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -478,6 +391,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1802",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -496,7 +410,7 @@
   "schemaVersion": 26,
   "style": "dark",
   "tags": [
-    "cf",
+    "apps",
     "v2"
   ],
   "templating": {
@@ -513,7 +427,30 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap, bosh_deployment)",
+        "query": "label_values(cf_application_info, deployment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Organization",
+        "multi": false,
+        "name": "cf_organization_name",
+        "options": [],
+        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -532,11 +469,11 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Component",
+        "label": "Space",
         "multi": false,
-        "name": "cf_component",
+        "name": "cf_space_name",
         "options": [],
-        "query": "label_values({__name__=~\"firehose_value_metric_.*_memory_stats_num_bytes_allocated_heap\"}, origin)",
+        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -544,6 +481,52 @@
         "tagValuesQuery": null,
         "tags": [],
         "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application",
+        "multi": false,
+        "name": "cf_application_name",
+        "options": [],
+        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": "Application ID",
+        "multi": false,
+        "name": "cf_application_id",
+        "options": [],
+        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
         "type": "query",
         "useTags": false
       }
@@ -579,7 +562,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "CF: Component Metrics v2",
-  "uid": "cf_component_metrics_v2",
-  "version": 3
+  "title": "Apps: Latency v2",
+  "uid": "cf_apps_latency_v2",
+  "version": 2
 }
