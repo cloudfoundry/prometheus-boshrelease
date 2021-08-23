@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494019960,
+  "iteration": 1629494009451,
   "links": [
     {
       "asDropdown": true,
@@ -76,7 +76,7 @@
       "icon": "external link",
       "tags": [],
       "targetBlank": true,
-      "title": "CF Component Metrics v2",
+      "title": "CF Component Metrics",
       "type": "link",
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
@@ -88,7 +88,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous number of active goroutines in the process.",
+      "description": "Cumulative number of requests the BBS has handled through its API. Emitted for each BBS request.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -99,6 +99,7 @@
       },
       "fill": 1,
       "fillGradient": 0,
+      "grid": {},
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -106,7 +107,7 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 9,
+      "id": 5,
       "legend": {
         "avg": false,
         "current": false,
@@ -117,7 +118,7 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -134,9 +135,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
+          "legendFormat": "Requests",
           "refId": "A",
           "step": 4
         }
@@ -145,12 +146,12 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Go Routines",
+      "title": "Requests",
       "tooltip": {
         "msResolution": false,
         "shared": true,
         "sort": 0,
-        "value_type": "individual"
+        "value_type": "cumulative"
       },
       "transparent": true,
       "type": "graph",
@@ -167,7 +168,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
@@ -176,7 +177,7 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": false
+          "show": true
         }
       ],
       "yaxis": {
@@ -190,7 +191,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Duration in nanoseconds of the last garbage collector pause.",
+      "description": "Time in nanoseconds that the BBS took to handle requests to its API endpoints. Emitted when the BBS API handles requests.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -201,6 +202,7 @@
       },
       "fill": 1,
       "fillGradient": 0,
+      "grid": {},
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -208,8 +210,9 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 7,
+      "id": 4,
       "legend": {
+        "alignAsTable": false,
         "avg": false,
         "current": false,
         "max": false,
@@ -219,7 +222,7 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -236,7 +239,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_bbs_request_latency{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
           "refId": "A",
@@ -247,12 +251,12 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Garbage Collector Pause Duration",
+      "title": "Request Latency",
       "tooltip": {
         "msResolution": false,
         "shared": true,
         "sort": 0,
-        "value_type": "individual"
+        "value_type": "cumulative"
       },
       "transparent": true,
       "type": "graph",
@@ -269,7 +273,7 @@
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
@@ -288,11 +292,13 @@
     },
     {
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes allocated on the heap and still in use.",
+      "description": "Cumulative number of times BBS has run its LRP and Task convergence pass. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -301,6 +307,7 @@
       },
       "fill": 1,
       "fillGradient": 0,
+      "grid": {},
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -314,12 +321,12 @@
         "current": false,
         "max": false,
         "min": false,
-        "show": false,
+        "show": true,
         "total": false,
         "values": false
       },
-      "lines": true,
-      "linewidth": 1,
+      "lines": false,
+      "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -332,15 +339,22 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_runs_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
+          "legendFormat": "LRPs",
           "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})  by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Tasks",
+          "refId": "B",
           "step": 4
         }
       ],
@@ -348,7 +362,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Heap Memory Usage",
+      "title": "Convergence Runs",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -366,11 +380,121 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative number of times the BBS has updated a Task (Kicked) or has deleted a malformed Task (Pruned) during its Task convergence pass. Emitted every 30 seconds.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.3",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Kicked",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "intervalFactor": 2,
+          "legendFormat": "Pruned",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Tasks",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
           "show": true
         },
         {
@@ -393,7 +517,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes used by the stack allocator.",
+      "description": "Time in nanoseconds that the BBS took to run its LRP and Task convergence pass. Emitted every 30 seconds when LRP and Task convergence runs.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -404,25 +528,28 @@
       },
       "fill": 1,
       "fillGradient": 0,
+      "grid": {},
       "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 5
+        "h": 4,
+        "w": 23,
+        "x": 0,
+        "y": 10
       },
       "hiddenSeries": false,
       "id": 2,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
       "options": {
@@ -439,12 +566,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "interval": "",
+          "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
+          "legendFormat": "LRPs",
           "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "intervalFactor": 2,
+          "legendFormat": "Tasks",
+          "refId": "B",
           "step": 4
         }
       ],
@@ -452,12 +584,12 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Stack Allocator Memory Usage",
+      "title": "Convergence Duration",
       "tooltip": {
         "msResolution": false,
         "shared": true,
         "sort": 0,
-        "value_type": "individual"
+        "value_type": "cumulative"
       },
       "transparent": true,
       "type": "graph",
@@ -470,14 +602,16 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "$$hashKey": "object:1740",
+          "format": "ns",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": 0,
           "show": true
         },
         {
+          "$$hashKey": "object:1741",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -497,6 +631,7 @@
   "style": "dark",
   "tags": [
     "cf",
+    "diego",
     "v2"
   ],
   "templating": {
@@ -513,30 +648,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap, bosh_deployment)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "Component",
-        "multi": false,
-        "name": "cf_component",
-        "options": [],
-        "query": "label_values({__name__=~\"firehose_value_metric_.*_memory_stats_num_bytes_allocated_heap\"}, origin)",
+        "query": "label_values(firehose_counter_event_bbs_request_count_total, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -579,7 +691,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "CF: Component Metrics v2",
-  "uid": "cf_component_metrics_v2",
-  "version": 3
+  "title": "CF: BBS v2",
+  "uid": "cf_bbs_v2",
+  "version": 2
 }
