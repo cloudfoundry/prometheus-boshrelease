@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494025337,
+  "iteration": 1631890986385,
   "links": [
     {
       "asDropdown": true,
@@ -61,6 +61,14 @@
       "type": "dashboards"
     },
     {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    },
+    {
       "asDropdown": true,
       "icon": "external link",
       "includeVars": true,
@@ -71,14 +79,6 @@
       "targetBlank": true,
       "title": "v2 Dashboards",
       "type": "dashboards"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "CF Component Metrics",
-      "type": "link",
-      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
   "panels": [
@@ -136,7 +136,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_loggregator_doppler_ingress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Messages",
@@ -241,7 +241,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "subscriptions",
@@ -346,7 +346,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_id)) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_id)) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Dropped Messages",
@@ -452,7 +452,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))/sum(max(firehose_counter_event_loggregator_doppler_ingress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_doppler_dropped_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))/sum(max(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by (bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Dropped Messages (%)",
@@ -522,11 +522,34 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_loggregator_doppler_ingress_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_loggregator_doppler_ingress_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_loggregator_doppler_ingress_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -571,5 +594,5 @@
   "timezone": "browser",
   "title": "CF: Doppler Server v2",
   "uid": "cf_doppler_server_v2",
-  "version": 3
+  "version": 2
 }
