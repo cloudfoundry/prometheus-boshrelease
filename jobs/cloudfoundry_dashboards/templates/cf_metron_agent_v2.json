@@ -42,11 +42,11 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494031352,
+  "iteration": 1631890991026,
   "links": [
     {
       "asDropdown": true,
@@ -61,6 +61,14 @@
       "type": "dashboards"
     },
     {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    },
+    {
       "asDropdown": true,
       "icon": "external link",
       "includeVars": true,
@@ -71,14 +79,6 @@
       "targetBlank": true,
       "title": "v2 Dashboards",
       "type": "dashboards"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "CF Component Metrics",
-      "type": "link",
-      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
   "panels": [
@@ -136,7 +136,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_metron_egress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -242,7 +242,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(firehose_counter_event_loggregator_metron_egress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name)",
+          "expr": "max(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(environment, bosh_deployment, bosh_job_name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{bosh_job_name}}",
@@ -347,7 +347,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(max(firehose_counter_event_loggregator_metron_ingress_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(max(firehose_counter_event_loggregator_metron_ingress_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Messages",
@@ -417,11 +417,34 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_loggregator_metron_egress_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_loggregator_metron_egress_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_loggregator_metron_egress_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -466,5 +489,5 @@
   "timezone": "browser",
   "title": "CF: Metron Agent v2",
   "uid": "cf_metron_agent_v2",
-  "version": 3
+  "version": 2
 }
