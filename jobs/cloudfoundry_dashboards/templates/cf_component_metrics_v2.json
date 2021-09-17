@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494019960,
+  "iteration": 1631890975974,
   "links": [
     {
       "asDropdown": true,
@@ -61,6 +61,14 @@
       "type": "dashboards"
     },
     {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics v2",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    },
+    {
       "asDropdown": true,
       "icon": "external link",
       "includeVars": true,
@@ -71,14 +79,6 @@
       "targetBlank": true,
       "title": "v2 Dashboards",
       "type": "dashboards"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "CF Component Metrics v2",
-      "type": "link",
-      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
   "panels": [
@@ -134,7 +134,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_num_go_routines{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
           "refId": "A",
@@ -236,7 +236,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_last_gc_pause_time_ns{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
           "refId": "A",
@@ -336,7 +336,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
           "metric": "",
@@ -439,7 +439,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -509,11 +509,34 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -536,7 +559,7 @@
         "multi": false,
         "name": "cf_component",
         "options": [],
-        "query": "label_values({__name__=~\"firehose_value_metric_.*_memory_stats_num_bytes_allocated_heap\"}, origin)",
+        "query": "label_values({__name__=~\"firehose_value_metric_.*_memory_stats_num_bytes_allocated_heap\",environment=~\"$environment\"}, origin)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -581,5 +604,5 @@
   "timezone": "browser",
   "title": "CF: Component Metrics v2",
   "uid": "cf_component_metrics_v2",
-  "version": 3
+  "version": 2
 }
