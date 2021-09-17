@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494009451,
+  "iteration": 1631898315077,
   "links": [
     {
       "asDropdown": true,
@@ -135,7 +135,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -164,6 +165,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:128",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -172,6 +174,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:129",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -239,7 +242,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_bbs_request_latency{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_bbs_request_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -269,6 +272,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:213",
           "format": "ns",
           "label": null,
           "logBase": 1,
@@ -277,6 +281,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:214",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -343,7 +348,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_runs_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_runs_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
@@ -351,7 +356,8 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})  by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})  by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
           "refId": "B",
@@ -380,6 +386,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:291",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -388,6 +395,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:292",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -454,14 +462,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Kicked",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Pruned",
           "refId": "B",
@@ -490,6 +500,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:369",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -498,6 +509,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:370",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -566,14 +578,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
           "refId": "B",
@@ -640,7 +654,30 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(firehose_counter_event_bbs_request_count_total, environment)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_bbs_request_count_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\"}, bosh_deployment)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -648,7 +685,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_bbs_request_count_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
