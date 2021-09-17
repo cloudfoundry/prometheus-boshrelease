@@ -64,7 +64,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494009692,
+  "iteration": 1631901873091,
   "links": [
     {
       "asDropdown": true,
@@ -160,7 +160,7 @@
       "tableColumn": "STARTED",
       "targets": [
         {
-          "expr": "count(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(state)",
+          "expr": "count(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(state)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -211,7 +211,6 @@
       },
       "styles": [
         {
-          "$$hashKey": "object:174",
           "alias": "Instance: Diego Cell IP address",
           "align": "auto",
           "colorMode": null,
@@ -229,7 +228,7 @@
       ],
       "targets": [
         {
-          "expr": "count(firehose_container_metric_cpu_percentage{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index,  bosh_job_ip)",
+          "expr": "count(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index,  bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -275,7 +274,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 7,
+      "id": 12,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -294,7 +293,7 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "min(cf_application_instances{deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "min(cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -303,7 +302,7 @@
           "step": 10
         },
         {
-          "expr": "min(cf_application_instances_running{deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "min(cf_application_instances_running{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -374,7 +373,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -405,7 +404,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:477",
           "format": "percent",
           "label": null,
           "logBase": 1,
@@ -414,7 +412,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:478",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -478,7 +475,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_cpu_percentage{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+          "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -508,7 +505,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:399",
           "format": "percent",
           "label": null,
           "logBase": 1,
@@ -517,7 +513,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:400",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -583,7 +578,6 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:552",
           "alias": "Quota",
           "bars": false,
           "legend": false,
@@ -595,7 +589,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -603,7 +597,7 @@
           "step": 10
         },
         {
-          "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Quota",
@@ -633,7 +627,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:563",
           "format": "bytes",
           "label": null,
           "logBase": 1,
@@ -642,7 +635,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:564",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -706,16 +698,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_memory_bytes{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+          "expr": "avg(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
           "format": "time_series",
-          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ instance_index }}",
           "refId": "A",
           "step": 10
         },
         {
-          "expr": "avg(firehose_container_metric_memory_bytes_quota{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_memory_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -745,7 +736,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:637",
           "format": "bytes",
           "label": null,
           "logBase": 1,
@@ -754,7 +744,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:638",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -820,7 +809,6 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:708",
           "alias": "Quota",
           "bars": false,
           "legend": false,
@@ -832,7 +820,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -841,10 +829,9 @@
           "step": 10
         },
         {
-          "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "format": "time_series",
           "hide": false,
-          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Quota",
           "refId": "B",
@@ -873,7 +860,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:719",
           "format": "bytes",
           "label": null,
           "logBase": 1,
@@ -882,7 +868,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:720",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -946,7 +931,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_container_metric_disk_bytes{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
+          "expr": "avg(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_index) ",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ instance_index }}",
@@ -954,7 +939,7 @@
           "step": 10
         },
         {
-          "expr": "avg(firehose_container_metric_disk_bytes_quota{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_container_metric_disk_bytes_quota{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Quota",
@@ -983,7 +968,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:797",
           "format": "bytes",
           "label": null,
           "logBase": 1,
@@ -992,7 +976,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:798",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1020,15 +1003,15 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(cf_application_info, deployment)",
+        "definition": "",
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Deployment",
+        "label": "Environment",
         "multi": false,
-        "name": "bosh_deployment",
+        "name": "environment",
         "options": [],
-        "query": "label_values(cf_application_info, deployment)",
+        "query": "label_values(cf_application_info, environment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1043,7 +1026,30 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
+        "definition": "",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -1051,7 +1057,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1066,7 +1072,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "definition": "",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -1074,7 +1080,7 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1089,7 +1095,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "definition": "",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -1097,7 +1103,7 @@
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1112,7 +1118,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "definition": "",
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -1120,7 +1126,7 @@
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
