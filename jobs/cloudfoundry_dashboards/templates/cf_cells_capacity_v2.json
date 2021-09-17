@@ -64,7 +64,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494015026,
+  "iteration": 1631898322401,
   "links": [
     {
       "asDropdown": true,
@@ -126,7 +126,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
+        "w": 7,
         "x": 0,
         "y": 0
       },
@@ -136,10 +136,12 @@
       "mappingType": 1,
       "mappingTypes": [
         {
+          "$$hashKey": "object:278",
           "name": "value to text",
           "value": 1
         },
         {
+          "$$hashKey": "object:279",
           "name": "range to text",
           "value": 2
         }
@@ -167,8 +169,10 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "interval": "",
           "intervalFactor": 2,
+          "legendFormat": "",
           "metric": "firehose_value_metric_rep_capacity_total_containers",
           "refId": "A",
           "step": 60
@@ -181,6 +185,7 @@
       "valueFontSize": "80%",
       "valueMaps": [
         {
+          "$$hashKey": "object:281",
           "op": "=",
           "text": "N/A",
           "value": "null"
@@ -214,7 +219,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
+        "w": 7,
         "x": 8,
         "y": 0
       },
@@ -225,10 +230,12 @@
       "mappingType": 1,
       "mappingTypes": [
         {
+          "$$hashKey": "object:266",
           "name": "value to text",
           "value": 1
         },
         {
+          "$$hashKey": "object:267",
           "name": "range to text",
           "value": 2
         }
@@ -256,7 +263,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -276,6 +283,7 @@
       "valueFontSize": "80%",
       "valueMaps": [
         {
+          "$$hashKey": "object:269",
           "op": "=",
           "text": "N/A",
           "value": "null"
@@ -318,7 +326,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
+        "w": 6,
         "x": 16,
         "y": 0
       },
@@ -344,7 +352,7 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
+          "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
           "instant": true,
           "interval": "",
           "intervalFactor": 2,
@@ -415,7 +423,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -423,7 +431,8 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
           "refId": "B",
@@ -452,6 +461,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:325",
           "format": "mbytes",
           "label": null,
           "logBase": 1,
@@ -460,6 +470,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:326",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -528,14 +539,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
           "refId": "A",
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
           "refId": "B",
@@ -606,7 +619,7 @@
       "format": "short",
       "gridPos": {
         "h": 10,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 14
       },
@@ -626,7 +639,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_job_ip }}",
@@ -658,8 +671,8 @@
       "format": "mbytes",
       "gridPos": {
         "h": 10,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 6,
         "y": 14
       },
       "id": 7,
@@ -679,7 +692,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_rep_capacity_total_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -704,6 +717,78 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fontSize": "80%",
+      "format": "percent",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 14
+      },
+      "id": 12,
+      "interval": null,
+      "legend": {
+        "percentage": false,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "values": true
+      },
+      "legendType": "Under graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "pluginVersion": "7.3.3",
+      "strokeWidth": 1,
+      "targets": [
+        {
+          "expr": "sum(bosh_job_process_cpu_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ bosh_job_ip }}",
+          "refId": "A",
+          "step": 2400
+        }
+      ],
+      "title": "Percent of CPU Used Per Cell",
+      "transparent": true,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "Others",
+        "threshold": 0
+      },
+      "datasource": "${DS_PROMETHEUS}",
+      "fieldConfig": {
+        "defaults": {
           "custom": {}
         },
         "overrides": []
@@ -712,8 +797,8 @@
       "format": "mbytes",
       "gridPos": {
         "h": 10,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 14
       },
       "id": 11,
@@ -733,7 +818,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_rep_capacity_total_disk{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_disk{bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -762,7 +847,30 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers, environment)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -770,7 +878,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_rep_capacity_total_containers, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -785,7 +893,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -793,7 +901,7 @@
         "multi": true,
         "name": "bosh_job_name",
         "options": [],
-        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
