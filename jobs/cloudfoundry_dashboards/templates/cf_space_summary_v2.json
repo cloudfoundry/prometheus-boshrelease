@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494047127,
+  "iteration": 1631898378939,
   "links": [
     {
       "asDropdown": true,
@@ -137,7 +137,7 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "sum(avg(cf_application_instances{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -200,7 +200,8 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "sum(avg(cf_application_memory_mb{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
           "refId": "A",
@@ -260,7 +261,7 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "sum(avg(cf_service_instance_info{deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(service_instance_id))",
+          "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(service_instance_id))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -321,7 +322,7 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "sum(avg(cf_route_info{deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(route_id))",
+          "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(route_id))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -384,7 +385,8 @@
       "pluginVersion": "7.3.3",
       "targets": [
         {
-          "expr": "sum(avg(cf_application_disk_quota_mb{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
+          "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
           "refId": "A",
@@ -436,7 +438,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_info{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{deployment=~\"${bosh_deployment}\"}) by(stack_id, stack_name)",
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) by(stack_id, stack_name)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ stack_name }}",
@@ -488,7 +490,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_info{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, buildpack)) by(buildpack)",
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, buildpack)) by(buildpack)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ buildpack }}",
@@ -540,7 +542,7 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "sum(avg(cf_application_info{deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, state)) by(state) ",
+          "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, state)) by(state) ",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ state }}",
@@ -567,7 +569,30 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(cf_space_info, environment)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(cf_space_info, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(cf_space_info{environment=~\"$environment\"}, deployment)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -575,7 +600,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_space_info, deployment)",
+        "query": "label_values(cf_space_info{environment=~\"$environment\"}, deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -590,7 +615,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -598,7 +623,7 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_organization_info{deployment=~\"${bosh_deployment}\"}, organization_name)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -613,7 +638,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -621,7 +646,7 @@
         "multi": false,
         "name": "cf_organization_id",
         "options": [],
-        "query": "label_values(cf_organization_info{deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
+        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -636,7 +661,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -644,7 +669,7 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_space_info{deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
+        "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -659,7 +684,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "definition": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -667,7 +692,7 @@
         "multi": false,
         "name": "cf_space_id",
         "options": [],
-        "query": "label_values(cf_space_info{deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
+        "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
