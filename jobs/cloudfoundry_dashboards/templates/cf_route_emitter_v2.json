@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1629494037363,
+  "iteration": 1631898372080,
   "links": [
     {
       "asDropdown": true,
@@ -134,7 +134,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_route_emitter_routes_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "expr": "avg(firehose_value_metric_route_emitter_routes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Number of Routes",
@@ -241,15 +241,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_registered_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_registered_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "hide": false,
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Registered",
           "refId": "A",
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_synced_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_synced_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -258,7 +259,8 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_unregistered_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_routes_unregistered_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Unregistered",
           "refId": "C",
@@ -364,7 +366,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_http_route_nats_messages_emitted_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_http_route_nats_messages_emitted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "HTTP Route Nats Messages Emitted",
@@ -372,7 +374,7 @@
           "step": 2
         },
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_internal_route_nats_messages_emitted_total{bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_internal_route_nats_messages_emitted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "legendFormat": "Internal Route Nats Messages Emitted",
           "refId": "B"
@@ -438,7 +440,30 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, bosh_deployment)",
+        "definition": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, environment)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, environment)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total{environment=~\"$environment\"}, bosh_deployment)",
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -446,7 +471,7 @@
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
