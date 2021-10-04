@@ -42,6 +42,9 @@ case $1 in
       <% if_p('pushgateway.web.telemetry_path') do |telemetry_path| %> \
       --web.telemetry-path="<%= telemetry_path %>" \
       <% end %> \
+      <% if_p('pushgateway.pushgateway.web.config_file') do |config_file| %> \
+      --web.config_file="<%= config_file %>" \
+      <% end %> \
       >>  ${LOG_DIR}/pushgateway.stdout.log \
       2>> ${LOG_DIR}/pushgateway.stderr.log
     ;;
