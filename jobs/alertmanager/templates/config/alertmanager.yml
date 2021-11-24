@@ -113,6 +113,8 @@ route:
   match_re: <%= match_re %>
   <% end %>
 
+  mute_time_intervals: <%= p('alertmanager.route.mute_time_intervals', []).to_json %>
+
   # Child routes
   routes: <%= p('alertmanager.route.routes', []).to_json %>
 
@@ -122,4 +124,9 @@ receivers: <%= p('alertmanager.receivers').to_json %>
 <% if_p('alertmanager.inhibit_rules') do |inhibit_rules| %>
 # A list of inhibition rules
 inhibit_rules: <%= inhibit_rules.to_json %>
+<% end %>
+
+<% if_p('alertmanager.mute_time_intervals') do |mute_time_intervals| %>
+# A list of mute time intervals for muting routes.
+mute_time_intervals: <%= mute_time_intervals.to_json %>
 <% end %>
