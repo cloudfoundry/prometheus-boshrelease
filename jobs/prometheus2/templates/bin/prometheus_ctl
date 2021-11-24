@@ -123,7 +123,7 @@ case $1 in
       <% if_p('prometheus.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \
       <% end %> \
-      --web.listen-address=":<%= p('prometheus.web.port') %>" \
+      --web.listen-address="<%= p('prometheus.web.listen_address', '') %>:<%= p('prometheus.web.port') %>" \
       <% if_p('prometheus.web.max_connections') do |max_connections| %> \
       --web.max-connections="<%= max_connections %>" \
       <% end %> \
