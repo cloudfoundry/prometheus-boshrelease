@@ -86,7 +86,7 @@ case $1 in
       <% if_p('alertmanager.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \
       <% end %> \
-      --web.listen-address=":<%= p('alertmanager.web.port') %>" \
+      --web.listen-address="<%= p('alertmanager.web.listen_address', '') %>:<%= p('alertmanager.web.port') %>" \
       <% if_p('alertmanager.web.get_concurrency') do |get_concurrency| %> \
       --web.get-concurrency="<%= get_concurrency %>" \
       <% end %> \
