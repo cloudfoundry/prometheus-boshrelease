@@ -42,6 +42,8 @@ properties:
     description: "How frequently to evaluate rules by default"
   prometheus.external_labels:
     description: "Attach these labels to any time series or alerts when communicating with external systems"
+  prometheus.query_log_file:
+    description: "File to which PromQL queries are logged"
   prometheus.rule_files:
     description: "Array of paths to Prometheus rule files"
   prometheus.custom_rules:
@@ -50,6 +52,8 @@ properties:
     description: "Array of scrape configurations"
   prometheus.alert_relabel_configs:
     description: "Alerting relabel configuration"
+  prometheus.alertmanagers:
+    description: "Alertmanagers"
   prometheus.remote_write:
     description: "Remote write storage configuration"
   prometheus.remote_read:
@@ -76,6 +80,9 @@ properties:
   prometheus.rules.alert.resend_delay:
     description: "Minimum amount of time to wait before resending an alert to Alertmanager"
 
+  prometheus.storage.tsdb.allow_overlapping_blocks:
+    description: "Allow overlapping blocks, which in turn enables vertical compaction and vertical query merge"
+    default: false
   prometheus.storage.tsdb.retention.time:
     description: "How long to retain samples in the storage"
   prometheus.storage.tsdb.retention.size:
