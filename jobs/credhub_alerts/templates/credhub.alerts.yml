@@ -1,8 +1,8 @@
 groups:
   - name: credhub
     rules:
-      - alert: CredhubCrendentialAging
-        expr: (time() - credhub_credential_created_at) / 86400 > <%= p('credhub_alerts.credential_expire.threshold') %>
+      - alert: CredhubCredentialAging
+        expr: (time() - credhub_credential_created_at{type!="certificate"}) / 86400 > <%= p('credhub_alerts.credential_expire.threshold') %>
         for: <%= p('credhub_alerts.credential_expire.evaluation_time') %>
         labels:
           severity: warning
