@@ -21,6 +21,8 @@ case $1 in
     pid_guard ${PIDFILE} "graphite_exporter"
     echo $$ > ${PIDFILE}
 
+    ulimit -n 65536
+
     exec graphite_exporter \
       --graphite.listen-address=":<%= p('graphite_exporter.graphite.port') %>" \
       <% if_p('graphite_exporter.graphite.cache_size') do |cache_size| %> \
