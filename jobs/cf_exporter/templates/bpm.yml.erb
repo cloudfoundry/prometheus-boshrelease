@@ -1,0 +1,78 @@
+<%
+
+# compute cf api url from link or from property
+cf_url = nil
+if_link("cloud_controller") do |link|
+  cf_url = sprintf("https://api.%s", link.p("system_domain"))
+end
+unless cf_url
+  cf_url = p("cf_exporter.cf.api_url")
+end
+
+
+# set cf_exporter cmdline args
+args = [
+  "--log.level",         p("cf_exporter.log_level"),
+  "--log.stream",        p("cf_exporter.log_stream"),
+  "--collector.workers", p("cf_exporter.workers"),
+]
+
+# set cf_exporter env variables
+env                                    = {}
+env["CF_EXPORTER_CF_API_URL"]          = cf_url
+env["CF_EXPORTER_CF_CLIENT_ID"]        = p("cf_exporter.cf.client_id", "")
+env["CF_EXPORTER_CF_CLIENT_SECRET"]    = p("cf_exporter.cf.client_secret", "")
+env["CF_EXPORTER_CF_USERNAME"]         = p("cf_exporter.cf.username", "")
+env["CF_EXPORTER_CF_PASSWORD"]         = p("cf_exporter.cf.password", "")
+env["CF_EXPORTER_CF_DEPLOYMENT_NAME"]  = p("cf_exporter.cf.deployment_name")
+env["CF_EXPORTER_METRICS_NAMESPACE"]   = p("cf_exporter.metrics.namespace", "cf")
+env["CF_EXPORTER_METRICS_ENVIRONMENT"] = p("cf_exporter.metrics.environment", "")
+env["CF_EXPORTER_WEB_TELEMETRY_PATH"]  = p("cf_exporter.web.telemetry_path", "/metrics")
+env["CF_EXPORTER_WEB_AUTH_USERNAME"]   = p("cf_exporter.web.auth_username", "")
+env["CF_EXPORTER_WEB_AUTH_PASSWORD"]   = p("cf_exporter.web.auth_password", "")
+env["CF_EXPORTER_WEB_LISTEN_ADDRESS"]  = ":#{p("cf_exporter.web.port")}"
+env["CF_EXPORTER_SKIP_SSL_VERIFY"]     = "false"
+
+# only set filters is property is given, empty value is different than
+# unset value
+if_p("cf_exporter.filter.collectors") do |val|
+  env["CF_EXPORTER_FILTER_COLLECTORS"] = val
+end
+
+
+# when property value is true
+# -> not "if property exists"
+# -> always defined since it has a default value in spec
+if p("cf_exporter.skip_ssl_verify")
+  env["CF_EXPORTER_SKIP_SSL_VERIFY"] = "true"
+end
+
+# define cert env if needed
+if_p("cf_exporter.web.tls_cert", "cf_exporter.web.tls_key") do
+  env["CF_EXPORTER_WEB_TLS_CERTFILE"] = "/var/vcap/jobs/cf_exporter/config/web_tls_cert.pem"
+  env["CF_EXPORTER_WEB_TLS_KEYFILE"]  = "/var/vcap/jobs/cf_exporter/config/web_tls_key.pem"
+end
+
+# define http_proxy, https_proxy and no_proxy according to spec
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+# generate bpm config structure
+config = {
+  "processes" => [
+    {
+      "name"       => "cf_exporter",
+      "executable" => "/var/vcap/packages/cf_exporter/bin/cf_exporter",
+      "env"        => env,
+      "args"       => args,
+    }
+  ]
+}
+%>
+
+<%= YAML.dump(config) %>

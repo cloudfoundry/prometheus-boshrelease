@@ -7,10 +7,13 @@
   value:
     name: cf_exporter
     release: prometheus
+    consumes:
+      cloud_controller:
+        deployment: cf
+        from: cloud_controller
     properties:
       cf_exporter:
         cf:
-          api_url: https://api.((system_domain))
           client_id: cf_exporter
           client_secret: "((uaa_clients_cf_exporter_secret))"
           deployment_name: ((metron_deployment_name))
