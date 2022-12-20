@@ -139,6 +139,9 @@ case $1 in
       <% if_p('prometheus.web.user_assets') do |user_assets| %> \
       --web.user-assets="<%= user_assets %>" \
       <% end %> \
+      <% p('prometheus.enable_features', []).each do |enable_feature| %> \
+      --enable-feature="<%= enable_feature %>" \
+      <% end %> \
       >>  ${LOG_DIR}/prometheus.stdout.log \
       2>> ${LOG_DIR}/prometheus.stderr.log
     ;;
