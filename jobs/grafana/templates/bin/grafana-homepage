@@ -7,16 +7,50 @@ JQ_CMD=/var/vcap/packages/grafana_jq/bin/jq
 <% if_p('grafana.dashboards.custom_homepage_json') do |homepage_json| %>
 GRAFANA_API="<%= p('grafana.server.protocol', 'http') %>://<%= spec.ip %>:<%= p('grafana.server.http_port') %>"
 GRAFANA_CREDENTIALS="<%= p('grafana.security.admin_user') %>:<%= p('grafana.security.admin_password') %>"
-upsert_dash_resp="$(curl -u ${GRAFANA_CREDENTIALS} -ksf -X POST "${GRAFANA_API}/api/dashboards/db" \
-  -H 'Content-Type: application/json' \
-  -d '{ "dashboard": <%= homepage_json %>, "overwrite": true }')"
-dash_slug="$( ${JQ_CMD} -r .slug <<< "${upsert_dash_resp}" )"
-get_dash_resp="$(curl -u ${GRAFANA_CREDENTIALS} -ksf -X GET "${GRAFANA_API}/api/dashboards/db/${dash_slug}" \
-  -H 'Content-Type: application/json')"
-dash_id="$( ${JQ_CMD} -r .dashboard.id <<< "${get_dash_resp}" )"
-curl -u ${GRAFANA_CREDENTIALS} -ksf -X PUT "${GRAFANA_API}/api/org/preferences" \
-  -H 'Content-Type: application/json' \
-  -d "{ \"homeDashboardId\": ${dash_id} }"
-<% end %>
+DASHBOARD=$(cat - <<'EOF'
+<%= homepage_json %>
+EOF
+  )
 
-exit 0
+function error() {
+  echo $@ >&2
+  exit 1
+}
+
+function create_or_update_dashboard() {
+  local json="$1"; shift
+
+  body=$(curl \
+           -kfsSL \
+           -u ${GRAFANA_CREDENTIALS} \
+           -X POST \
+           -H 'Content-Type: application/json' \
+           ${GRAFANA_API}/api/dashboards/db \
+           -d "{ \"dashboard\": ${json}, \"overwrite\": true }") || {
+    error "unable to create or update home dashboard from grafana api"
+  }
+
+  id=$(${JQ_CMD} -er .id <<< "${body}") || {
+    error "unexpected api response, missing id field in ${body}"
+  }
+
+  echo ${id}
+}
+
+function set_home_dashboard() {
+  local id=$1; shift
+
+  curl \
+    -kfsSL \
+    -u ${GRAFANA_CREDENTIALS} \
+    -X PUT \
+    -H 'Content-Type: application/json' \
+    "${GRAFANA_API}/api/org/preferences" \
+    -d "{ \"homeDashboardId\": ${id} }" || {
+    error "could not set home dashboard preference"
+  }
+}
+
+set_home_dashboard $(create_or_update_dashboard "${DASHBOARD}")
+
+<% end %>
