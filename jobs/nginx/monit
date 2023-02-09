@@ -3,3 +3,6 @@ check process nginx
   start program "/var/vcap/jobs/nginx/bin/nginx_ctl start"
   stop program "/var/vcap/jobs/nginx/bin/nginx_ctl stop"
   group vcap
+
+check file hosts with path /etc/hosts
+  if changed timestamp then exec "/usr/bin/bash -c '/usr/bin/kill -s SIGHUP $(cat /var/vcap/sys/run/nginx/nginx.pid)'"
