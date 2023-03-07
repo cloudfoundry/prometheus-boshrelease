@@ -5,9 +5,9 @@ packages:
   - cf_exporter
 
 templates:
-  bin/cf_exporter_ctl: bin/cf_exporter_ctl
-  config/web_tls_cert.pem: config/web_tls_cert.pem
-  config/web_tls_key.pem: config/web_tls_key.pem
+  bpm.yml.erb: config/bpm.yml
+  web_tls_cert.pem.erb: config/web_tls_cert.pem
+  web_tls_key.pem.erb: config/web_tls_key.pem
 
 properties:
   cf_exporter.cf.api_url:
@@ -22,17 +22,14 @@ properties:
     description: "Cloud Foundry Client Secret"
   cf_exporter.cf.deployment_name:
     description: "Cloud Foundry Deployment Name to be reported as a metric label"
-  cf_exporter.cf.api_v3_enabled:
-    description: "Enable Cloud Foundry API V3 calls"
-    default: false
-  cf_exporter.events.query:
-    description: "When the 'Events' filter is enabled and this value is set, this query is sent to the CloudController to limit the number of results returned"
   cf_exporter.filter.collectors:
-    description: "Comma separated collectors to filter ('Applications', 'Buildpacks', 'Events', 'IsolationSegments', 'Organizations', 'Routes', 'SecurityGroups', `ServiceBindings`, 'ServiceInstances', `ServicePlans`, 'Services', 'Spaces', 'Stacks')"
-  cf_exporter.log_format:
-    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+    description: "Comma separated collectors to filter (Applications,Buildpacks,Events,IsolationSegments,Organizations,Routes,SecurityGroups,ServiceBindings,ServiceInstances,ServicePlans,Services,Spaces,Stacks), If not set, all collectors except Events are enabled."
+  cf_exporter.log_stream:
+    description: "Set the log target stream 'stdout' or 'stderr'"
+    default: stderr
   cf_exporter.log_level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+    default: info
   cf_exporter.metrics.namespace:
     description: "Metrics Namespace"
   cf_exporter.metrics.environment:
