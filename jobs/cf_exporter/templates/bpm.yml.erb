@@ -1,0 +1,69 @@
+<%
+
+# program args
+args = [
+  "--log.level",  p("cf_exporter.log_level"),
+  "--log.stream", p("cf_exporter.log_stream"),
+  "--cf.api_url", p("cf_exporter.cf.api_url"),
+]
+
+# program env variables
+env = {}
+env["CF_EXPORTER_WEB_LISTEN_ADDRESS"] = ":#{p('cf_exporter.web.port')}"
+
+# translate spec entry to envvar expected by binary
+specMap = {
+  "cf_exporter.cf.username"         => "CF_EXPORTER_CF_USERNAME",
+  "cf_exporter.cf.password"         => "CF_EXPORTER_CF_PASSWORD",
+  "cf_exporter.cf.client_id"        => "CF_EXPORTER_CF_CLIENT_ID",
+  "cf_exporter.cf.client_secret"    => "CF_EXPORTER_CF_CLIENT_SECRET",
+  "cf_exporter.web.auth_username"   => "CF_EXPORTER_WEB_AUTH_USERNAME",
+  "cf_exporter.web.auth_password"   => "CF_EXPORTER_WEB_AUTH_PASSWORD",
+  "cf_exporter.cf.deployment_name"  => "CF_EXPORTER_CF_DEPLOYMENT_NAME",
+  "cf_exporter.filter.collectors"   => "CF_EXPORTER_FILTER_COLLECTORS",
+  "cf_exporter.metrics.namespace"   => "CF_EXPORTER_METRICS_NAMESPACE",
+  "cf_exporter.metrics.environment" => "CF_EXPORTER_METRICS_ENVIRONMENT",
+  "cf_exporter.web.telemetry_path"  => "CF_EXPORTER_WEB_TELEMETRY_PATH",
+}
+specMap.each { |specKey, envKey|
+  if_p(specKey) do |specValue|
+    env[envKey] = specValue
+  end
+}
+
+# when property value is true
+# -> not "if property exists"
+# -> always defined since it has a default value in spec
+if p("cf_exporter.skip_ssl_verify")
+  env["CF_EXPORTER_SKIP_SSL_VERIFY"] = "true"
+end
+
+# fixed values when data provided in spec
+if_p("cf_exporter.web.tls_cert", "cf_exporter.web.tls_key") do
+  env["CF_EXPORTER_WEB_TLS_CERTFILE"] = "/var/vcap/jobs/cf_exporter/config/web_tls_cert.pem"
+  env["CF_EXPORTER_WEB_TLS_KEYFILE"]  = "/var/vcap/jobs/cf_exporter/config/web_tls_key.pem"
+end
+
+# proxy handling
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+# bpm final configuration struct
+config = {
+  "processes" => [
+    {
+      "name"       => "cf_exporter",
+      "executable" => "/var/vcap/packages/cf_exporter/bin/cf_exporter",
+      "env"        => env,
+      "args"       => args,
+    }
+  ]
+}
+%>
+
+<%= YAML.dump(config) %>
