@@ -9,18 +9,19 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.3"
+      "version": "9.3.6"
     },
     {
       "type": "panel",
-      "id": "grafana-piechart-panel",
-      "name": "Pie Chart",
-      "version": "1.6.1"
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
     },
     {
       "type": "datasource",
@@ -39,20 +40,28 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
-  "editable": true,
-  "gnetId": null,
+  "editable": false,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1631898378939,
   "links": [
     {
       "asDropdown": true,
@@ -88,13 +97,16 @@
       "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Total number of running Instances and Quota for this Space.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -134,9 +146,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
           "interval": "",
           "intervalFactor": 2,
@@ -145,14 +161,15 @@
           "step": 4
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Instances",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Total Memory Used by running instances and Quota for this Space.",
       "fieldConfig": {
         "defaults": {
@@ -160,7 +177,6 @@
             "fixedColor": "green",
             "mode": "fixed"
           },
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -197,9 +213,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_memory_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
           "interval": "",
           "intervalFactor": 2,
@@ -208,17 +228,17 @@
           "step": 4
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Memory",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -258,9 +278,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_service_instance_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(service_instance_id))",
           "interval": "",
           "intervalFactor": 2,
@@ -269,17 +293,17 @@
           "step": 4
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Service Instances",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -319,9 +343,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_route_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",space_id=~\"$cf_space_id\"}) by(route_id))",
           "interval": "",
           "intervalFactor": 2,
@@ -330,14 +358,15 @@
           "step": 4
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Routes",
       "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Total Disk allocated to running instances for this Space.",
       "fieldConfig": {
         "defaults": {
@@ -345,7 +374,6 @@
             "fixedColor": "green",
             "mode": "fixed"
           },
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -382,9 +410,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_disk_quota_mb{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"} * on (application_id) cf_application_instances{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\",state=\"STARTED\"}) by(application_id))",
           "interval": "",
           "intervalFactor": 2,
@@ -393,30 +425,32 @@
           "step": 4
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Disk",
       "transparent": true,
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
-      "datasource": "${DS_PROMETHEUS}",
       "description": "Stacks used at this Space.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
         },
         "overrides": []
       },
-      "fontSize": "80%",
-      "format": "short",
       "gridPos": {
         "h": 7,
         "w": 7,
@@ -424,20 +458,37 @@
         "y": 5
       },
       "id": 5,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, stack_id)) by(stack_id) * on(stack_id) group_left(stack_name) count(cf_stack_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}) by(stack_id, stack_name)",
           "interval": "",
           "intervalFactor": 2,
@@ -448,27 +499,30 @@
       ],
       "title": "Stacks",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
-      "datasource": "${DS_PROMETHEUS}",
       "description": "Buildpacks used at this Space.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
         },
         "overrides": []
       },
-      "fontSize": "80%",
-      "format": "short",
       "gridPos": {
         "h": 7,
         "w": 9,
@@ -476,20 +530,37 @@
         "y": 5
       },
       "id": 1,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, buildpack)) by(buildpack)",
           "interval": "",
           "intervalFactor": 2,
@@ -500,27 +571,30 @@
       ],
       "title": "Buildpacks",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
-      "datasource": "${DS_PROMETHEUS}",
       "description": "State of Applications at this Space.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
         },
         "overrides": []
       },
-      "fontSize": "80%",
-      "format": "short",
       "gridPos": {
         "h": 7,
         "w": 8,
@@ -528,20 +602,37 @@
         "y": 5
       },
       "id": 6,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(avg(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\",organization_id=~\"$cf_organization_id\",space_name=~\"$cf_space_name\"}) by(application_id, state)) by(state) ",
           "interval": "",
           "intervalFactor": 2,
@@ -552,12 +643,11 @@
       ],
       "title": "State of Applications",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 26,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "cf",
@@ -566,139 +656,157 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_space_info, environment)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(cf_space_info, environment)",
+        "query": {
+          "query": "label_values(cf_space_info, environment)",
+          "refId": "prometheus-environment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_space_info{environment=~\"$environment\"}, deployment)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_space_info{environment=~\"$environment\"}, deployment)",
+        "query": {
+          "query": "label_values(cf_space_info{environment=~\"$environment\"}, deployment)",
+          "refId": "prometheus-bosh_deployment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Organization",
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
+        "query": {
+          "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\"}, organization_name)",
+          "refId": "prometheus-cf_organization_name-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "Organization ID",
         "multi": false,
         "name": "cf_organization_id",
         "options": [],
-        "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
+        "query": {
+          "query": "label_values(cf_organization_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_name=~\"$cf_organization_name\"}, organization_id)",
+          "refId": "prometheus-cf_organization_id-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Space",
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
+        "query": {
+          "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\"}, space_name)",
+          "refId": "prometheus-cf_space_name-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "Space ID",
         "multi": false,
         "name": "cf_space_id",
         "options": [],
-        "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
+        "query": {
+          "query": "label_values(cf_space_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}\", organization_id=~\"$cf_organization_id\", space_name=~\"$cf_space_name\"}, space_id)",
+          "refId": "prometheus-cf_space_id-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -737,5 +845,6 @@
   "timezone": "browser",
   "title": "CF: Space Summary v2",
   "uid": "cf_space_summary_v2",
-  "version": 2
+  "version": 2,
+  "weekStart": ""
 }
