@@ -9,44 +9,53 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "9.3.6"
     },
     {
       "type": "panel",
-      "id": "grafana-piechart-panel",
-      "name": "Pie Chart",
-      "version": "1.2.0"
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": false,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523180991549,
   "links": [
     {
       "asDropdown": true,
@@ -69,44 +78,73 @@
       "url": "http://bosh.io/docs"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
-      "aliasColors": {},
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "fontSize": "80%",
-      "format": "short",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 7,
+        "h": 12,
         "w": 12,
         "x": 0,
         "y": 0
       },
       "id": 6,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "sortDesc": false,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
           "expr": "count_values(\"release\", bosh_deployment_release_info{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\"})  by(bosh_release_name, bosh_release_version)",
           "intervalFactor": 10,
           "legendFormat": "{{ bosh_release_name }}/{{ bosh_release_version }}",
+          "range": true,
           "refId": "A",
           "step": 200
         }
@@ -114,43 +152,68 @@
       "timeFrom": "1m",
       "title": "Releases In Use",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
-      "aliasColors": {},
-      "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": 0
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
-      "datasource": "${DS_PROMETHEUS}",
-      "editable": true,
-      "error": false,
-      "fontSize": "80%",
-      "format": "short",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 7,
-        "w": 12,
+        "h": 12,
+        "w": 11,
         "x": 12,
         "y": 0
       },
       "id": 5,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "sortDesc": true,
-        "values": true
-      },
-      "legendType": "Under graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "count_values(\"stemcell\", bosh_deployment_stemcell_info{environment=~\"$environment\",bosh_name=~\"$bosh_director\",bosh_deployment=~\"$bosh_deployment\"})  by(bosh_stemcell_name, bosh_stemcell_version)",
           "intervalFactor": 10,
           "legendFormat": "{{ bosh_stemcell_name }}/{{ bosh_stemcell_version }}",
@@ -159,15 +222,13 @@
         }
       ],
       "timeFrom": "1m",
-      "timeShift": null,
       "title": "Stemcells In Use",
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "bosh"
@@ -175,62 +236,78 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(bosh_deployment_stemcell_info, environment)",
+        "query": {
+          "query": "label_values(bosh_deployment_stemcell_info, environment)",
+          "refId": "prometheus-environment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Director",
         "multi": false,
         "name": "bosh_director",
         "options": [],
-        "query": "label_values(bosh_deployment_stemcell_info{environment=~\"$environment\"}, bosh_name)",
+        "query": {
+          "query": "label_values(bosh_deployment_stemcell_info{environment=~\"$environment\"}, bosh_name)",
+          "refId": "prometheus-bosh_director-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(bosh_deployment_stemcell_info{environment=~\"$environment\",bosh_name=~\"$bosh_director\"}, bosh_deployment)",
+        "query": {
+          "query": "label_values(bosh_deployment_stemcell_info{environment=~\"$environment\",bosh_name=~\"$bosh_director\"}, bosh_deployment)",
+          "refId": "prometheus-bosh_deployment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
         "type": "query",
         "useTags": false
       }
@@ -268,5 +345,6 @@
   "timezone": "browser",
   "title": "BOSH: Deployments",
   "uid": "bosh_deployments",
-  "version": 1
+  "version": 2,
+  "weekStart": ""
 }
