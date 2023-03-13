@@ -2,7 +2,7 @@
 
 # Exporter jobs
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/-
+  path: /instance_groups/name=prometheus2/jobs/name=bpm?
   value:
     name: bpm
     release: bpm
@@ -44,12 +44,3 @@
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=BOSH?/files/-
   value: /var/vcap/jobs/credhub_dashboards/*.json
-
-# Releases
-- type: replace
-  path: /releases/-
-  value:
-    name: bpm
-    version: 1.1.9
-    url: https://bosh.io/d/github.com/cloudfoundry/bpm-release?v=1.1.9
-    sha1: dcf0582d838a73de29da273552ae79ac3098ee8b
