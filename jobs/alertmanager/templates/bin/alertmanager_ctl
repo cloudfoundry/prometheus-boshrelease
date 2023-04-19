@@ -49,7 +49,7 @@ case $1 in
       --log.format="<%= log_format %>" \
       <% end %> \
       <% if p('alertmanager.cluster.enabled', true) == false %> \
-      --cluster.listen-address= \
+      --cluster.listen-address="" \
       <% else %> \
       --cluster.listen-address=<%= "#{p('alertmanager.cluster.listen_address', spec.ip)}:#{p('alertmanager.mesh.port', p('alertmanager.cluster.port'))}" %> \
         <% if_p('alertmanager.cluster.advertise_address') do |address| %> \
