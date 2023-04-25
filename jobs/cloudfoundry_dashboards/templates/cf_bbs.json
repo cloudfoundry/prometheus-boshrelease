@@ -14,19 +14,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "7.3.3"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523191914695,
+  "iteration": 1631898315077,
   "links": [
     {
       "asDropdown": true,
@@ -79,7 +79,14 @@
       "description": "Cumulative number of requests the BBS has handled through its API. Emitted for each BBS request.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 5,
@@ -87,6 +94,7 @@
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 5,
       "legend": {
         "avg": false,
@@ -101,7 +109,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -112,6 +124,7 @@
       "targets": [
         {
           "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -120,6 +133,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Requests",
       "tooltip": {
@@ -139,6 +153,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:128",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -147,6 +162,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:129",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -154,7 +170,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -165,7 +185,14 @@
       "description": "Time in nanoseconds that the BBS took to handle requests to its API endpoints. Emitted when the BBS API handles requests.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 5,
@@ -173,6 +200,7 @@
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "alignAsTable": false,
@@ -188,7 +216,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -208,6 +240,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Request Latency",
       "tooltip": {
@@ -227,6 +260,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:213",
           "format": "ns",
           "label": null,
           "logBase": 1,
@@ -235,6 +269,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:214",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -242,7 +277,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -253,7 +292,14 @@
       "description": "Cumulative number of times BBS has run its LRP and Task convergence pass. Emitted every 30 seconds.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 5,
@@ -261,6 +307,7 @@
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "avg": false,
@@ -275,7 +322,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -294,6 +345,7 @@
         },
         {
           "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})  by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
           "refId": "B",
@@ -302,6 +354,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Convergence Runs",
       "tooltip": {
@@ -321,6 +374,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:291",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -329,6 +383,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:292",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -336,7 +391,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -347,7 +406,14 @@
       "description": "Cumulative number of times the BBS has updated a Task (Kicked) or has deleted a malformed Task (Pruned) during its Task convergence pass. Emitted every 30 seconds.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 5,
@@ -355,6 +421,7 @@
         "x": 12,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "avg": false,
@@ -369,7 +436,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -380,6 +451,7 @@
       "targets": [
         {
           "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Kicked",
           "refId": "A",
@@ -387,6 +459,7 @@
         },
         {
           "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Pruned",
           "refId": "B",
@@ -395,6 +468,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Tasks",
       "tooltip": {
@@ -414,6 +488,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:369",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -422,6 +497,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:370",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -429,7 +505,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -440,14 +520,22 @@
       "description": "Time in nanoseconds that the BBS took to run its LRP and Task convergence pass. Emitted every 30 seconds when LRP and Task convergence runs.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
-        "h": 5,
-        "w": 12,
+        "h": 4,
+        "w": 23,
         "x": 0,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": true,
@@ -455,7 +543,7 @@
         "current": true,
         "max": true,
         "min": true,
-        "rightSide": false,
+        "rightSide": true,
         "show": true,
         "total": false,
         "values": true
@@ -464,7 +552,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -475,6 +567,7 @@
       "targets": [
         {
           "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
           "refId": "A",
@@ -482,6 +575,7 @@
         },
         {
           "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
           "refId": "B",
@@ -490,6 +584,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Convergence Duration",
       "tooltip": {
@@ -509,6 +604,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1740",
           "format": "ns",
           "label": null,
           "logBase": 1,
@@ -517,114 +613,23 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1741",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
           "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Cumulative number of times the BBS has detected and deleted a malformed ActualLRP, DesiredLRP RunInfo or DesiredLRP SchedulingInfo in its LRP convergence pass. Emitted every 30 seconds.",
-      "fill": 1,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 10
-      },
-      "id": 6,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_pre_processing_actual_lr_ps_deleted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-          "intervalFactor": 2,
-          "legendFormat": "Deleted",
-          "refId": "A",
-          "step": 4
-        },
-        {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_pre_processing_malformed_run_infos_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-          "intervalFactor": 2,
-          "legendFormat": "Malformed Runs",
-          "refId": "B",
-          "step": 4
-        },
-        {
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_pre_processing_malformed_scheduling_infos_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
-          "intervalFactor": 2,
-          "legendFormat": "Malformed Scheduling",
-          "refId": "C",
-          "step": 4
         }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Malformed LRPs",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "cf",
@@ -636,6 +641,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_bbs_request_count_total, environment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
@@ -645,6 +652,7 @@
         "query": "label_values(firehose_counter_event_bbs_request_count_total, environment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -656,6 +664,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\"}, bosh_deployment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
@@ -665,6 +675,7 @@
         "query": "label_values(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -706,5 +717,5 @@
   "timezone": "browser",
   "title": "CF: BBS",
   "uid": "cf_bbs",
-  "version": 11
+  "version": 3
 }

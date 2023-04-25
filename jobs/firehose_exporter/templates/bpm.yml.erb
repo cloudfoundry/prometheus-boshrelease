@@ -1,0 +1,76 @@
+<%
+
+rpl_url = nil
+if_link("reverse_log_proxy") do |rlp|
+  rpl_url = "#{rlp.address}:#{rlp.p('reverse_log_proxy.egress.port')}"
+end
+unless rpl_url
+  rpl_url = p("firehose_exporter.logging.url")
+end
+
+args = []
+env = {
+  "FIREHOSE_EXPORTER_LOGGING_URL"              => rpl_url,
+  "FIREHOSE_EXPORTER_LOGGING_TLS_CA"           => "/var/vcap/jobs/firehose_exporter/config/rlp_tls_ca.pem",
+  "FIREHOSE_EXPORTER_LOGGING_TLS_CERT"         => "/var/vcap/jobs/firehose_exporter/config/rlp_tls_cert.pem",
+  "FIREHOSE_EXPORTER_LOGGING_TLS_KEY"          => "/var/vcap/jobs/firehose_exporter/config/rlp_tls_key.pem",
+  "FIREHOSE_EXPORTER_SHARD_ID"                 => p("firehose_exporter.doppler.subscription_id"),
+  "FIREHOSE_EXPORTER_NODE_INDEX"               => spec.index,
+  "FIREHOSE_EXPORTER_TIMER_ROLLUP_BUFFER_SIZE" => p('firehose_exporter.metrics.timer_rollup_buffer_size'),
+  "FIREHOSE_EXPORTER_FILTER_DEPLOYMENTS"       => p('firehose_exporter.filter.deployments'),
+  "FIREHOSE_EXPORTER_FILTER_EVENTS"            => p('firehose_exporter.filter.events'),
+  "FIREHOSE_EXPORTER_METRICS_NAMESPACE"        => p('firehose_exporter.metrics.namespace'),
+  "FIREHOSE_EXPORTER_METRICS_ENVIRONMENT"      => p('firehose_exporter.metrics.environment'),
+  "FIREHOSE_EXPORTER_METRICS_EXPIRATION"       => p("firehose_exporter.doppler.metric_expiration"),
+  "FIREHOSE_EXPORTER_WEB_LISTEN_ADDRESS"       => ":#{p('firehose_exporter.web.port')}",
+  "FIREHOSE_EXPORTER_WEB_TELEMETRY_PATH"       => p('firehose_exporter.web.telemetry_path'),
+  "FIREHOSE_EXPORTER_LOG_LEVEL"                => p('firehose_exporter.log_level'),
+}
+
+# when value are true
+if p("firehose_exporter.log_in_json")
+  env["FIREHOSE_EXPORTER_LOG_IN_JSON"] = "true"
+end
+if p("firehose_exporter.skip_ssl_verify")
+  env["FIREHOSE_EXPORTER_SKIP_SSL_VERIFY"] = "true"
+end
+if p("firehose_exporter.profiler.enable")
+  env["FIREHOSE_EXPORTER_ENABLE_PROFILER"] = "true"
+end
+
+# when properties are given
+if_p("firehose_exporter.web.auth_username") do |user|
+  env["FIREHOSE_EXPORTER_WEB_AUTH_USERNAME"] = user
+end
+if_p("firehose_exporter.web.auth_password") do |pass|
+  env["FIREHOSE_EXPORTER_WEB_AUTH_PASSWORD"] = pass
+end
+if_p("firehose_exporter.web.tls_cert", "firehose_exporter.web.tls_key") do
+  env["FIREHOSE_EXPORTER_WEB_TLS_CERTFILE"] = "/var/vcap/jobs/firehose_exporter/config/web_tls_cert.pem"
+  env["FIREHOSE_EXPORTER_WEB_TLS_KEYFILE"]  = "/var/vcap/jobs/firehose_exporter/config/web_tls_key.pem"
+end
+
+# add HTTP_PROXY, HTTPS_PROXY and NO_PROXY envs if given
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+# global bpm config structure
+config = {
+  "processes" => [
+    {
+      "name"       => "firehose_exporter",
+      "executable" => "/var/vcap/packages/firehose_exporter/bin/firehose_exporter",
+      "env"        => env,
+      "args"       => args,
+    }
+  ]
+}
+
+%>
+
+<%= YAML.dump(config) %>

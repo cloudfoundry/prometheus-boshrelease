@@ -14,19 +14,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "7.3.3"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523192796273,
+  "iteration": 1631898372080,
   "links": [
     {
       "asDropdown": true,
@@ -79,13 +79,21 @@
       "description": "Number of routes in the route-emitter routing table. Emitted every 30 seconds.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "avg": false,
@@ -100,7 +108,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -111,6 +123,7 @@
       "targets": [
         {
           "expr": "avg(firehose_value_metric_route_emitter_routes_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Number of Routes",
           "refId": "A",
@@ -119,6 +132,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Routing Table",
       "tooltip": {
@@ -138,6 +152,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:111",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -146,6 +161,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:112",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -153,7 +169,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -164,13 +184,21 @@
       "description": "Cumulative number of route registrations and unregistrations emitted from the route-emitter as it reacts to changes to LRPs. Emitted every 30 seconds",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": false,
@@ -183,11 +211,15 @@
         "total": false,
         "values": false
       },
-      "lines": false,
-      "linewidth": 1,
+      "lines": true,
+      "linewidth": 2,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -198,6 +230,8 @@
       "targets": [
         {
           "expr": "sum(avg(firehose_counter_event_route_emitter_routes_registered_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "hide": false,
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Registered",
           "refId": "A",
@@ -205,6 +239,7 @@
         },
         {
           "expr": "sum(avg(firehose_counter_event_route_emitter_routes_synced_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "hide": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Synched",
@@ -213,6 +248,7 @@
         },
         {
           "expr": "sum(avg(firehose_counter_event_route_emitter_routes_unregistered_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Unregistered",
           "refId": "C",
@@ -221,6 +257,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Routes",
       "tooltip": {
@@ -240,6 +277,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:302",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -248,6 +286,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:303",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -255,7 +294,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -263,16 +306,24 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Cumulative number of registration messages sent. Emitted every 30 seconds.",
+      "description": "Cumulative number of messages sent. Emitted every 30 seconds.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": false,
@@ -289,7 +340,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -299,17 +354,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_counter_event_route_emitter_messages_emitted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_counter_event_route_emitter_http_route_nats_messages_emitted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Messages Emitted",
+          "legendFormat": "HTTP Route Nats Messages Emitted",
           "refId": "A",
           "step": 2
+        },
+        {
+          "expr": "sum(avg(firehose_counter_event_route_emitter_internal_route_nats_messages_emitted_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
+          "legendFormat": "Internal Route Nats Messages Emitted",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Registration Messages Emitted",
+      "title": "Messages Emitted",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -327,6 +390,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:383",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -335,6 +399,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:384",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -342,11 +407,15 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "cf",
@@ -358,15 +427,18 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, environment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(firehose_counter_event_route_emitter_messages_emitted_total, environment)",
+        "query": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total, environment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -378,15 +450,18 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total{environment=~\"$environment\"}, bosh_deployment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_counter_event_route_emitter_messages_emitted_total{environment=~\"$environment\"}, bosh_deployment)",
+        "query": "label_values(firehose_counter_event_gorouter_requests_route_emitter_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -428,5 +503,5 @@
   "timezone": "browser",
   "title": "CF: Route Emitter",
   "uid": "cf_route_emitter",
-  "version": 1
+  "version": 3
 }

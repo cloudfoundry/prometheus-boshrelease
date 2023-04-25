@@ -1,0 +1,32 @@
+groups:
+  - name: prometheus-firehose-exporter
+    rules:
+      - alert: FirehoseExporterSlowConsumer
+        expr: max(firehose_slow_consumer_alert) by(environment, instance) != 0
+        for: <%= p('cloudfoundry_alerts.slow_consumer.evaluation_time') %>
+        labels:
+          service: firehose-exporter
+          severity: warning
+        annotations:
+          summary: "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}` slow consumer alert"
+          description: "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` is reporting a slow consumer alert during the last <%= p('cloudfoundry_alerts.slow_consumer.evaluation_time') %>, consider scaling up the number of `firehose_exporter` instances"
+
+      - alert: FirehoseExporterLastEnvelopeReceivedTooOld
+        expr: (time() - max(firehose_last_envelope_received_timestamp) by(environment, instance)) > <%= p('cloudfoundry_alerts.envelope_received_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.envelope_received_too_old.evaluation_time') %>
+        labels:
+          service: firehose-exporter
+          severity: warning
+        annotations:
+          summary: "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}` last Envelope received > {{humanizeDuration <%= p('cloudfoundry_alerts.envelope_received_too_old.threshold') %>}} ago"
+          description: "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last Envelope received was more than {{humanizeDuration <%= p('cloudfoundry_alerts.envelope_received_too_old.threshold') %>}} ago"
+
+      - alert: FirehoseExporterLastMetricReceivedTooOld
+        expr: (time() - max(firehose_last_metric_received_timestamp) by(environment, instance)) > <%= p('cloudfoundry_alerts.metric_received_too_old.threshold') %>
+        for: <%= p('cloudfoundry_alerts.metric_received_too_old.evaluation_time') %>
+        labels:
+          service: firehose-exporter
+          severity: warning
+        annotations:
+          summary: "firehose_exporter `{{$labels.environment}}/{{$labels.instance}}` last Metric received > {{humanizeDuration <%= p('cloudfoundry_alerts.metric_received_too_old.threshold') %>}} ago"
+          description: "The `firehose_exporter` at `{{$labels.environment}}/{{$labels.instance}}` last Metric received was more than {{humanizeDuration <%= p('cloudfoundry_alerts.metric_received_too_old.threshold') %>}} ago"

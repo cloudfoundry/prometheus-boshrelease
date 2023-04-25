@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eux
+
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Extract firehose_exporter package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/firehose_exporter/firehose_exporter-6.2.0.linux-amd64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/firehose_exporter-6.2.0.linux-amd64/* ${BOSH_INSTALL_TARGET}/bin

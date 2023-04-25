@@ -1,0 +1,59 @@
+# this ops-file switch back to legacy jobs: firehose_exporter-attic, cloudfoundry_alerts-attic and cloudfoundry_dashboards-attic
+
+# replace firehose_exporter job by firehose_exporter-attic
+- type: remove
+  path: /instance_groups/name=firehose/jobs/name=firehose_exporter
+- type: replace
+  path: /instance_groups/name=firehose/jobs/-
+  value:
+    name: firehose_exporter-attic
+    release: prometheus
+    properties:
+      firehose_exporter:
+        doppler:
+          subscription_id: "((metrics_environment))"
+          max_retry_count: 300
+        logging:
+          url: wss://doppler.((system_domain)):((traffic_controller_external_port))
+          use_legacy_firehose: true
+        uaa:
+          url: https://uaa.((system_domain))
+          client_id: firehose_exporter
+          client_secret: "((uaa_clients_firehose_exporter_secret))"
+        metrics:
+          environment: "((metrics_environment))"
+        skip_ssl_verify: ((skip_ssl_verify))
+
+
+# add uaa client for firehose instead of mTLS certs
+- type: remove
+  path: /variables/name=firehose_exporter_to_logs_provider
+
+# replace cloudfoundry_alerts job by cloudfoundry_alerts-attic
+- type: remove
+  path: /instance_groups/name=prometheus2/jobs/name=cloudfoundry_alerts
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/-
+  value:
+    name: cloudfoundry_alerts-attic
+    release: prometheus
+
+# replace cloudfoundry_dashboards job by cloudfoundry_dashboards-attic
+- type: remove
+  path: /instance_groups/name=grafana/jobs/name=cloudfoundry_dashboards
+- type: replace
+  path: /instance_groups/name=grafana/jobs/-
+  value:
+    name: cloudfoundry_dashboards-attic
+    release: prometheus
+
+# add attic assets to prometheus and grafana
+- type: replace
+  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/cloudfoundry_alerts-attic/*.alerts.yml
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Cloudfoundry?/files/-
+  value: /var/vcap/jobs/cloudfoundry_dashboards-attic/cf*.json
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Prometheus?/files/-
+  value: /var/vcap/jobs/cloudfoundry_dashboards-attic/prometheus*.json

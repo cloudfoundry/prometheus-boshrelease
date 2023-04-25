@@ -1,0 +1,13 @@
+- type: replace
+  path: /variables/-
+  value:
+    name: uaa_clients_firehose_exporter_secret
+    type: password
+- type: replace
+  path: /instance_groups/name=uaa/jobs/name=uaa/properties/uaa/clients/firehose_exporter?
+  value:
+    override: true
+    authorized-grant-types: client_credentials,refresh_token
+    authorities: doppler.firehose
+    scope: openid,doppler.firehose
+    secret: "((uaa_clients_firehose_exporter_secret))"
