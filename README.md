@@ -140,8 +140,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metron_deployment_name= \
   -v system_domain= \
   -v uaa_clients_cf_exporter_secret= \
-  -v uaa_clients_firehose_exporter_secret= \
-  -v traffic_controller_external_port= \
+  -v loggregator_ca_name= \
   -v skip_ssl_verify=
 ```
 
@@ -151,13 +150,26 @@ bosh -d prometheus deploy manifests/prometheus.yml \
 >- `cf` (`loggregator_agent`) for [cf-deployment](https://github.com/cloudfoundry/cf-deployment) starting from the [v2.0.0](https://github.com/cloudfoundry/cf-deployment/commit/b4e761fa257740a2cbca2574b40ae78bcfe2178b#diff-1c845aa8da14326552b37f043a621ccaR3)
 >- `cf` for [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime)
 
+>**NOTE:** `loggregator_ca_name` property should match the full credhub path of `loggregator_ca` certificate variable, ex: `/bosh-mydirector/cf/loggregator_ca`.
 
 >**NOTE:** You can switch to legacy implementation of [firehose_exporter][firehose_exporter] and legacy
 > cloud foundry dashboards by adding the following ops-files:
-> - on prometheus deployment, in addition to `monitor-cf.yml`, add:
->   - `manifests/operators/deprecated/monitor-cf-attic.yml`
-> - on cloud foundry deployment, in addition to `add-prometheus-uaa-clients.yml` add:
->   - `manifests/operators/deprecated/cf/add-prometheus-uaa-clients-attic.yml`
+> - on prometheus deployment, adapt:
+>   ```
+>   ...
+>   -o manifests/operators/monitor-cf.yml \
+>   -o manifests/operators/deprecated/monitor-cf-attic.yml \
+>   -v uaa_clients_firehose_exporter_secret= \
+>   -v traffic_controller_external_port= \
+>   ...
+>   ```
+> - When using `add-prometheus-uaa-clients.yml` on cloud foundry deployment, adapt:
+>   ```
+>   ...
+>   -o manifests/operators/cf/add-prometheus-uaa-clients.yml
+>   -o manifests/operators/deprecated/cf/add-prometheus-uaa-clients-attic.yml
+>   ...
+>   ```
 >
 > This will switch deployment to `firehose_exporter-attic`, `cloudfoundry_dashboards-attic` and `cloudfoundry_alerts-attic`
 
