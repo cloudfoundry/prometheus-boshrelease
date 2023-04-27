@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523191378945,
+  "iteration": 1612182921378,
   "links": [
     {
       "asDropdown": true,
@@ -73,12 +73,14 @@
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "avg": false,
@@ -103,7 +105,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m]))",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m]))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -112,6 +115,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests per second",
       "tooltip": {
@@ -146,7 +150,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -159,12 +167,14 @@
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 6,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 14,
       "legend": {
         "avg": false,
@@ -189,7 +199,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -198,6 +209,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests",
       "tooltip": {
@@ -232,7 +244,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -242,12 +258,14 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "Requests per application instance per second during the last 5 minutes.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 7,
       "legend": {
         "avg": false,
@@ -272,7 +290,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m])) by (instance_id)",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by(instance_id)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ instance_id }}",
@@ -282,6 +300,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests by Application Instance per second",
       "tooltip": {
@@ -315,7 +334,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -325,12 +348,14 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "Number of requests per application instance.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 18,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 17,
       "legend": {
         "avg": false,
@@ -355,7 +380,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(instance_id)",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(instance_id)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ instance_id }}",
@@ -365,6 +390,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests by Application Instance",
       "tooltip": {
@@ -398,7 +424,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -409,12 +439,14 @@
       "decimals": 0,
       "description": "Requests by method per second during the last 5 mintes.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 8,
       "legend": {
         "alignAsTable": false,
@@ -441,7 +473,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m])) by(method)",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by(method)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ method }}",
           "refId": "A",
@@ -450,6 +483,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests by Method per second",
       "tooltip": {
@@ -483,7 +517,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -494,12 +532,14 @@
       "decimals": 0,
       "description": "Number of requests by method.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 6,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 15,
       "legend": {
         "alignAsTable": false,
@@ -526,7 +566,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(method)",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(method)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ method }}",
           "refId": "A",
@@ -535,6 +576,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests by Method",
       "tooltip": {
@@ -568,7 +610,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -579,12 +625,14 @@
       "decimals": 0,
       "description": "Requests by status code per second during the last 5 minutes.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 12,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 9,
       "legend": {
         "alignAsTable": false,
@@ -611,7 +659,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m])) by(status_code)",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by(status_code)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ status_code }}",
           "refId": "A",
@@ -620,6 +669,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests by Status Code per second",
       "tooltip": {
@@ -653,7 +703,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -664,12 +718,14 @@
       "decimals": 0,
       "description": "Number of requests by status code.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 18,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 18,
       "legend": {
         "alignAsTable": false,
@@ -696,7 +752,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(status_code)",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(status_code)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ status_code }}",
           "refId": "A",
@@ -705,6 +762,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests by Status Code",
       "tooltip": {
@@ -738,7 +796,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -749,12 +811,14 @@
       "decimals": 0,
       "description": "Requests by scheme per second during the last 5 mintes.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 0,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 10,
       "legend": {
         "alignAsTable": false,
@@ -781,7 +845,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m])) by(scheme)",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by(scheme)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ scheme }}",
           "refId": "A",
@@ -790,6 +855,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests by Scheme per second",
       "tooltip": {
@@ -823,7 +889,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -834,12 +904,14 @@
       "decimals": 0,
       "description": "Number of requests by scheme.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 6,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 16,
       "legend": {
         "alignAsTable": false,
@@ -866,7 +938,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(scheme)",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(scheme)",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ scheme }}",
           "refId": "A",
@@ -875,6 +948,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests by Scheme",
       "tooltip": {
@@ -908,7 +982,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -919,12 +997,14 @@
       "decimals": 0,
       "description": "Requests by host per second during the last 5 minutes.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 12,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 11,
       "legend": {
         "alignAsTable": false,
@@ -951,7 +1031,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}[5m])) by(host)",
+          "expr": "sum(rate(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by(host)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ host }}",
@@ -961,6 +1041,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Rate Requests by Host per second",
       "tooltip": {
@@ -994,7 +1075,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -1005,12 +1090,14 @@
       "decimals": 0,
       "description": "Number of requests by host.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 6,
         "x": 18,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 19,
       "legend": {
         "alignAsTable": false,
@@ -1037,7 +1124,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(firehose_http_start_stop_requests{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(host)",
+          "expr": "sum(firehose_http_total{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(host)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ host }}",
@@ -1047,6 +1134,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Requests by Host",
       "tooltip": {
@@ -1080,7 +1168,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -1090,12 +1182,14 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "Response Size.",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 12,
       "legend": {
         "alignAsTable": false,
@@ -1122,7 +1216,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_response_size_bytes_sum{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_response_size_bytes_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "expr": "avg(firehose_http_response_size_bytes_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"} / firehose_http_response_size_bytes_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Size",
           "refId": "A",
@@ -1131,6 +1226,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Response Size",
       "tooltip": {
@@ -1164,7 +1260,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -1174,12 +1274,14 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "Response Size (Quantiles).",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 13,
       "legend": {
         "alignAsTable": true,
@@ -1206,7 +1308,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_response_size_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "expr": "avg(firehose_http_response_size_bytes{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by(quantile)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ quantile }}",
@@ -1216,6 +1318,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Response Size (Quantiles)",
       "tooltip": {
@@ -1249,11 +1352,15 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 17,
   "style": "dark",
   "tags": [
     "apps"
@@ -1273,6 +1380,7 @@
         "query": "label_values(cf_application_info, environment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -1293,6 +1401,7 @@
         "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -1310,9 +1419,10 @@
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\"}, organization_name)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -1330,9 +1440,10 @@
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -1350,9 +1461,10 @@
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -1370,9 +1482,10 @@
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"$bosh_deployment\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -1414,5 +1527,5 @@
   "timezone": "browser",
   "title": "Apps: Requests",
   "uid": "cf_apps_requests",
-  "version": 1
+  "version": 3
 }

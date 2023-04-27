@@ -14,19 +14,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "7.3.3"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523192115401,
+  "iteration": 1631890975974,
   "links": [
     {
       "asDropdown": true,
@@ -76,102 +76,24 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Number of CPUs on the machine.",
+      "description": "Instantaneous number of active goroutines in the process.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_num_cpus{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "refId": "A",
-          "step": 4
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "CPUs",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous number of active goroutines in the process.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
+      "hiddenSeries": false,
       "id": 9,
       "legend": {
         "avg": false,
@@ -186,7 +108,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -205,6 +131,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Go Routines",
       "tooltip": {
@@ -239,264 +166,11 @@
           "min": null,
           "show": false
         }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes allocated and still in use.",
-      "fill": 1,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 5
-      },
-      "id": 1,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
-          "refId": "A",
-          "step": 4
-        }
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Memory Usage",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes used by the stack allocator.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 12,
-        "y": 5
-      },
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
-          "refId": "A",
-          "step": 4
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Stack Allocator Memory Usage",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "description": "Instantaneous count of bytes allocated on the main heap and still in use.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 10
-      },
-      "id": 5,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
-          "intervalFactor": 2,
-          "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
-          "metric": "",
-          "refId": "A",
-          "step": 4
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Main Heap Memory Usage",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "bytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -507,13 +181,21 @@
       "description": "Duration in nanoseconds of the last garbage collector pause.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 0
       },
+      "hiddenSeries": false,
       "id": 7,
       "legend": {
         "avg": false,
@@ -528,7 +210,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -547,6 +233,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Garbage Collector Pause Duration",
       "tooltip": {
@@ -581,25 +268,35 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Lifetime number of memory allocations.",
-      "editable": true,
-      "error": false,
+      "description": "Instantaneous count of bytes allocated on the heap and still in use.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 5
       },
-      "id": 6,
+      "hiddenSeries": false,
+      "id": 1,
       "legend": {
         "avg": false,
         "current": false,
@@ -609,31 +306,37 @@
         "total": false,
         "values": false
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_mallocs{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
+          "metric": "",
           "refId": "A",
           "step": 4
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "# of Memory Allocations",
+      "title": "Heap Memory Usage",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -651,7 +354,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -666,25 +369,37 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Lifetime number of memory deallocations.",
+      "description": "Instantaneous count of bytes used by the stack allocator.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 5
       },
-      "id": 4,
+      "hiddenSeries": false,
+      "id": 2,
       "legend": {
         "avg": false,
         "current": false,
@@ -694,21 +409,25 @@
         "total": false,
         "values": false
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_frees{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_[[cf_component]]_memory_stats_num_bytes_allocated_stack{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
@@ -719,8 +438,9 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "# of Memory Deallocations",
+      "title": "Stack Allocator Memory Usage",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -738,7 +458,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -753,11 +473,15 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "cf"
@@ -768,15 +492,18 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated, environment)",
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap, environment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -788,15 +515,18 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated{environment=~\"$environment\"}, bosh_deployment)",
+        "query": "label_values(firehose_value_metric_bbs_memory_stats_num_bytes_allocated_heap{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -806,120 +536,26 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "auctioneer",
-          "value": "auctioneer"
-        },
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "definition": "",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Component",
         "multi": false,
         "name": "cf_component",
-        "options": [
-          {
-            "selected": true,
-            "text": "auctioneer",
-            "value": "auctioneer"
-          },
-          {
-            "selected": false,
-            "text": "bbs",
-            "value": "bbs"
-          },
-          {
-            "selected": false,
-            "text": "cc_uploader",
-            "value": "cc_uploader"
-          },
-          {
-            "selected": false,
-            "text": "doppler_server",
-            "value": "doppler_server"
-          },
-          {
-            "selected": false,
-            "text": "etcd",
-            "value": "etcd"
-          },
-          {
-            "selected": false,
-            "text": "file_server",
-            "value": "file_server"
-          },
-          {
-            "selected": false,
-            "text": "garden_linux",
-            "value": "garden_linux"
-          },
-          {
-            "selected": false,
-            "text": "gorouter",
-            "value": "gorouter"
-          },
-          {
-            "selected": false,
-            "text": "loggregator_traffic_controller",
-            "value": "loggregator_traffic_controller"
-          },
-          {
-            "selected": false,
-            "text": "metron_agent",
-            "value": "metron_agent"
-          },
-          {
-            "selected": false,
-            "text": "nsync_bulker",
-            "value": "nsync_bulker"
-          },
-          {
-            "selected": false,
-            "text": "nsync_listener",
-            "value": "nsync_listener"
-          },
-          {
-            "selected": false,
-            "text": "rep",
-            "value": "rep"
-          },
-          {
-            "selected": false,
-            "text": "route_emitter",
-            "value": "route_emitter"
-          },
-          {
-            "selected": false,
-            "text": "ssh_proxy",
-            "value": "ssh_proxy"
-          },
-          {
-            "selected": false,
-            "text": "stager",
-            "value": "stager"
-          },
-          {
-            "selected": false,
-            "text": "syslog_drain_binder",
-            "value": "syslog_drain_binder"
-          },
-          {
-            "selected": false,
-            "text": "tps_listener",
-            "value": "tps_listener"
-          },
-          {
-            "selected": false,
-            "text": "tps_watcher",
-            "value": "tps_watcher"
-          },
-          {
-            "selected": false,
-            "text": "",
-            "value": ""
-          }
-        ],
-        "query": "auctioneer,bbs,cc_uploader,doppler_server,etcd,file_server,garden_linux,gorouter,grootfs,iptables_logger,locket,loggregator_traffic_controller,metron_agent,mysql,netmon,nsync_bulker,nsync_listener,policy_server_internal,policy_server,rep,route_emitter,routing_api,silk_controller,silk_daemon,ssh_proxy,stager,syslog_drain_binder,tps_listener,tps_watcher,vxlan_policy_agent",
-        "type": "custom"
+        "options": [],
+        "query": "label_values({__name__=~\"firehose_value_metric_.*_memory_stats_num_bytes_allocated_heap\",environment=~\"$environment\"}, origin)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -955,5 +591,5 @@
   "timezone": "browser",
   "title": "CF: Component Metrics",
   "uid": "cf_component_metrics",
-  "version": 1
+  "version": 3
 }

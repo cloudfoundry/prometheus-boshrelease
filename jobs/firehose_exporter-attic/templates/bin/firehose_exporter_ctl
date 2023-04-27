@@ -2,19 +2,19 @@
 
 set -eu
 
-RUN_DIR=/var/vcap/sys/run/firehose_exporter
-LOG_DIR=/var/vcap/sys/log/firehose_exporter
-TMP_DIR=/var/vcap/sys/tmp/firehose_exporter
-STORE_DIR=/var/vcap/store/firehose_exporter
+RUN_DIR=/var/vcap/sys/run/firehose_exporter-attic
+LOG_DIR=/var/vcap/sys/log/firehose_exporter-attic
+TMP_DIR=/var/vcap/sys/tmp/firehose_exporter-attic
+STORE_DIR=/var/vcap/store/firehose_exporter-attic
 mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
 PIDFILE=${RUN_DIR}/firehose_exporter.pid
 
-source /var/vcap/packages/firehose_exporter/common/utils.sh
+source /var/vcap/packages/firehose_exporter-attic/common/utils.sh
 exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
 exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
 
-export PATH=/var/vcap/packages/firehose_exporter/bin:${PATH}
+export PATH=/var/vcap/packages/firehose_exporter-attic/bin:${PATH}
 
 case $1 in
   start)
@@ -96,8 +96,8 @@ case $1 in
       --web.auth.username="<%= auth_username %>" \
       <% end %> \
       <% if_p('firehose_exporter.web.tls_cert', 'firehosef_exporter.web.tls_key') do %> \
-      --web.tls.cert_file="/var/vcap/jobs/firehose_exporter/config/web_tls_cert.pem" \
-      --web.tls.key_file="/var/vcap/jobs/firehose_exporter/config/web_tls_key.pem" \
+      --web.tls.cert_file="/var/vcap/jobs/firehose_exporter-attic/config/web_tls_cert.pem" \
+      --web.tls.key_file="/var/vcap/jobs/firehose_exporter-attic/config/web_tls_key.pem" \
       <% end %> \
       >>  ${LOG_DIR}/firehose_exporter.stdout.log \
       2>> ${LOG_DIR}/firehose_exporter.stderr.log

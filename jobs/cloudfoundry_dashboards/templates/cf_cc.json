@@ -14,19 +14,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "7.3.3"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
@@ -46,7 +46,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523192070963,
+  "iteration": 1631898326897,
   "links": [
     {
       "asDropdown": true,
@@ -78,13 +78,21 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 6,
       "legend": {
         "avg": false,
@@ -99,7 +107,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -110,6 +122,7 @@
       "targets": [
         {
           "expr": "avg(rate(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}[5m]))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
           "refId": "A",
@@ -118,6 +131,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Request Completed (5 min rate)",
       "tooltip": {
@@ -136,6 +150,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:152",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -144,6 +159,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:153",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -151,7 +167,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -162,13 +182,21 @@
       "description": "Cumulative number of HTTP response status codes. This resets when the Cloud Controller process is restarted and is incremented at the end of each request cycle. Emitted for each Cloud Controller request.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -187,7 +215,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -198,6 +230,7 @@
       "targets": [
         {
           "expr": "sum(avg(firehose_value_metric_cc_http_status_1_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "1xx",
           "refId": "A",
@@ -205,6 +238,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_http_status_2_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "2xx",
           "refId": "B",
@@ -212,6 +246,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_http_status_3_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "3xx",
           "refId": "C",
@@ -219,6 +254,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_http_status_4_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "4xx",
           "refId": "D",
@@ -226,6 +262,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_http_status_5_xx{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "5xx",
           "refId": "E",
@@ -234,6 +271,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "HTTP Responses",
       "tooltip": {
@@ -253,6 +291,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1410",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -261,6 +300,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1411",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -268,7 +308,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -279,13 +323,21 @@
       "description": "Total number of background jobs in the queues that have yet to run for the first time. Emitted every 30 seconds per VM.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "avg": false,
@@ -300,7 +352,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -320,6 +376,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Job Queue Length",
       "tooltip": {
@@ -339,6 +396,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:804",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -347,6 +405,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:805",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -354,7 +413,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -365,13 +428,21 @@
       "description": "Number of failed jobs in all queues. By default, Cloud Controller deletes failed jobs after 31 days. Emitted every 30 seconds per VM.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "avg": false,
@@ -386,7 +457,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -406,6 +481,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Failed jobs",
       "tooltip": {
@@ -425,6 +501,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:468",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -433,6 +510,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:469",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -440,7 +518,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -451,13 +533,21 @@
       "description": "Cumulative number of requests that have been processed and are currently being processed. Emitted for each Cloud Controller request.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 5,
       "legend": {
         "avg": false,
@@ -472,7 +562,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -482,14 +576,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_requests_completed{environment=~\"$environment\",environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Completed",
           "refId": "A",
           "step": 4
         },
         {
-          "expr": "sum(avg(firehose_value_metric_cc_requests_outstanding{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_cc_requests_outstanding{environment=~\"$environment\",environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Outstanding",
           "refId": "B",
@@ -498,6 +594,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Requests",
       "tooltip": {
@@ -517,6 +614,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:550",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -525,6 +623,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:551",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -532,7 +631,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -543,13 +646,21 @@
       "description": "Cumulative number of log messages. The count resets when the Cloud Controller process is restarted. Emitted every 30 seconds per VM.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
         "y": 10
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "avg": false,
@@ -564,7 +675,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.3.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -575,6 +690,7 @@
       "targets": [
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_info{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "info",
           "refId": "A",
@@ -582,6 +698,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_warn{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "warn",
           "refId": "B",
@@ -589,6 +706,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_debug{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "debug",
           "refId": "C",
@@ -596,6 +714,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_1{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "debug1",
           "refId": "D",
@@ -603,6 +722,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_debug_2{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "debug2",
           "refId": "E",
@@ -610,6 +730,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_error{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "error",
           "refId": "F",
@@ -617,6 +738,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_fatal{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "fatal",
           "refId": "G",
@@ -624,6 +746,7 @@
         },
         {
           "expr": "sum(avg(firehose_value_metric_cc_log_count_off{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "interval": "",
           "intervalFactor": 2,
           "legendFormat": "off",
           "refId": "H",
@@ -632,6 +755,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Log Messages",
       "tooltip": {
@@ -651,6 +775,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:628",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -659,6 +784,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:629",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -666,11 +792,237 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Number of tasks in the result.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.3",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_cc_thread_info_event_machine_resultqueue_size{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) ) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Unscheduled",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_cc_thread_info_event_machine_resultqueue_num_waiting{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) ) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "legendFormat": "Scheduled",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Result Size",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1111",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1112",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Number of tasks in the threadqueue.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 9,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.3",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_cc_thread_info_event_machine_threadqueue_size{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) ) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Unscheduled",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_cc_thread_info_event_machine_threadqueue_num_waiting{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) ) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "interval": "",
+          "legendFormat": "Scheduled",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Threadque Size",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1111",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1112",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "cf"
@@ -681,6 +1033,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_value_metric_cc_job_queue_length_total, environment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
@@ -690,6 +1044,7 @@
         "query": "label_values(firehose_value_metric_cc_job_queue_length_total, environment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
@@ -701,6 +1056,8 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
+        "definition": "label_values(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\"}, bosh_deployment)",
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
@@ -710,6 +1067,7 @@
         "query": "label_values(firehose_value_metric_cc_job_queue_length_total{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": null,
         "tags": [],
@@ -751,5 +1109,5 @@
   "timezone": "browser",
   "title": "CF: Cloud Controller",
   "uid": "cf_cc",
-  "version": 1
+  "version": 3
 }

@@ -9,44 +9,59 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.4"
+      "version": "9.3.6"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": ""
     },
     {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
-      "version": "5.0.0"
+      "version": "1.0.0"
     }
   ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": false,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523189342281,
   "links": [
     {
       "asDropdown": true,
@@ -61,23 +76,29 @@
       "type": "dashboards"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Application Latency.",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -94,7 +115,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "9.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -104,24 +129,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_client_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "avg(rate(firehose_http_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]) / rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Client",
+          "range": true,
           "refId": "A",
-          "step": 2
-        },
-        {
-          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"} / firehose_http_start_stop_server_request_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"})",
-          "intervalFactor": 2,
-          "legendFormat": "Server",
-          "refId": "B",
           "step": 2
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
+      "timeRegions": [],
       "title": "Latency",
       "tooltip": {
         "msResolution": false,
@@ -132,65 +155,71 @@
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1649",
           "format": "s",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:1650",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false
+      }
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "decimals": null,
-      "description": "Client Latency by Quantiles.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Percentage of requests processed in less than a given time for selected app",
+      "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 24,
         "x": 0,
         "y": 5
       },
-      "id": 1,
+      "hiddenSeries": false,
+      "id": 7,
       "legend": {
         "alignAsTable": true,
         "avg": true,
         "current": true,
-        "max": true,
-        "min": true,
+        "max": false,
+        "min": false,
         "rightSide": true,
         "show": true,
+        "sort": "current",
+        "sortDesc": false,
         "total": false,
         "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "9.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -200,86 +229,314 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_client_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(quantile)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "instant": false,
           "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "{{ quantile }}",
-          "refId": "A",
-          "step": 2
+          "intervalFactor": 1,
+          "legendFormat": "5 ms",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "10 ms",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "100 ms",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "250 ms",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "500 ms",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "1 s",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "2.5 s",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "5 s",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "10 s",
+          "refId": "I"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Client Latency (quantiles)",
+      "timeRegions": [],
+      "title": "App Response Time by Percent",
       "tooltip": {
-        "msResolution": false,
         "shared": true,
-        "sort": 0,
+        "sort": 1,
         "value_type": "individual"
       },
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
-          "format": "s",
-          "label": null,
+          "format": "percent",
           "logBase": 1,
-          "max": null,
-          "min": "0",
+          "max": "100",
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "cards": {},
+      "color": {
+        "cardColor": "#b4ff00",
+        "colorScale": "sqrt",
+        "colorScheme": "interpolateOranges",
+        "exponent": 0.4,
+        "mode": "opacity"
+      },
+      "dataFormat": "tsbuckets",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "heatmap": {},
+      "hideZeroBuckets": false,
+      "highlightCards": true,
+      "id": 9,
+      "legend": {
+        "show": false
+      },
+      "options": {
+        "calculate": false,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "#b4ff00",
+          "mode": "opacity",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {},
+        "legend": {
+          "show": false
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "show": true,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "s"
+        }
+      },
+      "pluginVersion": "9.3.6",
+      "reverseYBuckets": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by (le)",
+          "format": "heatmap",
+          "interval": "",
+          "legendFormat": "{{le}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "App Global Response Time",
+      "tooltip": {
+        "show": true,
+        "showHistogram": false
+      },
+      "transparent": true,
+      "type": "heatmap",
+      "xAxis": {
+        "show": true
+      },
+      "yAxis": {
+        "format": "s",
+        "logBase": 1,
+        "show": true
+      },
+      "yBucketBound": "auto"
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
-      "decimals": null,
-      "description": "Server Latency by Quantiles.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Percentage of requests processed in less than a given time for selected app",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 18
       },
-      "id": 2,
+      "hiddenSeries": false,
+      "id": 11,
       "legend": {
         "alignAsTable": true,
         "avg": true,
         "current": true,
-        "max": true,
-        "min": true,
+        "max": false,
+        "min": false,
         "rightSide": true,
         "show": true,
+        "sort": "current",
+        "sortDesc": false,
         "total": false,
         "values": true
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "links": [],
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "9.3.6",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -289,54 +546,158 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(firehose_http_start_stop_server_request_duration_seconds{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",application_id=~\"$cf_application_id\"}) by(quantile)",
-          "intervalFactor": 2,
-          "legendFormat": "{{ quantile }}",
-          "refId": "A",
-          "step": 2
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "5 ms",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "10 ms",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "100 ms",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "250 ms",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "500 ms",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "1 s",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "2.5 s",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "5 s",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "10 s",
+          "refId": "I"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Server Latency (quantiles)",
+      "timeRegions": [],
+      "title": "Q.O.S.",
       "tooltip": {
-        "msResolution": false,
         "shared": true,
-        "sort": 0,
+        "sort": 1,
         "value_type": "individual"
       },
       "transparent": true,
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
-          "format": "s",
-          "label": null,
+          "format": "percent",
           "logBase": 1,
-          "max": null,
-          "min": "0",
+          "max": "100",
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false
+      }
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "apps"
@@ -344,121 +705,151 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(cf_application_info, environment)",
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(cf_application_info, environment)",
+        "query": {
+          "query": "label_values(cf_application_info, environment)",
+          "refId": "prometheus-environment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
         "hide": 0,
         "includeAll": false,
         "label": "Deployment",
         "multi": false,
         "name": "bosh_deployment",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
+        "query": {
+          "query": "label_values(cf_application_info{environment=~\"$environment\"}, deployment)",
+          "refId": "prometheus-bosh_deployment-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
         "hide": 0,
         "includeAll": false,
         "label": "Organization",
         "multi": false,
         "name": "cf_organization_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
+        "query": {
+          "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}, organization_name)",
+          "refId": "prometheus-cf_organization_name-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
         "hide": 0,
         "includeAll": false,
         "label": "Space",
         "multi": false,
         "name": "cf_space_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
+        "query": {
+          "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\"}, space_name)",
+          "refId": "prometheus-cf_space_name-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
         "hide": 0,
         "includeAll": false,
         "label": "Application",
         "multi": false,
         "name": "cf_application_name",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+        "query": {
+          "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\"}, application_name)",
+          "refId": "prometheus-cf_application_name-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": null,
-        "tags": [],
-        "tagsQuery": null,
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": "Application ID",
         "multi": false,
         "name": "cf_application_id",
         "options": [],
-        "query": "label_values(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+        "query": {
+          "query": "label_values(cf_application_info{deployment=~\"${bosh_deployment}[-0-9a-f]*\",organization_name=~\"$cf_organization_name\", space_name=~\"$cf_space_name\",application_name=~\"$cf_application_name\"}, application_id)",
+          "refId": "prometheus-cf_application_id-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -497,5 +888,6 @@
   "timezone": "browser",
   "title": "Apps: Latency",
   "uid": "cf_apps_latency",
-  "version": 1
+  "version": 3,
+  "weekStart": ""
 }

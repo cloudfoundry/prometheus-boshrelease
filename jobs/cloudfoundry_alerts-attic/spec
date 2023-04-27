@@ -1,0 +1,222 @@
+---
+name: cloudfoundry_alerts-attic
+
+packages: []
+
+templates:
+  cf_apps.alerts.yml: cf_apps.alerts.yml
+  cf_cells.alerts.yml: cf_cells.alerts.yml
+  cf_diego.alerts.yml: cf_diego.alerts.yml
+  cf_doppler.alerts.yml: cf_doppler.alerts.yml
+  cf_etcd.alerts.yml: cf_etcd.alerts.yml
+  cf_routers.alerts.yml: cf_routers.alerts.yml
+  prometheus_cf_exporter.alerts.yml: prometheus_cf_exporter.alerts.yml
+  prometheus_firehose_exporter.alerts.yml: prometheus_firehose_exporter.alerts.yml
+
+properties:
+  cloudfoundry_alerts.app_service_name:
+    description: "Service name for app alerts"
+    default: "cf"
+  cloudfoundry_alerts.app_crashed.evaluation_time:
+    description: "Application Crashed alert evaluation time"
+    default: 8h
+  cloudfoundry_alerts.app_unhealthy.evaluation_time:
+    description: "Application Unhealthy alert evaluation time"
+    default: 30m
+  cloudfoundry_alerts.cell_unhealthy.evaluation_time:
+    description: "Cell Unhealthy alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.overall_available_memory.threshold:
+    description: "Overall Available Memory (%) alert threshold"
+    default: 25
+  cloudfoundry_alerts.overall_available_memory.evaluation_time:
+    description: "Overall Available Memory alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.max_available_memory.threshold:
+    description: "Max Available Memory (MiB) alert threshold"
+    default: 4096
+  cloudfoundry_alerts.max_available_memory.evaluation_time:
+    description: "Max Available Memory alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.overall_available_disk.threshold:
+    description: "Overall Available Disk (%) alert threshold"
+    default: 25
+  cloudfoundry_alerts.overall_available_disk.evaluation_time:
+    description: "Overall Available Disk alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.max_available_disk.threshold:
+    description: "Max Available Disk (Mib) alert threshold"
+    default: 4096
+  cloudfoundry_alerts.max_available_disk.evaluation_time:
+    description: "Max Available Disk alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.overall_available_containers.threshold:
+    description: "Overall Available Containers (%) alert threshold"
+    default: 25
+  cloudfoundry_alerts.overall_available_containers.evaluation_time:
+    description: "Overall Available Containers alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.max_available_containers.threshold:
+    description: "Max Available Containers alert threshold"
+    default: 50
+  cloudfoundry_alerts.max_available_containers.evaluation_time:
+    description: "Max Available Containers alert evaluation time"
+    default: 15m
+
+  cloudfoundry_alerts.lrp_auctions_failed.threshold:
+    description: "LRP Auctions Failed alert threshold"
+    default: 1
+  cloudfoundry_alerts.lrp_auctions_failed.evaluation_time:
+    description: "LRP Auctions Failed alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.task_auctions_failed.threshold:
+    description: "Task Auctions Failed alert threshold"
+    default: 1
+  cloudfoundry_alerts.task_auctions_failed.evaluation_time:
+    description: "Task Auctions Failed alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.auctioneer_fetch_states_duration.threshold:
+    description: "Auctioneer Fetch States Duration (seconds) alert threshold"
+    default: 5
+  cloudfoundry_alerts.auctioneer_fetch_states_duration.evaluation_time:
+    description: "Auctioneer Fetch States Duration alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.bbs_convergence_lrp_duration.threshold:
+    description: "BBS Convergence LRP Duration (seconds) alert threshold"
+    default: 10
+  cloudfoundry_alerts.bbs_convergence_lrp_duration.evaluation_time:
+    description: "BBS Convergence LRP Duration alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.bbs_request_latency.threshold:
+    description: "BBS Request Latency (seconds) alert threshold"
+    default: 5
+  cloudfoundry_alerts.bbs_request_latency.evaluation_time:
+    description: "BBS Request Latency alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.apps_not_synchronized.evaluation_time:
+    description: "Apps Not Synchronized alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.tasks_not_synchronized.evaluation_time:
+    description: "Tasks Not Synchronized alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.app_instances_fewer_than_expected.threshold:
+    description: "App Instances Fewer Than Expected alert threshold"
+    default: 5
+  cloudfoundry_alerts.app_instances_fewer_than_expected.evaluation_time:
+    description: "App Instances Fewer Than Expected alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.app_instances_more_than_expected.threshold:
+    description: "App Instances More Than Expected alert threshold"
+    default: 5
+  cloudfoundry_alerts.app_instances_more_than_expected.evaluation_time:
+    description: "App Instances More Than Expected alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.rep_bulk_synch_duration.threshold:
+    description: "Rep Bulk Synch Duration (seconds) alert threshold"
+    default: 10
+  cloudfoundry_alerts.rep_bulk_synch_duration.evaluation_time:
+    description: "Rep Bulk Synch Duration alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.threshold:
+    description: "BBS Convergence LRP Duration (seconds) alert threshold"
+    default: 10
+  cloudfoundry_alerts.nsync_bulker_desired_lrp_sync_duration.evaluation_time:
+    description: "BBS Convergence LRP Duration alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.grootfs_create_fail.threshold:
+    description: "GrootFS create fail alert threshold"
+    default: 1
+  cloudfoundry_alerts.grootfs_create_fail.evaluation_time:
+    description: "GrootFS create fail alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.grootfs_delete_fail.threshold:
+    description: "GrootFS delete fail alert threshold"
+    default: 1
+  cloudfoundry_alerts.grootfs_delete_fail.evaluation_time:
+    description: "GrootFS delete fail alert evaluation time"
+    default: 5m
+
+  cloudfoundry_alerts.firehose_dropped_messages.threshold:
+    description: "Firehose Dropped Messages alert threshold"
+    default: 5
+  cloudfoundry_alerts.firehose_dropped_messages.evaluation_time:
+    description: "Firehose Dropped Messages alert evaluation time"
+    default: 5m
+
+  cloudfoundry_alerts.etcd_leaders.evaluation_time:
+    description: "Etcd More Than One Leader alert evaluation time"
+    default: 10m
+
+  cloudfoundry_alerts.router_emitter_sync_duration.threshold:
+    description: "Router Emitter Sync Duration (seconds) alert threshold"
+    default: 10
+  cloudfoundry_alerts.router_emitter_sync_duration.evaluation_time:
+    description: "Router Emitter Sync Duration alert evaluation time"
+    default: 15m
+  cloudfoundry_alerts.router_requests.threshold:
+    description: "Router Requests alert threshold"
+    default: 2500
+  cloudfoundry_alerts.router_requests.evaluation_time:
+    description: "Router Requests alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.router_requests_drop.threshold:
+    description: "Total request rate over past 10 mintues is less thant X% compared to the past 4 hour average, default to 10%"
+    default: 10
+  cloudfoundry_alerts.router_requests_drop.evaluation_time:
+    description: "Router Requests sudden drop alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.routers_latency.threshold:
+    description: "Routers Latency alert threshold"
+    default: 100
+  cloudfoundry_alerts.routers_latency.evaluation_time:
+    description: "Routers Latency evaluation time"
+    default: 30m
+  cloudfoundry_alerts.routes_last_registry.threshold:
+    description: "Routes Not Being Registered (seconds) alert threshold"
+    default: 30
+  cloudfoundry_alerts.routes_last_registry.evaluation_time:
+    description: "Routes Not Being Registered alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.router_bad_gateway.threshold:
+    description: "Router Bad Gateway alert threshold"
+    default: 100
+  cloudfoundry_alerts.router_bad_gateway.evaluation_time:
+    description: "Router Bad Gateway alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.router_5xx_responses.threshold:
+    description: "Router 5xx Responses alert threshold"
+    default: 100
+  cloudfoundry_alerts.router_5xx_responses.evaluation_time:
+    description: "Router 5xx Responses alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.routes_total.threshold:
+    description: "Routes Too Low alert threshold"
+    default: 5
+  cloudfoundry_alerts.routes_total.evaluation_time:
+    description: "Routes Too Low alert evaluation time"
+    default: 5m
+
+  cloudfoundry_alerts.scrape_error.evaluation_time:
+    description: "Scrape error alert evaluation time"
+    default: 10m
+  cloudfoundry_alerts.scrape_too_old.threshold:
+    description: "Scrape too old alert threshold"
+    default: 600
+  cloudfoundry_alerts.scrape_too_old.evaluation_time:
+    description: "Scrape too old alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.slow_consumer.evaluation_time:
+    description: "Slow Consumer alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.envelope_received_too_old.threshold:
+    description: "Last Envelope Received too old alert threshold"
+    default: 600
+  cloudfoundry_alerts.envelope_received_too_old.evaluation_time:
+    description: "Last Envelope Received too old alert evaluation time"
+    default: 5m
+  cloudfoundry_alerts.metric_received_too_old.threshold:
+    description: "Last Metric Received too old alert threshold"
+    default: 600
+  cloudfoundry_alerts.metric_received_too_old.evaluation_time:
+    description: "Last Metric Received too old alert evaluation time"
+    default: 5m

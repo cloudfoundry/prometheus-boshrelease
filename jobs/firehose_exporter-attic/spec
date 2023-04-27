@@ -1,0 +1,80 @@
+---
+name: firehose_exporter-attic
+
+packages:
+  - firehose_exporter-attic
+
+templates:
+  bin/firehose_exporter_ctl: bin/firehose_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+
+provides:
+  - name: firehose_exporter
+    type: firehose_exporter
+
+properties:
+  firehose_exporter.uaa.url:
+    description: "Cloud Foundry UAA URL"
+  firehose_exporter.uaa.client_id:
+    description: "Cloud Foundry UAA Client ID"
+  firehose_exporter.uaa.client_secret:
+    description: "Cloud Foundry UAA Client Secret"
+  firehose_exporter.doppler.subscription_id:
+    description: "Cloud Foundry Doppler Subscription ID"
+    default: prometheus
+  firehose_exporter.doppler.use_unique_subscription_id:
+    description: "If true the instance id will be added as a suffix to the subscription id"
+    default: false
+  firehose_exporter.doppler.idle_timeout:
+    description: "Cloud Foundry Doppler Idle Timeout"
+  firehose_exporter.doppler.min_retry_delay:
+    description: "Cloud Foundry Doppler min retry delay duration"
+  firehose_exporter.doppler.max_retry_delay:
+    description: "Cloud Foundry Doppler max retry delay duration"
+  firehose_exporter.doppler.max_retry_count:
+    description: "Cloud Foundry Doppler max retry count"
+  firehose_exporter.doppler.metric_expiration:
+    description: "How long a Cloud Foundry Doppler metric is valid"
+  firehose_exporter.filter.deployments:
+    description: "Comma separated deployments to filter"
+  firehose_exporter.filter.events:
+    description: "Comma separated events to filter (ContainerMetric, CounterEvent, HttpStartStop, ValueMetric)"
+  firehose_exporter.logging.url:
+    description: "Cloud Foundry Logging endpoint"
+  firehose_exporter.logging.use_legacy_firehose:
+    description: "Whether to use the v1 firehose rather than the RLP"
+    default: false
+  firehose_exporter.log_format:
+    description: "Set the log target and format. Example: 'logger:syslog?appname=bob&local=7' or 'logger:stdout?json=true'"
+  firehose_exporter.log_level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+  firehose_exporter.metrics.namespace:
+    description: "Metrics Namespace"
+  firehose_exporter.metrics.environment:
+    description: "Environment label to be attached to metrics"
+  firehose_exporter.metrics.cleanup_interval:
+    description: "Metrics clean up interval"
+  firehose_exporter.skip_ssl_verify:
+    description: "Disable SSL Verify"
+    default: false
+  firehose_exporter.web.port:
+    description: "Port on which to expose web interface and telemetry"
+    default: "9186"
+  firehose_exporter.web.telemetry_path:
+    description: "Path under which to expose Prometheus metrics"
+  firehose_exporter.web.auth_username:
+    description: "Username for web interface basic auth"
+  firehose_exporter.web.auth_password:
+    description: "Password for web interface basic auth"
+  firehose_exporter.web.tls_cert:
+    description: "TLS certificate (PEM format). If the certificate is signed by a certificate authority, the file should be the concatenation of the server's certificate, any intermediates, and the CA's certificate"
+  firehose_exporter.web.tls_key:
+    description: "TLS private key (PEM format)"
+
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"

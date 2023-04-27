@@ -119,9 +119,13 @@ bosh -d prometheus deploy manifests/prometheus.yml \
 
 ### Monitoring Cloud Foundry
 
-If you want to monitor your [Cloud Foundry](https://www.cloudfoundry.org/) platform, first update your [cf-deployment](https://github.com/cloudfoundry/cf-deployment) adding the [add-prometheus-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml) op file. This will add the UAA clients required to gather information from the Cloud Foundry [API](https://apidocs.cloudfoundry.org/268/) and [Firehose](https://docs.cloudfoundry.org/loggregator/architecture.html#firehose).
+If you want to monitor your [Cloud Foundry][cloudfoundry] platform, first update your
+[cf-deployment][cf-deployment] adding the [add-prometheus-uaa-clients.yml][add-prometheus-uaa-clients]
+op file.
 
-Then add the [monitor-cf.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml) ops file by running the following command (filling the required variables with your own values):
+This will add the UAA clients required to gather information from the Cloud Foundry [API][cfapi]
+and [Firehose][firehose]. Then add the [monitor-cf.yml][monitor-cf] ops file by running the following
+command (filling the required variables with your own values):
 
 ```
 bosh -d prometheus deploy manifests/prometheus.yml \
@@ -136,16 +140,46 @@ bosh -d prometheus deploy manifests/prometheus.yml \
   -v metron_deployment_name= \
   -v system_domain= \
   -v uaa_clients_cf_exporter_secret= \
-  -v uaa_clients_firehose_exporter_secret= \
-  -v traffic_controller_external_port= \
+  -v loggregator_ca_name= \
   -v skip_ssl_verify=
 ```
 
->*NOTE:* `metron_deployment_name` property should match the `deployment` property of your `metron_agent` or `loggregator_agent` jobs.
+>**NOTE:** `metron_deployment_name` property should match the `deployment` property of your `metron_agent` or `loggregator_agent` jobs.
 > Use:
 >- your `system_domain` (`metron_agent`) for [cf-deployment](https://github.com/cloudfoundry/cf-deployment) before [v2.0.0](https://github.com/cloudfoundry/cf-deployment/releases/tag/v2.0.0)
 >- `cf` (`loggregator_agent`) for [cf-deployment](https://github.com/cloudfoundry/cf-deployment) starting from the [v2.0.0](https://github.com/cloudfoundry/cf-deployment/commit/b4e761fa257740a2cbca2574b40ae78bcfe2178b#diff-1c845aa8da14326552b37f043a621ccaR3)
 >- `cf` for [Pivotal Application Service](https://network.pivotal.io/products/elastic-runtime)
+
+>**NOTE:** `loggregator_ca_name` property should match the full credhub path of `loggregator_ca` certificate variable, ex: `/bosh-mydirector/cf/loggregator_ca`.
+
+>**NOTE:** You can switch to legacy implementation of [firehose_exporter][firehose_exporter] and legacy
+> cloud foundry dashboards by adding the following ops-files:
+> - on prometheus deployment, adapt:
+>   ```
+>   ...
+>   -o manifests/operators/monitor-cf.yml \
+>   -o manifests/operators/deprecated/monitor-cf-attic.yml \
+>   -v uaa_clients_firehose_exporter_secret= \
+>   -v traffic_controller_external_port= \
+>   ...
+>   ```
+> - When using `add-prometheus-uaa-clients.yml` on cloud foundry deployment, adapt:
+>   ```
+>   ...
+>   -o manifests/operators/cf/add-prometheus-uaa-clients.yml
+>   -o manifests/operators/deprecated/cf/add-prometheus-uaa-clients-attic.yml
+>   ...
+>   ```
+>
+> This will switch deployment to `firehose_exporter-attic`, `cloudfoundry_dashboards-attic` and `cloudfoundry_alerts-attic`
+
+[cloudfoundry]: https://www.cloudfoundry.org/
+[cf-deployment]: https://github.com/cloudfoundry/cf-deployment
+[add-prometheus-uaa-clients]: https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-prometheus-uaa-clients.yml
+[cfapi]: https://v3-apidocs.cloudfoundry.org/version/3.137.0/index.html
+[firehose]: https://docs.cloudfoundry.org/loggregator/architecture.html#firehose
+[monitor-cf]: https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-cf.yml
+[firehose_exporter]: https://github.com/bosh-prometheus/firehose_exporter
 
 #### Register Cloud Foundry routes
 
@@ -188,7 +222,7 @@ bosh -d prometheus deploy manifests/prometheus.yml \
 
 Additional [operations files](http://bosh.io/docs/cli-ops-files.html) are located at the [manifests/operators](https://github.com/bosh-prometheus/prometheus-boshrelease/tree/master/manifests/operators) directory. Those files includes a basic configuration, so extra ops files might be needed for additional configuration.
 
-Please review the op files before deploying them to check the requeriments, dependencies and necessary variables.
+Please review the op files before deploying them to check the requirements, dependencies and necessary variables.
 
 | File | Description | exporter | dashboards | alerts |
 | ---- | ----------- |:--------:|:----------:|:------:|
@@ -203,7 +237,6 @@ Please review the op files before deploying them to check the requeriments, depe
 | [alertmanager-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/alertmanager-web-external-url.yml) | Configures the URL under which `alertmanager` is externally reachable | | | |
 | [configure-bosh-exporter-uaa-client-id.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/configure-bosh-exporter-uaa-client-id.yml) | Configures a custom `bosh_exporter` UAA `client_id` for the [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) op-file | | | |
 | [enable-bosh-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-bosh-uaa.yml) | Configures [monitor-bosh.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/monitor-bosh.yml) to use an UAA client (you must apply the [add-bosh-exporter-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/bosh/add-bosh-exporter-uaa-clients.yml) op file to your [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment)) | | | |
-| [enable-cf-loggregator-v2.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-cf-loggregator-v2.yml) | Enables [Cloud Foundry Loggregator V2 API](https://github.com/cloudfoundry/loggregator-release#rlp-gateway) calls at the `firehose_exporter` | | | |
 | [enable-cf-route-registrar.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-cf-route-registrar.yml) | Registers `alertmanager`, `grafana`, and `prometheus` as [Cloud Foundry routes](https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html) (under your `system domain`) | | | |
 | [enable-grafana-uaa.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-grafana-uaa.yml) | Configures `grafana` user authentication to use [Cloud Foundry UAA](https://docs.cloudfoundry.org/concepts/architecture/uaa.html) (you must apply the [add-grafana-uaa-clients.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/cf/add-grafana-uaa-clients.yml) op file to your [cf-deployment](https://github.com/cloudfoundry/cf-deployment)) | | | |
 | [enable-grafana-generic-oauth.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/enable-grafana-generic-oauth.yml) | Configures `grafana` user authentication to use a generic OAuth2 provider | | | |
@@ -252,6 +285,15 @@ Please review the op files before deploying them to check the requeriments, depe
 | [nginx-vm-extension.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/nginx-vm-extension.yml) | Adds a [VM Extension](http://bosh.io/docs/cloud-config/#vm-extensions) block to the `nginx` instance, useful to attach a Load Balancer| | | |
 | [prometheus-web-external-url.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/prometheus-web-external-url.yml) | Configures the URL under which `prometheus` is externally reachable | | | |
 | [use-sqlite3.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/use-sqlite3.yml) | Use sqlite3 instead of postgres | | | |
+
+
+In addition, some deprecated ops-files allows to switch back to legacy behaviours
+| File | Description | exporter | dashboards | alerts |
+| ---- | ----------- |:--------:|:----------:|:------:|
+| [deprecated/monitor-cf-attic.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/deprecated/monitor-cf-attic.yml) | Use legacy implementation of `monitor-cf.yml` | x | x | x |
+| [deprecated/cf/add-prometheus-uaa-clients-attic.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/deprecated/cf/add-prometheus-uaa-clients-attic.yml) | Adds UAA client in cloud foundry deployment when using `monitor-cf-attic.yml` | | | |
+| [deprecated/enable-cf-loggregator-v2.yml](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/manifests/operators/deprecated/enable-cf-loggregator-v2.yml) | Enables [Cloud Foundry Loggregator V2 API](https://github.com/cloudfoundry/loggregator-release#rlp-gateway) calls in the legacy `firehose_exporter` | | | |
+
 
 ### Deployment variables and the var-store
 

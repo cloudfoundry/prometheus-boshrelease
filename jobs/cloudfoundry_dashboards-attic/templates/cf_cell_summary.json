@@ -1,0 +1,1042 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.0.4"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": "5.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1523191973985,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "cf"
+      ],
+      "targetBlank": false,
+      "title": "CF",
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "CF Component Metrics",
+      "type": "link",
+      "url": "https://docs.cloudfoundry.org/loggregator/all_metrics.html"
+    }
+  ],
+  "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "rgba(50, 172, 45, 0.97)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(245, 54, 54, 0.9)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Status of this Diego cell",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "max(firehose_value_metric_rep_garden_health_check_failed{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\", bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"})",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "0.1,1",
+      "title": "Cell Status",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        },
+        {
+          "op": "=",
+          "text": "Healthy",
+          "value": "0"
+        },
+        {
+          "op": "=",
+          "text": "Unhealthy",
+          "value": "1"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Number of remaining containers in this Diego cell",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 13,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "10,50",
+      "title": "Remaining Containers",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "description": "Remaining memory in this Diego cell",
+      "format": "mbytes",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 14,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "2048,4096",
+      "title": "Remaining Memory",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "decimals": 2,
+      "description": "Remaining disk in this Diego cell",
+      "format": "mbytes",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 15,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "2048,4096",
+      "title": "Remaining Disk",
+      "transparent": true,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative used and available number of containers.",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 9,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Used",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Containers",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "columns": [],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Application instances running in this Diego cell",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 10,
+      "links": [],
+      "pageSize": 5,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Organization / Space / Application #Index",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(application_id, instance_index) * on(application_id) group_left(organization_name, space_name, application_name) min(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_name,  application_id)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ application_name }} #{{ instance_index }}",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Application Instances",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative allocated and available MiB of memory to allocate to containers.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 3,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Allocated",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Cell Memory",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "columns": [
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Current memory usage per application instance running in this Diego cell.",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 11,
+      "links": [],
+      "pageSize": 5,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Memory Usage",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "Current",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "Organization / Space / Application #Index",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "string",
+          "unit": "bytes"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "min(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(application_id, instance_index) * on(application_id) group_left(organization_name, space_name, application_name) min(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_name,  application_id)",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ application_name }} #{{ instance_index }}",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Current Memory Usage per Application Instance",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Cumulative allocated and available MiB of disk to allocate to containers.",
+      "editable": true,
+      "error": false,
+      "fill": 1,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Allocated",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "Available",
+          "refId": "B",
+          "step": 4
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Cell Disk",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "columns": [
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Current disk usage per application instance running in this Diego cell.",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 12,
+      "links": [],
+      "pageSize": 5,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Disk Usage",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "Current",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "Organization / Space / Application #Index",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "min(firehose_container_metric_disk_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(application_id, instance_index) * on(application_id) group_left(organization_name, space_name, application_name) min(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_name,  application_id)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ application_name }} #{{ instance_index }}",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Current Disk Usage per Application Instance",
+      "transform": "timeseries_aggregations",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [
+    "cf",
+    "diego"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers, environment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "bosh_job_name",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "IP",
+        "multi": false,
+        "name": "bosh_job_ip",
+        "options": [],
+        "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\", bosh_job_name=~\"$bosh_job_name\"}, bosh_job_ip)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "CF: Cell Summary",
+  "uid": "cf_cell_summary",
+  "version": 1
+}
