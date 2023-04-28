@@ -16,7 +16,7 @@
 | [vonage-status-panel]          | grafana    | v1.0.10 | ![][vonage-status-panel-ver]          | ![][vonage-status-panel-act]          |
 | [bosh_exporter]                | bosh       | v3.5.0  | ![][bosh_exporter-ver]                | ![][bosh_exporter-act]                |
 | [bosh_tsdb_exporter]           | bosh       | v0.2.0  | ![][bosh_tsdb_exporter-ver]           | ![][bosh_tsdb_exporter-act]           |
-| [credhub_exporter]             | bosh       | v0.18.0 | ![][credhub_exporter-ver]             | ![][credhub_exporter-act]             |
+| [credhub_exporter]             | bosh       | v0.23.0 | ![][credhub_exporter-ver]             | ![][credhub_exporter-act]             |
 | [cf_exporter]                  | cf         | v1.0.1  | ![][cf_exporter-ver]                  | ![][cf_exporter-act]                  |
 | [firehose_exporter]            | cf         | v7.0.0  | ![][firehose_exporter-ver]            | ![][firehose_exporter-act]            |
 | [util-linux]                   | *internal* | v2.36.1 | ![][util-linux-ver]                   |                                       |
