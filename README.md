@@ -3,7 +3,7 @@
 This is a [BOSH] release for [Prometheus], [Alertmanager], and [Grafana]. It also includes various
 [Prometheus exporters] and [Grafana plugins].
 
-The details list of included components and their maintenance status is available on [VERSIONS.md](./VERSIONS.md)
+The detailed list of included components and their maintenance status is available on [VERSIONS.md](./VERSIONS.md)
 
 Questions? Pop in our [Slack channel]!
 
