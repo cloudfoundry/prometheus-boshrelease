@@ -1,27 +1,34 @@
 # Prometheus BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [Prometheus](https://prometheus.io/), [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/), and [Grafana](https://grafana.com/).
+This is a [BOSH] release for [Prometheus], [Alertmanager], and [Grafana]. It also includes various
+[Prometheus exporters] and [Grafana plugins].
 
-It includes the following [prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/): [Blackbox](https://github.com/prometheus/blackbox_exporter), [BOSH](https://github.com/bosh-prometheus/bosh_exporter), [BOSH TSDB](https://github.com/bosh-prometheus/bosh_tsdb_exporter), [cAdvisor](https://github.com/google/cadvisor), [Cloud Foundry](https://github.com/bosh-prometheus/cf_exporter), [Cloud Foundry Firehose](https://github.com/bosh-prometheus/firehose_exporter), [Collectd](https://github.com/prometheus/collectd_exporter), [Consul](https://github.com/prometheus/consul_exporter), [Credhub](https://github.com/orange-cloudfoundry/credhub_exporter), [Elasticsearch](https://github.com/justwatchcom/elasticsearch_exporter), [Graphite](https://github.com/prometheus/graphite_exporter), [HAProxy](https://github.com/prometheus/haproxy_exporter), [InfluxDB](https://github.com/prometheus/influxdb_exporter), [Kubernetes](https://github.com/kubernetes/kube-state-metrics), [Memcached](https://github.com/prometheus/memcached_exporter), [MongoDB](https://github.com/dcu/mongodb_exporter), [MySQL](https://github.com/prometheus/mysqld_exporter), [NATS](https://github.com/lovoo/nats_exporter), [PostgreSQL](https://github.com/wrouesnel/postgres_exporter), [PushGateway](https://github.com/prometheus/pushgateway), [RabbitMQ](https://github.com/kbudde/rabbitmq_exporter), [Redis](https://github.com/oliver006/redis_exporter), [Shield](https://github.com/bosh-prometheus/shield_exporter), [Stackdriver](https://github.com/frodenas/stackdriver_exporter), [Statsd](https://github.com/prometheus/statsd_exporter), [Vault](https://github.com/grapeshot/vault_exporter).
+The details list of included components and their maintenance status is available on [VERSIONS.md](./VERSIONS.md)
 
-It includes the following [grafana panels](https://grafana.com/grafana/plugins): [clock](https://grafana.com/grafana/plugins/grafana-clock-panel), [diagram](https://grafana.com/grafana/plugins/jdbranham-diagram-panel), [histogram](https://grafana.com/grafana/plugins/mtanda-histogram-panel), [status](https://grafana.com/grafana/plugins/vonage-status-panel), [statusmap](https://grafana.com/grafana/plugins/flant-statusmap-panel), [worldmap](https://grafana.com/grafana/plugins/grafana-worldmap-panel).
+Questions? Pop in our [Slack channel]!
 
-Questions? Pop in our [slack channel](https://cloudfoundry.slack.com/messages/prometheus/)!
+[BOSH]: http://bosh.io/
+[Prometheus]: https://prometheus.io/
+[Alertmanager]: https://prometheus.io/docs/alerting/alertmanager/
+[Prometheus exporters]: https://prometheus.io/docs/instrumenting/exporters/
+[Grafana]: https://grafana.com/
+[Grafana plugins]: https://grafana.com/grafana/plugins/
+[Slack channel]: https://cloudfoundry.slack.com/messages/prometheus/
 
 ## Table of Contents
 
-* [Usage](https://github.com/bosh-prometheus/prometheus-boshrelease#usage)
-  * [Requirements](https://github.com/bosh-prometheus/prometheus-boshrelease#requirements)
-  * [Clone the repository](https://github.com/bosh-prometheus/prometheus-boshrelease#clone-the-repository)
-  * [Basic deployment](https://github.com/bosh-prometheus/prometheus-boshrelease#basic-deployment)
-  * [Using BOSH Service Discovery](https://github.com/bosh-prometheus/prometheus-boshrelease#using-bosh-service-discovery)
-  * [Monitoring Cloud Foundry](https://github.com/bosh-prometheus/prometheus-boshrelease#monitoring-cloud-foundry)
-    * [Register Cloud Foundry routes](https://github.com/bosh-prometheus/prometheus-boshrelease#register-cloud-foundry-routes)
-    * [Use UAA for Grafana authentication](https://github.com/bosh-prometheus/prometheus-boshrelease#use-uaa-for-grafana-authentication)
-  * [Operations files](https://github.com/bosh-prometheus/prometheus-boshrelease#operations-files)
-  * [Deployment variables and the var-store](https://github.com/bosh-prometheus/prometheus-boshrelease#deployment-variables-and-the-var-store)
-* [Contributing](https://github.com/bosh-prometheus/prometheus-boshrelease#contributing)
-* [License](https://github.com/bosh-prometheus/prometheus-boshrelease#license)
+- [Usage](#usage)
+    - [Requirements](#requirements)
+    - [Clone the repository](#clone-the-repository)
+    - [Basic deployment](#basic-deployment)
+    - [Using BOSH Service Discovery](#using-bosh-service-discovery)
+    - [Monitoring Cloud Foundry](#monitoring-cloud-foundry)
+        - [Register Cloud Foundry routes](#register-cloud-foundry-routes)
+        - [Use UAA for Grafana authentication](#use-uaa-for-grafana-authentication)
+    - [Operations files](#operations-files)
+    - [Deployment variables and the var-store](#deployment-variables-and-the-var-store)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Usage
 
