@@ -7,7 +7,7 @@ packages:
   - grafana_jq
 
 templates:
-  bin/grafana_ctl: bin/grafana_ctl
+  bpm.yml.erb: config/bpm.yml
   bin/grafana-admin-password: bin/grafana-admin-password
   bin/grafana-homepage: bin/grafana-homepage
   bin/grafana-users: bin/grafana-users
@@ -36,6 +36,9 @@ templates:
   config/smtp_cert.pem: config/smtp_cert.pem
   config/smtp_key.pem: config/smtp_key.pem
   config/license.jwt: config/license.jwt
+  config/jwt_key.pem: config/jwt_key.pem
+  config/grpc_server_cert.pem: config/grpc_server_cert.pem
+  config/grpc_server_key.pem: config/grpc_server_key.pem
 
 provides:
   - name: grafana
@@ -57,6 +60,10 @@ consumes:
 properties:
   grafana.app_mode:
     description: "possible values : production, development"
+  grafana.instance_name:
+    description: "Set the name of the grafana-server instance. Used in logging, internal metrics, and clustering info"
+  grafana.force_migration:
+    description: "Force migration will run migrations that might cause data loss. Default is false"
 
   grafana.paths.temp_data_lifetime:
     description: "Temporary files in data directory older than given duration will be removed"
@@ -86,6 +93,19 @@ properties:
     description: "SSL certificate (PEM encoded)"
   grafana.server.ssl_key:
     description: "SSL private key (PEM encoded)"
+  grafana.server.socket_gid:
+    description: "GID where the socket should be set when protocol=socket"
+  grafana.server.socket_mode:
+    description: "Mode where the socket should be set when protocol=socket"
+  grafana.server.cdn_url:
+    description: "Specify a full HTTP URL address to the root of your Grafana CDN assets"
+  grafana.server.read_timeout:
+    description: "Sets the maximum time using a duration format (5s/5m/5ms) before timing out read"
+  grafana.server.custom_response_headers:
+    description: "This setting enables you to specify additional headers that the server adds to HTTP(S) responses"
+    example:
+      exampleHeader1: exampleValue1
+      exampleHeader2: exampleValue2
 
   grafana.database.type:
     description: "Database Type, either 'mysql', 'postgres' or 'sqlite3'"
@@ -126,33 +146,43 @@ properties:
     default: "database"
   grafana.remote_cache.connstr:
     description: "Connection string"
+  grafana.remote_cache.prefix:
+    description: "Prefix prepended to all the keys in the remote cache"
+  grafana.remote_cache.encryption:
+    description: "This enables encryption of values stored in the remote cache"
 
-  grafana.dataproxy.logging_enabled:
-    description: "Enable data proxy logging"
-  grafana.dataproxy.timeout:
-    description: "How long the data proxy should wait before timing out"
-  grafana.dataproxy.keep_alive_seconds:
-    description: "How many seconds the data proxy waits before sending a keepalive request"
-  grafana.dataproxy.tls_handshake_timeout_seconds:
-    description: "How many seconds the data proxy waits for a successful TLS Handshake before timing out"
-  grafana.dataproxy.expect_continue_timeout_seconds:
-    description: "How many seconds the data proxy will wait for a server's first response headers after fully writing the request headers if the request has an 'Expect: 100-continue' header"
-  grafana.dataproxy.max_idle_connections:
-    description: "The maximum number of idle connections that Grafana will keep alive"
-  grafana.dataproxy.idle_conn_timeout_seconds:
-    description: "How many seconds the data proxy keeps an idle connection open before timing out"
-
-  grafana.dataproxy.send_user_header:
-    description: "If enabled and user is not anonymous, data proxy will add X-Grafana-User header with username into the request"
-
+  grafana.analytics.enabled:
+    description: "Enable the analytics feature"
   grafana.analytics.reporting_enabled:
-    description: "Change this option to false to disable reporting."
+    description: "Change this option to false to disable reporting"
   grafana.analytics.check_for_updates:
     description: "Set to false to disable all checks to https://grafana.net"
+  grafana.analytics.check_for_plugin_updates:
+    description: "Set to false disables checking for new versions of installed plugins from https://grafana.co"
   grafana.analytics.google_analytics_ua_id:
     description: "Google Analytics universal tracking code, only enabled if you specify an id here"
   grafana.analytics.google_tag_manager_id:
     description: "Google Tag Manager ID"
+  grafana.analytics.application_insights_connection_string:
+    description: "Application Insights connection string. Specify an URL string to enable this feature"
+  grafana.analytics.application_insights_endpoint_url:
+    description: "Specifies an Application Insights endpoint URL where the endpoint string is wrapped in backticks ``"
+  grafana.analytics.feedback_links_enabled:
+    description: "Controls if the UI contains any links to user feedback forms"
+  grafana.analytics.google_analytics_4_id:
+    description: "Google Analytics 4 tracking code, only enabled if you specify an id here"
+  grafana.analytics.google_analytics_4_send_manual_page_views:
+    description: "When Google Analytics 4 Enhanced event measurement is enabled, we will try to avoid sending duplicate events and let Google Analytics 4 detect navigation changes, etc"
+  grafana.analytics.reporting_distributor:
+    description: "The name of the distributor of the Grafana instance. Ex hosted-grafana, grafana-labs"
+  grafana.analytics.rudderstack_config_url:
+    description: "Rudderstack Config url, optional, used by Rudderstack SDK to fetch source config"
+  grafana.analytics.rudderstack_data_plane_url:
+    description: "Rudderstack data plane url, enabled only if rudderstack_write_key is also set"
+  grafana.analytics.rudderstack_sdk_url:
+    description: "Rudderstack SDK url, optional, only valid if rudderstack_write_key and rudderstack_data_plane_url is also set"
+  grafana.analytics.rudderstack_write_key:
+    description: "Rudderstack write key, enabled only if rudderstack_data_plane_url is also set"
 
   grafana.security.disable_initial_admin_creation:
     description: "Disable creation of admin user on first start of grafana"
@@ -188,6 +218,23 @@ properties:
   grafana.security.x_xss_protection:
     description: "Set to true to enable the X-XSS-Protection header, which tells browsers to stop pages from loadingwhen they detect reflected cross-site scripting (XSS) attacks"
 
+  grafana.security.admin_email:
+    description: "Default admin email, created on startup"
+  grafana.security.angular_support_enabled:
+    description: "Controls if old angular plugins are supported or not. This will be disabled by default in future release"
+  grafana.security.available_encryption_providers:
+    description: "list of configured key providers, space separated (Enterprise only): e.g., awskms.v1 azurekv.v1"
+  grafana.security.content_security_policy:
+    description: "Enable adding the Content-Security-Policy header to your requests"
+  grafana.security.content_security_policy_report_only:
+    description: "Enable adding the Content-Security-Policy-Report-Only header to your requests"
+  grafana.security.content_security_policy_report_only_template:
+    description: "Set Content Security Policy Report Only template used when adding the Content-Security-Policy-Report-Only header to your requests"
+  grafana.security.content_security_policy_template:
+    description: "Set Content Security Policy template used when adding the Content-Security-Policy header to your requests"
+
+  grafana.snapshots.enabled:
+    description: "set to false to remove snapshot functionality"
   grafana.snapshots.external_enabled:
     description: "Extenal snaphot enabled"
   grafana.snapshots.external_snapshot_url:
@@ -199,10 +246,22 @@ properties:
   grafana.snapshots.remove_expired:
     description: "Remove expired snapshots"
 
+  grafana.support_bundles.enabled:
+    description: "Enable support bundle creation (default: true)"
+  grafana.support_bundles.server_admin_only:
+    description: "Only server admins can generate and view support bundles (default: true)"
+  grafana.support_bundles.public_keys:
+    description: "If set, bundles will be encrypted with the provided public keys separated by whitespace"
+
+  grafana.storage.allow_unsanitized_svg_upload:
+    description: "Allow uploading SVG files without sanitization"
+
   grafana.dashboards.versions_to_keep:
     description: "Number dashboard versions to keep (per dashboard)"
   grafana.dashboards.min_refresh_interval:
     description: "Minimum dashboard refresh interval"
+  grafana.dashboards.default_home_dashboard_path:
+    description: "Path to the default home dashboard. If this value is empty, then Grafana uses StaticRootPath + dashboards/home.json"
 
   grafana.users.allow_sign_up:
     description: "disable user signup / registration"
@@ -240,6 +299,14 @@ properties:
         email: user@example.com
         login: user
         password: userpassword
+  grafana.users.default_language:
+    description: "Default UI language (supported IETF language tag, such as en-US)"
+  grafana.users.hidden_users:
+    description: "Enter a comma-separated list of usernames to hide them in the Grafana UI. These users are shown to Grafana admins and to themselves"
+  grafana.users.home_page:
+    description: "Path to a custom home page. Users are only redirected to this if the default home dashboard is used. It should match a frontend route and contain a leading slash"
+  grafana.users.user_invite_max_lifetime_duration:
+    description: "The duration in time a user invitation remains valid before expiring. This setting should be expressed as a duration. Examples: 6h (hours), 2d (days), 1w (week)"
 
   grafana.auth.login_cookie_name:
     description: "Login cookie name"
@@ -251,6 +318,8 @@ properties:
     description: "How often should auth tokens be rotated for authenticated users when being active"
   grafana.auth.disable_login_form:
     description: "Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false"
+  grafana.auth.disable_login:
+    description: "Disable usage of Grafana build-in login solution"
   grafana.auth.disable_signout_menu:
     description: "Set to true to disable the signout link in the side menu"
   grafana.auth.signout_redirect_url:
@@ -263,6 +332,8 @@ properties:
     description: "Limit of api_key seconds to live before expiration"
   grafana.auth.sigv4_auth_enabled:
     description: "Set to true to enable SigV4 authentication option for HTTP-based datasources"
+  grafana.auth.sigv4_verbose_logging:
+    description: "Set to true to enable verbose logging of SigV4 request signing"
 
   grafana.auth.anonymous.enabled:
     description: "enable anonymous access"
@@ -272,6 +343,10 @@ properties:
     description: "specify role for unauthenticated users"
   grafana.auth.anonymous.hide_version:
     description: "mask the Grafana version number for unauthenticated users"
+  grafana.auth.oauth_skip_org_role_update_sync:
+    description: "Skip forced assignment of OrgID 1 or 'auto_assign_org_id' for social logins"
+  grafana.auth.azure_auth_enabled:
+    description: "Set to true to enable Azure authentication option for HTTP-based datasources"
 
   grafana.auth.github.enabled:
     description: "Github auth enabled"
@@ -295,6 +370,14 @@ properties:
     description: "Github auth team ids"
   grafana.auth.github.allowed_organizations:
     description: "Github auth allowed organizations"
+  grafana.auth.github.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.github.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.github.role_attribute_path:
+    description: "JMESPath expression to extract role from id_token"
+  grafana.auth.github.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
 
   grafana.auth.gitlab.enabled:
     description: "Gitlab auth enabled"
@@ -316,6 +399,16 @@ properties:
     description: "Gitlab auth allowed domains"
   grafana.auth.gitlab.allowed_groups:
     description: "Gitlab auth allowed groups"
+  grafana.auth.gitlab.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.gitlab.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.gitlab.role_attribute_path:
+    description: "Gitlab auth role attribute path"
+  grafana.auth.gitlab.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
+  grafana.auth.gitlab.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
 
   grafana.auth.google.enabled:
     description: "Google auth enabled"
@@ -337,6 +430,10 @@ properties:
     description: "Google auth allowed domains"
   grafana.auth.google.hosted_domain:
     description: "Google auth hosted domain"
+  grafana.auth.google.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.google.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
 
   grafana.auth.grafananet.enabled:
     description: "Grafana.net auth enabled"
@@ -363,6 +460,10 @@ properties:
     description: "Grafana.net auth scopes"
   grafana.auth.grafanacom.allowed_organizations:
     description: "Grafana.net auth allowed organizations"
+  grafana.auth.grafanacom.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.grafanacom.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
 
   grafana.auth.azuread.name:
     description: "Azure AD auth name"
@@ -384,6 +485,14 @@ properties:
     description: "Azure AD auth allowed domains"
   grafana.auth.azuread.allowed_groups:
     description: "Azure AD auth allowed groups"
+  grafana.auth.azuread.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.azuread.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.azuread.force_use_graph_api:
+    description: "Set to true to force graph API"
+  grafana.auth.azuread.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
 
   grafana.auth.okta.name:
     description: "Okta auth name"
@@ -409,6 +518,16 @@ properties:
     description: "Okta auth allowed groups"
   grafana.auth.okta.role_attribute_path:
     description: "Okta auth role attribute path"
+  grafana.auth.okta.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.okta.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.okta.icon:
+    description: "Set OAuth icon"
+  grafana.auth.okta.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
+  grafana.auth.okta.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
 
   grafana.auth.generic_oauth.name:
     description: "Generic OAuth name"
@@ -454,27 +573,26 @@ properties:
     description: "Generic OAuth TLS Client key"
   grafana.auth.generic_oauth.tls_skip_verify_insecure:
     description: "Generic OAuth TLS skip verification"
-
-  grafana.auth.saml.enabled:
-    description: "Auth SAML enabled"
-  grafana.auth.saml.certificate:
-    description: "Base64-encoded public X.509 certificate. Used to sign requests to the IdP"
-  grafana.auth.saml.private_key:
-    description: "Base64-encoded private key. Used to decrypt assertions from the IdP"
-  grafana.auth.saml.idp_metadata:
-    description: "Base64-encoded IdP SAML metadata XML. Used to verify and obtain binding locations from the IdP"
-  grafana.auth.saml.idp_metadata_url:
-    description: "URL to fetch SAML IdP metadata. Used to verify and obtain binding locations from the IdP"
-  grafana.auth.saml.max_issue_delay:
-    description: "Duration, since the IdP issued a response and the SP is allowed to process it"
-  grafana.auth.saml.metadata_valid_duration:
-    description: "Duration, for how long the SP's metadata should be valid"
-  grafana.auth.saml.assertion_attribute_name:
-    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's name"
-  grafana.auth.saml.assertion_attribute_login:
-    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's login handle"
-  grafana.auth.saml.assertion_attribute_email:
-    description: "Friendly name or name of the attribute within the SAML assertion to use as the user's email"
+  grafana.auth.generic_oauth.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.generic_oauth.auth_style:
+    description: "Controls which OAuth2 AuthStyle is used when token is requested from OAuth provider. It determines how client_id and client_secret are sent to Oauth provider. Available values are AutoDetect, InParams and InHeader"
+  grafana.auth.generic_oauth.auto_login:
+    description: "Set to true to attempt login automatically, skipping the login screen"
+  grafana.auth.generic_oauth.empty_scopes:
+    description: "Set empty_scopes to true to use an empty scope during authentication"
+  grafana.auth.generic_oauth.groups_attribute_path:
+    description: "JMESPath to extract groups from id_token and UserInfo"
+  grafana.auth.generic_oauth.icon:
+    description: "Set OAuth icon"
+  grafana.auth.generic_oauth.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
+  grafana.auth.generic_oauth.team_ids_attribute_path:
+    description: "JMESPath to extract teams from id_token and UserInfo"
+  grafana.auth.generic_oauth.teams_url:
+    description: "The JSON used for the path lookup is the HTTP response obtained from querying the Teams endpoint specified via the teams_url configuration option (using /teams as a fallback endpoint)"
+  grafana.auth.generic_oauth.use_pkce:
+    description: "IETF’s RFC 7636 introduces “proof key for code exchange” (PKCE) which introduces additional protection against some forms of authorization code interception attacks"
 
   grafana.auth.basic.enabled:
     description: "Auth basic enabled"
@@ -495,6 +613,8 @@ properties:
     description: "Auth proxy headers"
   grafana.auth.proxy.enable_login_token:
     description: "Auth proxy enable login token"
+  grafana.auth.proxy.headers_encoded:
+    description: "Proxy encoded headers"
 
   grafana.auth.ldap.enabled:
     description: "Auth LDAP enable"
@@ -503,9 +623,44 @@ properties:
   grafana.auth.ldap.allow_sign_up:
     description: "Auth LDAP allow sign up"
   grafana.auth.ldap.sync_cron:
-    description: LDAP backround sync (Enterprise only)"
+    description: "LDAP backround sync (Enterprise only)"
   grafana.auth.ldap.active_sync_enabled:
     description: "LDAP backround sync (Enterprise only)"
+  grafana.auth.ldap.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
+
+  grafana.auth.jwt.enabled:
+    description: "Enable JWT login"
+  grafana.auth.jwt.allow_assign_grafana_admin:
+    description: "Allow or not setting the Grafana Admin role from the external provider"
+  grafana.auth.jwt.auto_sign_up:
+    description: "Auto-create users if they are not already matched"
+  grafana.auth.jwt.cache_ttl:
+    description: "JWT cache TTL"
+  grafana.auth.jwt.email_claim:
+    description: "Specify a claim to use as an email to sign in"
+  grafana.auth.jwt.enable_login_token:
+    description: "Set true to enable login token"
+  grafana.auth.jwt.expect_claims:
+    description: "This can be seen as a required subset of a JWT Claims Set"
+  grafana.auth.jwt.header_name:
+    description: "HTTP header to look into to get a JWT token"
+  grafana.auth.jwt.jwk_set_file:
+    description: "Key set in the same format as in JWKS endpoint but located on disk"
+  grafana.auth.jwt.jwk_set_url:
+    description: "Verify token using a JSON Web Key Set loaded from https endpoint"
+  grafana.auth.jwt.key_file:
+    description: "PEM-encoded key file in PKIX, PKCS #1, PKCS #8 or SEC 1 format."
+  grafana.auth.jwt.role_attribute_path:
+    description: "JWT auth role attribute path"
+  grafana.auth.jwt.role_attribute_strict:
+    description: "Denies user access if no role or an invalid role is returned"
+  grafana.auth.jwt.skip_org_role_sync:
+    description: "Prevents the synchronization of organization roles"
+  grafana.auth.jwt.url_login:
+    description: "search for a JWT in the URL query parameter auth_token and use it as the authentication token"
+  grafana.auth.jwt.username_claim:
+    description: "Specify a claim to use as a username to sign in"
 
   grafana.smtp.enabled:
     description: "SMTP enabled"
@@ -532,6 +687,10 @@ properties:
 
   grafana.emails.welcome_email_on_sign_up:
     description: "Welcome email on sign up"
+  grafana.emails.content_types:
+    description: "Enter a comma-separated list of content types that should be included in the emails that are sent"
+  grafana.emails.templates_pattern:
+    description: "Enter a comma separated list of template patterns. Default is emails/*.html, emails/*.txt"
 
   grafana.log.mode:
     description: "Either 'console', 'file', 'syslog'. Use space to separate multiple modes"
@@ -560,6 +719,29 @@ properties:
   grafana.log.file.max_days:
     description: "Expired days of log file(delete after max days)"
 
+  grafana.log.frontend.enabled:
+    description: "Should Sentry javascript agent be initialized"
+  grafana.log.frontend.api_key:
+    description: "Api Key, only applies to Grafana Javascript Agent provider"
+  grafana.log.frontend.custom_endpoint:
+    description: "Custom HTTP endpoint to send events to. Default will log the events to stdout"
+  grafana.log.frontend.instrumentations_console_enabled:
+    description: "Should console instrumentation be enabled, only affects Grafana Javascript Agent"
+  grafana.log.frontend.instrumentations_errors_enabled:
+    description: "Should error instrumentation be enabled, only affects Grafana Javascript Agent"
+  grafana.log.frontend.instrumentations_webvitals_enabled:
+    description: "Should webvitals instrumentation be enabled, only affects Grafana Javascript Agent"
+  grafana.log.frontend.log_endpoint_burst_limit:
+    description: "Max requests accepted per short interval of time for Grafana backend log ingestion endpoint (/log)"
+  grafana.log.frontend.log_endpoint_requests_per_second_limit:
+    description: "Requests per second limit enforced per an extended period, for Grafana backend log ingestion endpoint (/log)."
+  grafana.log.frontend.provider:
+    description: "Defines which provider to use sentry or grafana"
+  grafana.log.frontend.sample_rate:
+    description: "Rate of events to be reported to Sentry between 0 (none) and 1 (all), float"
+  grafana.log.frontend.sentry_dsn:
+    description: "Sentry DSN if you want to send events to Sentry"
+
   grafana.log.syslog.level:
     description: "log level"
   grafana.log.syslog.format:
@@ -569,7 +751,7 @@ properties:
   grafana.log.syslog.address:
     description: "Syslog address"
   grafana.log.syslog.facility:
-    description: "Syslog facility. user, daemon and local0 through local7 are valid."
+    description: "Syslog facility. user, daemon and local0 through local7 are valid"
   grafana.log.syslog.tag:
     description: "Syslog tag"
 
@@ -598,6 +780,17 @@ properties:
     description: "global limit of api_keys"
   grafana.quota.global_session:
     description: "global limit on number of logged in users"
+  grafana.quota.global_alert_rule:
+    description: "global limit of alerts"
+  grafana.quota.global_file:
+    description: "global limit of files uploaded to the SQL DB"
+  grafana.quota.org_alert_rule:
+    description: "limit number of alerts per Org"
+
+  grafana.rbac.permission_cache:
+    description: "If enabled, cache permissions in a in memory cache"
+  grafana.rbac.reset_basic_roles:
+    description: "Reset basic roles permissions on boot"
 
   grafana.alerting.enabled:
     description: "Enable alerting engine & UI featuresn"
@@ -626,11 +819,14 @@ properties:
     description: "Configures how long dashboard annotations are stored"
   grafana.annotations.dashboard.max_annotations_to_keep:
     description: "Configures max number of dashboard annotations that Grafana stores"
-
   grafana.annotations.api.max_age:
     description: "Configures how long Grafana stores API annotations"
   grafana.annotations.api.max_annotations_to_keep:
     description: "Configures max number of API annotations that Grafana keeps"
+  grafana.annotations.cleanupjob_batchsize:
+    description: "Configures the batch size for the annotation clean-up job. This setting is used for dashboard, API, and alert annotations"
+  grafana.annotations.tags_length:
+    description: "Enforces the maximum allowed length of the tags for any newly introduced annotations. It can be between 500 and 4096 inclusive (which is the respective's column length)"
 
   grafana.explore.enabled:
     description: "Enable the Explore section"
@@ -641,6 +837,11 @@ properties:
     description: "Publish interval"
   grafana.metrics.disable_total_stats:
     description: "Disable total stats (stat_totals_*) metrics to be generated"
+  grafana.metrics.environment_info:
+    description: "Metrics environment info adds dimensions to the `grafana_environment_info` metric, which can expose more information about the Grafana instance"
+    example:
+      exampleLabel1: "exampleValue1"
+      exampleLabel2: "exampleValue2"
 
   grafana.metrics.basic_auth.username:
     description: "Basic auth username for the metrics endpoint"
@@ -657,6 +858,8 @@ properties:
 
   grafana.grafana_com.url:
     description: "Url used to to import dashboards directly from Grafana.com"
+  grafana.grafana_com.api_url:
+    description: "Api URL"
 
   grafana.tracing.jaeger.address:
     description: "jaeger destination (ex localhost:6831)"
@@ -670,6 +873,19 @@ properties:
     description: "Whether or not to use Zipkin span propagation (x-b3- HTTP headers)"
   grafana.tracing.jaeger.disable_shared_zipkin_spans:
     description: "Setting this to true disables shared RPC spans"
+  grafana.tracing.jaeger.sampling_server_url:
+    description: "Sampling_server_url is the URL of a sampling manager providing a sampling strategy."
+
+  grafana.tracing.opentelemetry.custom_attributes:
+    description: "attributes that will always be included in when creating new spans. ex (key1:value1,key2:value2)"
+  grafana.tracing.opentelemetry.jaeger.address:
+    description: "jaeger destination (ex http://localhost:14268/api/traces)"
+  grafana.tracing.opentelemetry.jaeger.propagation:
+    description: "Propagation specifies the text map propagation format: w3c, jaeger"
+  grafana.tracing.opentelemetry.otlp.address:
+    description: "otlp destination (ex localhost:4317)"
+  grafana.tracing.opentelemetry.otlp.propagation:
+    description: "Propagation specifies the text map propagation format: w3c, jaeger"
 
   grafana.external_image_storage.provider:
     description: "Used for uploading images to public servers so they can be included in slack/email messages (s3, webdav, gcs, azure_blob, local)"
@@ -706,6 +922,10 @@ properties:
     description: "GCS bucket"
   grafana.external_image_storage.gcs.path:
     description: "GCS path"
+  grafana.external_image_storage.gcs.enable_signed_urls:
+    description: "If set to true, Grafana creates a signed URL for the image uploaded to Google Cloud Storage"
+  grafana.external_image_storage.gcs.signed_url_expiration:
+    description: "Sets the signed URL expiration, which defaults to seven days."
 
   grafana.external_image_storage.azure.account_name:
     description: "Azure account name"
@@ -713,6 +933,8 @@ properties:
     description: "Azure account key"
   grafana.external_image_storage.azure.container_name:
     description: "Azure container name"
+  grafana.external_image_storage.azure.sas_token_expiration_days:
+    description: "Number of days for SAS token validity. If specified SAS token will be attached to image URL. Allow storing images in private containers"
 
   grafana.rendering.server_url:
     description: "External image rendering server URL"
@@ -720,6 +942,30 @@ properties:
     description: "External image rendering callback URL"
   grafana.rendering.concurrent_render_request_limit:
     description: "External image rendering concurrent render request limit"
+  grafana.rendering.renderer_token:
+    description: "An auth token that will be sent to and verified by the renderer"
+  grafana.rendering.render_key_lifetime:
+    description: "Determines the lifetime of the render key used by the image renderer to access and render Grafana"
+
+  grafana.secure_socks_datasource_proxy.enabled:
+    description: "Enable feature secure socks5 datasource proxy"
+  grafana.secure_socks_datasource_proxy.client_cert:
+    description: "Socks datasource client certificate"
+  grafana.secure_socks_datasource_proxy.client_key:
+    description: "Socks datasource client key"
+  grafana.secure_socks_datasource_proxy.proxy_address:
+    description: "The address of the socks5 proxy datasources should connect to"
+  grafana.secure_socks_datasource_proxy.root_ca_cert:
+    description: "Socks datasource client CA certificate"
+  grafana.secure_socks_datasource_proxy.server_name:
+    description: "Socks datasource client server name"
+
+  grafana.search.dashboard_loading_batch_size:
+    description: "Defines the number of dashboards loaded at once in a batch during a full reindex"
+  grafana.search.full_reindex_interval:
+    description: "Defines the frequency of a full search reindex"
+  grafana.search.index_update_interval:
+    description: "Defines the frequency of partial index updates based on recent changes such as dashboard updates"
 
   grafana.panels.enable_alpha:
     description: "Enable alpha panels"
@@ -732,8 +978,14 @@ properties:
     description: "Skip verify insecure for app tls"
   grafana.plugins.allow_loading_unsigned_plugins:
     description: "Enter a comma-separated list of plugin identifiers to identify plugins that are allowed to be loaded even if they lack a valid signature"
-  grafana.plugins.marketplace_url:
-    description: "Marketplace URL"
+  grafana.plugins.plugin_admin_enabled:
+    description: "Enable or disable installing / uninstalling / updating plugins directly from within Grafana."
+  grafana.plugins.plugin_admin_external_manage_enabled:
+    description: "Set to true if you want to enable external management of plugins. Default is false. This is only applicable to Grafana Cloud users"
+  grafana.plugins.plugin_catalog_hidden_plugins:
+    description: "Enter a comma-separated list of plugin identifiers to hide in the plugin catalog"
+  grafana.plugins.plugin_catalog_url:
+    description: "Custom install/learn more URL for enterprise plugins. Defaults to https://grafana.com/grafana/plugins/"
 
   grafana.plugin.grafana_image_renderer.rendering_timezone:
     description: "Instruct headless browser instance to use a default timezone when not provided by Grafana"
@@ -767,6 +1019,8 @@ properties:
     description: "Change the listening host of the gRPC server"
   grafana.plugin.grafana_image_renderer.grpc_port:
     description: "Change the listening port of the gRPC server"
+  grafana.plugin.grafana_image_renderer.rendering_clustering_timeout:
+    description: "When rendering_mode = clustered, you can specify the duration a rendering request can take before it will time out"
 
   grafana.enterprise.license:
     description: "Enterprise license"
@@ -792,6 +1046,98 @@ properties:
     description: "Use browser local (experimental feature)"
   grafana.date_formats.default_timezone:
     description: "Default timezone for user preferences"
+
+  grafana.aws.allowed_auth_providers:
+    description: "Enter a comma-separated list of allowed AWS authentication providers"
+  grafana.aws.assume_role_enabled:
+    description: "Allow AWS users to assume a role using temporary security credentials"
+  grafana.aws.list_metrics_page_limit:
+    description: "Specify max no of pages to be returned by the ListMetricPages API"
+
+  grafana.azure.cloud:
+    description: "Azure cloud environment where Grafana is hosted: Possible values are AzureCloud, AzureChinaCloud, AzureUSGovernment and AzureGermanCloud"
+  grafana.azure.managed_identity_client_id:
+    description: "Client ID to use for user-assigned managed identity"
+  grafana.azure.managed_identity_enabled:
+    description: "Specifies whether Grafana hosted in Azure service with Managed Identity configured (e.g. Azure Virtual Machines instance)"
+
+  grafana.dashboard_previews.crawler.max_crawl_duration:
+    description: "Maximum duration of a single crawl"
+  grafana.dashboard_previews.crawler.rendering_timeout:
+    description: "Timeout passed down to the Image Renderer plugin"
+  grafana.dashboard_previews.crawler.scheduler_interval:
+    description: "Minimum interval between two subsequent scheduler runs"
+  grafana.dashboard_previews.crawler.thread_count:
+    description: "Number of dashboards rendered in parallel"
+
+  grafana.expressions.enabled:
+    description: "Enable or disable the expressions functionality"
+
+  grafana.geomap.default_baselayer_config:
+    description: "Set the JSON configuration for the default basemap"
+  grafana.geomap.enable_custom_baselayers:
+    description: "Enable or disable loading other base map layers"
+
+  grafana.help.enabled:
+    description: "Enable the Help section"
+
+  grafana.live.allowed_origins:
+    description: "allowed_origins is a comma-separated list of origins that can establish connection with Grafana Live"
+  grafana.live.ha_engine:
+    description: "engine defines an HA (high availability) engine to use for Grafana Live"
+  grafana.live.ha_engine_address:
+    description: "ha_engine_address sets a connection address for Live HA engine"
+  grafana.live.max_connections:
+    description: "max_connections to Grafana Live WebSocket endpoint per Grafana server instance"
+
+  grafana.profile.enabled:
+    description: "Enable the Profile section"
+
+  grafana.query_history.enabled:
+    description: "Enable the Query history"
+
+  grafana.unified_alerting.enabled:
+    description: "Enable the Unified Alerting sub-system and interface"
+  grafana.service_accounts.token_expiration_day_limit:
+    description: "When set, Grafana will not allow the creation of tokens with expiry greater than this setting"
+  grafana.unified_alerting.admin_config_poll_interval:
+    description: "Specify the frequency of polling for admin config changes"
+  grafana.unified_alerting.alertmanager_config_poll_interval:
+    description: "Specify the frequency of polling for Alertmanager config changes"
+  grafana.unified_alerting.disabled_orgs:
+    description: "Comma-separated list of organization IDs for which to disable unified alerting"
+  grafana.unified_alerting.evaluation_timeout:
+    description: "Alert evaluation timeout when fetching data from the datasource"
+  grafana.unified_alerting.execute_alerts:
+    description: "Enable or disable alerting rule execution. The alerting UI remains visible"
+  grafana.unified_alerting.ha_advertise_address:
+    description: "Explicit address/hostname and port to advertise other Grafana instances"
+  grafana.unified_alerting.ha_gossip_interval:
+    description: "The interval between sending gossip messages"
+  grafana.unified_alerting.ha_listen_address:
+    description: "Listen address/hostname and port to receive unified alerting messages for other Grafana instances"
+  grafana.unified_alerting.ha_peers:
+    description: "Comma-separated list of initial instances (in a format of host:port) that will form the HA cluster"
+  grafana.unified_alerting.ha_peer_timeout:
+    description: "Time to wait for an instance to send a notification via the Alertmanager"
+  grafana.unified_alerting.ha_push_pull_interval:
+    description: "The interval between gossip full state syncs"
+  grafana.unified_alerting.max_attempts:
+    description: "Number of times we'll attempt to evaluate an alert rule before giving up on that evaluation"
+  grafana.unified_alerting.min_interval:
+    description: "Minimum interval to enforce between rule evaluations"
+  grafana.unified_alerting.reserved_labels.disabled_labels:
+    description: "Comma-separated list of reserved labels added by the Grafana Alerting engine that should be disabled"
+  grafana.unified_alerting.screenshots.capture:
+    description: "Enable screenshots in notifications. This option requires the Grafana Image Renderer plugin"
+  grafana.unified_alerting.screenshots.capture_timeout:
+    description: "The timeout for capturing screenshots"
+  grafana.unified_alerting.screenshots.max_concurrent_screenshots:
+    description: "The maximum number of screenshots that can be taken at the same time"
+  grafana.unified_alerting.screenshots.upload_external_image_storage:
+    description: "Uploads screenshots to the local Grafana server or remote storage such as Azure, S3 and GCS"
+  grafana.unified_alerting.state_history.enabled:
+    description: "Enable the state history functionality in Unified Alerting"
 
   grafana.prometheus.datasource_name:
     description: "Name of the Prometheus datasource"
@@ -834,6 +1180,15 @@ properties:
     description: "List of datasources in YAML format that Grafana will add or update during start up"
   grafana.datasources.delete:
     description: "List of datasources in YAML format that Grafana will delete before inserting/updating those in create list"
+  grafana.datasources.datasource_limit:
+    description: "Set maximum number of datasources"
+
+  grafana.sql_datasources.max_open_conns_default:
+    description: "maximum number of open connections maintained in the connection pool when connecting to SQL based data sources"
+  grafana.sql_datasources.max_idle_conns_default:
+    description: "maximum number of idle connections maintained in the connection pool when connecting to SQL based data sources"
+  grafana.sql_datasources.max_conn_lifetime_default:
+    description: "maximum connection lifetime used when connecting to SQL based data sources"
 
   env.http_proxy:
     description: "HTTP proxy to use"
