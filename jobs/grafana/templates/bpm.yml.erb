@@ -1,0 +1,35 @@
+<%
+# program env variables
+env = {
+  "LD_LIBRARY_PATH" => "/var/vcap/packages/grafana/lib",
+}
+# add proxies to env
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+config = {
+  "processes" => [
+    {
+      "name"            => "grafana",
+      "executable"      => "/var/vcap/packages/grafana/bin/grafana-server",
+      "env"             => env,
+      "persistent_disk" => true,
+      "ephemeral_disk"  => true,
+      "args"            => [
+        "-config",   "/var/vcap/jobs/grafana/config/grafana.ini",
+        "-homepath", "/var/vcap/packages/grafana",
+      ],
+      "limits"          => {
+        "open_files"    => 65536
+      }
+    }
+  ]
+}
+%>
+
+<%= YAML.dump(config) %>
