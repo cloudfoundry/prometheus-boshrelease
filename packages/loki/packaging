@@ -2,7 +2,12 @@
 
 set -eux
 
-# Extract loki package
-tar xzvf ${BOSH_COMPILE_TARGET}/loki/loki-2.8.0.tar.gz
-cp -a ${BOSH_COMPILE_TARGET}/loki-2.8.0/* ${BOSH_INSTALL_TARGET}/bin
+# Copy common utils
+mkdir -p ${BOSH_INSTALL_TARGET}/common
+cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
+
+# Copy Loki binary
+mkdir -p "${BOSH_INSTALL_TARGET}/bin"
+cp -a loki/loki_v2.8.1_linux_amd64 "${BOSH_INSTALL_TARGET}/bin/loki"
+chmod +x "${BOSH_INSTALL_TARGET}/bin/loki"
 
