@@ -34,7 +34,7 @@
 | [mongodb_exporter]             |            | v1.0.0  | ![][mongodb_exporter-ver]             | ![][mongodb_exporter-act]             |
 | [mysqld_exporter]              |            | v0.14.0 | ![][mysqld_exporter-ver]              | ![][mysqld_exporter-act]              |
 | [nats_exporter]                |            | v1.0.0  | ![][nats_exporter-ver]                | ![][nats_exporter-act]                |
-| [postgres_exporter]            |            | v0.11.1 | ![][postgres_exporter-ver]            | ![][postgres_exporter-act]            |
+| [postgres_exporter]            |            | v0.12.0 | ![][postgres_exporter-ver]            | ![][postgres_exporter-act]            |
 | [rabbitmq_exporter]            |            | v0.29.0 | ![][rabbitmq_exporter-ver]            | ![][rabbitmq_exporter-act]            |
 | [redis_exporter]               |            | v1.48.0 | ![][redis_exporter-ver]               | ![][redis_exporter-act]               |
 | [shield_exporter]              |            | v0.3.0  | ![][shield_exporter-ver]              | ![][shield_exporter-act]              |
