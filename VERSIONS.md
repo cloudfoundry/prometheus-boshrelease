@@ -36,7 +36,7 @@
 | [nats_exporter]                |            | v1.0.0  | ![][nats_exporter-ver]                | ![][nats_exporter-act]                |
 | [postgres_exporter]            |            | v0.11.1 | ![][postgres_exporter-ver]            | ![][postgres_exporter-act]            |
 | [rabbitmq_exporter]            |            | v0.29.0 | ![][rabbitmq_exporter-ver]            | ![][rabbitmq_exporter-act]            |
-| [redis_exporter]               |            | v1.48.0 | ![][redis_exporter-ver]               | ![][redis_exporter-act]               |
+| [redis_exporter]               |            | v1.50.0 | ![][redis_exporter-ver]               | ![][redis_exporter-act]               |
 | [shield_exporter]              |            | v0.3.0  | ![][shield_exporter-ver]              | ![][shield_exporter-act]              |
 | [stackdriver_exporter]         |            | v0.13.0 | ![][stackdriver_exporter-ver]         | ![][stackdriver_exporter-act]         |
 | [statsd_exporter]              |            | v0.23.0 | ![][statsd_exporter-ver]              | ![][statsd_exporter-act]              |
