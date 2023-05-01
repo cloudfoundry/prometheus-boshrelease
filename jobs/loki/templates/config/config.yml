@@ -1,0 +1,48 @@
+auth_enabled: <%= p('loki.auth.enabled') %>
+
+server:
+  http_listen_port: <%= p('loki.server.http_listen_port') %>
+
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+  chunk_idle_period: 15m
+
+schema_config:
+  configs:
+  - from: 2018-04-15
+    <% if p('loki.index.storage') == "boltdb" %>
+    store: boltdb
+    <% end %>
+    <% if p('loki.chunks.storage') == "filesystem" %>
+    object_store: filesystem
+    <% end %>
+    schema: v9
+    index:
+      prefix: index_
+      period: 168h
+
+storage_config:
+<% if p('loki.index.storage') == "boltdb" %>
+  boltdb:
+    directory: /var/vcap/store/loki/index
+<% end %>
+
+<% if p('loki.chunks.storage') == "filesystem" %>
+  filesystem:
+    directory: /var/vcap/store/loki/chunks
+<% end %>
+
+chunk_store_config:
+  max_look_back_period: <%= p('loki.store.max_look_back_period') %>
+
+table_manager:
+  retention_period: <% p('loki.retention.period') %>
+  retention_deletes_enabled: <% p('loki.retention.deletes_enabled') %>
+
+limits_config:
+  enforce_metric_name: <%= p('loki.validation.enforce_metric_name') %>

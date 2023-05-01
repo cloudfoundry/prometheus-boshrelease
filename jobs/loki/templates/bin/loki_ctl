@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/loki
+LOG_DIR=/var/vcap/sys/log/loki
+TMP_DIR=/var/vcap/sys/tmp/loki
+STORE_DIR=/var/vcap/store/loki
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/loki.pid
+
+# shellcheck source=../../../../src/common/utils.sh
+source /var/vcap/packages/loki/common/utils.sh
+exec 1>> "${LOG_DIR}/$(basename "$0").stdout.log"
+exec 2>> "${LOG_DIR}/$(basename "$0").stderr.log"
+
+export PATH=/var/vcap/packages/loki/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "loki"
+    echo $$ > ${PIDFILE}
+
+    exec loki \
+      -config.file=/var/vcap/jobs/loki/config/config.yml \
+      >>  ${LOG_DIR}/loki.stdout.log \
+      2>> ${LOG_DIR}/loki.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+
+esac
+exit 0
