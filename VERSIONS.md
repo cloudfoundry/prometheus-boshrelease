@@ -5,7 +5,7 @@
 | [alertmanager]                 | prometheus | v0.25.0 | ![][alertmanager-ver]                 | ![][alertmanager-act]                 |
 | [prometheus]                   | prometheus | v2.43.0 | ![][prometheus-ver]                   | ![][prometheus-act]                   |
 | [blackbox_exporter]            | prometheus | v0.23.0 | ![][blackbox_exporter-ver]            | ![][blackbox_exporter-act]            |
-| [nginx]                        | prometheus | v1.21.6 | ![][nginx-ver]                        |                                       |
+| [nginx]                        | prometheus | v1.24.0 | ![][nginx-ver]                        |                                       |
 | [pushgateway]                  | prometheus | v1.5.1  | ![][pushgateway-ver]                  | ![][pushgateway-act]                  |
 | [grafana]                      | grafana    | v9.4.3  | ![][grafana-ver]                      | ![][grafana-act]                      |
 | [grafana-lant-statusmap-panel] | grafana    | v0.4.2  | ![][grafana-lant-statusmap-panel-ver] | ![][grafana-lant-statusmap-panel-act] |
