@@ -22,7 +22,7 @@
 | [util-linux]                   | *internal* | v2.36.1 | ![][util-linux-ver]                   |                                       |
 | [jq]                           | *internal* | v1.6    | ![][jq-ver]                           | ![][jq-act]                           |
 | [libxml2]                      | *internal* | v2.9.10 | ![][libxml2-ver]                      |                                       |
-| [cadvisor]                     |            | v0.46.0 | ![][cadvisor-ver]                     | ![][cadvisor-act]                     |
+| [cadvisor]                     |            | v0.47.0 | ![][cadvisor-ver]                     | ![][cadvisor-act]                     |
 | [collectd_exporter]            |            | v0.5.0  | ![][collectd_exporter-ver]            | ![][collectd_exporter-act]            |
 | [consul_exporter]              |            | v0.9.0  | ![][consul_exporter-ver]              | ![][consul_exporter-act]              |
 | [elasticsearch_exporter]       |            | v1.5.0  | ![][elasticsearch_exporter-ver]       | ![][elasticsearch_exporter-act]       |
