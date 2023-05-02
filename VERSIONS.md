@@ -16,7 +16,7 @@
 | [vonage-status-panel]          | grafana    | v1.0.10 | ![][vonage-status-panel-ver]          | ![][vonage-status-panel-act]          |
 | [bosh_exporter]                | bosh       | v3.5.0  | ![][bosh_exporter-ver]                | ![][bosh_exporter-act]                |
 | [bosh_tsdb_exporter]           | bosh       | v0.2.0  | ![][bosh_tsdb_exporter-ver]           | ![][bosh_tsdb_exporter-act]           |
-| [credhub_exporter]             | bosh       | v0.18.0 | ![][credhub_exporter-ver]             | ![][credhub_exporter-act]             |
+| [credhub_exporter]             | bosh       | v0.23.0 | ![][credhub_exporter-ver]             | ![][credhub_exporter-act]             |
 | [cf_exporter]                  | cf         | v1.0.1  | ![][cf_exporter-ver]                  | ![][cf_exporter-act]                  |
 | [firehose_exporter]            | cf         | v7.0.0  | ![][firehose_exporter-ver]            | ![][firehose_exporter-act]            |
 | [util-linux]                   | *internal* | v2.36.1 | ![][util-linux-ver]                   |                                       |
@@ -40,7 +40,7 @@
 | [shield_exporter]              |            | v0.3.0  | ![][shield_exporter-ver]              | ![][shield_exporter-act]              |
 | [stackdriver_exporter]         |            | v0.13.0 | ![][stackdriver_exporter-ver]         | ![][stackdriver_exporter-act]         |
 | [statsd_exporter]              |            | v0.23.1 | ![][statsd_exporter-ver]              | ![][statsd_exporter-act]              |
-| [vault_exporter]               |            | v0.1.2  | ![][vault_exporter-ver]               | ![][vault_exporter-act]               |
+| [vault_exporter]               |            | v0.1.3  | ![][vault_exporter-ver]               | ![][vault_exporter-act]               |
 
 
 [alertmanager]: https://github.com/prometheus/alertmanager
