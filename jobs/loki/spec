@@ -4,6 +4,9 @@ name: loki
 templates:
   bin/loki_ctl: bin/loki_ctl
   config/config.yml: config/config.yml
+  certs/ca.crt.erb: certs/ca.crt
+  certs/cert.crt.erb: certs/cert.crt
+  certs/cert.key.erb: certs/cert.key
 
 packages:
   - loki
@@ -13,11 +16,17 @@ provides:
     type: loki
     properties:
       - loki.server.http_listen_port
+      - loki.server.http_listen_address
 
 properties:
   loki.auth.enabled:
     description: "Set to false to disable auth"
     default: true
+
+  loki.server.http_listen_address:
+    description: "HTTP server listen address"
+    default: "localhost"
+
   loki.server.http_listen_port:
     description: "HTTP server listen port"
     default: 3100
@@ -26,21 +35,38 @@ properties:
     description: "An index storage for Loki (boltdb, gcs, s3)"
     default: boltdb
 
-  loki.chunks.storage:
-    description: "A chunks storage for Loki (filesystem, bigtable, dynamodb)"
+  loki.object_store.storage:
+    description: "A object_store storage for Loki (filesystem, bigtable, dynamodb)"
     default: filesystem
 
   loki.validation.enforce_metric_name:
     description: "Enforce every sample has a metric name"
     default: true
 
-  loki.store.max_look_back_period:
-    description: "Limit how long back data can be queried"
-    default: 0
-
-  loki.retention.deletes_enabled:
-    description: "Enable deletes for retention"
+  loki.validation.reject_old_samples:
+    description: "Reject old samples"
     default: false
+
+  loki.validation.reject_old_samples_max_age:
+    description: "Reject old samples max age"
+    default: ""
+
   loki.retention.period:
     description: "Retention period needs to be a duration in string format that can be parsed using time.Duration"
-    default: 168h
+    default: "168h"
+
+  loki.tls:
+    description: "Specify if tls should be used"
+    default: "false"
+
+  loki.cert.ca:
+    description: "Specify the ca cert"
+    default: ""
+
+  loki.cert.crt:
+    description: "Specify the client cert"
+    default: ""
+
+  loki.cert.key:
+    description: "Specify the client key"
+    default: ""
