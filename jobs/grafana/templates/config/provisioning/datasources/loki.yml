@@ -1,0 +1,48 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: <%= p('grafana.loki.datasource_name') %>
+    orgId: 1
+
+<% if_link('loki') do |loki| %>
+<%
+  # Try to pick the loki instance deployed at the same az
+  linstances = loki.instances.select { |instance| instance.az == spec.az }
+  loki_ip = linstances.empty? ? loki.instances.first.address : linstances.first.address
+  lurl = "http://#{loki_ip}:#{loki.p('loki.server.http_listen_port')}"
+  lbasic_auth = "false"
+  lbasic_auth_user = ""
+  lbasic_auth_password = ""
+  ljson_data = ""
+%>
+
+# list of datasources to insert/update depending
+# whats available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+  - name: <%= p('grafana.loki.datasource_name') %>
+    # <int> datasource config version
+    version: 1
+    # <int> org id. will default to orgId 1 if not specified
+    orgId: 1
+    # <string, required> datasource type. Required
+    type: loki
+    # <string, required> access mode. direct or proxy. Required
+    access: proxy
+    # <string> url
+    url: <%= lurl %>
+    # <bool> enable/disable basic auth
+    basicAuth: <%= lbasic_auth %>
+    # <string> basic auth username
+    basicAuthUser: <%= lbasic_auth_user %>
+    # <string> basic auth password
+    basicAuthPassword: <%= lbasic_auth_password %>
+    # <bool> mark as default datasource. Max one per org
+    isDefault: true
+    # <map> fields that will be converted to json and stored in json_data
+    jsonData: <%= ljson_data %>
+    # <bool> allow users to edit datasources from the UI.
+    editable: false
+<% end %>

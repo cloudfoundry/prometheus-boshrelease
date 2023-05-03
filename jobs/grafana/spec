@@ -28,6 +28,7 @@ templates:
   config/generic_oauth_tls_client_key.pem: config/generic_oauth_tls_client_key.pem
   config/grafana.ini: config/grafana.ini
   config/ldap.toml: config/ldap.toml
+  config/provisioning/datasources/loki.yml: config/provisioning/datasources/loki.yml
   config/saml_certificate.pem: config/saml_certificate.pem
   config/saml_private_key.pem: config/saml_private_key.pem
   config/saml_ipd_metadata.xml: config/saml_ipd_metadata.xml
@@ -44,6 +45,9 @@ provides:
       - grafana.server.http_port
 
 consumes:
+  - name: loki
+    type: loki
+    optional: true
   - name: prometheus
     type: prometheus
     optional: true
@@ -572,7 +576,11 @@ properties:
     description: "Syslog facility. user, daemon and local0 through local7 are valid."
   grafana.log.syslog.tag:
     description: "Syslog tag"
-
+  
+  grafana.loki.datasource_name:
+    description: "Name of the Loki datasource"
+    default: loki
+    
   grafana.dashboards.custom_homepage_json:
     description: "Override the default homepage with a custom dashboard in JSON format (http://docs.grafana.org/reference/dashboard/)"
 
