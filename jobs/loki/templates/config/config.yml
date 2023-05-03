@@ -1,17 +1,7 @@
 auth_enabled: <%= p('loki.auth.enabled') %>
 
 server:
-  http_listen_address: <%= p('loki.server.http_listen_address') %>
   http_listen_port: <%= p('loki.server.http_listen_port') %>
-  <% if p('loki.tls') == true || if p('loki.mtls') == true %>
-  http_tls_config:
-    cert_file: /var/vcap/jobs/loki/certs/cert.pem
-    key_file: /var/vcap/jobs/loki/certs/cert.key
-    <% if p('loki.mtls') == true %>
-    client_ca_file: /var/vcap/jobs/loki/certs/ca.pem
-    client_auth_type: <%= p('loki.client_auth_type') %>
-    <% end %>
-  <% end %>
 
 ingester:
   lifecycler:
@@ -20,42 +10,39 @@ ingester:
       kvstore:
         store: inmemory
       replication_factor: 1
-    final_sleep: 0s
-  chunk_idle_period: 5m
-  chunk_retain_period: 30s
+  chunk_idle_period: 15m
 
 schema_config:
   configs:
-    - from: 2023-02-24
-      <% if p('loki.index.storage') == "boltdb" %>
-      store: boltdb
-      <% end %>
-      <% if p('loki.object_store.storage') == "filesystem" %>
-      object_store: filesystem
-      <% end %>
-      schema: v11
-      index:
-        prefix: index_
-        period: <%= p('loki.retention.period') %>
+  - from: 2018-04-15
+    <% if p('loki.index.storage') == "boltdb" %>
+    store: boltdb
+    <% end %>
+    <% if p('loki.chunks.storage') == "filesystem" %>
+    object_store: filesystem
+    <% end %>
+    schema: v9
+    index:
+      prefix: index_
+      period: 168h
 
 storage_config:
-  <% if p('loki.index.storage') == "boltdb" %>
+<% if p('loki.index.storage') == "boltdb" %>
   boltdb:
     directory: /var/vcap/store/loki/index
-  <% end %>
-  
-  <% if p('loki.object_store.storage') == "filesystem" %>
+<% end %>
+
+<% if p('loki.chunks.storage') == "filesystem" %>
   filesystem:
     directory: /var/vcap/store/loki/chunks
-  <% end %>
+<% end %>
+
+chunk_store_config:
+  max_look_back_period: <%= p('loki.store.max_look_back_period') %>
+
+table_manager:
+  retention_period: <% p('loki.retention.period') %>
+  retention_deletes_enabled: <% p('loki.retention.deletes_enabled') %>
 
 limits_config:
   enforce_metric_name: <%= p('loki.validation.enforce_metric_name') %>
-  reject_old_samples: <%= p('loki.validation.reject_old_samples') %>
-  reject_old_samples_max_age: <%= p('loki.validation.reject_old_samples_max_age') %>
-
-query_range:
-  results_cache:
-    cache:
-      embedded_cache:
-        enabled: true
