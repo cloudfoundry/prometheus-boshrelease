@@ -6,6 +6,9 @@ set -eu
 mkdir -p /usr/share/fonts/freefont
 cp -a /var/vcap/packages/grafana/freefont/* /usr/share/fonts/freefont
 
+# grafana is ran with bpm as user vcap
+chown vcap:vcap -R /var/vcap/store/grafana
+
 echo "[$(date)] Calling 'prometheus-dashboards' ..."
 $(dirname $0)/prometheus-dashboards
 
