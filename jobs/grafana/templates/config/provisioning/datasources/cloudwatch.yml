@@ -1,0 +1,51 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: <%= p('grafana.cloudwatch.datasource_name') %>
+    orgId: 1
+
+<% if_p('grafana.cloudwatch.url') do |cloudwatch_url| %>
+# list of datasources to insert/update depending
+# whats available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+  - name: <%= p('grafana.cloudwatch.datasource_name') %>
+    # <int> datasource config version
+    version: 1
+    # <int> org id. will default to orgId 1 if not specified
+    orgId: 1
+    # <map> Fields to convert to JSON and store in jsonData.
+    jsonData:
+      # <string, required> authType type. Required
+      authType: <%= p('grafana.cloudwatch.authType') %>
+      # <string, optional> externalID type. 
+      externalId: <%= p('grafana.cloudwatch.externalId') %>
+      # <string, optional> assumeRoleArn type. 
+      assumeRoleArn: <%= p('grafana.cloudwatch.assumeRoleArn') %>
+      # <string, optional> defaultRegiontype. 
+      defaultRegion: <%= p('grafana.cloudwatch.defaultRegion') %>
+      # <string, optional> profile type. 
+      profile: <%= p('grafana.cloudwatch.profile') %>
+      # <string, required??> customMetricsNamespaces type. Required??
+      customMetricsNamespaces: <%= p('grafana.cloudwatch.customMetricsNamespaces) %>
+    # <string, required> datasource type. Required
+    type: cloudwatch
+    # <string, required> access mode. direct or proxy. Required
+    access: proxy
+    # <string> json object of data that will be encrypted.
+    secureJsonData:
+      # <string, required> accessKey type. Required
+      accessKey: <%= p('grafana.cloudwatch.accessKey') %>
+      # <string, required> secretKey type. Required
+      secretKey: <%= p('grafana.cloudwatch.secretKey') %>
+    # <string> database user, if used
+    user: <%= p('grafana.cloudwatch.username') %>
+    # <string> database name, if used
+    database: <%= p('grafana.cloudwatch.database') %>
+    # <bool> mark as default datasource. Max one per org
+    isDefault: false
+    # <bool> allow users to edit datasources from the UI.
+    editable: false
+<% end %>
