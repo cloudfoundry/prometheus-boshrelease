@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/promtail
+LOG_DIR=/var/vcap/sys/log/promtail
+TMP_DIR=/var/vcap/sys/tmp/promtail
+STORE_DIR=/var/vcap/store/promtail
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/promtail.pid
+
+source /var/vcap/packages/promtail/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/promtail/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "promtail"
+    echo $$ > ${PIDFILE}
+
+    exec promtail \
+      -config.file=/var/vcap/jobs/promtail/config/promtail.yml \
+      >>  ${LOG_DIR}/promtail.stdout.log \
+      2>> ${LOG_DIR}/promtail.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+
+esac
+exit 0

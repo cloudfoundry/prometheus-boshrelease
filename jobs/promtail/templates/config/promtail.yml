@@ -1,0 +1,82 @@
+server:
+  log_level: <%= p('promtail.server.log_level') %>
+  http_listen_port: <%= p('promtail.server.http_listen_port') %>
+  grpc_listen_port: <%= p('promtail.server.grpc_listen_port') %>
+  <% if_p('promtail.server.http_path_prefix') do |v| -%>
+  http_path_prefix: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.graceful_shutdown_timeout') do |v| -%>
+  graceful_shutdown_timeout: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.http_server_write_timeout') do |v| -%>
+  http_server_write_timeout: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.http_server_read_timeout') do |v| -%>
+  http_server_read_timeout: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.http_server_idle_timeout') do |v| -%>
+  http_server_idle_timeout: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.grpc_server_max_recv_msg_size') do |v| -%>
+  grpc_server_max_recv_msg_size: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.grpc_server_max_send_msg_size') do |v| -%>
+  grpc_server_max_send_msg_size: <%= v %>
+  <% end -%>
+  <% if_p('promtail.server.grpc_server_max_concurrent_streams') do |v| -%>
+  grpc_server_max_concurrent_streams: <%= v %>
+  <% end -%>
+
+positions:
+  filename: /var/vcap/store/promtail/positions.yaml
+  <% if_p('promtail.positions.sync_period') do |v| -%>
+  sync_period: <%= v %>
+  <% end -%>
+
+client:
+  external_labels:
+    role: "<%= spec.deployment %>/<%= spec.job.name %>/<%= spec.index %>"
+    deployment: "<%= spec.deployment %>"
+    job_name: "<%= spec.name %>"
+    job_id: "<%= spec.id %>"
+    job_index: "<%= spec.index %>"
+    job_az: "<%= spec.az %>"
+    job_ip: "<%= spec.ip %>"
+<% p("promtail.client.external_labels", {}).each do |k, v| -%>
+    <%= k %>: <%= v %>
+<% end -%>
+  url: http://<%= link('loki').instances.first.address %>:3100/api/prom/push
+  backoff_config:
+    minbackoff: <%= p('promtail.client.minbackoff') %>
+    maxbackoff: <%= p('promtail.client.maxbackoff') %>
+    maxretries: <%= p('promtail.client.maxretries') %>
+  <% if_p('promtail.client.timeout') do |v| -%>
+  timeout: <%= v %>
+  <% end -%>
+  <% if_p('promtail.client.batchwait') do |v| -%>
+  batchwait: <%= v %>
+  <% end -%>
+  <% if_p('promtail.client.batchsize') do |v| -%>
+  batchsize: <%= v %>
+  <% end -%>
+
+<% if_p('promtail.target.sync_period') do |v| -%>
+target_config:
+  sync_period: <%= v %>
+<% end -%>
+
+scrape_configs:
+- job_name: system
+  entry_parser: raw
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/*log
+- job_name: bosh
+  entry_parser: raw
+  file_sd_configs:
+  - files:
+    - "/var/vcap/jobs/promtail/config/bosh/*.yaml"
+    refresh_interval: 10m

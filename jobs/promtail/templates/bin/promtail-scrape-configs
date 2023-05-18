@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -eu
+
+JOBS_DIR="/var/vcap/jobs"
+LOGS_DIR="/var/vcap/sys/log"
+SCRAPE_CONFIGS_DIR="/var/vcap/jobs/promtail/config/bosh"
+
+function setup_directories {
+  mkdir -p "${SCRAPE_CONFIGS_DIR}"
+}
+
+function find_bosh_jobs {
+  local base_path="${1}"
+
+  find "${base_path}" -maxdepth 1 ! -path "${base_path}" -exec basename {} \;
+}
+
+function delete_scrape_configs {
+  local base_path="${1}"
+
+  find "${base_path}" -name '*.yaml' -exec rm -f {} \;
+}
+
+function define_scrape_config {
+  local job="${1}"
+
+cat <<EOF > "${SCRAPE_CONFIGS_DIR}/${job}.yaml"
+---
+- targets: [ localhost ]
+  labels:
+    source: bosh
+    job: ${job}
+    __path__: ${LOGS_DIR}/${job}/*.log
+EOF
+}
+
+function create_scrape_configs {
+  for job in $(find_bosh_jobs "${JOBS_DIR}")
+  do
+    define_scrape_config "${job}"
+  done
+}
+
+function main {
+  setup_directories
+  delete_scrape_configs "${SCRAPE_CONFIGS_DIR}"
+  create_scrape_configs
+}
+
+main
+
+exit 0
