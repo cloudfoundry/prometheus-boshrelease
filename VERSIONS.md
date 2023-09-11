@@ -24,21 +24,21 @@
 | [cadvisor]                |                  | v0.47.0 | ![][cadvisor-ver]                | ![][cadvisor-act]                |
 | [collectd_exporter]       |                  | v0.5.0  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.9.0  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
-| [elasticsearch_exporter]  |                  | v1.5.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
-| [graphite_exporter]       |                  | v0.13.3 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
+| [elasticsearch_exporter]  |                  | v1.6.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
+| [graphite_exporter]       |                  | v0.14.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
-| [influxdb_exporter]       |                  | v0.11.3 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
+| [influxdb_exporter]       |                  | v0.13.0 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
-| [memcached_exporter]      |                  | v0.11.3 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
+| [memcached_exporter]      |                  | v0.13.0 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v1.0.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mysqld_exporter]         |                  | v0.14.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
-| [postgres_exporter]       |                  | v0.12.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
+| [postgres_exporter]       |                  | v0.13.2 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
-| [redis_exporter]          |                  | v1.50.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
+| [redis_exporter]          |                  | v1.54.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
-| [stackdriver_exporter]    |                  | v0.13.0 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
-| [statsd_exporter]         |                  | v0.23.1 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
+| [stackdriver_exporter]    |                  | v0.14.1 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
+| [statsd_exporter]         |                  | v0.24.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
 | [vault_exporter]          |                  | v0.1.3  | ![][vault_exporter-ver]          | ![][vault_exporter-act]          |
 
 
