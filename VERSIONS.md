@@ -31,7 +31,7 @@
 | [nginx]                   | prometheus       | v1.24.0 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.13.2 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
 | [prometheus]              | prometheus       | v2.47.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
-| [pushgateway]             | prometheus       | v1.5.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
+| [pushgateway]             | prometheus       | v1.6.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
 | [redis_exporter]          |                  | v1.54.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
