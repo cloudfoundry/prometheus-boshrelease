@@ -15,7 +15,7 @@
 | [jdbranham/diagram-panel] | grafana_plugings | v1.7.3  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [vonage-status-panel]     | grafana_plugings | v1.0.10 | ![][vonage-status-panel-ver]     | ![][vonage-status-panel-act]     |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
-| [bosh_exporter]           | bosh             | v3.5.0  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
+| [bosh_exporter]           | bosh             | v3.6.0  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
 | [bosh_tsdb_exporter]      | bosh             | v0.2.0  | ![][bosh_tsdb_exporter-ver]      | ![][bosh_tsdb_exporter-act]      |
 | [credhub_exporter]        | bosh             | v0.23.0 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
 | [cf_exporter]             | cf               | v1.1.0  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
