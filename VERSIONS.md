@@ -18,7 +18,7 @@
 | [grafana/clock-panel]     | grafana_plugings | v2.1.3  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v0.3.2  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
-| [influxdb_exporter]       |                  | v0.13.0 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
+| [influxdb_exporter]       |                  | v0.11.4 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
 | [jdbranham/diagram-panel] | grafana_plugings | v1.7.3  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
@@ -30,7 +30,7 @@
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
 | [nginx]                   | prometheus       | v1.24.0 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.13.2 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
-| [prometheus]              | prometheus       | v2.43.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
+| [prometheus]              | prometheus       | v2.47.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.5.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
 | [redis_exporter]          |                  | v1.54.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
