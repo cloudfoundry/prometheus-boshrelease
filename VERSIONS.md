@@ -16,7 +16,7 @@
 | [graphite_exporter]       |                  | v0.14.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v9.5.13  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.3  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
-| [grafana/worldmap-panel]  | grafana_plugings | v0.3.2  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
+| [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
 | [influxdb_exporter]       |                  | v0.11.4 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
