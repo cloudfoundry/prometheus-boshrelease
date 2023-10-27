@@ -313,6 +313,14 @@ See also the [BOSH CLI documentation](http://bosh.io/docs/cli-int.html#value-sou
 
 Refer to [CONTRIBUTING.md](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/CONTRIBUTING.md).
 
+## Run tests
+
+```sh
+# cd spec
+# bundler install
+# bundle exec rspec .
+```
+
 ## License
 
 Apache License 2.0, see [LICENSE](https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/LICENSE).
