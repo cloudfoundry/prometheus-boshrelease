@@ -30,7 +30,7 @@
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
 | [nginx]                   | prometheus       | v1.24.0 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.14.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
-| [prometheus]              | prometheus       | v2.47.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
+| [prometheus]              | prometheus       | v2.47.2 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.6.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
 | [redis_exporter]          |                  | v1.55.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
