@@ -29,7 +29,7 @@
 | [mysqld_exporter]         |                  | v0.14.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
 | [nginx]                   | prometheus       | v1.24.0 | ![][nginx-ver]                   |                                  |
-| [postgres_exporter]       |                  | v0.14.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
+| [postgres_exporter]       |                  | v0.15.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
 | [prometheus]              | prometheus       | v2.47.2 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.6.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
