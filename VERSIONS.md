@@ -28,7 +28,7 @@
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
 | [mysqld_exporter]         |                  | v0.14.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
-| [nginx]                   | prometheus       | v1.24.0 | ![][nginx-ver]                   |                                  |
+| [nginx]                   | prometheus       | v1.25.3 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.15.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
 | [prometheus]              | prometheus       | v2.48.1 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.6.2  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
