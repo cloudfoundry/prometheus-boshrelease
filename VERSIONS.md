@@ -23,7 +23,7 @@
 | [jdbranham/diagram-panel] | grafana_plugings | v1.7.3  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
 | [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
-| [memcached_exporter]      |                  | v0.14.1 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
+| [memcached_exporter]      |                  | v0.14.2 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v1.0.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
 | [mysqld_exporter]         |                  | v0.15.1 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
@@ -33,7 +33,7 @@
 | [prometheus]              | prometheus       | v2.48.1 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.6.2  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
-| [redis_exporter]          |                  | v1.55.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
+| [redis_exporter]          |                  | v1.56.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
 | [stackdriver_exporter]    |                  | v0.14.1 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
 | [statsd_exporter]         |                  | v0.26.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
