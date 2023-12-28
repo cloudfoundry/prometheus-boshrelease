@@ -21,13 +21,14 @@ case $1 in
     pid_guard ${PIDFILE} "mysqld_exporter"
     echo $$ > ${PIDFILE}
 
-    <% if_p('mysqld_exporter.mysql.username', 'mysqld_exporter.mysql.password') do |mysql_username, mysql_password| %>
-    export CREDENTIALS="<%= "#{mysql_username}:#{mysql_password}@" %>"
+    <% if_p('mysqld_exporter.mysql.password') do |mysql_password| %>
+    export MYSQLD_EXPORTER_PASSWORD="<%= mysql_password %>"
     <% end %>
 
-    export DATA_SOURCE_NAME="${CREDENTIALS:-}<%= "#{p('mysqld_exporter.mysql.protocol')}(#{p('mysqld_exporter.mysql.address')}:#{p('mysqld_exporter.mysql.port')})/" %>"
-
     exec mysqld_exporter \
+      <% if_p('mysqld_exporter.mysql.username') do |username| %> \
+      --mysqld.username="<%= username %>" \
+      <% end %> \
       <% if_p('mysqld_exporter.collect.auto_increment_columns') do |enabled| %> \
       <%= enabled ? "--collect.auto_increment.columns" : "--no-collect.auto_increment.columns" %> \
       <% end %> \
