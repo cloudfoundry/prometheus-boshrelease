@@ -14,7 +14,7 @@
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
 | [elasticsearch_exporter]  |                  | v1.7.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.15.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
-| [grafana]                 | grafana          | v10.2.3  | ![][grafana-ver]                 | ![][grafana-act]                 |
+| [grafana]                 | grafana          | v10.3.3  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.3  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
