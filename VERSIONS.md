@@ -8,7 +8,7 @@
 | [collectd_exporter]       |                  | v0.6.0  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.11.0  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
 | [credhub_exporter]        | bosh             | v0.36.0 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
-| [cf_exporter]             | cf               | v1.2.3  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
+| [cf_exporter]             | cf               | v1.3.0  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
 | [firehose_exporter]       | cf               | v7.1.2  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
