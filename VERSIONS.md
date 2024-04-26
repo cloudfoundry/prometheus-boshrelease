@@ -12,7 +12,7 @@
 | [firehose_exporter]       | cf               | v7.1.4  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
-| [elasticsearch_exporter]  |                  | v1.7.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
+| [elasticsearch_exporter]  |                  | v1.8.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.15.1 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v10.4.2  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.3  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
@@ -31,7 +31,7 @@
 | [nginx]                   | prometheus       | v1.25.3 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.15.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
 | [prometheus]              | prometheus       | v2.51.2 | ![][prometheus-ver]              | ![][prometheus-act]              |
-| [pushgateway]             | prometheus       | v1.7.0  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
+| [pushgateway]             | prometheus       | v1.8.0  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
 | [redis_exporter]          |                  | v1.58.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
