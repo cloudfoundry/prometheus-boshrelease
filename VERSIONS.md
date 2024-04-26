@@ -1,6 +1,6 @@
 | component                 | category         | version | latest release version           | latest release date              |
 |---------------------------|------------------|---------|:--------------------------------:|:--------------------------------:|
-| [alertmanager]            | prometheus       | v0.26.0 | ![][alertmanager-ver]            | ![][alertmanager-act]            |
+| [alertmanager]            | prometheus       | v0.27.0 | ![][alertmanager-ver]            | ![][alertmanager-act]            |
 | [blackbox_exporter]       | prometheus       | v0.24.0 | ![][blackbox_exporter-ver]       | ![][blackbox_exporter-act]       |
 | [bosh_exporter]           | bosh             | v3.6.2  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
 | [bosh_tsdb_exporter]      | bosh             | v0.2.0  | ![][bosh_tsdb_exporter-ver]      | ![][bosh_tsdb_exporter-act]      |
