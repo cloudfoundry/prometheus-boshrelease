@@ -54,9 +54,9 @@
 [blackbox_exporter-act]: https://img.shields.io/github/release-date/prometheus/blackbox_exporter?label=latest
 [blackbox_exporter-ver]: https://img.shields.io/github/v/release/prometheus/blackbox_exporter?label=latest
 
-[bosh_exporter]: https://github.com/bosh-prometheus/bosh_exporter
-[bosh_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/bosh_exporter?label=latest
-[bosh_exporter-ver]: https://img.shields.io/github/v/release/bosh-prometheus/bosh_exporter?label=latest
+[bosh_exporter]: https://github.com/cloudfoundry/bosh_exporter
+[bosh_exporter-act]: https://img.shields.io/github/release-date/cloudfoundry/bosh_exporter?label=latest
+[bosh_exporter-ver]: https://img.shields.io/github/v/release/cloudfoundry/bosh_exporter?label=latest
 
 [bosh_tsdb_exporter]: https://github.com/bosh-prometheus/bosh_tsdb_exporter
 [bosh_tsdb_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/bosh_tsdb_exporter?label=latest
@@ -66,9 +66,9 @@
 [cadvisor-act]: https://img.shields.io/github/release-date/google/cadvisor?label=latest
 [cadvisor-ver]: https://img.shields.io/github/v/release/google/cadvisor?label=latest
 
-[cf_exporter]: https://github.com/bosh-prometheus/cf_exporter
-[cf_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/cf_exporter?label=latest
-[cf_exporter-ver]: https://img.shields.io/github/v/release/bosh-prometheus/cf_exporter?label=latest
+[cf_exporter]: https://github.com/cloudfoundry/cf_exporter
+[cf_exporter-act]: https://img.shields.io/github/release-date/cloudfoundry/cf_exporter?label=latest
+[cf_exporter-ver]: https://img.shields.io/github/v/release/cloudfoundry/cf_exporter?label=latest
 
 [collectd_exporter]: https://github.com/prometheus/collectd_exporter
 [collectd_exporter-act]: https://img.shields.io/github/release-date/prometheus/collectd_exporter?label=latest
@@ -86,9 +86,9 @@
 [elasticsearch_exporter-act]: https://img.shields.io/github/release-date/prometheus-community/elasticsearch_exporter?label=latest
 [elasticsearch_exporter-ver]: https://img.shields.io/github/v/release/prometheus-community/elasticsearch_exporter?label=latest
 
-[firehose_exporter]: https://github.com/bosh-prometheus/firehose_exporter
-[firehose_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/firehose_exporter?label=latest
-[firehose_exporter-ver]: https://img.shields.io/github/v/release/bosh-prometheus/firehose_exporter?label=latest
+[firehose_exporter]: https://github.com/cloudfoundry/firehose_exporter
+[firehose_exporter-act]: https://img.shields.io/github/release-date/cloudfoundry/firehose_exporter?label=latest
+[firehose_exporter-ver]: https://img.shields.io/github/v/release/cloudfoundry/firehose_exporter?label=latest
 
 [grafana]: https://github.com/grafana/grafana
 [grafana-act]: https://img.shields.io/github/release-date/grafana/grafana?label=latest
