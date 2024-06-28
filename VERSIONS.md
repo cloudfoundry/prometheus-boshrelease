@@ -20,7 +20,7 @@
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
 | [influxdb_exporter]       |                  | v0.11.5 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
-| [jdbranham/diagram-panel] | grafana_plugings | v1.7.3  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
+| [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
 | [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
 | [memcached_exporter]      |                  | v0.14.3 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
