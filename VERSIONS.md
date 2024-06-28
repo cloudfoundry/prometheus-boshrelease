@@ -12,7 +12,7 @@
 | [firehose_exporter]       | cf               | v7.1.4  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
-| [elasticsearch_exporter]  |                  | v1.8.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
+| [elasticsearch_exporter]  |                  | v1.7.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.15.1 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v10.4.2  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.3  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
