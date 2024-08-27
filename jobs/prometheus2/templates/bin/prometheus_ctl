@@ -123,6 +123,9 @@ case $1 in
       <% if p('prometheus.web.enable_remote_write_receiver') %> \
       --web.enable-remote-write-receiver \
       <% end %> \
+      <% if p('prometheus.web.remote-write-receiver.accepted-protobuf-messages') do |accepted_protobuf_messages| %> \
+      --web.remote-write-receiver.accepted-protobuf-messages="<%= accepted_protobuf_messages %>" \
+      <% end %> \
       <% if_p('prometheus.web.external_url') do |external_url| %> \
       --web.external-url="<%= external_url %>" \
       <% end %> \
