@@ -7,18 +7,18 @@
 | [cadvisor]                |                  | v0.47.0 | ![][cadvisor-ver]                | ![][cadvisor-act]                |
 | [collectd_exporter]       |                  | v0.6.0  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.12.1  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
-| [credhub_exporter]        | bosh             | v0.47.3 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
+| [credhub_exporter]        | bosh             | v0.52.2 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
 | [cf_exporter]             | cf               | v1.4.0  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
 | [firehose_exporter]       | cf               | v7.1.5  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
-| [elasticsearch_exporter]  |                  | v1.7.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
+| [elasticsearch_exporter]  |                  | v1.8.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.15.2 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v10.4.7  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.7  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
-| [influxdb_exporter]       |                  | v0.11.7 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
+| [influxdb_exporter]       |                  | v0.12.0 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
@@ -30,13 +30,13 @@
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
 | [nginx]                   | prometheus       | v1.25.3 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.15.0 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
-| [prometheus]              | prometheus       | v2.54.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
-| [pushgateway]             | prometheus       | v1.9.0  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
+| [prometheus]              | prometheus       | v2.55.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
+| [pushgateway]             | prometheus       | v1.10.0  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
-| [redis_exporter]          |                  | v1.62.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
+| [redis_exporter]          |                  | v1.65.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
 | [stackdriver_exporter]    |                  | v0.16.0 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
-| [statsd_exporter]         |                  | v0.27.1 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
+| [statsd_exporter]         |                  | v0.28.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
 | [util-linux]              | grafana          | v2.38.1 | ![][util-linux-ver]              |                                  |
 | [vault_exporter]          |                  | v0.1.3  | ![][vault_exporter-ver]          | ![][vault_exporter-act]          |
 | [vonage-status-panel]     | grafana_plugings | v1.0.10 | ![][vonage-status-panel-ver]     | ![][vonage-status-panel-act]     |
