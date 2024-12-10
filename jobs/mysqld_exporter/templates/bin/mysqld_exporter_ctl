@@ -86,6 +86,9 @@ case $1 in
       <% if_p('mysqld_exporter.collect.info_schema.tables_databases') do |tables_databases| %> \
       --collect.info_schema.tables.databases="<%= tables_databases %>" \
       <% end %> \
+      <% if_p('mysqld_exporter.collect.info_schema.schemastats') do |enabled| %> \
+      <%= enabled ? "--collect.info_schema.schemastats" : "--no-collect.info_schema.schemastats" %> \
+      <% end %> \
       <% if_p('mysqld_exporter.collect.info_schema.tablestats') do |enabled| %> \
       <%= enabled ? "--collect.info_schema.tablestats" : "--no-collect.info_schema.tablestats" %> \
       <% end %> \
