@@ -6,11 +6,19 @@ set -eu
 mkdir -p /usr/share/fonts/freefont
 cp -a /var/vcap/packages/grafana/freefont/* /usr/share/fonts/freefont
 
+GRAFANA_STORE_DIR="/var/vcap/store/grafana"
+GRAFANA_PLUGIN_DIR="${GRAFANA_STORE_DIR}/plugins"
+
 # grafana is ran with bpm as user vcap
-mkdir -p /var/vcap/store/grafana
-chown vcap:vcap -R /var/vcap/store/grafana
+mkdir -p "${GRAFANA_PLUGIN_DIR}"
+chown vcap:vcap -R "${GRAFANA_STORE_DIR}"
+
+# link all plugins from grafana_plugins package
+find /var/vcap/packages/grafana_plugins/ -maxdepth 1 -mindepth 1 -type d \
+  -execdir test ! -L ${GRAFANA_PLUGIN_DIR}/{} \; \
+  -execdir ln -s /var/vcap/packages/grafana_plugins/{} ${GRAFANA_PLUGIN_DIR} \;
 
 echo "[$(date)] Calling 'prometheus-dashboards' ..."
-$(dirname $0)/prometheus-dashboards
+"$(dirname "$0")"/prometheus-dashboards
 
 exit 0
