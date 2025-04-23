@@ -1,4 +1,70 @@
 global:
+  <% if_p('prometheus.scrape_interval') do |scrape_interval| %>
+  # How frequently to scrape targets by default.
+  scrape_interval: <%= scrape_interval %>
+  <% end %>
+
+  <% if_p('prometheus.scrape_timeout') do |scrape_timeout| %>
+  # How long until a scrape request times out.
+  scrape_timeout: <%= scrape_timeout %>
+  <% end %>
+
+  <% if_p('prometheus.evaluation_interval') do |evaluation_interval| %>
+  # How frequently to evaluate rules by default.
+  evaluation_interval: <%= evaluation_interval %>
+  <% end %>
+
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels: <%= p('prometheus.external_labels', {}).to_json %>
+
+  <% if_p('prometheus.query_log_file') do |query_log_file| %>
+  # File to which PromQL queries are logged.
+  query_log_file: <%= query_log_file %>
+  <% end %>
+
+# Rule files specifies a list of files from which rules are read.
+rule_files: <%= p('prometheus.rule_files', []).push('/var/vcap/jobs/prometheus2/config/custom.rules.yml').to_json %>
+
+# A list of scrape configurations.
+<% scrape_configs = p('prometheus.scrape_configs', []).map do |scrape_config|
+
+  scrape_config = scrape_config.clone
+  scrape_config['tls_config'] = scrape_config['tls_config'].clone
+  ['ca_contents', 'cert_contents', 'key_contents'].each { |key| scrape_config['tls_config'].delete(key) } if scrape_config['tls_config']
+  scrape_config
+end %>
+
+scrape_configs: <%= scrape_configs.to_json %>
+
+# Alerting specifies settings related to the Alertmanager.
+alerting:
+  alert_relabel_configs: <%= p('prometheus.alert_relabel_configs', []).to_json %>
+  <% alertmanagers = p('prometheus.alertmanagers', []) %>
+  <% if_link('alertmanager') do |alertmanager|
+    alertmanagers.push({
+      'static_configs' => [{
+        'targets' => alertmanager.instances.map { |instance| "#{instance.address}:#{alertmanager.p('alertmanager.web.port')}" },
+      }],
+      'path_prefix' => alertmanager.p('alertmanager.web.route_prefix', '/'),
+    })
+  end %>
+  alertmanagers: <%= alertmanagers.to_json %>
+
+# Settings related to the remote read feature.
+<% if_link('prometheus-remote-read') do |prometheus_remote_read| %>
+remote_read:
+  - url: http://<%= prometheus_remote_read.instances.first.address %>:<%= prometheus_remote_read.p('prometheus.web.port') %>/api/v1/read
+<% end.else do %>
+remote_read: <%= p('prometheus.remote_read', []).to_json %>
+<% end %>
+
+# Settings related to the remote write feature.
+<% if_link('prometheus-remote-write') do |prometheus_remote_write| %>
+remote_write:
+  <% prometheus_remote_write.instances.each do |instance| %>
+  - url: http://<%= instance.address %>:<%= prometheus_remote_write.p('web.port') %>/api/v1/write
+  <% end %>
+<% end.else do %>
+remote_write: <%= p('prometheus.remote_write', []).to_json %>
+<% end %>

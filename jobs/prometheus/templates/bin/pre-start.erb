@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+<% if_p("prometheus.scrape_configs") do |scrape_configs| %>
+  <% scrape_configs.each do |scrape_config| %>
+    <% if scrape_config['tls_config'] %>
+      <% if scrape_config['tls_config']['cert_contents'] %>
+        mkdir -p $(dirname <%= scrape_config['tls_config']['cert_file'] %>)
+        echo "<%= scrape_config['tls_config']['cert_contents'] %>" > <%= scrape_config['tls_config']['cert_file'] %>
+      <% end %>
+      <% if scrape_config['tls_config']['key_contents'] %>
+        mkdir -p $(dirname <%= scrape_config['tls_config']['key_file'] %>)
+        echo "<%= scrape_config['tls_config']['key_contents'] %>" > <%= scrape_config['tls_config']['key_file'] %>
+      <% end %>
+      <% if scrape_config['tls_config']['ca_contents'] %>
+        mkdir -p $(dirname <%= scrape_config['tls_config']['ca_file'] %>)
+        echo "<%= scrape_config['tls_config']['ca_contents'] %>" > <%= scrape_config['tls_config']['ca_file'] %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
