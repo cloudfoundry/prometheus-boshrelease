@@ -5,79 +5,151 @@ packages:
   - prometheus
 
 templates:
+  bin/pre-start.erb: bin/pre-start
   bin/prometheus_ctl: bin/prometheus_ctl
   config/prometheus.yml: config/prometheus.yml
+  config/custom.rules.yml: config/custom.rules.yml
+  config/remote_write_ca.crt: config/remote_write_ca.crt
 
 provides:
-  - name: prometheus-remote-read
-    type: prometheus-remote-read
+  - name: prometheus
+    type: prometheus
     properties:
       - prometheus.web.port
+      - prometheus.web.external_url
+
+consumes:
+  - name: alertmanager
+    type: alertmanager
+    optional: true
+  - name: prometheus-remote-read
+    type: prometheus-remote-read
+    optional: true
+  - name: prometheus-remote-write
+    type: prometheus-remote-write
+    optional: true
 
 properties:
-  prometheus.log_format:
-    description: "Set the log target and format"
   prometheus.log_level:
-    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]"
+    description: "Only log messages with the given severity or above. One of: [debug, info, warn, error]"
+  prometheus.log_format:
+    description: "Output format of log messages. One of: [logfmt, json]"
+  prometheus.scrape_interval:
+    description: "How frequently to scrape targets by default"
+  prometheus.scrape_timeout:
+    description: "How long until a scrape request times out"
+  prometheus.evaluation_interval:
+    description: "How frequently to evaluate rules by default"
   prometheus.external_labels:
     description: "Attach these labels to any time series or alerts when communicating with external systems"
+  prometheus.query_log_file:
+    description: "File to which PromQL queries are logged"
+  prometheus.rule_files:
+    description: "Array of paths to Prometheus rule files"
+  prometheus.custom_rules:
+    description: "Array of custom alerting and recording rules"
+  prometheus.scrape_configs:
+    description: "Array of scrape configurations"
+  prometheus.alert_relabel_configs:
+    description: "Alerting relabel configuration"
+  prometheus.alertmanagers:
+    description: "Alertmanagers"
+  prometheus.remote_write:
+    description: "Remote write storage configuration"
+  prometheus.remote_read:
+    description: "Remote read storage configuration"
+  prometheus.enable_features:
+    description: "List of features to enable"
+    default: []
+
+  prometheus.alertmanager.notification_queue_capacity:
+    description: "The capacity of the queue for pending alert manager notifications"
+  prometheus.alertmanager.timeout:
+    description: "Timeout for sending alerts to Alertmanager"
 
   prometheus.query.max_concurrency:
     description: "Maximum number of queries executed concurrently"
-  prometheus.query.staleness_delta:
-    description: "Staleness delta allowance during expression evaluations"
+  prometheus.query.max_samples:
+    description: "Maximum number of samples a single query can load into memory"
+  prometheus.query.lookback_delta:
+    description: "The delta difference allowed for retrieving metrics during expression evaluations"
   prometheus.query.timeout:
     description: "Maximum time a query may take before being aborted"
 
-  prometheus.storage.local.checkpoint_dirty_series_limit:
-    description: "If approx. that many time series are in a state that would require a recovery operation after a crash, a checkpoint is triggered, even if the checkpoint interval hasn't passed yet"
-  prometheus.storage.local.checkpoint_interval:
-    description: "The time to wait between checkpoints of in-memory metrics and chunks not yet persisted to series files"
-  prometheus.storage.local.chunk_encoding_version:
-    description: "Which chunk encoding version to use for newly created chunks"
-  prometheus.storage.local.dirty:
-    description: "If set, the local storage layer will perform crash recovery even if the last shutdown appears to be clean"
-  prometheus.storage.local.engine:
-    description: "Local storage engine. Supported values are: 'persisted' (full local storage with on-disk persistence) and 'none' (no local storage)"
-  prometheus.storage.local.index_cache_size.fingerprint_to_metric:
-    description: "The size in bytes for the fingerprint to metric index cache"
-  prometheus.storage.local.index_cache_size.fingerprint_to_timerange:
-    description: "The size in bytes for the metric time range index cache"
-  prometheus.storage.local.index_cache_size.label_name_to_label_values:
-    description: "The size in bytes for the label name to label values index cache"
-  prometheus.storage.local.index_cache_size.label_pair_to_fingerprints:
-    description: "The size in bytes for the label pair to fingerprints index cache"
-  prometheus.storage.local.num_fingerprint_mutexes:
-    description: "The number of mutexes used for fingerprint locking"
-  prometheus.storage.local.pedantic_checks:
-    description: "If set, a crash recovery will perform checks on each series file"
-  prometheus.storage.local.retention:
-    description: "How long to retain samples in the local storage"
-  prometheus.storage.local.series_file_shrink_ratio:
-    description: "If 0 or smaller, truncation will be performed even for a single dropped chunk, while 1 or larger will effectively prevent any truncation"
-  prometheus.storage.local.series_sync_strategy:
-    description: "When to sync series files after modification"
-  prometheus.storage.local.target_heap_size:
-    description: "The metrics storage attempts to limit its own memory usage such that the total heap size approaches this value"
+  prometheus.rules.alert.for_outage_tolerance:
+    description: "Max time to tolerate prometheus outage for restoring 'for' state of alert"
+  prometheus.rules.alert.for_grace_period:
+    description: "Minimum duration between alert and restored 'for' state"
+  prometheus.rules.alert.resend_delay:
+    description: "Minimum amount of time to wait before resending an alert to Alertmanager"
+
+  prometheus.storage.tsdb.allow_overlapping_blocks:
+    description: "Allow overlapping blocks, which in turn enables vertical compaction and vertical query merge"
+    default: false
+  prometheus.storage.tsdb.retention.time:
+    description: "How long to retain samples in the storage"
+  prometheus.storage.tsdb.retention.size:
+    description: "[Experimental]: Maximum number of bytes that storage blocks can use, oldest data will be removed first. Units supported: KB, MB, GB, PB. Ex: '512MB'"
+  prometheus.storage.tsdb.min_block_duration:
+    description: "Minimum duration of a data block before being persisted"
+  prometheus.storage.tsdb.max_block_duration:
+    description: "Maximum duration compacted blocks may span (defaults to 10% of the retention period)"
+  prometheus.storage.tsdb.no_lockfile:
+    description: "Do not create lockfile in data directory"
+    default: false
+  prometheus.storage.tsdb.wal_compression:
+    description: "Compress the tsdb WAL"
+    default: false
+  prometheus.storage.remote.flush_deadline:
+    description: "How long to wait flushing sample on shutdown or config reload"
+  prometheus.storage.remote.read_sample_limit:
+    description: "Maximum overall number of samples to return via the remote read interface, in a single query"
+  prometheus.storage.remote.read_concurrent_limit:
+    description: "Maximum number of concurrent remote read calls"
+  prometheus.storage.remote.read_max_bytes_in_frame:
+    description: "Maximum number of bytes in a single frame for streaming remote read response types before marshalling"
 
   prometheus.web.console.libraries:
     description: "Path to the console library directory"
-    default: "/var/vcap/packages/prometheus/bin/console_libraries"
+    default: "/var/vcap/packages/prometheus2/bin/console_libraries"
   prometheus.web.console.templates:
     description: "Path to the console template directory, available at /consoles"
-    default: "/var/vcap/packages/prometheus/bin/consoles"
-  prometheus.web.enable_remote_shutdown:
-    description: "Enable remote service shutdown"
+    default: "/var/vcap/packages/prometheus2/bin/consoles"
+  prometheus.web.cors_origin:
+    description: "Regex for CORS origin"
+  prometheus.web.enable_lifecycle:
+    description: "Enable shutdown and reload via HTTP request"
+    default: false
+  prometheus.web.enable_admin_api:
+    description: "Enables API endpoints for admin control actions"
+    default: false
+  prometheus.web.enable_remote_write_receiver:
+    description: "Enables the built-in remote write receiver"
+    default: false
+  prometheus.web.external_url:
+    description: "The URL under which Prometheus is externally reachable"
+  prometheus.web.listen_address:
+    description: "Address to listen on for the web interface, API, and telemetry"
   prometheus.web.port:
     description: "Port to listen on for the web interface, API, and telemetry"
     default: "9090"
   prometheus.web.max_connections:
     description: "Maximum number of simultaneous connections"
+  prometheus.web.page_title:
+    description: "Document title of Prometheus instance"
   prometheus.web.read_timeout:
     description: "Maximum duration before timing out read of the request, and closing idle connections"
+  prometheus.web.remote-write-receiver.accepted-protobuf-messages:
+    default: "prometheus.WriteRequest"
+    description: "List of the remote write protobuf messages to accept when receiving the remote writes. Supported values: prometheus.WriteRequest, io.prometheus.write.v2.Request"
   prometheus.web.route_prefix:
     description: "Prefix for the internal routes of web endpoints"
-  prometheus.web.telemetry_path:
-    description: "Path under which to expose metric"
   prometheus.web.user_assets:
     description: "Path to static asset directory, available at /user"
+
+  env.http_proxy:
+    description: "HTTP proxy to use"
+  env.https_proxy:
+    description: "HTTPS proxy to use"
+  env.no_proxy:
+    description: "List of comma-separated hosts that should skip connecting to the proxy"
