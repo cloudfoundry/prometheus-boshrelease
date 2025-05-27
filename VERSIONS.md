@@ -2,19 +2,19 @@
 |---------------------------|------------------|---------|:--------------------------------:|:--------------------------------:|
 | [alertmanager]            | prometheus       | v0.28.1 | ![][alertmanager-ver]            | ![][alertmanager-act]            |
 | [blackbox_exporter]       | prometheus       | v0.26.0 | ![][blackbox_exporter-ver]       | ![][blackbox_exporter-act]       |
-| [bosh_exporter]           | bosh             | v3.7.0  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
+| [bosh_exporter]           | bosh             | v3.7.1  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
 | [bosh_tsdb_exporter]      | bosh             | v0.2.0  | ![][bosh_tsdb_exporter-ver]      | ![][bosh_tsdb_exporter-act]      |
 | [cadvisor]                |                  | v0.47.0 | ![][cadvisor-ver]                | ![][cadvisor-act]                |
 | [collectd_exporter]       |                  | v0.7.0  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.13.0  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
-| [credhub_exporter]        | bosh             | v0.61.0 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
-| [cf_exporter]             | cf               | v1.4.2  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
-| [firehose_exporter]       | cf               | v7.1.9  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
+| [credhub_exporter]        | bosh             | v0.64.0 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
+| [cf_exporter]             | cf               | v1.4.3  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
+| [firehose_exporter]       | cf               | v7.1.10  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
 | [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
 | [elasticsearch_exporter]  |                  | v1.9.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.17.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
-| [grafana]                 | grafana          | v10.4.14  | ![][grafana-ver]                 | ![][grafana-act]                 |
+| [grafana]                 | grafana          | v10.4.19  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.7  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
@@ -23,7 +23,7 @@
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
 | [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
-| [memcached_exporter]      |                  | v0.17.1 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
+| [memcached_exporter]      |                  | v0.15.2 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v1.0.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
 | [mysqld_exporter]         |                  | v0.17.2 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
@@ -33,7 +33,7 @@
 | [prometheus]              | prometheus       | v2.55.1 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.11.1  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
-| [redis_exporter]          |                  | v1.70.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
+| [redis_exporter]          |                  | v1.73.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
 | [stackdriver_exporter]    |                  | v0.18.0 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
 | [statsd_exporter]         |                  | v0.28.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
