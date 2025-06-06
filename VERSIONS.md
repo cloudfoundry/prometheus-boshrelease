@@ -17,7 +17,6 @@
 | [grafana]                 | grafana          | v10.4.19  | ![][grafana-ver]                 | ![][grafana-act]                 |
 | [grafana/clock-panel]     | grafana_plugings | v2.1.7  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
-| [haproxy_exporter]        |                  | v0.15.0 | ![][haproxy_exporter-ver]        | ![][haproxy_exporter-act]        |
 | [influxdb_exporter]       |                  | v0.12.0 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
@@ -123,10 +122,6 @@
 [graphite_exporter]: https://github.com/prometheus/graphite_exporter
 [graphite_exporter-act]: https://img.shields.io/github/release-date/prometheus/graphite_exporter?label=latest
 [graphite_exporter-ver]: https://img.shields.io/github/v/release/prometheus/graphite_exporter?label=latest
-
-[haproxy_exporter]: https://github.com/prometheus/haproxy_exporter
-[haproxy_exporter-act]: https://img.shields.io/github/release-date/prometheus/haproxy_exporter?label=latest
-[haproxy_exporter-ver]: https://img.shields.io/github/v/release/prometheus/haproxy_exporter?label=latest
 
 [influxdb_exporter]: https://github.com/prometheus/influxdb_exporter
 [influxdb_exporter-act]: https://img.shields.io/github/release-date/prometheus/influxdb_exporter?label=latest

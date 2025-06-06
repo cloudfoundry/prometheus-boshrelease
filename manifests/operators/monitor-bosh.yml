@@ -282,13 +282,13 @@
     relabel_configs:
       - source_labels:
         - __meta_bosh_job_process_name
-        regex: haproxy_exporter
+        regex: haproxy_stats
         action: keep
       - source_labels:
         - __address__
         regex: "(.*)"
         target_label: __address__
-        replacement: "${1}:9101"
+        replacement: "${1}:9000"
 
 - type: replace
   path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/scrape_configs/-
