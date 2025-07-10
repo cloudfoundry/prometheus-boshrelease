@@ -21,61 +21,25 @@ case $1 in
     pid_guard ${PIDFILE} "mongodb_exporter"
     echo $$ > ${PIDFILE}
 
-    export MONGODB_URL="<%= p('mongodb_exporter.mongodb.uri') %>"
+    # create clustermonitor user
+    JOB_DIR=/var/vcap/jobs/mongodb_exporter
 
     exec mongodb_exporter \
-      <% if_p('mongodb_exporter.auth_pass') do |auth_pass| %> \
-      -auth.pass="<%= auth_pass %>" \
+      --mongodb.uri="<%= p('mongodb.uri') %>" \
+      <% if_p('mongodb.tls') do |tls| %> \
+      <% if tls == "true" %> \
+      --mongodb.tls \
+      <% if_p('mongodb.tls_ca') do |tls_ca| %> \
+      --mongodb.tls-ca="<%= tls_ca %>" \
       <% end %> \
-      <% if_p('mongodb_exporter.auth_user') do |auth_user| %> \
-      -auth.user="<%= auth_user %>" \
+      <% if_p('mongodb.tls_cert') do %> \
+      --mongodb.tls-cert="/var/vcap/jobs/mongodb_exporter/config/mongodb_tls_cert.pem" \
       <% end %> \
-      <% if_p('mongodb_exporter.groups_enabled') do |groups_enabled| %> \
-      -groups.enabled="<%= groups_enabled %>" \
+      <% if_p('mongodb.tls_private_key') do |tls_private_key| %> \
+      --mongodb.tls-private-key="<%= tls_private_key %>" \
       <% end %> \
-      <% if_p('mongodb_exporter.log_backtrace_at') do |log_backtrace_at| %> \
-      -log_backtrace_at="<%= log_backtrace_at %>" \
-      <% end %> \
-      -log_dir=${LOG_DIR} \
-      <% if_p('mongodb_exporter.collect_database') do |collect_database| %> \
-      -mongodb.collect.database="<%= collect_database %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.collect_oplog') do |collect_oplog| %> \
-      -mongodb.collect.oplog="<%= collect_oplog %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.collect_replset') do |collect_replset| %> \
-      -mongodb.collect.replset="<%= collect_replset %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.mongodb.tls_ca') do %> \
-      -mongodb.tls-ca="/var/vcap/jobs/mongodb_exporter/config/mongodb_tls_ca.pem" \
-      <% end %> \
-      <% if_p('mongodb_exporter.mongodb.tls_cert') do %> \
-      -mongodb.tls-cert="/var/vcap/jobs/mongodb_exporter/config/mongodb_tls_cert.pem" \
-      <% end %> \
-      <% if_p('mongodb_exporter.mongodb.tls_private_key') do %> \
-      -mongodb.tls-private-key="/var/vcap/jobs/mongodb_exporter/config/mongodb_tls_key.pem" \
-      <% end %> \
-      <% if_p('mongodb_exporter.mongodb.tls_disable_hostname_validation') do |tls_disable_hostname_validation| %> \
-      -mongodb.tls-disable-hostname-validation="<%= tls_disable_hostname_validation %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.v') do |v| %> \
-      -v="<%= v %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.vmodule') do |vmodule| %> \
-      -vmodule="<%= vmodule %>" \
-      <% end %> \
-      -web.listen-address=":<%= p('mongodb_exporter.web.port') %>" \
-      <% if_p('mongodb_exporter.web.metrics_path') do |metrics_path| %> \
-      -web.metrics-path="<%= metrics_path %>" \
-      <% end %> \
-      <% if_p('mongodb_exporter.web.tls_cert') do %> \
-      -web.tls-cert="/var/vcap/jobs/mongodb_exporter/config/web_tls_cert.pem" \
-      <% end %> \
-      <% if_p('mongodb_exporter.web.tls_client_ca') do %> \
-      -web.tls-client-ca="/var/vcap/jobs/mongodb_exporter/config/web_tls_client_ca.pem" \
-      <% end %> \
-      <% if_p('mongodb_exporter.web.tls_private_key') do %> \
-      -web.tls-private-key="/var/vcap/jobs/mongodb_exporter/config/web_tls_key.pem" \
+      <% if_p('mongodb.tls_disable_hostname_validation') do |tls_disable_hostname_validation| %> \
+      --mongodb.tls-disable-hostname-validation="<%= tls_disable_hostname_validation %>" \
       <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
       2>> ${LOG_DIR}/mongodb_exporter.stderr.log
