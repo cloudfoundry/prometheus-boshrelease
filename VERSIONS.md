@@ -24,7 +24,7 @@
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
 | [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
 | [memcached_exporter]      |                  | v0.15.2 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
-| [mongodb_exporter]        |                  | v1.0.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
+| [mongodb_exporter]        |                  | v0.44.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
 | [mysqld_exporter]         |                  | v0.17.2 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
