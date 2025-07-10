@@ -21,26 +21,10 @@ case $1 in
     pid_guard ${PIDFILE} "mongodb_exporter"
     echo $$ > ${PIDFILE}
 
-    # create clustermonitor user
     JOB_DIR=/var/vcap/jobs/mongodb_exporter
 
     exec mongodb_exporter \
       --mongodb.uri="<%= p('mongodb.uri') %>" \
-      <% if_p('mongodb.tls') do |tls| %> \
-      <% if tls == "true" %> \
-      --mongodb.tls \
-      <% if_p('mongodb.tls_ca') do |tls_ca| %> \
-      --mongodb.tls-ca="<%= tls_ca %>" \
-      <% end %> \
-      <% if_p('mongodb.tls_cert') do %> \
-      --mongodb.tls-cert="/var/vcap/jobs/mongodb_exporter/config/mongodb_tls_cert.pem" \
-      <% end %> \
-      <% if_p('mongodb.tls_private_key') do |tls_private_key| %> \
-      --mongodb.tls-private-key="<%= tls_private_key %>" \
-      <% end %> \
-      <% if_p('mongodb.tls_disable_hostname_validation') do |tls_disable_hostname_validation| %> \
-      --mongodb.tls-disable-hostname-validation="<%= tls_disable_hostname_validation %>" \
-      <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
       2>> ${LOG_DIR}/mongodb_exporter.stderr.log
     ;;
