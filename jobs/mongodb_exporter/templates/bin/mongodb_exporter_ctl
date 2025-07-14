@@ -24,7 +24,115 @@ case $1 in
     JOB_DIR=/var/vcap/jobs/mongodb_exporter
 
     exec mongodb_exporter \
+      <% if_p('mongodb.user') do |mongodb.user| %> \
+      --mongodb.user="<%= mongodb.user %>" \
+      <% end %> \
+      <% if_p('mongodb.password') do |mongodb.password| %> \
+      --mongodb.password="<%= mongodb.password %>" \
+      <% end %> \
+      <% if_p('mongodb.collstats-colls') do |mongodb.collstats-colls| %> \
+      --mongodb.collstats-colls="<%= mongodb.collstats-colls %>" \
+      <% end %> \
+      <% if_p('mongodb.indexstats-colls') do |mongodb.indexstats-colls| %> \
+      --mongodb.indexstats-colls="<%= mongodb.indexstats-colls %>" \
+      <% end %> \
       --mongodb.uri="<%= p('mongodb.uri') %>" \
+      <% if_p('mongodb.global-conn-pool') do |mongodb.global-conn-pool| %> \
+      --mongodb.global-conn-pool="<%= mongodb.global-conn-pool %>" \
+      <% end %> \
+      <% if_p('mongodb.direct-connect') do |mongodb.direct-connect| %> \
+      --mongodb.direct-connect="<%= mongodb.direct-connect %>" \
+      <% end %> \
+      <% if_p('web.listen-address') do |web.listen-address| %> \
+      --web.listen-address="<%= web.listen-address %>" \
+      <% end %> \
+      <% if_p('web.telemetry-path') do |web.telemetry-path| %> \
+      --web.telemetry-path="<%= web.telemetry-path %>" \
+      <% end %> \
+      <% if_p('web.config') do |web.config| %> \
+      --web.config="<%= web.config %>" \
+      <% end %> \
+      <% if_p('web.timeout-offset') do |web.timeout-offset| %> \
+      --web.timeout-offset="<%= web.timeout-offset %>" \
+      <% end %> \
+      <% if_p('log.level') do |log.level| %> \
+      --log.level="<%= log.level %>" \
+      <% end %> \
+      <% if_p('mongodb.connect-timeout-ms') do |mongodb.connect-timeout-ms| %> \
+      --mongodb.connect-timeout-ms="<%= mongodb.connect-timeout-ms %>" \
+      <% end %> \
+      <% if_p('collector.exporter-metrics') do |collector.exporter-metrics| %> \
+      --collector.exporter-metrics \
+      <% end %> \
+      <% if_p('collector.diagnosticdata') do |collector.diagnosticdata| %> \
+      --collector.diagnosticdata \
+      <% end %> \
+      <% if_p('collector.replicasetstatus') do |collector.replicasetstatus| %> \
+      --collector.replicasetstatus \
+      <% end %> \
+      <% if_p('collector.replicasetconfig') do |collector.replicasetconfig| %> \
+      --collector.replicasetconfig \
+      <% end %> \
+      <% if_p('collector.dbstats') do |collector.dbstats| %> \
+      --collector.dbstats \
+      <% end %> \
+      <% if_p('collector.dbstatsfreestorage') do |collector.dbstatsfreestorage| %> \
+      --collector.dbstatsfreestorage="<%= collector.dbstatsfreestorage %>" \
+      <% end %> \
+      <% if_p('collector.topmetrics') do |collector.topmetrics| %> \
+      --collector.topmetrics="<%= collector.topmetrics %>" \
+      <% end %> \
+      <% if_p('collector.currentopmetrics') do |collector.currentopmetrics| %> \
+      --collector.currentopmetrics="<%= collector.currentopmetrics %>" \
+      <% end %> \
+      <% if_p('collector.indexstats') do |collector.indexstats| %> \
+      --collector.indexstats="<%= collector.indexstats %>" \
+      <% end %> \
+      <% if_p('collector.collstats') do |collector.collstats| %> \
+      --collector.collstats \
+      <% end %> \
+      <% if_p('collector.profile') do |collector.profile| %> \
+      --collector.profile \
+      <% end %> \
+      <% if_p('collector.fcv') do |collector.fcv| %> \
+      --collector.fcv \
+      <% end %> \
+      <% if_p('collector.shards') do |collector.shards| %> \
+      --collector.shards \
+      <% end %> \
+      <% if_p('collector.pbm') do |collector.pbm| %> \
+      --collector.pbm \
+      <% end %> \
+      <% if_p('metrics.overridedescendingindex') do |metrics.overridedescendingindex| %> \
+      --metrics.overridedescendingindex \
+      <% end %> \
+      <% if_p('collect-all') do |collect-all| %> \
+      --collect-all \
+      <% end %> \
+      <% if_p('collector.collstats-limit') do |collector.collstats-limit| %> \
+      --collector.collstats-limit="<%= collector.collstats-limit %>" \
+      <% end %> \
+      <% if_p('collector.collstats-enable-details') do |collector.collstats-enable-details| %> \
+      --collector.collstats-enable-details \
+      <% end %> \
+      <% if_p('collector.profile-time-ts') do |collector.profile-time-ts| %> \
+      --collector.profile-time-ts="<%= collector.profile-time-ts %>" \
+      <% end %> \
+      <% if_p('collector.currentopmetrics-slow-time') do |collector.currentopmetrics-slow-time| %> \
+      --collector.currentopmetrics-slow-time="<%= collector.currentopmetrics-slow-time %>" \
+      <% end %> \
+      <% if_p('discovering-mode') do |discovering-mode| %> \
+      --discovering-mode \
+      <% end %> \
+      <% if_p('compatible-mode') do |compatible-mode| %> \
+      --compatible-mode \
+      <% end %> \
+      <% if_p('version') do |version| %> \
+      --version \
+      <% end %> \
+      <% if_p('split-cluster') do |split-cluster| %> \
+      --split-cluster \
+      <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
       2>> ${LOG_DIR}/mongodb_exporter.stderr.log
     ;;
