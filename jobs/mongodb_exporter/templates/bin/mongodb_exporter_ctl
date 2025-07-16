@@ -24,113 +24,113 @@ case $1 in
     JOB_DIR=/var/vcap/jobs/mongodb_exporter
 
     exec mongodb_exporter \
-      <% if_p('mongodb.user') do |mongodb.user| %> \
-      --mongodb.user="<%= mongodb.user %>" \
+      <% if_p('mongodb.user') do |mongodb_user| %> \
+      --mongodb.user="<%= mongodb_user %>" \
       <% end %> \
-      <% if_p('mongodb.password') do |mongodb.password| %> \
-      --mongodb.password="<%= mongodb.password %>" \
+      <% if_p('mongodb.password') do |mongodb_password| %> \
+      --mongodb.password="<%= mongodb_password %>" \
       <% end %> \
-      <% if_p('mongodb.collstats-colls') do |mongodb.collstats-colls| %> \
-      --mongodb.collstats-colls="<%= mongodb.collstats-colls %>" \
+      <% if_p('mongodb.collstats-colls') do |mongodb_collstats_colls| %> \
+      --mongodb.collstats-colls="<%= mongodb_collstats_colls %>" \
       <% end %> \
-      <% if_p('mongodb.indexstats-colls') do |mongodb.indexstats-colls| %> \
-      --mongodb.indexstats-colls="<%= mongodb.indexstats-colls %>" \
+      <% if_p('mongodb.indexstats-colls') do |mongodb_indexstats_colls| %> \
+      --mongodb.indexstats-colls="<%= mongodb_indexstats_colls %>" \
       <% end %> \
       --mongodb.uri="<%= p('mongodb.uri') %>" \
-      <% if_p('mongodb.global-conn-pool') do |mongodb.global-conn-pool| %> \
-      --mongodb.global-conn-pool="<%= mongodb.global-conn-pool %>" \
+      <% if_p('mongodb.global-conn-pool') do |mongodb_global_conn_pool| %> \
+      --mongodb.global-conn-pool="<%= mongodb_global_conn_pool %>" \
       <% end %> \
-      <% if_p('mongodb.direct-connect') do |mongodb.direct-connect| %> \
-      --mongodb.direct-connect="<%= mongodb.direct-connect %>" \
+      <% if_p('mongodb.direct-connect') do |mongodb_direct_connect| %> \
+      --mongodb.direct-connect="<%= mongodb_direct_connect %>" \
       <% end %> \
-      <% if_p('web.listen-address') do |web.listen-address| %> \
-      --web.listen-address="<%= web.listen-address %>" \
+      <% if_p('web.listen-address') do |web_listen_address| %> \
+      --web.listen-address="<%= web_listen_address %>" \
       <% end %> \
-      <% if_p('web.telemetry-path') do |web.telemetry-path| %> \
-      --web.telemetry-path="<%= web.telemetry-path %>" \
+      <% if_p('web.telemetry-path') do |web_telemetry_path| %> \
+      --web.telemetry-path="<%= web_telemetry_path %>" \
       <% end %> \
-      <% if_p('web.config') do |web.config| %> \
-      --web.config="<%= web.config %>" \
+      <% if_p('web.config') do |web_config| %> \
+      --web.config="<%= web_config %>" \
       <% end %> \
-      <% if_p('web.timeout-offset') do |web.timeout-offset| %> \
-      --web.timeout-offset="<%= web.timeout-offset %>" \
+      <% if_p('web.timeout-offset') do |web_timeout_offset| %> \
+      --web.timeout-offset="<%= web_timeout_offset %>" \
       <% end %> \
-      <% if_p('log.level') do |log.level| %> \
-      --log.level="<%= log.level %>" \
+      <% if_p('log.level') do |log_level| %> \
+      --log.level="<%= log_level %>" \
       <% end %> \
-      <% if_p('mongodb.connect-timeout-ms') do |mongodb.connect-timeout-ms| %> \
-      --mongodb.connect-timeout-ms="<%= mongodb.connect-timeout-ms %>" \
+      <% if_p('mongodb.connect-timeout-ms') do |mongodb_connect_timeout_ms| %> \
+      --mongodb.connect-timeout-ms="<%= mongodb_connect_timeout_ms %>" \
       <% end %> \
-      <% if_p('collector.exporter-metrics') do |collector.exporter-metrics| %> \
-      --collector.exporter-metrics \
+      <% if_p('collector.exporter-metrics') do |collector_exporter_metrics| %> \
+      --collector.exporter_metrics \
       <% end %> \
-      <% if_p('collector.diagnosticdata') do |collector.diagnosticdata| %> \
+      <% if_p('collector.diagnosticdata') do |collector_diagnosticdata| %> \
       --collector.diagnosticdata \
       <% end %> \
-      <% if_p('collector.replicasetstatus') do |collector.replicasetstatus| %> \
+      <% if_p('collector.replicasetstatus') do |collector_replicasetstatus| %> \
       --collector.replicasetstatus \
       <% end %> \
-      <% if_p('collector.replicasetconfig') do |collector.replicasetconfig| %> \
+      <% if_p('collector.replicasetconfig') do |collector_replicasetconfig| %> \
       --collector.replicasetconfig \
       <% end %> \
-      <% if_p('collector.dbstats') do |collector.dbstats| %> \
+      <% if_p('collector.dbstats') do |collector_dbstats| %> \
       --collector.dbstats \
       <% end %> \
-      <% if_p('collector.dbstatsfreestorage') do |collector.dbstatsfreestorage| %> \
-      --collector.dbstatsfreestorage="<%= collector.dbstatsfreestorage %>" \
+      <% if_p('collector.dbstatsfreestorage') do |collector_dbstatsfreestorage| %> \
+      --collector.dbstatsfreestorage="<%= collector_dbstatsfreestorage %>" \
       <% end %> \
-      <% if_p('collector.topmetrics') do |collector.topmetrics| %> \
-      --collector.topmetrics="<%= collector.topmetrics %>" \
+      <% if_p('collector.topmetrics') do |collector_topmetrics| %> \
+      --collector.topmetrics="<%= collector_topmetrics %>" \
       <% end %> \
-      <% if_p('collector.currentopmetrics') do |collector.currentopmetrics| %> \
-      --collector.currentopmetrics="<%= collector.currentopmetrics %>" \
+      <% if_p('collector.currentopmetrics') do |collector_currentopmetrics| %> \
+      --collector.currentopmetrics="<%= collector_currentopmetrics %>" \
       <% end %> \
-      <% if_p('collector.indexstats') do |collector.indexstats| %> \
-      --collector.indexstats="<%= collector.indexstats %>" \
+      <% if_p('collector.indexstats') do |collector_indexstats| %> \
+      --collector.indexstats="<%= collector_indexstats %>" \
       <% end %> \
-      <% if_p('collector.collstats') do |collector.collstats| %> \
+      <% if_p('collector.collstats') do |collector_collstats| %> \
       --collector.collstats \
       <% end %> \
-      <% if_p('collector.profile') do |collector.profile| %> \
+      <% if_p('collector.profile') do |collector_profile| %> \
       --collector.profile \
       <% end %> \
-      <% if_p('collector.fcv') do |collector.fcv| %> \
+      <% if_p('collector.fcv') do |collector_fcv| %> \
       --collector.fcv \
       <% end %> \
-      <% if_p('collector.shards') do |collector.shards| %> \
+      <% if_p('collector.shards') do |collector_shards| %> \
       --collector.shards \
       <% end %> \
-      <% if_p('collector.pbm') do |collector.pbm| %> \
+      <% if_p('collector.pbm') do |collector_pbm| %> \
       --collector.pbm \
       <% end %> \
-      <% if_p('metrics.overridedescendingindex') do |metrics.overridedescendingindex| %> \
+      <% if_p('metrics.overridedescendingindex') do |metrics_overridedescendingindex| %> \
       --metrics.overridedescendingindex \
       <% end %> \
-      <% if_p('collect-all') do |collect-all| %> \
+      <% if_p('collect-all') do |collect_all| %> \
       --collect-all \
       <% end %> \
-      <% if_p('collector.collstats-limit') do |collector.collstats-limit| %> \
-      --collector.collstats-limit="<%= collector.collstats-limit %>" \
+      <% if_p('collector.collstats-limit') do |collector_collstats_limit| %> \
+      --collector.collstats-limit="<%= collector_collstats_limit %>" \
       <% end %> \
-      <% if_p('collector.collstats-enable-details') do |collector.collstats-enable-details| %> \
+      <% if_p('collector.collstats-enable-details') do |collector_collstats_enable_details| %> \
       --collector.collstats-enable-details \
       <% end %> \
-      <% if_p('collector.profile-time-ts') do |collector.profile-time-ts| %> \
-      --collector.profile-time-ts="<%= collector.profile-time-ts %>" \
+      <% if_p('collector.profile-time-ts') do |collector_profile_time_ts| %> \
+      --collector.profile-time-ts="<%= collector_profile_time_ts %>" \
       <% end %> \
-      <% if_p('collector.currentopmetrics-slow-time') do |collector.currentopmetrics-slow-time| %> \
-      --collector.currentopmetrics-slow-time="<%= collector.currentopmetrics-slow-time %>" \
+      <% if_p('collector.currentopmetrics-slow-time') do |collector_currentopmetrics_slow_time| %> \
+      --collector.currentopmetrics-slow-time="<%= collector_currentopmetrics_slow_time %>" \
       <% end %> \
-      <% if_p('discovering-mode') do |discovering-mode| %> \
+      <% if_p('discovering-mode') do |discovering_mode| %> \
       --discovering-mode \
       <% end %> \
-      <% if_p('compatible-mode') do |compatible-mode| %> \
+      <% if_p('compatible-mode') do |compatible_mode| %> \
       --compatible-mode \
       <% end %> \
       <% if_p('version') do |version| %> \
       --version \
       <% end %> \
-      <% if_p('split-cluster') do |split-cluster| %> \
+      <% if_p('split-cluster') do |split_cluster| %> \
       --split-cluster \
       <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
