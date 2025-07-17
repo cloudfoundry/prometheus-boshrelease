@@ -21,7 +21,6 @@ case $1 in
     pid_guard ${PIDFILE} "mongodb_exporter"
     echo $$ > ${PIDFILE}
 
-    #JOB_DIR=/var/vcap/jobs/mongodb_exporter
     exec mongodb_exporter \
       <% if_p('mongodb.user') do |mongodb_user| %> \
       --mongodb.user="<%= mongodb_user %>" \
