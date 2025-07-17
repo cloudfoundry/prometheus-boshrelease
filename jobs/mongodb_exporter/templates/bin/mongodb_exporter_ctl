@@ -21,8 +21,7 @@ case $1 in
     pid_guard ${PIDFILE} "mongodb_exporter"
     echo $$ > ${PIDFILE}
 
-    JOB_DIR=/var/vcap/jobs/mongodb_exporter
-
+    #JOB_DIR=/var/vcap/jobs/mongodb_exporter
     exec mongodb_exporter \
       <% if_p('mongodb.user') do |mongodb_user| %> \
       --mongodb.user="<%= mongodb_user %>" \
@@ -37,11 +36,19 @@ case $1 in
       --mongodb.indexstats-colls="<%= mongodb_indexstats_colls %>" \
       <% end %> \
       --mongodb.uri="<%= p('mongodb.uri') %>" \
-      <% if_p('mongodb.global-conn-pool') do |mongodb_global_conn_pool| %> \
-      --mongodb.global-conn-pool="<%= mongodb_global_conn_pool %>" \
+      <% if_p('mongodb.global-conn-pool') do |val| %> \
+      <% if val == true %> \
+      --mongodb.global-conn-pool \
+      <% elsif val == false %> \
+      --no-mongodb.global-conn-pool \
       <% end %> \
-      <% if_p('mongodb.direct-connect') do |mongodb_direct_connect| %> \
-      --mongodb.direct-connect="<%= mongodb_direct_connect %>" \
+      <% end %> \
+      <% if_p('mongodb.direct-connect') do |val| %> \
+      <% if val == true %> \
+      --mongodb.direct-connect \
+      <% elsif val == false %> \
+      --no-mongodb.direct-connect \
+      <% end %> \
       <% end %> \
       <% if_p('web.listen-address') do |web_listen_address| %> \
       --web.listen-address="<%= web_listen_address %>" \
@@ -58,80 +65,136 @@ case $1 in
       <% if_p('log.level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
-      <% if_p('mongodb.connect-timeout-ms') do |mongodb_connect_timeout_ms| %> \
-      --mongodb.connect-timeout-ms="<%= mongodb_connect_timeout_ms %>" \
+      <% if_p('mongodb.connect-timeout-ms') do |val| %> \
+      --mongodb.connect-timeout-ms="<%= val %>" \
       <% end %> \
-      <% if_p('collector.exporter-metrics') do |collector_exporter_metrics| %> \
+      <% if_p('collector.exporter-metrics') do |val| %> \
+      <% if val == true %> \
       --collector.exporter-metrics \
+      <% elsif val == false %> \
+      --no-collector.exporter-metrics \
       <% end %> \
-      <% if_p('collector.diagnosticdata') do |collector_diagnosticdata| %> \
+      <% end %> \
+      <% if_p('collector.diagnosticdata') do |val| %> \
+      <% if val == true %> \
       --collector.diagnosticdata \
+      <% elsif val == false %> \
+      --no-collector.diagnosticdata \
       <% end %> \
-      <% if_p('collector.replicasetstatus') do |collector_replicasetstatus| %> \
+      <% end %> \
+      <% if_p('collector.replicasetstatus') do |val| %> \
+      <% if val == true %> \
       --collector.replicasetstatus \
+      <% elsif val == false %> \
+      --no-collector.replicasetstatus \
       <% end %> \
-      <% if_p('collector.replicasetconfig') do |collector_replicasetconfig| %> \
+      <% end %> \
+      <% if_p('collector.replicasetconfig') do |val| %> \
+      <% if val == true %> \
       --collector.replicasetconfig \
+      <% elsif val == false %> \
+      --no-collector.replicasetconfig \
       <% end %> \
-      <% if_p('collector.dbstats') do |collector_dbstats| %> \
+      <% end %> \
+      <% if_p('collector.dbstats') do |val| %> \
+      <% if val == true %> \
       --collector.dbstats \
+      <% elsif val == false %> \
+      --no-collector.dbstats \
       <% end %> \
-      <% if_p('collector.dbstatsfreestorage') do |collector_dbstatsfreestorage| %> \
-      --collector.dbstatsfreestorage="<%= collector_dbstatsfreestorage %>" \
       <% end %> \
-      <% if_p('collector.topmetrics') do |collector_topmetrics| %> \
-      --collector.topmetrics="<%= collector_topmetrics %>" \
-      <% end %> \
-      <% if_p('collector.currentopmetrics') do |collector_currentopmetrics| %> \
-      --collector.currentopmetrics="<%= collector_currentopmetrics %>" \
-      <% end %> \
-      <% if_p('collector.indexstats') do |collector_indexstats| %> \
-      --collector.indexstats="<%= collector_indexstats %>" \
-      <% end %> \
-      <% if_p('collector.collstats') do |collector_collstats| %> \
+      <% if_p('collector.collstats') do |val| %> \
+      <% if val == true %> \
       --collector.collstats \
+      <% elsif val == false %> \
+      --no-collector.collstats \
       <% end %> \
-      <% if_p('collector.profile') do |collector_profile| %> \
+      <% end %> \
+      <% if_p('collector.profile') do |val| %> \
+      <% if val == true %> \
       --collector.profile \
+      <% elsif val == false %> \
+      --no-collector.profile \
       <% end %> \
-      <% if_p('collector.fcv') do |collector_fcv| %> \
+      <% end %> \
+      <% if_p('collector.fcv') do |val| %> \
+      <% if val == true %> \
       --collector.fcv \
+      <% elsif val == false %> \
+      --no-collector.fcv \
       <% end %> \
-      <% if_p('collector.shards') do |collector_shards| %> \
+      <% end %> \
+      <% if_p('collector.shards') do |val| %> \
+      <% if val == true %> \
       --collector.shards \
+      <% elsif val == false %> \
+      --no-collector.shards \
       <% end %> \
-      <% if_p('collector.pbm') do |collector_pbm| %> \
+      <% end %> \
+      <% if_p('collector.pbm') do |val| %> \
+      <% if val == true %> \
       --collector.pbm \
+      <% elsif val == false %> \
+      --no-collector.pbm \
       <% end %> \
-      <% if_p('metrics.overridedescendingindex') do |metrics_overridedescendingindex| %> \
+      <% end %> \
+      <% if_p('metrics.overridedescendingindex') do |val| %> \
+      <% if val == true %> \
       --metrics.overridedescendingindex \
+      <% elsif val == false %> \
+      --no-metrics.overridedescendingindex \
       <% end %> \
-      <% if_p('collect-all') do |collect_all| %> \
+      <% end %> \
+      <% if_p('collect-all') do |val| %> \
+      <% if val == true %> \
       --collect-all \
+      <% elsif val == false %> \
+      --no-collect-all \
       <% end %> \
-      <% if_p('collector.collstats-limit') do |collector_collstats_limit| %> \
-      --collector.collstats-limit="<%= collector_collstats_limit %>" \
       <% end %> \
-      <% if_p('collector.collstats-enable-details') do |collector_collstats_enable_details| %> \
+      <% if_p('version') do |val| %> \
+      <% if val == true %> \
+      --version \
+      <% elsif val == false %> \
+      --no-version \
+      <% end %> \
+      <% end %> \
+      <% if_p('collector.dbstatsfreestorage') do |val| %> \
+      --collector.dbstatsfreestorage="<%= val %>" \
+      <% end %> \
+      <% if_p('collector.topmetrics') do |val| %> \
+      --collector.topmetrics="<%= val %>" \
+      <% end %> \
+      <% if_p('collector.currentopmetrics') do |val| %> \
+      --collector.currentopmetrics="<%= val %>" \
+      <% end %> \
+      <% if_p('collector.indexstats') do |val| %> \
+      --collector.indexstats="<%= val %>" \
+      <% end %> \
+      <% if_p('collector.collstats-limit') do |val| %> \
+      --collector.collstats-limit="<%= val %>" \
+      <% end %> \
+      <% if_p('collector.collstats-enable-details') do |val| %> \
+      <% if val == true %> \
       --collector.collstats-enable-details \
+      <% elsif val == false %> \
+      --no-collector.collstats-enable-details \
       <% end %> \
-      <% if_p('collector.profile-time-ts') do |collector_profile_time_ts| %> \
-      --collector.profile-time-ts="<%= collector_profile_time_ts %>" \
       <% end %> \
-      <% if_p('collector.currentopmetrics-slow-time') do |collector_currentopmetrics_slow_time| %> \
-      --collector.currentopmetrics-slow-time="<%= collector_currentopmetrics_slow_time %>" \
+      <% if_p('collector.profile-time-ts') do |val| %> \
+      --collector.profile-time-ts="<%= val %>" \
       <% end %> \
-      <% if_p('discovering-mode') do |discovering_mode| %> \
+      <% if_p('collector.currentopmetrics-slow-time') do |val| %> \
+      --collector.currentopmetrics-slow-time="<%= val %>" \
+      <% end %> \
+      <% if p("discovering-mode", false) %> \
       --discovering-mode \
       <% end %> \
-      <% if_p('compatible-mode') do |compatible_mode| %> \
+      <% if p("compatible-mode", false) %> \
       --compatible-mode \
       <% end %> \
-      <% if_p('version') do |version| %> \
-      --version \
-      <% end %> \
-      <% if_p('split-cluster') do |split_cluster| %> \
-      --split-cluster \
+      <% if p("split-cluster", false) == false %> \
+      --no-split-cluster \
       <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
       2>> ${LOG_DIR}/mongodb_exporter.stderr.log
@@ -145,6 +208,6 @@ case $1 in
     echo "Usage: $0 {start|stop}"
     exit 1
     ;;
-
 esac
+
 exit 0
