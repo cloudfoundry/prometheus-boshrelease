@@ -45,7 +45,6 @@ groups:
       - elasticsearch_exporter
       - firehose_exporter
       - graphite_exporter
-      - haproxy_exporter
       - influxdb_exporter
       - ingestor_exporter
       - memcached_exporter
@@ -300,25 +299,6 @@ jobs:
           icon_url:  (( grab meta.slack.icon ))
           text:     '$BUILD_PIPELINE_NAME: New graphite_exporter version $TEXT_FILE_CONTENT has been detected'
           text_file: graphite_exporter/version
-
-  - name: haproxy_exporter
-    public: true
-    serial: true
-    plan:
-      - aggregate:
-        - get: haproxy_exporter
-          trigger: true
-          params:
-            globs:
-              - haproxy_exporter-*.linux-amd64.tar.gz
-
-      - put: notify
-        params:
-          channel:   (( grab meta.slack.channel ))
-          username:  (( grab meta.slack.username ))
-          icon_url:  (( grab meta.slack.icon ))
-          text:     '$BUILD_PIPELINE_NAME: New haproxy_exporter version $TEXT_FILE_CONTENT has been detected'
-          text_file: haproxy_exporter/version
 
   - name: influxdb_exporter
     public: true
@@ -592,14 +572,6 @@ resources:
     source:
       user:         prometheus
       repository:   graphite_exporter
-      access_token: (( grab meta.github.access_token ))
-      check_every: 30m
-
-  - name: haproxy_exporter
-    type: github-release
-    source:
-      user:         prometheus
-      repository:   haproxy_exporter
       access_token: (( grab meta.github.access_token ))
       check_every: 30m
 
