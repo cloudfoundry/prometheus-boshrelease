@@ -15,13 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.3.6"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
+      "version": "10.4.18"
     },
     {
       "type": "panel",
@@ -34,6 +28,12 @@
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
@@ -79,54 +79,92 @@
   "liveNow": false,
   "panels": [
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Application Latency.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "id": 3,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "connected",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
       "pluginVersion": "9.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": {
@@ -134,7 +172,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "avg(rate(firehose_http_duration_seconds_sum{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]) / rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))",
+          "expr": "avg(rate(firehose_http_duration_seconds_sum{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]) / rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Client",
@@ -143,97 +181,102 @@
           "step": 2
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Latency",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:1649",
-          "format": "s",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:1650",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Percentage of requests processed in less than a given time for selected app",
-      "fill": 0,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 24,
         "x": 0,
         "y": 5
       },
-      "hiddenSeries": false,
       "id": 7,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sort": "current",
-        "sortDesc": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
       },
-      "percentage": false,
       "pluginVersion": "9.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -246,7 +289,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -259,7 +302,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -272,7 +315,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -285,7 +328,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -298,7 +341,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -311,7 +354,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -324,7 +367,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -337,7 +380,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m])) by (le)  \n/ on()\nsum(rate(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[5m]))\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -346,37 +389,9 @@
           "refId": "I"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "App Response Time by Percent",
-      "tooltip": {
-        "shared": true,
-        "sort": 1,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percent",
-          "logBase": 1,
-          "max": "100",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "cards": {},
@@ -437,7 +452,9 @@
         "exemplars": {
           "color": "rgba(255,0,255,0.7)"
         },
-        "filterValues": {},
+        "filterValues": {
+          "le": 1e-9
+        },
         "legend": {
           "show": false
         },
@@ -446,7 +463,8 @@
         },
         "showValue": "never",
         "tooltip": {
-          "show": true,
+          "mode": "single",
+          "showColorScale": false,
           "yHistogram": false
         },
         "yAxis": {
@@ -455,7 +473,7 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.4.18",
       "reverseYBuckets": false,
       "targets": [
         {
@@ -464,7 +482,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum(rate(firehose_http_duration_seconds_bucket{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}[10m])) by (le)",
+          "expr": "sum(rate(firehose_http_duration_seconds_bucket{environment=~\"$environment\",application_id=~\"$cf_application_id\"}[10m])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -490,10 +508,6 @@
       "yBucketBound": "auto"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
@@ -501,56 +515,91 @@
       "description": "Percentage of requests processed in less than a given time for selected app",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
-      "fill": 0,
-      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 24,
         "x": 0,
         "y": 18
       },
-      "hiddenSeries": false,
       "id": 11,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sort": "current",
-        "sortDesc": false,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
       },
-      "percentage": false,
       "pluginVersion": "9.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.005\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -563,7 +612,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.01\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -576,7 +625,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.1\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -589,7 +638,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.25\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -602,7 +651,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"0.5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -615,7 +664,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"1\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -628,7 +677,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"2.5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -641,7 +690,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"5\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -654,7 +703,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",bosh_deployment=~\"$bosh_deployment\",application_id=~\"$cf_application_id\"})\n* 100",
+          "expr": "sum(firehose_http_duration_seconds_bucket{le=\"10\", environment=~\"$environment\",application_id=~\"$cf_application_id\"}) by (le)  \n/ on()\nsum(firehose_http_duration_seconds_count{environment=~\"$environment\",application_id=~\"$cf_application_id\"})\n* 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -663,42 +712,13 @@
           "refId": "I"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Q.O.S.",
-      "tooltip": {
-        "shared": true,
-        "sort": 1,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percent",
-          "logBase": 1,
-          "max": "100",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
     "apps"
   ],
@@ -888,6 +908,6 @@
   "timezone": "browser",
   "title": "Apps: Latency",
   "uid": "cf_apps_latency",
-  "version": 3,
+  "version": 14,
   "weekStart": ""
 }
