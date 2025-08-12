@@ -23,7 +23,9 @@ instance_groups:
             test_alert:
               daily: true
 
-  - name: prometheus2
+  - name: prometheus
+    migrated_from: 
+    - name: prometheus2
     azs:
       - z1
     instances: 1
@@ -33,7 +35,7 @@ instance_groups:
     networks:
       - name: default
     jobs:
-      - name: prometheus2
+      - name: prometheus1
         release: prometheus
         properties:
           prometheus:
@@ -174,9 +176,9 @@ releases:
   url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=49
   sha1: 337e7748baf8c28c6d9707d02debec8476da61c9
 - name: prometheus
-  version: 30.9.0
-  url: https://github.com/cloudfoundry/prometheus-boshrelease/releases/download/v30.9.0/prometheus-30.9.0.tgz
-  sha1: 566d658646aa2cdb8026effc58dd4656674dfd20
+  version: 30.7.0
+  url: https://github.com/cloudfoundry/prometheus-boshrelease/releases/download/v30.7.0/prometheus-30.7.0.tgz
+  sha1: 847aa7c7f45fafd8ab4c4e7a1240ee416d8cbedf
 - name: bpm
   version: 1.2.20
   url: https://bosh.io/d/github.com/cloudfoundry/bpm-release?v=1.2.20
