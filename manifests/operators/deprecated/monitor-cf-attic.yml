@@ -31,9 +31,9 @@
 
 # replace cloudfoundry_alerts job by cloudfoundry_alerts-attic
 - type: remove
-  path: /instance_groups/name=prometheus2/jobs/name=cloudfoundry_alerts
+  path: /instance_groups/name=prometheus/jobs/name=cloudfoundry_alerts
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/-
+  path: /instance_groups/name=prometheus/jobs/-
   value:
     name: cloudfoundry_alerts-attic
     release: prometheus
@@ -49,7 +49,7 @@
 
 # add attic assets to prometheus and grafana
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/cloudfoundry_alerts-attic/*.alerts.yml
 - type: replace
   path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Cloudfoundry?/files/-
