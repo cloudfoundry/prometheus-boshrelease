@@ -2,7 +2,7 @@
 
 # Exporter jobs
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/-
+  path: /instance_groups/name=prometheus/jobs/-
   value:
     name: redis_exporter
     release: prometheus
@@ -13,11 +13,11 @@
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=redis_alerts?/release
+  path: /instance_groups/name=prometheus/jobs/name=redis_alerts?/release
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/redis_alerts/*.alerts.yml
 
 # Grafana Dashboards

@@ -1,17 +1,24 @@
-# Scrape targets
-  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties?/prometheus/scrape_configs/-
+# This file assumes bosh_exporter based Service Discovery is being used: ./monitor-bosh.yml
+
+# Exporter jobs
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/-
   value:
-    job_name: haproxy_stats
-    static_configs:
-    - targets: ((haproxy_scrape_uri)))
+    name: haproxy_exporter
+    release: prometheus
+    properties:
+      haproxy_exporter:
+        haproxy:
+          pid_file: "((haproxy_pid_file))"
+          scrape_uri: "((haproxy_scrape_uri))"
 
 # Prometheus Alerts
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=haproxy_alerts?/release
+  path: /instance_groups/name=prometheus/jobs/name=haproxy_alerts?/release
   value: prometheus
 
 - type: replace
-  path: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/rule_files/-
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/haproxy_alerts/*.alerts.yml
 
 # Grafana Dashboards
