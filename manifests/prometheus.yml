@@ -23,7 +23,9 @@ instance_groups:
             test_alert:
               daily: true
 
-  - name: prometheus2
+  - name: prometheus
+    migrated_from: 
+    - name: prometheus2
     azs:
       - z1
     instances: 1
@@ -33,7 +35,7 @@ instance_groups:
     networks:
       - name: default
     jobs:
-      - name: prometheus2
+      - name: prometheus
         release: prometheus
         properties:
           prometheus:
