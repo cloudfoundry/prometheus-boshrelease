@@ -569,11 +569,16 @@
       "description": "Application instances running in this Diego cell",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "auto",
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": false,
             "inspect": false
           },
           "decimals": 2,
@@ -613,7 +618,13 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Organization / Space / Application #Index"
+          }
+        ]
       },
       "pluginVersion": "10.4.19",
       "targets": [
@@ -622,11 +633,13 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "expr": "avg(firehose_container_metric_cpu_percentage{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(application_id, instance_id) * on(application_id) group_left(organization_name, space_name, application_name) min(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_name,  application_id)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ application_name }} #{{ instance_id }}",
+          "range": true,
           "refId": "A",
           "step": 4
         }
@@ -637,7 +650,19 @@
           "id": "reduce",
           "options": {
             "includeTimeField": false,
-            "reducers": []
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Field"
+              ]
+            }
           }
         }
       ],
@@ -796,7 +821,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current"
+              "options": "Last *"
             },
             "properties": [
               {
@@ -813,6 +838,10 @@
               },
               {
                 "id": "custom.align"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           }
@@ -835,7 +864,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "10.4.19",
       "targets": [
@@ -844,11 +874,13 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "builder",
           "expr": "min(firehose_container_metric_memory_bytes{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\",bosh_job_name=~\"$bosh_job_name\", bosh_job_ip=~\"$bosh_job_ip\"}) by(application_id, instance_id) * on(application_id) group_left(organization_name, space_name, application_name) min(cf_application_info{environment=~\"$environment\",deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(organization_name, space_name, application_name,  application_id)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ application_name }} #{{ instance_id }}",
+          "range": true,
           "refId": "A",
           "step": 4
         }
@@ -997,7 +1029,9 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "filterable": false,
+            "inspect": false,
+            "minWidth": 50
           },
           "decimals": 2,
           "displayName": "Organization / Space / Application #Index",
@@ -1021,7 +1055,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current"
+              "options": "Last *"
             },
             "properties": [
               {
@@ -1037,7 +1071,12 @@
                 "value": 2
               },
               {
-                "id": "custom.align"
+                "id": "custom.align",
+                "value": "auto"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           }
@@ -1212,7 +1251,8 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "inspect": false,
+            "minWidth": 50
           },
           "decimals": 2,
           "displayName": "Organization / Space / Application #Index",
@@ -1236,7 +1276,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Current"
+              "options": "Last *"
             },
             "properties": [
               {
@@ -1253,6 +1293,10 @@
               },
               {
                 "id": "custom.align"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           }
@@ -1440,6 +1484,6 @@
   "timezone": "browser",
   "title": "CF: Cell Summary",
   "uid": "cf_cell_summary",
-  "version": 6,
+  "version": 10,
   "weekStart": ""
 }
