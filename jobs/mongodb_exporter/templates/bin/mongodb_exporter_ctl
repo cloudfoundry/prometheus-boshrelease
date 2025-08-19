@@ -22,177 +22,177 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec mongodb_exporter \
-      <% if_p('mongodb.user') do |mongodb_user| %> \
+      <% if_p('mongodb_exporter.mongodb.user') do |mongodb_user| %> \
       --mongodb.user="<%= mongodb_user %>" \
       <% end %> \
-      <% if_p('mongodb.password') do |mongodb_password| %> \
+      <% if_p('mongodb_exporter.mongodb.password') do |mongodb_password| %> \
       --mongodb.password="<%= mongodb_password %>" \
       <% end %> \
-      <% if_p('mongodb.collstats-colls') do |mongodb_collstats_colls| %> \
+      <% if_p('mongodb_exporter.mongodb.collstats-colls') do |mongodb_collstats_colls| %> \
       --mongodb.collstats-colls="<%= mongodb_collstats_colls %>" \
       <% end %> \
-      <% if_p('mongodb.indexstats-colls') do |mongodb_indexstats_colls| %> \
+      <% if_p('mongodb_exporter.mongodb.indexstats-colls') do |mongodb_indexstats_colls| %> \
       --mongodb.indexstats-colls="<%= mongodb_indexstats_colls %>" \
       <% end %> \
-      --mongodb.uri="<%= p('mongodb.uri') %>" \
-      <% if_p('mongodb.global-conn-pool') do |val| %> \
+      --mongodb.uri="<%= p('mongodb_exporter.mongodb.uri') %>" \
+      <% if_p('mongodb_exporter.mongodb.global-conn-pool') do |val| %> \
       <% if val == true %> \
       --mongodb.global-conn-pool \
       <% elsif val == false %> \
       --no-mongodb.global-conn-pool \
       <% end %> \
       <% end %> \
-      <% if_p('mongodb.direct-connect') do |val| %> \
+      <% if_p('mongodb_exporter.mongodb.direct-connect') do |val| %> \
       <% if val == true %> \
       --mongodb.direct-connect \
       <% elsif val == false %> \
       --no-mongodb.direct-connect \
       <% end %> \
       <% end %> \
-      <% if_p('web.listen-address') do |web_listen_address| %> \
+      <% if_p('mongodb_exporter.web.listen-address') do |web_listen_address| %> \
       --web.listen-address="<%= web_listen_address %>" \
       <% end %> \
-      <% if_p('web.telemetry-path') do |web_telemetry_path| %> \
+      <% if_p('mongodb_exporter.web.telemetry-path') do |web_telemetry_path| %> \
       --web.telemetry-path="<%= web_telemetry_path %>" \
       <% end %> \
-      <% if_p('web.config') do |web_config| %> \
+      <% if_p('mongodb_exporter.web.config') do |web_config| %> \
       --web.config="<%= web_config %>" \
       <% end %> \
-      <% if_p('web.timeout-offset') do |web_timeout_offset| %> \
+      <% if_p('mongodb_exporter.web.timeout-offset') do |web_timeout_offset| %> \
       --web.timeout-offset="<%= web_timeout_offset %>" \
       <% end %> \
-      <% if_p('log.level') do |log_level| %> \
+      <% if_p('mongodb_exporter.log.level') do |log_level| %> \
       --log.level="<%= log_level %>" \
       <% end %> \
-      <% if_p('mongodb.connect-timeout-ms') do |val| %> \
+      <% if_p('mongodb_exporter.mongodb.connect-timeout-ms') do |val| %> \
       --mongodb.connect-timeout-ms="<%= val %>" \
       <% end %> \
-      <% if_p('collector.exporter-metrics') do |val| %> \
+      <% if_p('mongodb_exporter.collector.exporter-metrics') do |val| %> \
       <% if val == true %> \
       --collector.exporter-metrics \
       <% elsif val == false %> \
       --no-collector.exporter-metrics \
       <% end %> \
       <% end %> \
-      <% if_p('collector.diagnosticdata') do |val| %> \
+      <% if_p('mongodb_exporter.collector.diagnosticdata') do |val| %> \
       <% if val == true %> \
       --collector.diagnosticdata \
       <% elsif val == false %> \
       --no-collector.diagnosticdata \
       <% end %> \
       <% end %> \
-      <% if_p('collector.replicasetstatus') do |val| %> \
+      <% if_p('mongodb_exporter.collector.replicasetstatus') do |val| %> \
       <% if val == true %> \
       --collector.replicasetstatus \
       <% elsif val == false %> \
       --no-collector.replicasetstatus \
       <% end %> \
       <% end %> \
-      <% if_p('collector.replicasetconfig') do |val| %> \
+      <% if_p('mongodb_exporter.collector.replicasetconfig') do |val| %> \
       <% if val == true %> \
       --collector.replicasetconfig \
       <% elsif val == false %> \
       --no-collector.replicasetconfig \
       <% end %> \
       <% end %> \
-      <% if_p('collector.dbstats') do |val| %> \
+      <% if_p('mongodb_exporter.collector.dbstats') do |val| %> \
       <% if val == true %> \
       --collector.dbstats \
       <% elsif val == false %> \
       --no-collector.dbstats \
       <% end %> \
       <% end %> \
-      <% if_p('collector.collstats') do |val| %> \
+      <% if_p('mongodb_exporter.collector.collstats') do |val| %> \
       <% if val == true %> \
       --collector.collstats \
       <% elsif val == false %> \
       --no-collector.collstats \
       <% end %> \
       <% end %> \
-      <% if_p('collector.profile') do |val| %> \
+      <% if_p('mongodb_exporter.collector.profile') do |val| %> \
       <% if val == true %> \
       --collector.profile \
       <% elsif val == false %> \
       --no-collector.profile \
       <% end %> \
       <% end %> \
-      <% if_p('collector.fcv') do |val| %> \
+      <% if_p('mongodb_exporter.collector.fcv') do |val| %> \
       <% if val == true %> \
       --collector.fcv \
       <% elsif val == false %> \
       --no-collector.fcv \
       <% end %> \
       <% end %> \
-      <% if_p('collector.shards') do |val| %> \
+      <% if_p('mongodb_exporter.collector.shards') do |val| %> \
       <% if val == true %> \
       --collector.shards \
       <% elsif val == false %> \
       --no-collector.shards \
       <% end %> \
       <% end %> \
-      <% if_p('collector.pbm') do |val| %> \
+      <% if_p('mongodb_exporter.collector.pbm') do |val| %> \
       <% if val == true %> \
       --collector.pbm \
       <% elsif val == false %> \
       --no-collector.pbm \
       <% end %> \
       <% end %> \
-      <% if_p('metrics.overridedescendingindex') do |val| %> \
+      <% if_p('mongodb_exporter.metrics.overridedescendingindex') do |val| %> \
       <% if val == true %> \
       --metrics.overridedescendingindex \
       <% elsif val == false %> \
       --no-metrics.overridedescendingindex \
       <% end %> \
       <% end %> \
-      <% if_p('collect-all') do |val| %> \
+      <% if_p('mongodb_exporter.collect-all') do |val| %> \
       <% if val == true %> \
       --collect-all \
       <% elsif val == false %> \
       --no-collect-all \
       <% end %> \
       <% end %> \
-      <% if_p('version') do |val| %> \
+      <% if_p('mongodb_exporter.version') do |val| %> \
       <% if val == true %> \
       --version \
       <% elsif val == false %> \
       --no-version \
       <% end %> \
       <% end %> \
-      <% if_p('collector.dbstatsfreestorage') do |val| %> \
+      <% if_p('mongodb_exporter.collector.dbstatsfreestorage') do |val| %> \
       --collector.dbstatsfreestorage="<%= val %>" \
       <% end %> \
-      <% if_p('collector.topmetrics') do |val| %> \
+      <% if_p('mongodb_exporter.collector.topmetrics') do |val| %> \
       --collector.topmetrics="<%= val %>" \
       <% end %> \
-      <% if_p('collector.currentopmetrics') do |val| %> \
+      <% if_p('mongodb_exporter.collector.currentopmetrics') do |val| %> \
       --collector.currentopmetrics="<%= val %>" \
       <% end %> \
-      <% if_p('collector.indexstats') do |val| %> \
+      <% if_p('mongodb_exporter.collector.indexstats') do |val| %> \
       --collector.indexstats="<%= val %>" \
       <% end %> \
-      <% if_p('collector.collstats-limit') do |val| %> \
+      <% if_p('mongodb_exporter.collector.collstats-limit') do |val| %> \
       --collector.collstats-limit="<%= val %>" \
       <% end %> \
-      <% if_p('collector.collstats-enable-details') do |val| %> \
+      <% if_p('mongodb_exporter.collector.collstats-enable-details') do |val| %> \
       <% if val == true %> \
       --collector.collstats-enable-details \
       <% elsif val == false %> \
       --no-collector.collstats-enable-details \
       <% end %> \
       <% end %> \
-      <% if_p('collector.profile-time-ts') do |val| %> \
+      <% if_p('mongodb_exporter.collector.profile-time-ts') do |val| %> \
       --collector.profile-time-ts="<%= val %>" \
       <% end %> \
-      <% if_p('collector.currentopmetrics-slow-time') do |val| %> \
+      <% if_p('mongodb_exporter.collector.currentopmetrics-slow-time') do |val| %> \
       --collector.currentopmetrics-slow-time="<%= val %>" \
       <% end %> \
-      <% if p("discovering-mode", false) %> \
+      <% if p("mongodb_exporter.discovering-mode", false) %> \
       --discovering-mode \
       <% end %> \
-      <% if p("compatible-mode", false) %> \
+      <% if p("mongodb_exporter.compatible-mode", false) %> \
       --compatible-mode \
       <% end %> \
-      <% if p("split-cluster", false) == false %> \
+      <% if p("mongodb_exporter.split-cluster", false) == false %> \
       --no-split-cluster \
       <% end %> \
       >>  ${LOG_DIR}/mongodb_exporter.stdout.log \
