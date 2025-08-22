@@ -6,6 +6,10 @@ packages:
 
 templates:
   bin/mongodb_exporter_ctl: bin/mongodb_exporter_ctl
+  config/web_tls_cert.pem: config/web_tls_cert.pem
+  config/web_tls_client_ca.pem: config/web_tls_client_ca.pem
+  config/web_tls_key.pem: config/web_tls_key.pem
+  config/web.config.yml: config/web.config.yml
 properties:
   mongodb_exporter.mongodb.user:
     description: "monitor user, need clusterMonitor role in admin db and read role in local db"
@@ -25,11 +29,15 @@ properties:
     description: "Address to listen on for web interface and telemetry, defaults to 9216"
   mongodb_exporter.web.telemetry-path:
     description: "Metrics expose path, defaults to /metrics"
-  mongodb_exporter.web.config:
-   description: "Path to the file having Prometheus TLS config for basic auth"
+  mongodb_exporter.web.tls_cert:
+    description: "TLS certificate for the HTTPS server (PEM format)"
+  mongodb_exporter.web.tls_client_ca:
+    description: "TLS CA certificate for client verification (PEM format)"
+  mongodb_exporter.web.tls_private_key:
+    description: "TLS private key for the HTTPS server (PEM format)"
   mongodb_exporter.web.timeout-offset:
     description: "Offset to subtract from the request timeout in seconds, defaults to 1"
-  mongod_exporter.log.level:
+  mongodb_exporter.log.level:
     description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]. defaults to error"
   mongodb_exporter.mongodb.connect-timeout-ms:
     description: "Connection timeout in milliseconds, defaults to 5000"
