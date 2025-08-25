@@ -55,7 +55,7 @@ case $1 in
       <% if_p('mongodb_exporter.web.telemetry-path') do |web_telemetry_path| %> \
       --web.telemetry-path="<%= web_telemetry_path %>" \
       <% end %> \
-      <% if_p('mongodb_exporter.web.tls_cert') do |_| %> \
+      <% if_p('mongodb_exporter.web.tls_cert', 'mongodb_exporter.web.tls_client_ca', 'mongodb_exporter.web.tls_client_auth_type') do |_| %> \
       --web.config="/var/vcap/jobs/mongodb_exporter/config/web.config.yml" \
       <% end %> \
       <% if_p('mongodb_exporter.web.timeout-offset') do |web_timeout_offset| %> \
