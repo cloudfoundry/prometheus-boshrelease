@@ -3,7 +3,5 @@ tls_server_config:
   key_file: /var/vcap/jobs/mongodb_exporter/config/web_tls_key.pem
 <% if_p('mongodb_exporter.web.tls_client_ca') do %>
   client_ca_file: /var/vcap/jobs/mongodb_exporter/config/web_tls_client_ca.pem
-<% end %>
-<% if_p('mongodb_exporter.web.tls_client_auth_type') do |val| %>
-  client_auth_type: <%= val %>
+  client_auth_type: <%= p('mongodb_exporter.web.tls_client_auth_type') %>
 <% end %>
