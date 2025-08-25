@@ -6,50 +6,89 @@ packages:
 
 templates:
   bin/mongodb_exporter_ctl: bin/mongodb_exporter_ctl
-  config/mongodb_tls_cert.pem: config/mongodb_tls_cert.pem
-  config/mongodb_tls_ca.pem: config/mongodb_tls_ca.pem
-  config/mongodb_tls_key.pem: config/mongodb_tls_key.pem
   config/web_tls_cert.pem: config/web_tls_cert.pem
   config/web_tls_client_ca.pem: config/web_tls_client_ca.pem
   config/web_tls_key.pem: config/web_tls_key.pem
-
+  config/web.config.yml: config/web.config.yml
 properties:
-  mongodb_exporter.auth_pass:
-    description: "Password for basic auth"
-  mongodb_exporter.auth_user:
-    description: "Username for basic auth"
-  mongodb_exporter.groups_enabled:
-    description: "Comma-separated list of groups to use, for more info see: docs.mongodb.org/manual/reference/command/serverStatus/"
-  mongodb_exporter.log_backtrace_at:
-    description: "When logging hits line file:N, emit a stack trace"
-  mongodb_exporter.collect_database:
-    description: "Collect MongoDB database metrics"
-  mongodb_exporter.collect_oplog:
-    description: "Collect Mongodb Oplog status"
-  mongodb_exporter.collect_replset:
-    description: "Collect Mongodb replica set status"
+  mongodb_exporter.mongodb.user:
+    description: "monitor user, need clusterMonitor role in admin db and read role in local db"
+  mongodb_exporter.mongodb.password:
+    description: "monitor user password"
+  mongodb_exporter.mongodb.collstats-colls:
+    description: "List of comma separated databases.collections to get $collStats"
+  mongodb_exporter.mongodb.indexstats-colls:
+    description: "List of comma separated databases.collections to get $indexStats"
   mongodb_exporter.mongodb.uri:
     description: "Mongodb URI, format: [mongodb://][user:pass@]host1[:port1][,host2[:port2],...][/database][?options]"
-  mongodb_exporter.mongodb.tls_ca:
-    description: "MongoDB SSL CA (PEM encoded)"
-  mongodb_exporter.mongodb.tls_cert:
-    description: "MongoDB SSL Certificate (PEM encoded)"
-  mongodb_exporter.mongodb.tls_private_key:
-    description: "MongoDB SSL Private Key (PEM encoded)"
-  mongodb_exporter.mongodb.tls_disable_hostname_validation:
-    description: "Do hostname validation for server connection"
-  mongodb_exporter.v:
-    description: "Log level for V logs"
-  mongodb_exporter.vmodule:
-    description: "Comma-separated list of pattern=N settings for file-filtered logging"
-  mongodb_exporter.web.port:
-    description: "Port on which to expose metrics and web interface"
-    default: 9001
-  mongodb_exporter.web.metrics_path:
-    description: "Path under which to expose metrics"
+  mongodb_exporter.mongodb.global-conn-pool:
+    description: "Use global connection pool instead of creating new pool for each http request."
+  mongodb_exporter.mongodb.direct-connect:
+    description: "Whether or not a direct connect should be made. Direct connections are not valid if multiple hosts are specified or an SRV URI is used."
+  mongodb_exporter.web.listen-address:
+    description: "Address to listen on for web interface and telemetry, defaults to 9216"
+  mongodb_exporter.web.telemetry-path:
+    description: "Metrics expose path, defaults to /metrics"
   mongodb_exporter.web.tls_cert:
-    description: "SSL Certificate (PEM encoded)"
+    description: "TLS certificate for the HTTPS server (PEM format)"
   mongodb_exporter.web.tls_client_ca:
-    description: "SSL Client CA (PEM encoded)"
+    description: "TLS CA certificate for client verification (PEM format)"
+  mongodb_exporter.web.tls_client_auth_type:
+    description: "Server policy for client authentication. Maps to ClientAuth Policies. Possible values: NoClientCert, RequestClientCert, RequireAnyClientCert, VerifyClientCertIfGiven, RequireAndVerifyClientCert"
+    default: "RequireAndVerifyClientCert"
   mongodb_exporter.web.tls_private_key:
-    description: "SSL Private Key (PEM encoded)"
+    description: "TLS private key for the HTTPS server (PEM format)"
+  mongodb_exporter.web.timeout-offset:
+    description: "Offset to subtract from the request timeout in seconds, defaults to 1"
+  mongodb_exporter.log.level:
+    description: "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]. defaults to error"
+  mongodb_exporter.mongodb.connect-timeout-ms:
+    description: "Connection timeout in milliseconds, defaults to 5000"
+  mongodb_exporter.collector.exporter-metrics:
+    description: "Enable collecting metrics about the exporter itself (process_*, go_*), defaults to true"
+  mongodb_exporter.collector.diagnosticdata:
+    description: "Enable collecting metrics from getDiagnosticData"
+  mongodb_exporter.collector.replicasetstatus:
+    description: "Enable collecting metrics from replSetGetStatus"
+  mongodb_exporter.collector.replicasetconfig:
+    description: "Enable collecting metrics from replSetGetConfig"
+  mongodb_exporter.collector.dbstats:
+    description: "Enable collecting metrics from dbStats"
+  mongodb_exporter.collector.dbstatsfreestorage:
+    description: "Enable collecting free space metrics from dbStats"
+  mongodb_exporter.collector.topmetrics:
+    description: "Enable collecting metrics from top admin command"
+  mongodb_exporter.collector.currentopmetrics:
+    description: "Enable collecting metrics currentop admin command"
+  mongodb_exporter.collector.indexstats:
+    description: "Enable collecting metrics from $indexStats"
+  mongodb_exporter.collector.collstats:
+    description: "Enable collecting metrics from $collStats"
+  mongodb_exporter.collector.profile:
+    description: "Enable collecting metrics from profile"
+  mongodb_exporter.collector.fcv:
+    description: "Enable Feature Compatibility Version collector"
+  mongodb_exporter.collector.shards:
+    description: "Enable collecting metrics from sharded Mongo clusters about chunks"
+  mongodb_exporter.collector.pbm:
+    description: "Enable collecting metrics from Percona Backup for MongoDB"
+  mongodb_exporter.metrics.overridedescendingindex:
+    description: "Enable descending index name override to replace -1 with _DESC"
+  mongodb_exporter.collect-all:
+    description: "Enable all collectors. Same as specifying all --collector.<name>"
+  mongodb_exporter.collector.collstats-limit:
+    description: "Disable collstats, dbstats, topmetrics and indexstats collector if there are more than <n> collections. 0=No limit, defaults to 0"
+  mongodb_exporter.collector.collstats-enable-details:
+    description: "Enable collecting index details and wired tiger metrics from $collStats, defaults to false"
+  mongodb_exporter.collector.profile-time-ts:
+    description: "Set time for scrape slow queries, defaults to 30s"
+  mongodb_exporter.collector.currentopmetrics-slow-time:
+    description: "Set minimum time for registration queries, defaults to 1m"
+  mongodb_exporter.discovering-mode:
+    description: "Enable autodiscover collections"
+  mongodb_exporter.compatible-mode:
+    description: "Enable old mongodb-exporter compatible metrics"
+  mongodb_exporter.version:
+    description: "Show version and exit"
+  mongodb_exporter.split-cluster:
+    description: "Treat each node in cluster as a separate target"
