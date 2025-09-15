@@ -22,6 +22,7 @@
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
 | [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
+| [logstash_exporter]       |                  | v0.7.15 | ![][logstash_exporter-ver]       | ![][logstash_exporter-act]       |
 | [memcached_exporter]      |                  | v0.15.2 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v0.44.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
@@ -130,6 +131,10 @@
 [ingestor_exporter]: https://github.com/bosh-prometheus/ingestor_exporter
 [ingestor_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/ingestor_exporter?label=latest
 [ingestor_exporter-ver]: https://img.shields.io/github/v/release/bosh-prometheus/ingestor_exporter?label=latest
+
+[logstash_exporter]: https://github.com/SAP/prometheus-logstash-exporter
+[logstash_exporter-act]: https://img.shields.io/github/release-date/SAP/prometheus-logstash-exporter?label=latest
+[logstash_exporter-ver]: https://img.shields.io/github/v/release/SAP/prometheus-logstash-exporter?label=latest
 
 [memcached_exporter]: https://github.com/prometheus/memcached_exporter
 [memcached_exporter-act]: https://img.shields.io/github/release-date/prometheus/memcached_exporter?label=latest
