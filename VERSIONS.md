@@ -11,7 +11,7 @@
 | [cf_exporter]             | cf               | v1.4.3  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
 | [firehose_exporter]       | cf               | v7.1.10  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
-| [fontconfig]              | grafana          | v2.14.2 |                                  |                                  |
+| [fontconfig]              | grafana          | v2.17.1 |                                  |                                  |
 | [elasticsearch_exporter]  |                  | v1.9.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.17.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v11.6.6  | ![][grafana-ver]                 | ![][grafana-act]                 |
