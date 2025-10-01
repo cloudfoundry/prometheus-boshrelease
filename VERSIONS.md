@@ -21,7 +21,7 @@
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.6    | ![][jq-ver]                      | ![][jq-act]                      |
-| [libxml2]                 | grafana          | v2.11.0 | ![][libxml2-ver]                 |                                  |
+| [libxml2]                 | grafana          | v2.15.0 | ![][libxml2-ver]                 |                                  |
 | [memcached_exporter]      |                  | v0.15.3 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v0.47.1  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
