@@ -18,3 +18,11 @@
     <% end %>
   <% end %>
 <% end %>
+
+# If we migrate from a version with Prometheus2 we want to ensure that the data is not lost but 
+# directory name gets adjusted so Prometheus3 will use it
+
+if [ -d "/var/vcap/store/prometheus2" ]
+then
+  mv /var/vcap/store/prometheus2 /var/vcap/store/prometheus
+fi
