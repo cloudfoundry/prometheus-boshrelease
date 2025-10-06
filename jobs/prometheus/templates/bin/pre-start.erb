@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+PERSISTENT_DISK_DIR=/var/vcap/store
+STORE_DIR=${PERSISTENT_DISK_DIR}/prometheus
+STORE_DIR_PROMETHEUS2=${PERSISTENT_DISK_DIR}/prometheus2
+
 <% if_p("prometheus.scrape_configs") do |scrape_configs| %>
   <% scrape_configs.each do |scrape_config| %>
     <% if scrape_config['tls_config'] %>
@@ -21,8 +25,11 @@
 
 # If we migrate from a version with Prometheus2 we want to ensure that the data is not lost but 
 # directory name gets adjusted so Prometheus3 will use it
+# if there exists a prometheus directory already, we will not do anything
+if [ ! -d "${STORE_DIR}" ]; then
 
-if [ -d "/var/vcap/store/prometheus2" ]
-then
-  mv /var/vcap/store/prometheus2 /var/vcap/store/prometheus
+# if no prometheus directory exists but a prometheus2 we will copy over the data so it does not get lost
+  if [ -d "${STORE_DIR_PROMETHEUS2}" ]; then 
+    cp -R /var/vcap/store/prometheus2 /var/vcap/store/prometheus
+  fi
 fi
