@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+
+RUN_DIR=/var/vcap/sys/run/kafka-exporter
+LOG_DIR=/var/vcap/sys/log/kafka-exporter
+LOG_STDOUT=$LOG_DIR/kafka-exporter.stdout.log
+CONF_DIR=/var/vcap/jobs/kafka-exporter/config
+CERTS_DIR=/var/vcap/jobs/kafka-exporter/certs
+PKG_DIR=/var/vcap/packages/kafka-exporter
+JOBS_DIR=/var/vcap/jobs/kafka-exporter
+PIDFILE=$RUN_DIR/kafka-exporter.pid
+
+case $1 in
+
+  start) 
+
+    echo $$ > $PIDFILE
+    
+    # Build kafka_exporter arguments
+    ARGS=""
+    
+    # Web interface settings
+    ARGS="$ARGS --web.listen-address=<%= p('kafka_exporter.web.listen_address') %>"
+    ARGS="$ARGS --web.telemetry-path=<%= p('kafka_exporter.web.telemetry_path') %>"
+    
+    # Topic filters
+    ARGS="$ARGS --topic.filter=<%= p('kafka_exporter.topic.filter') %>"
+    ARGS="$ARGS --topic.exclude=<%= p('kafka_exporter.topic.exclude') %>"
+    
+    # Group filters
+    ARGS="$ARGS --group.filter=<%= p('kafka_exporter.group.filter') %>"
+    ARGS="$ARGS --group.exclude=<%= p('kafka_exporter.group.exclude') %>"
+    
+    # Sarama logging
+<% if p('kafka_exporter.log.enable_sarama') %>
+    ARGS="$ARGS --log.enable-sarama"
+<% end %>
+    
+    # Kafka servers
+<% if_p('kafka_exporter.kafka.servers') do |servers| %>
+  <% servers.each do |server| %>
+    ARGS="$ARGS --kafka.server=<%= server %>"
+  <% end %>
+<% end %>
+    
+    # SASL settings
+<% if p('kafka_exporter.sasl.enabled') %>
+    ARGS="$ARGS --sasl.enabled"
+<% end %>
+    
+<% if !p('kafka_exporter.sasl.handshake') %>
+    ARGS="$ARGS --no-sasl.handshake"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.username') do |username| %>
+    ARGS="$ARGS --sasl.username=<%= username %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.password') do |password| %>
+    ARGS="$ARGS --sasl.password=<%= password %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.aws_region') do |region| %>
+    ARGS="$ARGS --sasl.aws-region=<%= region %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.mechanism') do |mechanism| %>
+    ARGS="$ARGS --sasl.mechanism=<%= mechanism %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.service_name') do |service_name| %>
+    ARGS="$ARGS --sasl.service-name=<%= service_name %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.kerberos_config_path') do |config_path| %>
+    ARGS="$ARGS --sasl.kerberos-config-path=<%= config_path %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.realm') do |realm| %>
+    ARGS="$ARGS --sasl.realm=<%= realm %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.kerberos_auth_type') do |auth_type| %>
+    ARGS="$ARGS --sasl.kerberos-auth-type=<%= auth_type %>"
+<% end %>
+    
+<% if_p('kafka_exporter.sasl.keytab_path') do |keytab_path| %>
+    ARGS="$ARGS --sasl.keytab-path=<%= keytab_path %>"
+<% end %>
+    
+<% if p('kafka_exporter.sasl.disable_pa_fx_fast') %>
+    ARGS="$ARGS --sasl.disable-PA-FX-FAST"
+<% end %>
+    
+    # TLS settings for Kafka connection
+<% if p('kafka_exporter.tls.enabled') %>
+    ARGS="$ARGS --tls.enabled"
+<% end %>
+    
+<% if_p('kafka_exporter.tls.server_name') do |server_name| %>
+    ARGS="$ARGS --tls.server-name=<%= server_name %>"
+<% end %>
+    
+<% if_p('kafka_exporter.tls.ca_file') do |ca_file| %>
+    ARGS="$ARGS --tls.ca-file=<%= ca_file %>"
+<% end %>
+    
+<% if_p('kafka_exporter.tls.cert_file') do |cert_file| %>
+    ARGS="$ARGS --tls.cert-file=<%= cert_file %>"
+<% end %>
+    
+<% if_p('kafka_exporter.tls.key_file') do |key_file| %>
+    ARGS="$ARGS --tls.key-file=<%= key_file %>"
+<% end %>
+    
+    # TLS settings for web server
+<% if p('kafka_exporter.server.tls.enabled') %>
+    ARGS="$ARGS --server.tls.enabled"
+<% end %>
+    
+<% if p('kafka_exporter.server.tls.mutual_auth_enabled') %>
+    ARGS="$ARGS --server.tls.mutual-auth-enabled"
+<% end %>
+    
+<% if_p('kafka_exporter.server.tls.ca_file') do |ca_file| %>
+    ARGS="$ARGS --server.tls.ca-file=<%= ca_file %>"
+<% end %>
+    
+<% if_p('kafka_exporter.server.tls.cert_file') do |cert_file| %>
+    ARGS="$ARGS --server.tls.cert-file=<%= cert_file %>"
+<% end %>
+    
+<% if_p('kafka_exporter.server.tls.key_file') do |key_file| %>
+    ARGS="$ARGS --server.tls.key-file=<%= key_file %>"
+<% end %>
+    
+<% if p('kafka_exporter.tls.insecure_skip_tls_verify') %>
+    ARGS="$ARGS --tls.insecure-skip-tls-verify"
+<% end %>
+    
+    # Kafka version
+    ARGS="$ARGS --kafka.version=<%= p('kafka_exporter.kafka.version') %>"
+    
+    # Zookeeper settings
+<% if p('kafka_exporter.use.consumelag.zookeeper') %>
+    ARGS="$ARGS --use.consumelag.zookeeper"
+<% end %>
+    
+<% if_p('kafka_exporter.zookeeper.servers') do |servers| %>
+  <% servers.each do |server| %>
+    ARGS="$ARGS --zookeeper.server=<%= server %>"
+  <% end %>
+<% end %>
+    
+<% if_p('kafka_exporter.kafka.labels') do |labels| %>
+    ARGS="$ARGS --kafka.labels=<%= labels %>"
+<% end %>
+    
+    # Metadata refresh
+    ARGS="$ARGS --refresh.metadata=<%= p('kafka_exporter.refresh.metadata') %>"
+    
+    # Offset settings
+<% if !p('kafka_exporter.offset.show_all') %>
+    ARGS="$ARGS --no-offset.show-all"
+<% end %>
+    
+<% if p('kafka_exporter.concurrent.enable') %>
+    ARGS="$ARGS --concurrent.enable"
+<% end %>
+    
+    # Topic workers
+    ARGS="$ARGS --topic.workers=<%= p('kafka_exporter.topic.workers') %>"
+    
+<% if p('kafka_exporter.kafka.allow_auto_topic_creation') %>
+    ARGS="$ARGS --kafka.allow-auto-topic-creation"
+<% end %>
+    
+    # Logging settings
+    ARGS="$ARGS --verbosity=<%= p('kafka_exporter.verbosity') %>"
+    ARGS="$ARGS --log.level=<%= p('kafka_exporter.log.level') %>"
+    ARGS="$ARGS --log.format=<%= p('kafka_exporter.log.format') %>"
+    
+    exec $PKG_DIR/bin/kafka_exporter $ARGS >> $LOG_STDOUT 2>&1
+    ;;
+
+  stop)
+
+    if [ -f $PIDFILE ]; then
+      kill -9 `cat $PIDFILE` || true
+      rm -f $PIDFILE
+    fi
+    ;;
+
+  *)
+  echo "Usage: ctl {start|stop}"
+esac
+exit 0
+
+
+
+
+
