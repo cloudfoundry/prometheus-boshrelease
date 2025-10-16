@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
 
+set -eu
+
 RUN_DIR=/var/vcap/sys/run/kafka-exporter
 LOG_DIR=/var/vcap/sys/log/kafka-exporter
-LOG_STDOUT=$LOG_DIR/kafka-exporter.stdout.log
-CONF_DIR=/var/vcap/jobs/kafka-exporter/config
-CERTS_DIR=/var/vcap/jobs/kafka-exporter/certs
-PKG_DIR=/var/vcap/packages/kafka-exporter
-JOBS_DIR=/var/vcap/jobs/kafka-exporter
-PIDFILE=$RUN_DIR/kafka-exporter.pid
+TMP_DIR=/var/vcap/sys/tmp/kafka-exporter
+STORE_DIR=/var/vcap/store/kafka-exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/kafka-exporter.pid
+
+source /var/vcap/packages/kafka-exporter/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/kafka-exporter/bin:${PATH}
 
 case $1 in
+  start)
+    pid_guard ${PIDFILE} "kafka-exporter"
+    echo $$ > ${PIDFILE}
 
-  start) 
-
-    echo $$ > $PIDFILE
+    ulimit -n 65536
     
     # Build kafka_exporter arguments
     ARGS=""
@@ -179,23 +187,19 @@ case $1 in
     ARGS="$ARGS --log.level=<%= p('kafka_exporter.log.level') %>"
     ARGS="$ARGS --log.format=<%= p('kafka_exporter.log.format') %>"
     
-    exec $PKG_DIR/bin/kafka_exporter $ARGS >> $LOG_STDOUT 2>&1
+    exec kafka_exporter ${ARGS} \
+      >>  ${LOG_DIR}/kafka-exporter.stdout.log \
+      2>> ${LOG_DIR}/kafka-exporter.stderr.log
     ;;
 
   stop)
-
-    if [ -f $PIDFILE ]; then
-      kill -9 `cat $PIDFILE` || true
-      rm -f $PIDFILE
-    fi
+    kill_and_wait ${PIDFILE}
     ;;
 
   *)
-  echo "Usage: ctl {start|stop}"
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+
 esac
 exit 0
-
-
-
-
-
