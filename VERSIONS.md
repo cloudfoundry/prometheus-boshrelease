@@ -21,6 +21,7 @@
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.8.1    | ![][jq-ver]                      | ![][jq-act]                      |
+| [kafka_exporter]          |                  | v1.9.0  | ![][kafka_exporter-ver]          | ![][kafka_exporter-act]          |
 | [libxml2]                 | grafana          | v2.15.0 | ![][libxml2-ver]                 |                                  |
 | [memcached_exporter]      |                  | v0.15.3 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v0.47.1  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
@@ -130,6 +131,10 @@
 [ingestor_exporter]: https://github.com/bosh-prometheus/ingestor_exporter
 [ingestor_exporter-act]: https://img.shields.io/github/release-date/bosh-prometheus/ingestor_exporter?label=latest
 [ingestor_exporter-ver]: https://img.shields.io/github/v/release/bosh-prometheus/ingestor_exporter?label=latest
+
+[kafka_exporter]: https://github.com/danielqsj/kafka_exporter
+[kafka_exporter-act]: https://img.shields.io/github/release-date/danielqsj/kafka_exporter?label=latest
+[kafka_exporter-ver]: https://img.shields.io/github/v/release/danielqsj/kafka_exporter?label=latest
 
 [memcached_exporter]: https://github.com/prometheus/memcached_exporter
 [memcached_exporter-act]: https://img.shields.io/github/release-date/prometheus/memcached_exporter?label=latest
