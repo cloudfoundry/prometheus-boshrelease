@@ -1,0 +1,8 @@
+#Grafana dashboard
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=logstash_dashboards?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana/prometheus/dashboard_folders/name=Logstash?/files/-
+  value: /var/vcap/jobs/logstash_dashboards/*.json

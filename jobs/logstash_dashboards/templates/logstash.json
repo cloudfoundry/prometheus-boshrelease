@@ -1,0 +1,3625 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "grafana"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "System, JVM, Pipeline and individual plugin stats",
+    "editable": false,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 24399,
+    "links": [],
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 2459,
+            "panels": [],
+            "title": "System",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Availability status of Logstash instances matching the selected instance filter\n\nWhy it matters: Critical for monitoring data pipeline health - Logstash downtime disrupts log processing and data ingestion flows\n\nAction: Alert immediately on any DOWN values; investigate service health, configuration issues, or infrastructure problems affecting Logstash instances",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "1": {
+                                    "index": 0,
+                                    "text": "UP"
+                                }
+                            },
+                            "type": "value"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 5,
+                "x": 0,
+                "y": 1
+            },
+            "id": 6752,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_up{instance=~'$instance'}",
+                    "legendFormat": "UP",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": " System UP / DOWN",
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Percentage of events that are queued/lagging in the selected Logstash pipeline (difference between events in and events out)\n\nWhy it matters: High lag indicates pipeline processing bottlenecks or insufficient throughput capacity causing event backlog\n\nAction: Monitor for sustained increases; investigate pipeline performance, resource constraints, or output destination issues causing processing delays",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 9,
+                "x": 5,
+                "y": 1
+            },
+            "id": 7508,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "100 *\r\n(\r\n  sum(increase(logstash_pipeline_events_in{instance=~\"$instance\", pipeline=~\"$pipeline\"}[$__range]))\r\n-\r\n  sum(increase(logstash_pipeline_events_out{instance=~\"$instance\", pipeline=~\"$pipeline\"}[$__range]))\r\n)\r\n/\r\nsum(increase(logstash_pipeline_events_in{instance=~\"$instance\", pipeline=~\"$pipeline\"}[$__range]))",
+                    "hide": false,
+                    "legendFormat": "Pipeline Event Lag",
+                    "range": true,
+                    "refId": "C"
+                }
+            ],
+            "title": "Pipeline Event Lag",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of bulk requests with errors from output plugins in the selected Logstash pipeline and instance\n\nWhy it matters: Output errors indicate failed data delivery to destinations like Elasticsearch - can result in data loss or processing delays\n\nAction: Investigate any non-zero values; check destination connectivity, authentication, mapping issues, or resource constraints on target systems",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "red",
+                        "mode": "shades"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 1,
+                    "mappings": [],
+                    "max": 100,
+                    "min": 1,
+                    "noValue": "0",
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 10,
+                "x": 14,
+                "y": 1
+            },
+            "id": 7537,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "sum(logstash_pipeline_plugins_outputs_bulk_requests_with_errors{instance=~'$instance',pipeline=~'$pipeline'})",
+                    "hide": false,
+                    "legendFormat": "Ingestion Failures",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Ingestion Failures (Out of 100)",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total virtual memory allocated to the Logstash process in bytes for the selected instance\n\nWhy it matters: Tracks memory allocation patterns - excessive virtual memory usage may indicate memory leaks or inefficient pipeline configurations\n\nAction: Monitor growth trends; investigate if continuously increasing as it may indicate memory management issues requiring pipeline optimization",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "decbytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 0,
+                "y": 7
+            },
+            "id": 2464,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "logstash_process_mem_total_virtual_in_bytes{instance=~'$instance'}",
+                    "format": "time_series",
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "A"
+                }
+            ],
+            "title": "Logstash ps total vmem",
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Maximum number of file descriptors available to the Logstash process on the selected instance\n\nWhy it matters: Defines the limit for concurrent file handles, network connections, and other resources - insufficient limits can cause connection failures\n\nAction: Ensure adequate for expected workload; increase system limits if approaching maximum during peak operations to prevent resource exhaustion",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 10,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 16,
+                "x": 8,
+                "y": 7
+            },
+            "id": 2463,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_process_max_file_descriptors{instance=~'$instance'}",
+                    "legendFormat": " {{instance}}-max_fds",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_process_open_file_descriptors{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-open_fds",
+                    "range": true,
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_process_peak_open_file_descriptors{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-peak_open_fds",
+                    "range": true,
+                    "refId": "C"
+                }
+            ],
+            "title": "Logstash ps fds",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 13
+            },
+            "id": 7529,
+            "panels": [],
+            "title": "Queue",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Maximum configured queue size in bytes for the selected Logstash pipeline and instance\n\nWhy it matters: Defines the buffer capacity for events - helps understand pipeline capacity limits and memory allocation for queuing\n\nAction: Ensure adequate for expected event volumes; adjust queue size if pipeline frequently hits capacity limits causing backpressure",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "decbytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 0,
+                "y": 14
+            },
+            "id": 7531,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "logstash_pipeline_queue_max_queue_size_in_bytes{instance=~'$instance',pipeline=~'$pipeline'}",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "{{pipeline}}",
+                    "range": false,
+                    "refId": "B"
+                }
+            ],
+            "title": "Pipeline Max Queue Size",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time": true,
+                            "__name__": true,
+                            "app": true,
+                            "instance": true,
+                            "job": true,
+                            "task": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                            "Value": "Reload Time"
+                        }
+                    }
+                }
+            ],
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Current queue size in bytes for events waiting to be processed in the selected Logstash pipeline and instance\n\nWhy it matters: Indicates pipeline backlog and processing efficiency - high queue usage suggests processing bottlenecks or insufficient throughput\n\nAction: Monitor against maximum queue size; investigate if consistently high as it may indicate need for pipeline optimization or scaling",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "decbytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 16,
+                "x": 8,
+                "y": 14
+            },
+            "id": 7532,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "logstash_pipeline_queue_queue_size_in_bytes{instance=~'$instance',pipeline=~'$pipeline'}",
+                    "format": "time_series",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Pipeline Max Queue Size",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time": false,
+                            "__name__": true,
+                            "app": true,
+                            "instance": true,
+                            "job": true,
+                            "task": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {},
+                        "renameByName": {
+                            "Value": "Reload Time"
+                        }
+                    }
+                }
+            ],
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 20
+            },
+            "id": 953,
+            "panels": [],
+            "title": "JVM",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Amount of memory committed to the JVM old generation heap space in bytes for the selected Logstash instance\n\nWhy it matters: Old generation holds long-lived objects - high committed memory indicates heap allocation patterns and potential memory pressure\n\nAction: Monitor alongside old generation usage; investigate if growing continuously as it may indicate memory leaks or need for heap tuning",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 0,
+                "y": 21
+            },
+            "id": 2286,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_old_committed_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-old_pool_committed",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_old_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-old_pool_max",
+                    "range": true,
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_old_peak_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-old_pool_peak_max",
+                    "range": true,
+                    "refId": "C"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_old_peak_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-old_pool_peak_used",
+                    "range": true,
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_old_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-old_used",
+                    "range": true,
+                    "refId": "E"
+                }
+            ],
+            "title": "Old pool usage",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Amount of memory committed to the JVM young generation heap space in bytes for the selected Logstash instance\n\nWhy it matters: Young generation handles short-lived objects and frequent allocations - affects garbage collection frequency and performance\n\nAction: Monitor alongside GC metrics; optimize pipeline configurations if young generation pressure is causing frequent garbage collections",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 8,
+                "y": 21
+            },
+            "id": 2287,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_young_committed_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-young_pool_commited",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_young_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-young_pool_max",
+                    "range": true,
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_young_peak_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-young_pool_peak_max",
+                    "range": true,
+                    "refId": "C"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_young_peak_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-young_pool_peak_used",
+                    "range": true,
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_young_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-young_pool_used",
+                    "range": true,
+                    "refId": "E"
+                }
+            ],
+            "title": "Young pool usage",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Amount of memory committed to the JVM survivor space in bytes for the selected Logstash instance\n\nWhy it matters: Survivor space holds objects that survived initial garbage collection - affects memory allocation efficiency and GC performance\n\nAction: Monitor as part of overall heap health; investigate if disproportionately large compared to young generation allocation patterns",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 16,
+                "y": 21
+            },
+            "id": 2288,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_survivor_committed_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-survivor_pool_commited",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_survivor_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-survivor_pool_max",
+                    "range": true,
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_survivor_peak_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-survivor_pool_peak_max",
+                    "range": true,
+                    "refId": "C"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_survivor_peak_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-survivor_pool_peak_used",
+                    "range": true,
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_pools_survivor_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-survivor_pool_used",
+                    "range": true,
+                    "refId": "E"
+                }
+            ],
+            "title": "Survivor pool usage",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of old generation garbage collection events for the selected Logstash instance over the selected time range\n\nWhy it matters: Old generation GC events are expensive and can cause processing pauses - frequent collections indicate memory pressure\n\nAction: Investigate if count is high; may indicate memory leaks, insufficient heap size, or need for JVM tuning to reduce GC frequency",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "super-light-orange",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 0,
+                "y": 27
+            },
+            "id": 7504,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "ceil(increase(logstash_jvm_gc_collectors_old_collection_count{instance='$instance'}[$__range]))",
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Old Colletions Count",
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Average time spent per old generation garbage collection event in milliseconds for the selected Logstash instance\n\nWhy it matters: Long GC pauses indicate memory pressure and can cause significant processing delays affecting pipeline throughput\n\nAction: Investigate if average duration exceeds acceptable thresholds; optimize heap settings or reduce memory pressure",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 4,
+                "y": 27
+            },
+            "id": 1115,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_gc_collectors_old_collection_time_in_millis{instance=~'$instance'}/logstash_jvm_gc_collectors_old_collection_count{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-gc-old",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_gc_collectors_young_collection_time_in_millis{instance=~'$instance'}/logstash_jvm_gc_collectors_young_collection_count{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-gc-young",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Average time spent for GC (yound & old gens in ms)",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Current number of active threads in the Logstash JVM process for the selected instance\n\nWhy it matters: Thread count indicates processing concurrency and resource usage - excessive threads can cause context switching overhead\n\nAction: Monitor for unexpected increases; investigate if thread count grows continuously as it may indicate thread leaks or configuration issues",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 27
+            },
+            "id": 2127,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_threads_count{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-threads_count",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_threads_peak_count{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-threads_peak",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Threads count",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of young generation garbage collection events for the selected Logstash instance over the selected time range\n\nWhy it matters: Young generation GC is normal but excessive frequency can impact performance - indicates object allocation patterns\n\nAction: Monitor trends; investigate if dramatically increasing as it may suggest memory allocation issues or need for heap optimization",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "super-light-blue",
+                                "value": null
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 0,
+                "y": 30
+            },
+            "id": 7386,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "ceil(increase(logstash_jvm_gc_collectors_young_collection_count{instance='$instance'}[$__range]))",
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Young Colletions Count",
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Percentage of JVM heap memory currently being used for the selected Logstash instance\n\nWhy it matters: High heap usage indicates memory pressure and can lead to frequent garbage collections affecting pipeline performance\n\nAction: Alert if consistently above 80%; investigate memory usage patterns and consider increasing heap size or optimizing pipeline configurations",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 33
+            },
+            "id": 1599,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_heap_used_percent{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-jvm-usage",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "JVM Heap % used",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Maximum heap memory allocated to the Logstash JVM process in bytes for the selected instance\n\nWhy it matters: Defines the memory ceiling for Logstash operations - critical for capacity planning and performance tuning\n\nAction: Ensure adequate for expected workload; typically set based on available system memory and processing requirements",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "links": [],
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 33
+            },
+            "id": 1435,
+            "options": {
+                "alertThreshold": true,
+                "legend": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_heap_max_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-jvm-max",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_jvm_mem_heap_used_in_bytes{instance=~'$instance'}",
+                    "legendFormat": "{{instance}}-jvm-used",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "JVM Heap usage",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 40
+            },
+            "id": 2639,
+            "panels": [],
+            "title": "Pipeline",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of events entering the selected Logstash pipeline per second for the selected instance\n\nWhy it matters: Indicates incoming data volume and pipeline load - helps assess processing capacity and identify traffic patterns\n\nAction: Monitor for spikes that may overwhelm pipeline capacity; compare with output rates to identify processing bottlenecks",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 41
+            },
+            "id": 7003,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "irate(logstash_pipeline_events_in{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval])",
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Event In",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of events exiting the selected Logstash pipeline per second for the selected instance\n\nWhy it matters: Indicates pipeline throughput and processing efficiency - should match input rate in healthy pipelines\n\nAction: Compare with input rate to identify processing delays; investigate if consistently lower than input as it indicates pipeline bottlenecks",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-BlPu",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 41
+            },
+            "id": 7002,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "irate(logstash_pipeline_events_out{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval])",
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Event Out",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of events being filtered (processed by filter plugins) per second in the selected Logstash pipeline for the selected instance\n\nWhy it matters: Indicates filter processing activity and complexity - high rates may suggest intensive data transformation or parsing operations\n\nAction: Monitor for performance impact; investigate if filter processing becomes a bottleneck affecting overall pipeline throughput",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 49
+            },
+            "id": 6884,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "irate(logstash_pipeline_events_filtered{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval])",
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Event Filtered",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of cumulative time spent processing events (in milliseconds per second) for the selected Logstash pipeline and instance\n\nWhy it matters: Indicates processing intensity and efficiency - high values suggest complex operations or performance bottlenecks in the pipeline\n\nAction: Monitor for increases that correlate with performance issues; investigate pipeline configurations causing excessive processing time",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 57
+            },
+            "id": 6766,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "irate(logstash_pipeline_events_duration_in_millis{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval])",
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Event Duration",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of cumulative time spent pushing events to the pipeline queue (in milliseconds per second) for the selected pipeline and instance\n\nWhy it matters: High values indicate queue contention or backpressure - suggests the pipeline is struggling to keep up with incoming events\n\nAction: Monitor for spikes that indicate queue bottlenecks; investigate pipeline capacity or consider increasing queue size or worker threads",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 16,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 57
+            },
+            "id": 7004,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "irate(logstash_pipeline_events_queue_push_duration_in_millis{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval])",
+                    "legendFormat": "{{pipeline}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Queue Push Duration",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 65
+            },
+            "id": 7267,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "",
+                "mode": "markdown"
+            },
+            "pluginVersion": "11.3.0",
+            "title": "Pipelines filters",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of events that have entered filter plugins in the Logstash pipeline\n\nWhy it matters: Tracks filter processing volume and helps identify which filters are handling the most events for performance analysis\n\nAction: Monitor for unexpected patterns; compare across different filter plugins to identify processing hotspots or bottlenecks",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 66
+            },
+            "id": 7513,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_filters_events_in",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Filters Event In",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of events that have exited filter plugins in the Logstash pipeline\n\nWhy it matters: Tracks filter processing completion and helps identify event transformation efficiency across different filter plugins\n\nAction: Compare with events in to identify filters that drop or duplicate events; investigate discrepancies that may indicate processing issues",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-BlPu",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 66
+            },
+            "id": 7514,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_filters_events_out",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Filters Event Out",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total time spent processing events in filter plugins (in milliseconds) across the Logstash pipeline\n\nWhy it matters: Identifies slow filter operations that may be bottlenecks - helps optimize pipeline performance by targeting expensive filters\n\nAction: Monitor for filters with disproportionately high processing times; optimize or replace slow filters to improve overall pipeline throughput",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 74
+            },
+            "id": 7512,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_filters_events_duration_in_millis",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Filters Event Duration",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of successful matches or pattern hits in filter plugins across the Logstash pipeline\n\nWhy it matters: Indicates filter effectiveness and pattern matching success rates - helps assess filter configuration accuracy\n\nAction: Monitor match rates to validate filter patterns are working correctly; investigate low match rates that may indicate misconfigured filters",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 74
+            },
+            "id": 7148,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_filters_matches",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Filteres matches",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of failures or errors that occurred in filter plugins across the Logstash pipeline\n\nWhy it matters: Filter failures can cause data loss or processing errors - indicates configuration issues or data format problems\n\nAction: Investigate any non-zero values immediately; check filter configurations, input data formats, and error logs to resolve processing failures",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 82
+            },
+            "id": 7030,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_filters_failures",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Filteres failures",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 90
+            },
+            "id": 7523,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "",
+                "mode": "markdown"
+            },
+            "pluginVersion": "11.3.0",
+            "title": "Pipelines Output",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of events successfully sent by output plugins in the Logstash pipeline\n\nWhy it matters: Indicates successful data delivery to destinations - critical for monitoring pipeline completion and data integrity\n\nAction: Compare with pipeline events out to verify all events reach their destinations; investigate discrepancies that may indicate output failures",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-BlPu",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 91
+            },
+            "id": 7526,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_outputs_events_out",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Output Event Out",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total number of events received by output plugins in the Logstash pipeline\n\nWhy it matters: Tracks events reaching the output stage - helps verify pipeline flow and identify potential bottlenecks before final delivery\n\nAction: Compare with events out from output plugins to identify delivery failures; should match pipeline events out in healthy configurations",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 91
+            },
+            "id": 7525,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_outputs_events_in",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Output Events In",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Total time spent processing events in output plugins (in milliseconds) across the Logstash pipeline\n\nWhy it matters: Identifies slow output operations that may bottleneck the entire pipeline - critical for optimizing data delivery performance\n\nAction: Monitor for outputs with high processing times; optimize slow destinations, increase batch sizes, or add parallelism to improve throughput",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-GrYlRd",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 18,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 99
+            },
+            "id": 7524,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "logstash_pipeline_plugins_outputs_events_duration_in_millis",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Output Event Duration",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Percentage of successful and failed bulk requests from output plugins in the selected Logstash pipeline and instance\n\nWhy it matters: Critical for monitoring data delivery reliability - high failure rates indicate destination issues affecting data integrity\n\nAction: Alert on failure rate increases; investigate destination connectivity, authentication, or capacity issues when success rate drops below acceptable thresholds",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic",
+                        "seriesBy": "min"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "bars",
+                        "fillOpacity": 83,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "normal"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 1,
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 99
+            },
+            "id": 7536,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_successes{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))/(sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_successes{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))+sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_with_errors{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]) OR vector(0))))*100",
+                    "legendFormat": "Ingestion Success",
+                    "range": true,
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "(sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_with_errors{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))/(sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_successes{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))+sum(irate(logstash_pipeline_plugins_outputs_bulk_requests_with_errors{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))))*100",
+                    "hide": false,
+                    "legendFormat": "Ingestion Failures",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Ingestion Stats",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of successful bulk requests per second from output plugins in the selected Logstash pipeline and instance\n\nWhy it matters: Indicates successful data delivery throughput to destinations - key metric for monitoring pipeline output performance\n\nAction: Monitor trends to understand delivery capacity; investigate drops that may indicate destination performance issues or connectivity problems",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-greens",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisSoftMin": 0,
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "bars",
+                        "fillOpacity": 30,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 5,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "normal"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "webservices -Success-eltest"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 107
+            },
+            "id": 7509,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "ceil(irate(logstash_pipeline_plugins_outputs_bulk_requests_successes{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))",
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Pipeline Ingestion Success",
+            "transparent": true,
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+            },
+            "description": "What it shows: Rate of failed bulk requests per second from output plugins in the selected Logstash pipeline and instance\n\nWhy it matters: Failed requests indicate data delivery problems that can result in data loss or processing delays\n\nAction: Alert on any non-zero values; investigate destination issues, authentication failures, or capacity constraints causing bulk request errors",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-reds",
+                        "seriesBy": "last"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "bars",
+                        "fillOpacity": 18,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "normal"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 114
+            },
+            "id": 7510,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Max",
+                    "sortDesc": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "pluginVersion": "11.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_PROMETHEUS}"
+                    },
+                    "editorMode": "code",
+                    "expr": "ceil(irate(logstash_pipeline_plugins_outputs_bulk_requests_with_errors{instance=~'$instance',pipeline=~'$pipeline'}[$__rate_interval]))",
+                    "hide": false,
+                    "legendFormat": "{{pipeline}} - {{name}} - {{id}}",
+                    "range": true,
+                    "refId": "B"
+                }
+            ],
+            "title": "Pipeline Ingestion Errors",
+            "transparent": true,
+            "type": "timeseries"
+        }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "text": "10.36.144.20:9304",
+                    "value": "10.36.144.20:9304"
+                },
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${DS_PROMETHEUS}"
+                },
+                "definition": "query_result(logstash_up)",
+                "includeAll": false,
+                "name": "instance",
+                "options": [],
+                "query": {
+                    "query": "query_result(logstash_up)",
+                    "refId": "StandardVariableQuery"
+                },
+                "refresh": 1,
+                "regex": "/.*instance=\"([^\"]*).*/",
+                "sort": 1,
+                "type": "query"
+            },
+            {
+                "current": {
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "${DS_PROMETHEUS}"
+                },
+                "definition": "query_result(logstash_pipeline_events_in{instance=~'$instance'})",
+                "includeAll": true,
+                "multi": true,
+                "name": "pipeline",
+                "options": [],
+                "query": {
+                    "query": "query_result(logstash_pipeline_events_in{instance=~'$instance'})",
+                    "refId": "StandardVariableQuery"
+                },
+                "refresh": 2,
+                "regex": "/.*pipeline=\"([^\"]*).*/",
+                "type": "query"
+            },
+            {
+                "current": {
+                    "text": "Prometheus",
+                    "value": "prometheus"
+                },
+                "label": "Data Source",
+                "name": "DS_PROMETHEUS",
+                "options": [],
+                "query": "prometheus",
+                "refresh": 1,
+                "regex": "",
+                "type": "datasource"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-6h",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Logstash Dashboard",
+    "version": 1,
+    "weekStart": ""
+  }
