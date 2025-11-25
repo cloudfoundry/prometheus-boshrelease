@@ -1,0 +1,25 @@
+---
+name: logstash_exporter
+
+packages:
+  - logstash_exporter
+
+templates:
+  bin/logstash_exporter_ctl: bin/logstash_exporter_ctl
+
+properties:
+  logstash_exporter.logstash.host:
+    description: "Host address of logstash server."
+    default: "localhost"
+  logstash_exporter.logstash.port:
+    description: "Port of logstash server."
+    default: 9600
+  logstash_exporter.logstash.timeout:
+    description: "Timeout to get stats from logstash server."
+    default: "5s"
+  logstash_exporter.web.listen-address:
+    description: "Address to listen on for web interface and telemetry."
+    default: ":9304"
+  logstash_exporter.web.telemetry-path:
+    description: "Path under which to expose metrics."
+    default: "/metrics"
