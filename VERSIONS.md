@@ -23,6 +23,7 @@
 | [jq]                      | *internal*       | v1.8.1    | ![][jq-ver]                      | ![][jq-act]                      |
 | [kafka_exporter]          |                  | v1.9.0  | ![][kafka_exporter-ver]          | ![][kafka_exporter-act]          |
 | [libxml2]                 | grafana          | v2.15.0 | ![][libxml2-ver]                 |                                  |
+| [logstash_exporter]       |                  | v0.7.15 | ![][logstash_exporter-ver]       | ![][logstash_exporter-act]       |
 | [memcached_exporter]      |                  | v0.15.3 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v0.47.1  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
@@ -135,6 +136,9 @@
 [kafka_exporter]: https://github.com/danielqsj/kafka_exporter
 [kafka_exporter-act]: https://img.shields.io/github/release-date/danielqsj/kafka_exporter?label=latest
 [kafka_exporter-ver]: https://img.shields.io/github/v/release/danielqsj/kafka_exporter?label=latest
+[logstash_exporter]: https://github.com/SAP/prometheus-logstash-exporter
+[logstash_exporter-act]: https://img.shields.io/github/release-date/SAP/prometheus-logstash-exporter?label=latest
+[logstash_exporter-ver]: https://img.shields.io/github/v/release/SAP/prometheus-logstash-exporter?label=latest
 
 [memcached_exporter]: https://github.com/prometheus/memcached_exporter
 [memcached_exporter-act]: https://img.shields.io/github/release-date/prometheus/memcached_exporter?label=latest

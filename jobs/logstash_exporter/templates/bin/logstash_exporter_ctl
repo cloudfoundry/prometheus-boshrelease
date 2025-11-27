@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/logstash_exporter
+LOG_DIR=/var/vcap/sys/log/logstash_exporter
+TMP_DIR=/var/vcap/sys/tmp/logstash_exporter
+STORE_DIR=/var/vcap/store/logstash_exporter
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/logstash_exporter.pid
+
+source /var/vcap/packages/logstash_exporter/common/utils.sh
+exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
+exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
+
+export PATH=/var/vcap/packages/logstash_exporter/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "logstash_exporter"
+    echo $$ > ${PIDFILE}
+
+    exec prometheus-logstash-exporter \
+      --logstash.host="<%= p('logstash_exporter.logstash.host') %>" \
+      --logstash.port=<%= p('logstash_exporter.logstash.port') %> \
+      --logstash.timeout="<%= p('logstash_exporter.logstash.timeout') %>" \
+      --web.listen-address="<%= p('logstash_exporter.web.listen-address') %>" \
+      --web.telemetry-path="<%= p('logstash_exporter.web.telemetry-path') %>" \
+      >>  ${LOG_DIR}/logstash_exporter.stdout.log \
+      2>> ${LOG_DIR}/logstash_exporter.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
