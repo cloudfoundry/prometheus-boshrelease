@@ -154,17 +154,19 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_counter_event_bbs_request_count_total{environment=~\"$environment\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Requests",
+          "range": true,
           "refId": "A",
           "step": 4
         }
@@ -254,17 +256,19 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(firehose_value_metric_bbs_request_latency{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)",
+          "editorMode": "code",
+          "expr": "avg(firehose_value_metric_bbs_request_latency{environment=~\"$environment\"}) by(bosh_job_name, bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_deployment }}/{{ bosh_job_name }}/{{ bosh_job_ip }}",
+          "range": true,
           "refId": "A",
           "step": 4
         }
@@ -354,17 +358,19 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_runs_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_lrp_runs_total{environment=~\"$environment\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
+          "range": true,
           "refId": "A",
           "step": 4
         },
@@ -373,10 +379,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})  by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_task_runs_total{environment=~\"$environment\"})  by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
+          "range": true,
           "refId": "B",
           "step": 4
         }
@@ -466,17 +474,19 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_kicked_total{environment=~\"$environment\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Kicked",
+          "range": true,
           "refId": "A",
           "step": 4
         },
@@ -485,10 +495,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_counter_event_bbs_convergence_tasks_pruned_total{environment=~\"$environment\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Pruned",
+          "range": true,
           "refId": "B",
           "step": 4
         }
@@ -569,10 +581,10 @@
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "lastNotNull",
+            "min",
             "max",
-            "min"
+            "mean",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -583,17 +595,19 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "editorMode": "code",
+          "expr": "avg(firehose_value_metric_bbs_convergence_lrp_duration{environment=~\"$environment\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "LRPs",
+          "range": true,
           "refId": "A",
           "step": 4
         },
@@ -602,10 +616,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}[-0-9a-f]*\"})",
+          "editorMode": "code",
+          "expr": "avg(firehose_value_metric_bbs_convergence_task_duration{environment=~\"$environment\"})",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Tasks",
+          "range": true,
           "refId": "B",
           "step": 4
         }
@@ -701,6 +717,6 @@
   "timezone": "browser",
   "title": "CF: BBS",
   "uid": "cf_bbs",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
