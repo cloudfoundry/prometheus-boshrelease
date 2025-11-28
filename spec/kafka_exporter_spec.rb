@@ -7,8 +7,8 @@ describe 'kafka_exporter job' do
   let(:release) { Bosh::Template::Test::ReleaseDir.new(File.join(File.dirname(__FILE__), '..')) }
   let(:job) { release.job('kafka_exporter') }
 
-  describe 'bin/ctl template' do
-    let(:template) { job.template('bin/ctl') }
+  describe 'bin/kafka_exporter_ctl template' do
+    let(:template) { job.template('bin/kafka_exporter_ctl') }
 
     context "when only web specs are configured" do
       it 'renders values' do
