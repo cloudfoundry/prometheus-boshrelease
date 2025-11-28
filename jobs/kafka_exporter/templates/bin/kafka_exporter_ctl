@@ -2,23 +2,23 @@
 
 set -eu
 
-RUN_DIR=/var/vcap/sys/run/kafka-exporter
-LOG_DIR=/var/vcap/sys/log/kafka-exporter
-TMP_DIR=/var/vcap/sys/tmp/kafka-exporter
-STORE_DIR=/var/vcap/store/kafka-exporter
+RUN_DIR=/var/vcap/sys/run/kafka_exporter
+LOG_DIR=/var/vcap/sys/log/kafka_exporter
+TMP_DIR=/var/vcap/sys/tmp/kafka_exporter
+STORE_DIR=/var/vcap/store/kafka_exporter
 mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
 
-PIDFILE=${RUN_DIR}/kafka-exporter.pid
+PIDFILE=${RUN_DIR}/kafka_exporter.pid
 
-source /var/vcap/packages/kafka-exporter/common/utils.sh
+source /var/vcap/packages/kafka_exporter/common/utils.sh
 exec 1>> ${LOG_DIR}/$(basename "$0").stdout.log
 exec 2>> ${LOG_DIR}/$(basename "$0").stderr.log
 
-export PATH=/var/vcap/packages/kafka-exporter/bin:${PATH}
+export PATH=/var/vcap/packages/kafka_exporter/bin:${PATH}
 
 case $1 in
   start)
-    pid_guard ${PIDFILE} "kafka-exporter"
+    pid_guard ${PIDFILE} "kafka_exporter"
     echo $$ > ${PIDFILE}
 
     ulimit -n 65536
@@ -188,8 +188,8 @@ case $1 in
     ARGS="$ARGS --log.format=<%= p('kafka_exporter.log.format') %>"
     
     exec kafka_exporter ${ARGS} \
-      >>  ${LOG_DIR}/kafka-exporter.stdout.log \
-      2>> ${LOG_DIR}/kafka-exporter.stderr.log
+      >>  ${LOG_DIR}/kafka_exporter.stdout.log \
+      2>> ${LOG_DIR}/kafka_exporter.stderr.log
     ;;
 
   stop)

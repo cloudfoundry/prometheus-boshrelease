@@ -5,7 +5,7 @@ require 'bosh/template/test'
 
 describe 'kafka_exporter job' do
   let(:release) { Bosh::Template::Test::ReleaseDir.new(File.join(File.dirname(__FILE__), '..')) }
-  let(:job) { release.job('kafka-exporter') }
+  let(:job) { release.job('kafka_exporter') }
 
   describe 'bin/ctl template' do
     let(:template) { job.template('bin/ctl') }
@@ -143,18 +143,18 @@ describe 'kafka_exporter job' do
             "tls" => {
               "enabled" => true,
               "server_name" => "kafka.example.com",
-              "ca_file" => "/var/vcap/jobs/kafka-exporter/config/ca.crt",
-              "cert_file" => "/var/vcap/jobs/kafka-exporter/config/client.crt",
-              "key_file" => "/var/vcap/jobs/kafka-exporter/config/client.key",
+              "ca_file" => "/var/vcap/jobs/kafka_exporter/config/ca.crt",
+              "cert_file" => "/var/vcap/jobs/kafka_exporter/config/client.crt",
+              "key_file" => "/var/vcap/jobs/kafka_exporter/config/client.key",
               "insecure_skip_tls_verify" => false
             }
           }
         })
         expect(kafka_exporter_ctl).to include('--tls.enabled')
         expect(kafka_exporter_ctl).to include('--tls.server-name=kafka.example.com')
-        expect(kafka_exporter_ctl).to include('--tls.ca-file=/var/vcap/jobs/kafka-exporter/config/ca.crt')
-        expect(kafka_exporter_ctl).to include('--tls.cert-file=/var/vcap/jobs/kafka-exporter/config/client.crt')
-        expect(kafka_exporter_ctl).to include('--tls.key-file=/var/vcap/jobs/kafka-exporter/config/client.key')
+        expect(kafka_exporter_ctl).to include('--tls.ca-file=/var/vcap/jobs/kafka_exporter/config/ca.crt')
+        expect(kafka_exporter_ctl).to include('--tls.cert-file=/var/vcap/jobs/kafka_exporter/config/client.crt')
+        expect(kafka_exporter_ctl).to include('--tls.key-file=/var/vcap/jobs/kafka_exporter/config/client.key')
       end
     end
 
@@ -180,18 +180,18 @@ describe 'kafka_exporter job' do
               "tls" => {
                 "enabled" => true,
                 "mutual_auth_enabled" => true,
-                "ca_file" => "/var/vcap/jobs/kafka-exporter/config/server-ca.crt",
-                "cert_file" => "/var/vcap/jobs/kafka-exporter/config/server.crt",
-                "key_file" => "/var/vcap/jobs/kafka-exporter/config/server.key"
+                "ca_file" => "/var/vcap/jobs/kafka_exporter/config/server-ca.crt",
+                "cert_file" => "/var/vcap/jobs/kafka_exporter/config/server.crt",
+                "key_file" => "/var/vcap/jobs/kafka_exporter/config/server.key"
               }
             }
           }
         })
         expect(kafka_exporter_ctl).to include('--server.tls.enabled')
         expect(kafka_exporter_ctl).to include('--server.tls.mutual-auth-enabled')
-        expect(kafka_exporter_ctl).to include('--server.tls.ca-file=/var/vcap/jobs/kafka-exporter/config/server-ca.crt')
-        expect(kafka_exporter_ctl).to include('--server.tls.cert-file=/var/vcap/jobs/kafka-exporter/config/server.crt')
-        expect(kafka_exporter_ctl).to include('--server.tls.key-file=/var/vcap/jobs/kafka-exporter/config/server.key')
+        expect(kafka_exporter_ctl).to include('--server.tls.ca-file=/var/vcap/jobs/kafka_exporter/config/server-ca.crt')
+        expect(kafka_exporter_ctl).to include('--server.tls.cert-file=/var/vcap/jobs/kafka_exporter/config/server.crt')
+        expect(kafka_exporter_ctl).to include('--server.tls.key-file=/var/vcap/jobs/kafka_exporter/config/server.key')
       end
     end
 
