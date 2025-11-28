@@ -15,13 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.3.6"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
+      "version": "10.4.19"
     },
     {
       "type": "panel",
@@ -39,6 +33,12 @@
       "type": "panel",
       "id": "stat",
       "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
       "version": ""
     }
   ],
@@ -138,7 +138,6 @@
         "y": 0
       },
       "id": 10,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
@@ -152,9 +151,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
@@ -224,7 +225,6 @@
       },
       "hideTimeOverride": true,
       "id": 8,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -238,9 +238,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
@@ -305,7 +307,6 @@
       },
       "hideTimeOverride": true,
       "id": 9,
-      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -319,9 +320,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "name"
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
@@ -343,65 +346,102 @@
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Cumulative used and available MiB of memory to allocate to containers.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "fillGradient": 0,
-      "grid": {},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "mbytes"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 4
       },
-      "hiddenSeries": false,
       "id": 3,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "connected",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "9.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
+          "range": true,
           "refId": "A",
           "step": 2
         },
@@ -410,109 +450,118 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
+          "range": true,
           "refId": "B",
           "step": 2
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Total Cell Memory",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:325",
-          "format": "mbytes",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:326",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Cumulative used and available MiB of disk to allocate to containers.",
-      "editable": true,
-      "error": false,
-      "fill": 1,
-      "fillGradient": 0,
-      "grid": {},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "mbytes"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 24,
         "x": 0,
         "y": 9
       },
-      "hiddenSeries": false,
       "id": 4,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "connected",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "9.3.6",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "10.4.19",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by( bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
+          "range": true,
           "refId": "A",
           "step": 2
         },
@@ -521,48 +570,19 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
+          "editorMode": "code",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
+          "range": true,
           "refId": "B",
           "step": 2
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Total Cell Disk",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:80",
-          "format": "mbytes",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:81",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -592,7 +612,6 @@
         "y": 14
       },
       "id": 6,
-      "links": [],
       "maxDataPoints": 3,
       "options": {
         "legend": {
@@ -664,7 +683,6 @@
         "y": 14
       },
       "id": 7,
-      "links": [],
       "maxDataPoints": 3,
       "options": {
         "legend": {
@@ -739,7 +757,6 @@
         "y": 14
       },
       "id": 12,
-      "links": [],
       "maxDataPoints": 3,
       "options": {
         "legend": {
@@ -814,7 +831,6 @@
         "y": 14
       },
       "id": 11,
-      "links": [],
       "maxDataPoints": 3,
       "options": {
         "legend": {
@@ -860,8 +876,7 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
     "cf",
     "diego"
@@ -976,6 +991,6 @@
   "timezone": "browser",
   "title": "CF: Cells Capacity",
   "uid": "cf_cells_capacity",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
