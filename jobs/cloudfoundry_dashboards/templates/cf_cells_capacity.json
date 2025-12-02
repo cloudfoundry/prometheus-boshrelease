@@ -64,7 +64,7 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
@@ -162,7 +162,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "expr": "min(count(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -249,7 +249,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
+          "expr": "min(min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(instance))",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -331,7 +331,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
+          "expr": "bottomk(1, min(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip))",
           "instant": true,
           "interval": "",
           "intervalFactor": 2,
@@ -373,13 +373,13 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -389,6 +389,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -416,32 +417,30 @@
       "options": {
         "legend": {
           "calcs": [
-            "min",
+            "mean",
             "max",
-            "mean"
+            "min"
           ],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.4.19",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "editorMode": "code",
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
-          "range": true,
           "refId": "A",
           "step": 2
         },
@@ -450,12 +449,10 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "editorMode": "code",
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
-          "range": true,
           "refId": "B",
           "step": 2
         }
@@ -536,9 +533,9 @@
       "options": {
         "legend": {
           "calcs": [
-            "min",
+            "mean",
             "max",
-            "mean"
+            "min"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -549,19 +546,17 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "10.4.19",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "editorMode": "code",
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by( bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip)) - sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Used",
-          "range": true,
           "refId": "A",
           "step": 2
         },
@@ -570,12 +565,10 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "editorMode": "code",
-          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_name, bosh_job_ip))",
+          "expr": "sum(avg(firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_deployment, bosh_job_name, bosh_job_ip))",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Available",
-          "range": true,
           "refId": "B",
           "step": 2
         }
@@ -642,7 +635,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ bosh_job_ip }}",
@@ -714,7 +707,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_memory{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -788,7 +781,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum(bosh_job_process_cpu_total{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "sum(bosh_job_process_cpu_total{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -861,7 +854,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
+          "expr": "avg(firehose_value_metric_rep_capacity_total_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"} - firehose_value_metric_rep_capacity_remaining_disk{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\",bosh_job_name=~\"$bosh_job_name\"}) by(bosh_job_ip)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -915,7 +908,31 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_job_name)",
+        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Deployment",
+        "multi": false,
+        "name": "bosh_deployment",
+        "options": [],
+        "query": {
+          "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
+          "refId": "prometheus-bosh_deployment-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
         "hide": 0,
         "includeAll": true,
         "label": "Job",
@@ -923,7 +940,7 @@
         "name": "bosh_job_name",
         "options": [],
         "query": {
-          "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_job_name)",
+          "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\",bosh_deployment=~\"${bosh_deployment}\"}, bosh_job_name)",
           "refId": "prometheus-bosh_job_name-Variable-Query"
         },
         "refresh": 1,
@@ -967,6 +984,6 @@
   "timezone": "browser",
   "title": "CF: Cells Capacity",
   "uid": "cf_cells_capacity",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }
