@@ -1,0 +1,164 @@
+---
+name: kafka_exporter
+
+templates:
+  bin/kafka_exporter_ctl: bin/kafka_exporter_ctl
+
+packages:
+  - kafka_exporter
+
+properties:
+  kafka_exporter.web.listen_address:
+    default: ":9308"
+    description: Address to listen on for web interface and telemetry
+
+  kafka_exporter.web.telemetry_path:
+    default: "/metrics"
+    description: Path under which to expose metrics
+
+  kafka_exporter.topic.filter:
+    default: ".*"
+    description: Regex that determines which topics to collect
+
+  kafka_exporter.topic.exclude:
+    default: "^$"
+    description: Regex that determines which topics to exclude
+
+  kafka_exporter.group.filter:
+    default: ".*"
+    description: Regex that determines which consumer groups to collect
+
+  kafka_exporter.group.exclude:
+    default: "^$"
+    description: Regex that determines which consumer groups to exclude
+
+  kafka_exporter.log.enable_sarama:
+    default: false
+    description: Turn on Sarama logging
+
+  kafka_exporter.kafka.servers:
+    description: List of Kafka server addresses (host:port)
+    example: ["kafka1:9092", "kafka2:9092"]
+
+  kafka_exporter.sasl.enabled:
+    default: false
+    description: Connect using SASL/PLAIN
+
+  kafka_exporter.sasl.handshake:
+    default: true
+    description: Only set this to false if using a non-Kafka SASL proxy
+
+  kafka_exporter.sasl.username:
+    description: SASL user name
+
+  kafka_exporter.sasl.password:
+    description: SASL user password
+
+  kafka_exporter.sasl.aws_region:
+    description: The AWS region for IAM SASL authentication
+
+  kafka_exporter.sasl.mechanism:
+    description: SASL SCRAM SHA algorithm (sha256 or sha512) or SASL mechanism (gssapi or awsiam)
+
+  kafka_exporter.sasl.service_name:
+    description: Service name when using kerberos Auth
+
+  kafka_exporter.sasl.kerberos_config_path:
+    description: Kerberos config path
+
+  kafka_exporter.sasl.realm:
+    description: Kerberos realm
+
+  kafka_exporter.sasl.kerberos_auth_type:
+    description: Kerberos auth type. Either 'keytabAuth' or 'userAuth'
+
+  kafka_exporter.sasl.keytab_path:
+    description: Kerberos keytab file path
+
+  kafka_exporter.sasl.disable_pa_fx_fast:
+    default: false
+    description: Configure the Kerberos client to not use PA_FX_FAST
+
+  kafka_exporter.tls.enabled:
+    default: false
+    description: Connect to Kafka using TLS
+
+  kafka_exporter.tls.server_name:
+    description: Used to verify the hostname on the returned certificates unless tls.insecure_skip_tls_verify is given
+
+  kafka_exporter.tls.ca_file:
+    description: The optional certificate authority file for Kafka TLS client authentication
+
+  kafka_exporter.tls.cert_file:
+    description: The optional certificate file for Kafka client authentication
+
+  kafka_exporter.tls.key_file:
+    description: The optional key file for Kafka client authentication
+
+  kafka_exporter.server.tls.enabled:
+    default: false
+    description: Enable TLS for web server
+
+  kafka_exporter.server.tls.mutual_auth_enabled:
+    default: false
+    description: Enable TLS client mutual authentication
+
+  kafka_exporter.server.tls.ca_file:
+    description: The certificate authority file for the web server
+
+  kafka_exporter.server.tls.cert_file:
+    description: The certificate file for the web server
+
+  kafka_exporter.server.tls.key_file:
+    description: The key file for the web server
+
+  kafka_exporter.tls.insecure_skip_tls_verify:
+    default: false
+    description: If true, the server's certificate will not be checked for validity
+
+  kafka_exporter.kafka.version:
+    default: "2.0.0"
+    description: Kafka broker version
+
+  kafka_exporter.use.consumelag.zookeeper:
+    default: false
+    description: If you need to use a group from zookeeper
+
+  kafka_exporter.zookeeper.servers:
+    description: List of zookeeper server addresses (hosts)
+    example: ["localhost:2181"]
+
+  kafka_exporter.kafka.labels:
+    description: Kafka cluster name
+
+  kafka_exporter.refresh.metadata:
+    default: "30s"
+    description: Metadata refresh interval
+
+  kafka_exporter.offset.show_all:
+    default: true
+    description: Whether show the offset/lag for all consumer group, otherwise, only show connected consumer groups
+
+  kafka_exporter.concurrent.enable:
+    default: false
+    description: If true, all scrapes will trigger kafka operations otherwise, they will share results. WARN - This should be disabled on large clusters
+
+  kafka_exporter.topic.workers:
+    default: 100
+    description: Number of topic workers
+
+  kafka_exporter.kafka.allow_auto_topic_creation:
+    default: false
+    description: If true, the broker may auto-create topics that we requested which do not already exist
+
+  kafka_exporter.verbosity:
+    default: 0
+    description: Verbosity log level
+
+  kafka_exporter.log.level:
+    default: "info"
+    description: Only log messages with the given severity or above. One of [debug, info, warn, error]
+
+  kafka_exporter.log.format:
+    default: "logfmt"
+    description: Output format of log messages. One of [logfmt, json]
