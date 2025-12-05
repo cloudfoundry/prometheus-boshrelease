@@ -30,7 +30,14 @@ If everything looks good, feel free to delete the `prometheus2` folder on the pe
 
 ## What do I need to do?
 If you do not write your own ops file, nothing.
-If you write your own ops files, make sure to adapt them to reference `prometheus` as `instance_group` and `job` instead of `prometheus2`. 
+If you write your own ops files, make sure to adapt them to reference `prometheus` as `instance_group` and `job` instead of `prometheus2`.
+This could look like this:
+
+```
+before: /instance_groups/name=prometheus2/jobs/name=prometheus2/properties/prometheus/web?/external_url?
+after:  /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/web?/external_url?
+```
+
 
 ## Rollback
 If you face issues and want to rollback to a version smaller than `v31.0.0` make sure to add the `migrated_from: [prometheus]` property to your manifest, otherwise your persistent disk will be gone and with it all your data.
