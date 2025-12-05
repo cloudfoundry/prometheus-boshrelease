@@ -10,14 +10,22 @@ By using the `migrated_from` property we ensure that the persistent disk is kept
 
 ## Prerequisits
 
-- Make sure to update to v30.9.0 before updating to v31.0.0 or greater
-- You should have at least 50% free persistent disk space before the update, if not please scale your disk (you can scale down after the migration)
+- Make sure to update to `v30.9.0` before updating to `v31.0.0` or greater
+- You should have at least `50%` free persistent disk space before the update, if not please scale your disk (you can scale down after the migration)
 
 ## What is the update doing?
-During the update we migrate the `instance_group` called `prometheus2` to the `instance_group` called `prometheus`. By adding the `migration_from` property to the manifest, we ensure that the persistent disk of `prometheus2` does not get lost but attached to the `prometheus` `instance_group`.
-Next step is that we copy the folder `prometheus2` on the persistent disk to a folder called `prometheus` so that Prometheus v3 is able to find your data. This is done during pre-start. That is the reason why we need at least 50% of free disk space. Like this we still have the possibility to rollback afterwards.
+During the update we migrate the `instance_group` called `prometheus2` to the `instance_group` called `prometheus`.
+By adding the `migration_from` property to the manifest, we ensure that the persistent disk of `prometheus2` does not get lost but attached to the `prometheus` `instance_group`.
+
+Next step is that we copy the folder `prometheus2` on the persistent disk to a folder called `prometheus` so that Prometheus v3 is able to find your data.
+This is done during pre-start. That is the reason why we need at least 50% of free disk space. 
+
+Like this we still have the possibility to rollback afterwards.
+
 Copying is only done if the `prometheus` directory does not exist under `/var/vcap/store`. If the deployment failed during `pre-start`, please check the troubleshooting section on how to continue from here.
+
 The latest version of Prometheus v3 starts including your data.
+
 If everything looks good, feel free to delete the `prometheus2` folder on the persistent disk (under `/var/vcap/store`) and downscale your disk again (if it was upscaled before).
 
 ## What do I need to do?
