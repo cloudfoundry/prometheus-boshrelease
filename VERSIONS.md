@@ -15,7 +15,7 @@
 | [elasticsearch_exporter]  |                  | v1.10.0  | ![][elasticsearch_exporter-ver]  | ![][elasticsearch_exporter-act]  |
 | [graphite_exporter]       |                  | v0.17.0 | ![][graphite_exporter-ver]       | ![][graphite_exporter-act]       |
 | [grafana]                 | grafana          | v11.6.8  | ![][grafana-ver]                 | ![][grafana-act]                 |
-| [grafana/clock-panel]     | grafana_plugings | v2.1.8  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
+| [grafana/clock-panel]     | grafana_plugings | v3.0.0  | ![][grafana/clock-panel-ver]     | ![][grafana/clock-panel-act]     |
 | [grafana/worldmap-panel]  | grafana_plugings | v1.0.6  | ![][grafana/worldmap-panel-ver]  | ![][grafana/worldmap-panel-act]  |
 | [influxdb_exporter]       |                  | v0.12.0 | ![][influxdb_exporter-ver]       | ![][influxdb_exporter-act]       |
 | [ingestor_exporter]       |                  | v2.2.0  | ![][ingestor_exporter-ver]       | ![][ingestor_exporter-act]       |
