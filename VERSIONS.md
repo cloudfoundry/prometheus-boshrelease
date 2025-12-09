@@ -25,7 +25,7 @@
 | [libxml2]                 | grafana          | v2.15.0 | ![][libxml2-ver]                 |                                  |
 | [logstash_exporter]       |                  | v0.7.15 | ![][logstash_exporter-ver]       | ![][logstash_exporter-act]       |
 | [memcached_exporter]      |                  | v0.15.4 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
-| [mongodb_exporter]        |                  | v0.47.1  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
+| [mongodb_exporter]        |                  | v0.47.2  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
 | [mysqld_exporter]         |                  | v0.18.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
