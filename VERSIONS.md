@@ -34,7 +34,7 @@
 | [prometheus]              | prometheus       | v3.8.0 | ![][prometheus-ver]              | ![][prometheus-act]              |
 | [pushgateway]             | prometheus       | v1.11.2  | ![][pushgateway-ver]             | ![][pushgateway-act]             |
 | [rabbitmq_exporter]       |                  | v0.29.0 | ![][rabbitmq_exporter-ver]       | ![][rabbitmq_exporter-act]       |
-| [redis_exporter]          |                  | v1.77.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
+| [redis_exporter]          |                  | v1.80.1 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
 | [stackdriver_exporter]    |                  | v0.18.0 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
 | [statsd_exporter]         |                  | v0.28.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
