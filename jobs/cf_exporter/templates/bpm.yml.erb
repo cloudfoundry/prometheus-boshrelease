@@ -25,6 +25,9 @@ specMap = {
   "cf_exporter.metrics.namespace"   => "CF_EXPORTER_METRICS_NAMESPACE",
   "cf_exporter.metrics.environment" => "CF_EXPORTER_METRICS_ENVIRONMENT",
   "cf_exporter.web.telemetry_path"  => "CF_EXPORTER_WEB_TELEMETRY_PATH",
+  "cf_exporter.bbs.api_url"         => "CF_EXPORTER_BBS_API_URL",
+  "cf_exporter.bbs.skip_ssl_verify" => "CF_EXPORTER_BBS_SKIP_SSL_VERIFY",
+  "cf_exporter.bbs.timeout"         => "CF_EXPORTER_BBS_TIMEOUT"
 }
 specMap.each { |specKey, envKey|
   if_p(specKey) do |specValue|
@@ -34,14 +37,12 @@ specMap.each { |specKey, envKey|
 
 
 # Configure BBS settings if api_url is provided
-if_p("cf_exporter.bbs.api_url")
-  env["CF_EXPORTER_BBS_API_URL"]         = p("cf_exporter.bbs.api_url")
+if_p("cf_exporter.bbs.ca", "cf_exporter.bbs.cert", "cf_exporter.bbs.key") do
   env["CF_EXPORTER_BBS_CA_FILE"]         = "/var/vcap/jobs/cf_exporter/config/bbs_ca.pem"
   env["CF_EXPORTER_BBS_CERT_FILE"]       = "/var/vcap/jobs/cf_exporter/config/bbs_cert.pem"
   env["CF_EXPORTER_BBS_KEY_FILE"]        = "/var/vcap/jobs/cf_exporter/config/bbs_key.pem"
-  env["CF_EXPORTER_BBS_SKIP_SSL_VERIFY"] = p("cf_exporter.bbs.skip_ssl_verify")
-  env["CF_EXPORTER_BBS_TIMEOUT"]         = p("cf_exporter.bbs.timeout")
 end
+
 
 
 # when property value is true
