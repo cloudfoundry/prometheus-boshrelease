@@ -5,7 +5,7 @@
 | [bosh_exporter]           | bosh             | v3.8.0  | ![][bosh_exporter-ver]           | ![][bosh_exporter-act]           |
 | [bosh_tsdb_exporter]      | bosh             | v0.2.0  | ![][bosh_tsdb_exporter-ver]      | ![][bosh_tsdb_exporter-act]      |
 | [cadvisor]                |                  | v0.54.1 | ![][cadvisor-ver]                | ![][cadvisor-act]                |
-| [collectd_exporter]       |                  | v0.7.0  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
+| [collectd_exporter]       |                  | v0.7.1  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.13.0  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
 | [credhub_exporter]        | bosh             | v0.69.3 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
 | [cf_exporter]             | cf               | v2.0.1  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
