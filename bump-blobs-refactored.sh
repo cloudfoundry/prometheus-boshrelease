@@ -180,8 +180,8 @@ bump_exporter() {
     sed -i '' -e "s/${blob_name}-${used_version}\.linux-amd64/${blob_name}-${latest_version}\.linux-amd64/g" "packages/${package_dir}"/*
   fi
   
-  # Update VERSIONS.md
-  sed -i '' -e "s/$used_version/$latest_version/g" VERSIONS.md
+  # Update VERSIONS.md - only update the line for this specific exporter
+  sed -i '' -e "/\[${blob_name}\]/s/$used_version/$latest_version/" VERSIONS.md
   
   echo "$pretty_name bumped to ${latest_version}" >> bumped_versions.txt
 }
