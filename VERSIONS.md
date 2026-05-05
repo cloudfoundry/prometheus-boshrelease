@@ -27,7 +27,7 @@
 | [memcached_exporter]      |                  | v0.16.0 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
 | [mongodb_exporter]        |                  | v0.51.0  | ![][mongodb_exporter-ver]        | ![][mongodb_exporter-act]        |
 | [mtanda/histogram-panel]  | grafana_plugings | v0.1.6  |                                  |                                  |
-| [mysqld_exporter]         |                  | v0.18.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
+| [mysqld_exporter]         |                  | v0.19.0 | ![][mysqld_exporter-ver]         | ![][mysqld_exporter-act]         |
 | [nats_exporter]           |                  | v1.0.0  | ![][nats_exporter-ver]           | ![][nats_exporter-act]           |
 | [nginx]                   | prometheus       | v1.29.1 | ![][nginx-ver]                   |                                  |
 | [postgres_exporter]       |                  | v0.18.1 | ![][postgres_exporter-ver]       | ![][postgres_exporter-act]       |
