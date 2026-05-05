@@ -7,7 +7,7 @@
 | [cadvisor]                |                  | v0.54.1 | ![][cadvisor-ver]                | ![][cadvisor-act]                |
 | [collectd_exporter]       |                  | v0.7.1  | ![][collectd_exporter-ver]       | ![][collectd_exporter-act]       |
 | [consul_exporter]         |                  | v0.13.0  | ![][consul_exporter-ver]         | ![][consul_exporter-act]         |
-| [credhub_exporter]        | bosh             | v0.69.3 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
+| [credhub_exporter]        | bosh             | v0.71.1 | ![][credhub_exporter-ver]        | ![][credhub_exporter-act]        |
 | [cf_exporter]             | cf               | v2.0.1  | ![][cf_exporter-ver]             | ![][cf_exporter-act]             |
 | [firehose_exporter]       | cf               | v7.1.11  | ![][firehose_exporter-ver]       | ![][firehose_exporter-act]       |
 | [flant/statusmap-panel]   | grafana_plugings | v0.5.1  | ![][flant/statusmap-panel-ver]   | ![][flant/statusmap-panel-act]   |
