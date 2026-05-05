@@ -49,8 +49,8 @@ export LATEST_MYSQLD_EXPORTER_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-b
 echo ${LATEST_MYSQLD_EXPORTER_DOWNLOAD_URL}
 export LATEST_POSTGRES_EXPORTER_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus-community/postgres_exporter/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux-amd64.tar.gz$')
 echo ${LATEST_POSTGRES_EXPORTER_DOWNLOAD_URL}
-#export LATEST_PROMETHEUS_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/prometheus/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux-amd64.tar.gz$')
-#echo ${LATEST_PROMETHEUS_DOWNLOAD_URL}
+export LATEST_PROMETHEUS_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/prometheus/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux-amd64.tar.gz$')
+echo ${LATEST_PROMETHEUS_DOWNLOAD_URL}
 export LATEST_PUSHGATEWAY_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/pushgateway/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux-amd64.tar.gz$')
 echo ${LATEST_PUSHGATEWAY_DOWNLOAD_URL}
 export LATEST_SHIELD_EXPORTER_DOWNLOAD_URL=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/bosh-prometheus/shield_exporter/releases/latest | jq -r '.assets[].browser_download_url' | grep 'linux-amd64.tar.gz$')
@@ -97,8 +97,8 @@ export LATEST_MYSQLD_EXPORTER_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${
 echo ${LATEST_MYSQLD_EXPORTER_VERSION}
 export LATEST_POSTGRES_EXPORTER_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus-community/postgres_exporter/releases/latest | jq -r '.tag_name' | sed 's/v//')
 echo ${LATEST_POSTGRES_EXPORTER_VERSION}
-#export LATEST_PROMETHEUS_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/prometheus/releases/latest | jq -r '.tag_name' | sed 's/v//')
-#echo ${LATEST_PROMETHEUS_VERSION}
+export LATEST_PROMETHEUS_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/prometheus/releases/latest | jq -r '.tag_name' | sed 's/v//')
+echo ${LATEST_PROMETHEUS_VERSION}
 export LATEST_PUSHGATEWAY_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/prometheus/pushgateway/releases/latest | jq -r '.tag_name' | sed 's/v//')
 echo ${LATEST_PUSHGATEWAY_VERSION}
 export LATEST_SHIELD_EXPORTER_VERSION=$(curl -sL https://cf-prometheus-ci-bot:${CF_PROM_CI_BOT_TOKEN}@api.github.com/repos/bosh-prometheus/shield_exporter/releases/latest | jq -r '.tag_name' | sed 's/v//')
@@ -154,8 +154,8 @@ export USED_MYSQLD_EXPORTER_VERSION=$(cat config/blobs.yml | egrep -o "mysqld_ex
 echo ${USED_MYSQLD_EXPORTER_VERSION}
 export USED_POSTGRES_EXPORTER_VERSION=$(cat config/blobs.yml | egrep -o "postgres_exporter-[[:digit:]]+.[[:digit:]]+.[[:digit:]]+" | cut -d "-" -f 2)
 echo ${USED_POSTGRES_EXPORTER_VERSION}
-#export USED_PROMETHEUS_VERSION=$(cat config/blobs.yml | egrep -o "prometheus-2.[[:digit:]]+.[[:digit:]]+" | cut -d "-" -f 2)
-#echo ${USED_PROMETHEUS_VERSION}
+export USED_PROMETHEUS_VERSION=$(cat config/blobs.yml | egrep -o "prometheus-2.[[:digit:]]+.[[:digit:]]+" | cut -d "-" -f 2)
+echo ${USED_PROMETHEUS_VERSION}
 export USED_PUSHGATEWAY_VERSION=$(cat config/blobs.yml | egrep -o "pushgateway-[[:digit:]]+.[[:digit:]]+.[[:digit:]]+" | cut -d "-" -f 2)
 echo ${USED_PUSHGATEWAY_VERSION}
 export USED_SHIELD_EXPORTER_VERSION=$(cat config/blobs.yml | egrep -o "shield_exporter-[[:digit:]]+.[[:digit:]]+.[[:digit:]]+" | cut -d "-" -f 2)
@@ -284,12 +284,12 @@ if [[ $LATEST_POSTGRES_EXPORTER_VERSION != $USED_POSTGRES_EXPORTER_VERSION ]]; t
   /tmp/cache/bosh remove-blob postgres_exporter/postgres_exporter-$USED_POSTGRES_EXPORTER_VERSION.linux-amd64.tar.gz
   echo "Postgres-Exporter bumped to ${LATEST_POSTGRES_EXPORTER_VERSION}" >> bumped_versions.txt
 fi
-#if [[ $LATEST_PROMETHEUS_VERSION != $USED_PROMETHEUS_VERSION ]]; then
-#  curl -sL $LATEST_PROMETHEUS_DOWNLOAD_URL -o /tmp/cache/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz
-#  /tmp/cache/bosh add-blob /tmp/cache/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz prometheus/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz
-#  /tmp/cache/bosh remove-blob prometheus/prometheus-$USED_PROMETHEUS_VERSION.linux-amd64.tar.gz
-#  echo "Prometheus bumped to ${LATEST_PROMETHEUS_VERSION}" >> bumped_versions.txt
-#fi
+if [[ $LATEST_PROMETHEUS_VERSION != $USED_PROMETHEUS_VERSION ]]; then
+  curl -sL $LATEST_PROMETHEUS_DOWNLOAD_URL -o /tmp/cache/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz
+  /tmp/cache/bosh add-blob /tmp/cache/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz prometheus/prometheus-$LATEST_PROMETHEUS_VERSION.linux-amd64.tar.gz
+  /tmp/cache/bosh remove-blob prometheus/prometheus-$USED_PROMETHEUS_VERSION.linux-amd64.tar.gz
+  echo "Prometheus bumped to ${LATEST_PROMETHEUS_VERSION}" >> bumped_versions.txt
+fi
 if [[ $LATEST_PUSHGATEWAY_VERSION != $USED_PUSHGATEWAY_VERSION ]]; then
   curl -sL $LATEST_PUSHGATEWAY_DOWNLOAD_URL -o /tmp/cache/pushgateway-$LATEST_PUSHGATEWAY_VERSION.linux-amd64.tar.gz
   /tmp/cache/bosh add-blob /tmp/cache/pushgateway-$LATEST_PUSHGATEWAY_VERSION.linux-amd64.tar.gz pushgateway/pushgateway-$LATEST_PUSHGATEWAY_VERSION.linux-amd64.tar.gz
@@ -353,14 +353,14 @@ sed -i '' -e "s/ingestor_exporter-$USED_INGESTOR_EXPORTER_VERSION\.linux-amd64/i
 sed -i '' -e "s/$USED_INGESTOR_EXPORTER_VERSION/$LATEST_INGESTOR_EXPORTER_VERSION/g" VERSIONS.md
 sed -i '' -e "s/memcached_exporter-$USED_MEMCACHED_EXPORTER_VERSION\.linux-amd64/memcached_exporter-$LATEST_MEMCACHED_EXPORTER_VERSION\.linux-amd64/g" packages/memcached_exporter/*
 sed -i '' -e "s/$USED_MEMCACHED_EXPORTER_VERSION/$LATEST_MEMCACHED_EXPORTER_VERSION/g" VERSIONS.md
-#sed -i '' -e "s/mongodb_exporter-$USED_MONGODB_EXPORTER_VERSION\.linux-amd64/mongodb_exporter-$LATEST_MONGODB_EXPORTER_VERSION\.linux-amd64/g" packages/mongodb_exporter/*
-#sed -i '' -e "s/$USED_MONGODB_EXPORTER_VERSION/$LATEST_MONGODB_EXPORTER_VERSION/g" VERSIONS.md
+sed -i '' -e "s/mongodb_exporter-$USED_MONGODB_EXPORTER_VERSION\.linux-amd64/mongodb_exporter-$LATEST_MONGODB_EXPORTER_VERSION\.linux-amd64/g" packages/mongodb_exporter/*
+sed -i '' -e "s/$USED_MONGODB_EXPORTER_VERSION/$LATEST_MONGODB_EXPORTER_VERSION/g" VERSIONS.md
 sed -i '' -e "s/mysqld_exporter-$USED_MYSQLD_EXPORTER_VERSION\.linux-amd64/mysqld_exporter-$LATEST_MYSQLD_EXPORTER_VERSION\.linux-amd64/g" packages/mysqld_exporter/*
 sed -i '' -e "s/$USED_MYSQLD_EXPORTER_VERSION/$LATEST_MYSQLD_EXPORTER_VERSION/g" VERSIONS.md
 sed -i '' -e "s/postgres_exporter-$USED_POSTGRES_EXPORTER_VERSION\.linux-amd64/postgres_exporter-$LATEST_POSTGRES_EXPORTER_VERSION\.linux-amd64/g" packages/postgres_exporter/*
 sed -i '' -e "s/$USED_POSTGRES_EXPORTER_VERSION/$LATEST_POSTGRES_EXPORTER_VERSION/g" VERSIONS.md
-#sed -i '' -e "s/prometheus-$USED_PROMETHEUS_VERSION\.linux-amd64/prometheus-$LATEST_PROMETHEUS_VERSION\.linux-amd64/g" packages/prometheus2/*
-#sed -i '' -e "s/$USED_PROMETHEUS_VERSION/$LATEST_PROMETHEUS_VERSION/g" VERSIONS.md
+sed -i '' -e "s/prometheus-$USED_PROMETHEUS_VERSION\.linux-amd64/prometheus-$LATEST_PROMETHEUS_VERSION\.linux-amd64/g" packages/prometheus2/*
+sed -i '' -e "s/$USED_PROMETHEUS_VERSION/$LATEST_PROMETHEUS_VERSION/g" VERSIONS.md
 sed -i '' -e "s/pushgateway-$USED_PUSHGATEWAY_VERSION\.linux-amd64/pushgateway-$LATEST_PUSHGATEWAY_VERSION\.linux-amd64/g" packages/pushgateway/*
 sed -i '' -e "s/$USED_PUSHGATEWAY_VERSION/$LATEST_PUSHGATEWAY_VERSION/g" VERSIONS.md
 sed -i '' -e "s/shield_exporter-$USED_SHIELD_EXPORTER_VERSION\.linux-amd64/shield_exporter-$LATEST_SHIELD_EXPORTER_VERSION\.linux-amd64/g" packages/shield_exporter/*
@@ -374,6 +374,3 @@ cat bumped_versions.txt
 rm bumped_versions.txt
 
 rm -rf /tmp/cache/ /tmp/prometheus-blobs/
-
-echo "DO NOT BUMP PROMETHEUS to PROMETHEUS3"
-echo "DO NOT BUMP GRAFANA to GRAFANA v11"
