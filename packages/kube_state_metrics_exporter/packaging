@@ -6,15 +6,7 @@ set -eux
 mkdir -p ${BOSH_INSTALL_TARGET}/common
 cp -a ${BOSH_COMPILE_TARGET}/common/* ${BOSH_INSTALL_TARGET}/common
 
-# Build kube_state_metrics_exporter package
-source /var/vcap/packages/golang-1-linux/bosh/compile.env
-
-SOURCE_DIR=github.com/kubernetes/kube-state-metrics
-PACKAGE_NAME=k8s.io/kube-state-metrics
-mkdir -p ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
-cp -a ${BOSH_COMPILE_TARGET}/${SOURCE_DIR}/* ${BOSH_INSTALL_TARGET}/src/${PACKAGE_NAME}
-export GOPATH=${BOSH_INSTALL_TARGET}
-
-go install ${PACKAGE_NAME}
-
-rm -rf ${BOSH_INSTALL_TARGET}/pkg ${BOSH_INSTALL_TARGET}/src
+# Extract kube_state_metrics_exporter package
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+tar xzvf ${BOSH_COMPILE_TARGET}/kube_state_metrics_exporter/kube-state-metrics_2.18.0_Linux_x86_64.tar.gz
+cp -a ${BOSH_COMPILE_TARGET}/kube-state-metrics ${BOSH_INSTALL_TARGET}/bin

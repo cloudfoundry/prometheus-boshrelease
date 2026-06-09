@@ -38,32 +38,18 @@ case $1 in
       <% if_p('kube_state_metrics_exporter.apiserver') do |apiserver| %> \
       --apiserver="<%= apiserver %>" \
       <% end %> \
-      <% if_p('kube_state_metrics_exporter.collectors') do |collectors| %> \
-      --collectors="<%= collectors %>" \
-      <% end %> \
-      <% if_p('kube_state_metrics_exporter.disable_node_non_generic_resource_metrics') do |disable_node_non_generic_resource_metrics| %> \
-        <% if disable_node_non_generic_resource_metrics %> \
-      --disable-node-non-generic-resource-metrics="<%= collectors %>" \
-        <% end %> \
-      <% end %> \
-      <% if_p('kube_state_metrics_exporter.disable_pod_non_generic_resource_metrics') do |disable_pod_non_generic_resource_metrics| %> \
-        <% if disable_pod_non_generic_resource_metrics %> \
-      --disable-pod-non-generic-resource-metrics \
-        <% end %> \
+      <% if_p('kube_state_metrics_exporter.resources') do |resources| %> \
+      --resources="<%= resources %>" \
       <% end %> \
       --kubeconfig="/var/vcap/jobs/kube_state_metrics_exporter/config/kubeconfig" \
-      <% if_p('kube_state_metrics_exporter.log_backtrace_at') do |log_backtrace_at| %> \
-      --log_backtrace_at="<%= log_backtrace_at %>" \
+      <% if_p('kube_state_metrics_exporter.metric_denylist') do |metric_denylist| %> \
+      --metric-denylist="<%= metric_denylist %>" \
       <% end %> \
-      --log_dir=${LOG_DIR} \
-      <% if_p('kube_state_metrics_exporter.metric_blacklist') do |metric_blacklist| %> \
-      --metric-blacklist="<%= metric_blacklist %>" \
+      <% if_p('kube_state_metrics_exporter.metric_allowlist') do |metric_allowlist| %> \
+      --metric-allowlist="<%= metric_allowlist %>" \
       <% end %> \
-      <% if_p('kube_state_metrics_exporter.metric_whitelist') do |metric_whitelist| %> \
-      --metric-whitelist="<%= metric_whitelist %>" \
-      <% end %> \
-      <% if_p('kube_state_metrics_exporter.namespace') do |namespace| %> \
-      --namespace="<%= namespace %>" \
+      <% if_p('kube_state_metrics_exporter.namespaces') do |namespaces| %> \
+      --namespaces="<%= namespaces %>" \
       <% end %> \
       --port=<%= p('kube_state_metrics_exporter.port') %> \
       <% if_p('kube_state_metrics_exporter.stderrthreshold') do |stderrthreshold| %> \
