@@ -22,6 +22,7 @@
 | [jdbranham/diagram-panel] | grafana_plugings | v1.10.4  | ![][jdbranham/diagram-panel-ver] | ![][jdbranham/diagram-panel-act] |
 | [jq]                      | *internal*       | v1.8.1    | ![][jq-ver]                      | ![][jq-act]                      |
 | [kafka_exporter]          |                  | v1.9.0  | ![][kafka_exporter-ver]          | ![][kafka_exporter-act]          |
+| [kube-state-metrics]      | kubernetes       | v2.18.0 | ![][kube-state-metrics-ver]      | ![][kube-state-metrics-act]      |
 | [libxml2]                 | grafana          | v2.15.0 | ![][libxml2-ver]                 |                                  |
 | [logstash_exporter]       |                  | v0.7.15 | ![][logstash_exporter-ver]       | ![][logstash_exporter-act]       |
 | [memcached_exporter]      |                  | v0.16.0 | ![][memcached_exporter-ver]      | ![][memcached_exporter-act]      |
@@ -136,6 +137,9 @@
 [kafka_exporter]: https://github.com/danielqsj/kafka_exporter
 [kafka_exporter-act]: https://img.shields.io/github/release-date/danielqsj/kafka_exporter?label=latest
 [kafka_exporter-ver]: https://img.shields.io/github/v/release/danielqsj/kafka_exporter?label=latest
+[kube-state-metrics]: https://github.com/kubernetes/kube-state-metrics
+[kube-state-metrics-act]: https://img.shields.io/github/release-date/kubernetes/kube-state-metrics?label=latest
+[kube-state-metrics-ver]: https://img.shields.io/github/v/release/kubernetes/kube-state-metrics?label=latest
 [logstash_exporter]: https://github.com/SAP/prometheus-logstash-exporter
 [logstash_exporter-act]: https://img.shields.io/github/release-date/SAP/prometheus-logstash-exporter?label=latest
 [logstash_exporter-ver]: https://img.shields.io/github/v/release/SAP/prometheus-logstash-exporter?label=latest
