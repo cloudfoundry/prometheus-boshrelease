@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.4.3"
+      "version": "11.6.8"
     },
     {
       "type": "datasource",
@@ -33,7 +33,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -46,8 +49,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 105,
-  "iteration": 1586246148529,
+  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -72,10 +74,85 @@
   ],
   "panels": [
     {
-      "cacheTimeout": null,
-      "columns": [],
-      "datasource": "${DS_PROMETHEUS}",
-      "fontSize": "100%",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Expiry Date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TTL"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2592000
+                    },
+                    {
+                      "color": "green",
+                      "value": 5184000
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 17,
         "w": 24,
@@ -83,93 +160,31 @@
         "y": 0
       },
       "id": 2,
-      "links": [],
-      "options": {},
-      "pageSize": 150,
-      "showHeader": true,
-      "sort": {
-        "col": 7,
-        "desc": false
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "TTL"
+          }
+        ]
       },
-      "styles": [
-        {
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "hidden"
-        },
-        {
-          "alias": "Certificate",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "name",
-          "preserveFormat": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Path in CredHub",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "path",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Expiry Date",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": null,
-          "mappingType": 1,
-          "pattern": "Value #A",
-          "thresholds": [
-            "2021-08-02 14:15:53"
-          ],
-          "type": "number",
-          "unit": "dateTimeAsIso"
-        },
-        {
-          "alias": "TTL",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value #B",
-          "thresholds": [
-            "30",
-            "60"
-          ],
-          "type": "number",
-          "unit": "s"
-        }
-      ],
+      "pluginVersion": "11.6.8",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "max by (environment, deployment, index, name, path) (\n  credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} * 1000\n)",
           "format": "table",
           "instant": true,
@@ -178,6 +193,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "max by (environment, deployment, index, name, path) (\n  credhub_certificate_expires_at{environment=~\"$environment\",deployment=~\"$bosh_deployment\"} - time()\n)",
           "format": "table",
           "instant": true,
@@ -186,14 +205,48 @@
           "refId": "B"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Certificates Expiration Date",
-      "transform": "table",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "deployment": 0,
+              "environment": 1,
+              "index": 2,
+              "name": 3,
+              "Certificate": 3,
+              "path": 4,
+              "Path in CredHub": 4,
+              "Value": 5,
+              "Value #A": 5,
+              "Expiry Date": 5,
+              "Value #B": 6,
+              "Value 1": 6,
+              "TTL": 6
+            },
+            "renameByName": {
+              "name": "Certificate",
+              "path": "Path in CredHub",
+              "Value": "Expiry Date",
+              "Value #A": "Expiry Date",
+              "Value #B": "TTL",
+              "Value 1": "TTL"
+            }
+          }
+        }
+      ],
       "type": "table"
     }
   ],
-  "schemaVersion": 21,
+  "schemaVersion": 41,
   "style": "dark",
   "tags": [
     "bosh"
@@ -201,48 +254,38 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(firehose_value_metric_rep_capacity_total_containers, environment)",
-        "hide": 0,
         "includeAll": false,
         "label": "Environment",
-        "multi": false,
         "name": "environment",
         "options": [],
         "query": "label_values(firehose_value_metric_rep_capacity_total_containers, environment)",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
-        "hide": 0,
         "includeAll": false,
         "label": "Deployment",
-        "multi": false,
         "name": "bosh_deployment",
         "options": [],
         "query": "label_values(firehose_value_metric_rep_capacity_total_containers{environment=~\"$environment\"}, bosh_deployment)",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -267,5 +310,5 @@
   "timezone": "browser",
   "title": "CredHub: Certificate Expiry Date",
   "uid": "OQqSNUJZk",
-  "version": 10
+  "version": 1
 }
