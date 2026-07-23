@@ -1,5 +1,5 @@
 check process prometheus2
   with pidfile /var/vcap/sys/run/prometheus2/prometheus.pid
   start program "/var/vcap/jobs/prometheus2/bin/prometheus_ctl start"
-  stop program "/var/vcap/jobs/prometheus2/bin/prometheus_ctl stop"
+  stop program "/var/vcap/jobs/prometheus2/bin/prometheus_ctl stop" with timeout <%= p('prometheus.stop_timeout') + 10 %> seconds
   group vcap
