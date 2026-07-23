@@ -38,7 +38,7 @@
 | [redis_exporter]          |                  | v1.87.0 | ![][redis_exporter-ver]          | ![][redis_exporter-act]          |
 | [shield_exporter]         |                  | v0.3.0  | ![][shield_exporter-ver]         | ![][shield_exporter-act]         |
 | [stackdriver_exporter]    |                  | v0.19.0 | ![][stackdriver_exporter-ver]    | ![][stackdriver_exporter-act]    |
-| [statsd_exporter]         |                  | v0.29.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
+| [statsd_exporter]         |                  | v0.30.0 | ![][statsd_exporter-ver]         | ![][statsd_exporter-act]         |
 | [util-linux]              | grafana          | v2.41.2 | ![][util-linux-ver]              |                                  |
 | [vault_exporter]          |                  | v0.1.3  | ![][vault_exporter-ver]          | ![][vault_exporter-act]          |
 | [vonage-status-panel]     | grafana_plugings | v1.0.10 | ![][vonage-status-panel-ver]     | ![][vonage-status-panel-act]     |
