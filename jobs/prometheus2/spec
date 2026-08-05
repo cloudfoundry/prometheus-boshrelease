@@ -64,6 +64,9 @@ properties:
   prometheus.stop_timeout:
     description: "Seconds to wait for prometheus to shut down gracefully before sending SIGKILL"
     default: 110
+  prometheus.stop_timeout_extra:
+    description: "Additional seconds monit waits beyond stop_timeout before declaring the stop failed. Gives bosh-agent headroom so a slow graceful shutdown isn't reported as a failure."
+    default: 10
 
   prometheus.alertmanager.notification_queue_capacity:
     description: "The capacity of the queue for pending alert manager notifications"
