@@ -67,6 +67,33 @@
         action: keep
         regex: default;kubernetes;https
 
+# Scrape config for the per-node cAdvisor endpoint (container CPU/memory/network/fs
+# metrics), proxied through the apiserver like the kubelet scrape above. Required by
+# the kubernetes-mixin "Compute Resources" dashboards. Labelled job="kubernetes_cadvisor".
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/scrape_configs/-
+  value:
+    job_name: kubernetes_cadvisor
+    scheme: ((kubernetes_apiserver_scheme))
+    bearer_token: ((kubernetes_bearer_token))
+    tls_config:
+      insecure_skip_verify: ((skip_ssl_verify))
+    kubernetes_sd_configs:
+      - role: node
+        api_server: ((kubernetes_apiserver_scheme))://((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
+        bearer_token: ((kubernetes_bearer_token))
+        tls_config:
+          insecure_skip_verify: ((skip_ssl_verify))
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: ((kubernetes_apiserver_ip)):((kubernetes_apiserver_port))
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+
 # Prometheus Alerts
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=kubernetes_alerts?/release
@@ -75,6 +102,15 @@
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
   value: /var/vcap/jobs/kubernetes_alerts/*.alerts.yml
+
+# Kubernetes dashboards job also provides recording rules to Prometheus.
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=kubernetes_dashboards?/release
+  value: prometheus
+
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=prometheus/properties/prometheus/rule_files/-
+  value: /var/vcap/jobs/kubernetes_dashboards/*.rules.yml
 
 # Grafana Dashboards
 - type: replace
