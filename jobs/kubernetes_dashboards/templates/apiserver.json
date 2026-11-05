@@ -632,7 +632,7 @@
                   "type": "prometheus",
                   "uid": "${datasource}"
                },
-               "expr": "sum(rate(workqueue_depth{job=\"kubernetes_apiservers\", instance=~\"$instance\", cluster=\"$cluster\"}[$__rate_interval])) by (instance, name)",
+               "expr": "sum(workqueue_depth{job=\"kubernetes_apiservers\", instance=~\"$instance\", cluster=\"$cluster\"}) by (instance, name)",
                "legendFormat": "{{instance}} {{name}}"
             }
          ],
