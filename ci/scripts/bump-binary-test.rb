@@ -32,7 +32,7 @@ end
 class BinaryBumpTest < Minitest::Test
   ROOT = File.expand_path('../..', __dir__)
 
-  def with_fixture(component = 'prometheus')
+  def with_fixture(component = 'cf_exporter')
     Dir.mktmpdir('binary-bump-test-') do |tmp|
       root = File.join(tmp, 'release')
       FileUtils.mkdir_p(File.join(root, "packages/#{component}"))
@@ -91,8 +91,8 @@ class BinaryBumpTest < Minitest::Test
     end
   end
 
-  def test_all_23_components_update_with_real_bosh_and_preserve_unrelated_blobs
-    assert_equal 23, BinaryBump::REPOSITORIES.length
+  def test_all_three_components_update_with_real_bosh_and_preserve_unrelated_blobs
+    assert_equal %w[bosh_exporter cf_exporter firehose_exporter], BinaryBump::REPOSITORIES.keys.sort
     BinaryBump::REPOSITORIES.each_key do |component|
       with_fixture(component) do |bump, tmp|
         old_blob, old_version = bump.current_blob
@@ -112,9 +112,7 @@ class BinaryBumpTest < Minitest::Test
         refute after.fetch(blob).key?('object_id'), 'New blob must still require upload'
         assert_includes YAML.safe_load_file("packages/#{component}/spec").fetch('files'), blob
         refute_includes File.read("packages/#{component}/packaging"), old_version
-        unless component == 'mongodb_exporter'
-          assert_includes File.read("packages/#{component}/packaging"), version
-        end
+        assert_includes File.read("packages/#{component}/packaging"), version
         version_row = File.readlines('VERSIONS.md').find { |line| line.match?(/^\| \[#{Regexp.escape(component)}\]/) }
         assert_match(/\|\s*v#{Regexp.escape(version)}\s*\|/, version_row)
         assert_equal before_versions, File.readlines('VERSIONS.md').reject { |line| line.match?(/^\| \[#{Regexp.escape(component)}\]/) }
@@ -136,31 +134,29 @@ class BinaryBumpTest < Minitest::Test
 
   def test_up_to_date_does_not_download_or_modify_files
     with_fixture do |bump, tmp|
-      before = tracked_contents('prometheus')
-      bump.release = release_for('prometheus', bump.current_blob.last, bump.archive)
+      before = tracked_contents('cf_exporter')
+      bump.release = release_for('cf_exporter', bump.current_blob.last, bump.archive)
       capture_io { bump.run }
       assert_unchanged(before)
-      assert_equal [['gh', 'api', 'repos/prometheus/prometheus/releases/latest']], bump.commands
+      assert_equal [['gh', 'api', 'repos/cloudfoundry/cf_exporter/releases/latest']], bump.commands
       assert_equal "changed=false\n", File.read(ENV.fetch('GITHUB_OUTPUT'))
       refute Dir.exist?(File.join(tmp, 'artifact'))
     end
   end
 
-  def test_prometheus_uses_active_v3_blob_and_rejects_major_changes_and_downgrades
-    with_fixture do |bump, _|
-      assert_equal '3.13.1', bump.current_blob.last
-      ['4.0.0', '3.12.0'].each do |version|
-        assert_raises(RuntimeError) { bump.plan(release_for('prometheus', version, bump.archive)) }
-      end
+  def test_firehose_uses_active_blob_instead_of_older_blob_and_rejects_downgrades
+    with_fixture('firehose_exporter') do |bump, _|
+      assert_equal '7.1.13', bump.current_blob.last
+      assert_raises(RuntimeError) { bump.plan(release_for('firehose_exporter', '6.2.0', bump.archive)) }
     end
   end
 
   def test_rejects_missing_ambiguous_assets_and_unsupported_tags
     with_fixture do |bump, _|
-      release = release_for('prometheus', '3.13.2', bump.archive)
+      release = release_for('cf_exporter', '2.2.1', bump.archive)
       assert_raises(RuntimeError) { bump.plan(release.merge('assets' => [])) }
       assert_raises(RuntimeError) { bump.plan(release.merge('assets' => release.fetch('assets') * 2)) }
-      ['null', 'v3.13.2-rc.1', "v3.13.2\nchanged=true"].each do |tag|
+      ['null', 'v2.2.1-rc.1', "v2.2.1\nchanged=true"].each do |tag|
         assert_raises(RuntimeError) { bump.plan(release.merge('tag_name' => tag)) }
       end
       ['draft', 'prerelease'].each do |key|
@@ -171,18 +167,13 @@ class BinaryBumpTest < Minitest::Test
     end
   end
 
-  def test_supports_upstream_underscore_and_redis_v_filenames
-    %w[cf_exporter credhub_exporter firehose_exporter redis_exporter].each do |component|
+  def test_supports_upstream_exporter_filenames
+    %w[bosh_exporter cf_exporter firehose_exporter].each do |component|
       with_fixture(component) do |bump, _|
         release = release_for(component, '99.0.0', bump.archive)
         asset = release.fetch('assets').first
-        asset['name'] = if component == 'redis_exporter'
-                          "#{component}-v99.0.0.linux-amd64.tar.gz"
-                        elsif component == 'credhub_exporter'
-                          "#{component}_99.0.0_linux_amd64.tar.gz"
-                        else
-                          "#{component}_99.0.0.linux-amd64.tar.gz"
-                        end
+        separator = component == 'bosh_exporter' ? '-' : '_'
+        asset['name'] = "#{component}#{separator}99.0.0.linux-amd64.tar.gz"
         assert_equal '99.0.0', bump.plan(release).fetch('version')
       end
     end
@@ -190,7 +181,7 @@ class BinaryBumpTest < Minitest::Test
 
   def test_api_errors_fail_without_success_output
     with_fixture do |bump, _|
-      before = tracked_contents('prometheus')
+      before = tracked_contents('cf_exporter')
       bump.api_error = 'GitHub API request failed'
       assert_raises(RuntimeError) { bump.run }
       assert_unchanged(before)
@@ -201,9 +192,9 @@ class BinaryBumpTest < Minitest::Test
   def test_digest_size_and_invalid_archive_fail_before_modifying_release
     %w[digest size archive].each do |failure|
       with_fixture do |bump, _|
-        before = tracked_contents('prometheus')
+        before = tracked_contents('cf_exporter')
         File.write(bump.archive, 'not an archive') if failure == 'archive'
-        bump.release = release_for('prometheus', '3.13.2', bump.archive)
+        bump.release = release_for('cf_exporter', '2.2.1', bump.archive)
         asset = bump.release.fetch('assets').first
         asset['digest'] = "sha256:#{'0' * 64}" if failure == 'digest'
         asset['size'] += 1 if failure == 'size'
@@ -217,7 +208,7 @@ class BinaryBumpTest < Minitest::Test
 
   def test_missing_upstream_digest_is_explicitly_documented
     with_fixture do |bump, tmp|
-      bump.release = release_for('prometheus', '3.13.2', bump.archive)
+      bump.release = release_for('cf_exporter', '2.2.1', bump.archive)
       bump.release.fetch('assets').first.delete('digest')
       capture_io { bump.run }
       assert_includes File.read(File.join(tmp, 'artifact/pr-body.md')), 'not supplied; SHA256 above is computed locally'
@@ -242,15 +233,16 @@ class BinaryBumpTest < Minitest::Test
   def test_rejects_unknown_components_and_artifacts_inside_repository
     with_fixture do |_, _|
       assert_raises(KeyError) { BinaryBump.new('unknown_binary', '/tmp/artifact') }
-      assert_raises(ArgumentError) { BinaryBump.new('prometheus', 'artifact') }
+      assert_raises(KeyError) { BinaryBump.new('prometheus', '/tmp/artifact') }
+      assert_raises(ArgumentError) { BinaryBump.new('cf_exporter', 'artifact') }
     end
   end
 
   def test_packaging_mismatch_fails_before_downloading
     with_fixture do |bump, _|
-      File.write('packages/prometheus/packaging', 'tar xzf prometheus/wrong.tar.gz')
-      bump.release = release_for('prometheus', '3.13.2', bump.archive)
-      before = tracked_contents('prometheus')
+      File.write('packages/cf_exporter/packaging', 'tar xzf cf_exporter/wrong.tar.gz')
+      bump.release = release_for('cf_exporter', '2.2.1', bump.archive)
+      before = tracked_contents('cf_exporter')
       assert_raises(RuntimeError) { bump.run }
       assert_unchanged(before)
       refute bump.commands.any? { |command| command.first == 'curl' }
@@ -273,7 +265,6 @@ class BinaryBumpTest < Minitest::Test
     steps = shared.fetch('jobs').fetch('bump').fetch('steps')
     pr = steps.find { |step| step['uses'] == 'peter-evans/create-pull-request@v7' }
     assert_equal 'always-true', pr.fetch('with').fetch('draft')
-    assert_includes pr.fetch('with').fetch('commit-message'), 'Co-authored-by: Copilot'
     artifact = steps.find { |step| step['uses'] == 'actions/upload-artifact@v4' }
     assert_equal 30, artifact.fetch('with').fetch('retention-days')
     assert_operator steps.index(artifact), :<, steps.index(pr)

@@ -10,29 +10,9 @@ require 'yaml'
 
 class BinaryBump
   REPOSITORIES = {
-    'redis_exporter' => 'oliver006/redis_exporter',
-    'alertmanager' => 'prometheus/alertmanager',
-    'blackbox_exporter' => 'prometheus/blackbox_exporter',
     'bosh_exporter' => 'cloudfoundry/bosh_exporter',
-    'bosh_tsdb_exporter' => 'bosh-prometheus/bosh_tsdb_exporter',
-    'collectd_exporter' => 'prometheus/collectd_exporter',
-    'consul_exporter' => 'prometheus/consul_exporter',
-    'credhub_exporter' => 'orange-cloudfoundry/credhub_exporter',
     'cf_exporter' => 'cloudfoundry/cf_exporter',
-    'firehose_exporter' => 'cloudfoundry/firehose_exporter',
-    'elasticsearch_exporter' => 'prometheus-community/elasticsearch_exporter',
-    'graphite_exporter' => 'prometheus/graphite_exporter',
-    'influxdb_exporter' => 'prometheus/influxdb_exporter',
-    'ingestor_exporter' => 'bosh-prometheus/ingestor_exporter',
-    'memcached_exporter' => 'prometheus/memcached_exporter',
-    'mongodb_exporter' => 'percona/mongodb_exporter',
-    'mysqld_exporter' => 'prometheus/mysqld_exporter',
-    'postgres_exporter' => 'prometheus-community/postgres_exporter',
-    'prometheus' => 'prometheus/prometheus',
-    'pushgateway' => 'prometheus/pushgateway',
-    'shield_exporter' => 'bosh-prometheus/shield_exporter',
-    'stackdriver_exporter' => 'prometheus-community/stackdriver_exporter',
-    'statsd_exporter' => 'prometheus/statsd_exporter'
+    'firehose_exporter' => 'cloudfoundry/firehose_exporter'
   }.freeze
 
   VERSION = /\A(?:v)?(\d+\.\d+\.\d+)\z/
@@ -73,10 +53,6 @@ class BinaryBump
     raise "Refusing downgrade from #{old_version} to #{version}" if comparison.negative?
     return nil if comparison.zero?
 
-    if @component == 'prometheus' && version.split('.').first != old_version.split('.').first
-      raise "Prometheus major-version changes require manual review: #{old_version} -> #{version}"
-    end
-
     asset_pattern = /\A#{Regexp.escape(@component)}[-_]v?#{Regexp.escape(version)}(?:\.linux-amd64|_linux_amd64)\.tar\.gz\z/
     assets = release.fetch('assets').select { |asset| asset_pattern.match?(asset.fetch('name')) }
     raise "Expected one Linux amd64 asset for #{@repository} #{version}, found #{assets.length}" unless assets.length == 1
@@ -115,8 +91,8 @@ class BinaryBump
     versions = File.read('VERSIONS.md')
     filename_pattern = /#{Regexp.escape(@component)}([-_]v?)#{Regexp.escape(update.fetch('old_version'))}(?=\.linux-amd64|_linux_amd64)/
     updated_packaging = packaging.gsub(filename_pattern) { "#{@component}#{Regexp.last_match(1)}#{update.fetch('version')}" }
-    if updated_packaging == packaging && !packaging.include?("#{@component}-*.tar.gz")
-      raise "Packaging does not reference the active version or a supported glob: #{packaging_path}"
+    if updated_packaging == packaging
+      raise "Packaging does not reference the active version: #{packaging_path}"
     end
 
     row_pattern = /^(\| \[#{Regexp.escape(@component)}\]\s*\|[^|]*\|\s*)v\d+\.\d+\.\d+(\s*\|.*)$/
