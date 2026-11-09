@@ -1,0 +1,13 @@
+name: Bump firehose_exporter
+'on':
+  schedule:
+    - cron: '9 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  bump:
+    uses: ./.github/workflows/bump-binary.yml
+    with:
+      component: firehose_exporter
