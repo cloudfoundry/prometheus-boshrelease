@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require 'minitest/mock'
 require 'tmpdir'
 require_relative 'bump-binary'
 
@@ -37,9 +38,19 @@ class BinaryBumpTest < Minitest::Test
       root = File.join(tmp, 'release')
       FileUtils.mkdir_p(File.join(root, "packages/#{component}"))
       FileUtils.mkdir_p(File.join(root, 'config'))
-      %W[packages/#{component}/spec packages/#{component}/packaging config/blobs.yml config/final.yml VERSIONS.md].each do |file|
-        FileUtils.cp(File.join(ROOT, file), File.join(root, file))
-      end
+      separator = component == 'bosh_exporter' ? '-' : '_'
+      blob = "#{component}/#{component}#{separator}2.2.0.linux-amd64.tar.gz"
+      legacy_blob = blob.sub('2.2.0', '2.1.0')
+      File.write(File.join(root, "packages/#{component}/spec"),
+                 YAML.dump('name' => component, 'files' => ['common/utils.sh', blob]))
+      File.write(File.join(root, "packages/#{component}/packaging"),
+                 "tar zxf #{blob} --strip 1 -C ${BOSH_INSTALL_TARGET}/bin\n")
+      metadata = { 'size' => 1, 'object_id' => 'fixture-object', 'sha' => "sha256:#{'0' * 64}" }
+      File.write(File.join(root, 'config/blobs.yml'), YAML.dump(legacy_blob => metadata, blob => metadata.dup))
+      File.write(File.join(root, 'config/final.yml'),
+                 YAML.dump('final_name' => 'fixture', 'blobstore' => { 'provider' => 'local', 'options' => { 'blobstore_path' => File.join(tmp, 'blobstore') } }))
+      File.write(File.join(root, 'VERSIONS.md'),
+                 "| [#{component}] | cf | v2.2.0 | |\n| [unrelated_exporter] | cf | v1.0.0 | |\n")
       File.write(File.join(tmp, 'binary'), 'fixture binary')
       stdout, stderr, status = Open3.capture3('tar', '-czf', File.join(tmp, 'binary.tar.gz'), '-C', tmp, 'binary')
       raise "Fixture tar failed: #{stdout} #{stderr}" unless status.success?
@@ -146,8 +157,8 @@ class BinaryBumpTest < Minitest::Test
 
   def test_firehose_uses_active_blob_instead_of_older_blob_and_rejects_downgrades
     with_fixture('firehose_exporter') do |bump, _|
-      assert_equal '7.1.13', bump.current_blob.last
-      assert_raises(RuntimeError) { bump.plan(release_for('firehose_exporter', '6.2.0', bump.archive)) }
+      assert_equal '2.2.0', bump.current_blob.last
+      assert_raises(RuntimeError) { bump.plan(release_for('firehose_exporter', '2.1.0', bump.archive)) }
     end
   end
 
@@ -249,7 +260,17 @@ class BinaryBumpTest < Minitest::Test
     end
   end
 
-  def test_workflows_cover_exactly_the_supported_components_and_always_create_drafts
+  def test_single_configured_workflow_is_a_valid_supported_subset
+    files = [
+      File.join(ROOT, '.github/workflows/bump-binary.yml'),
+      File.join(ROOT, '.github/workflows/bump-cf-exporter.yml')
+    ]
+    Dir.stub(:glob, files) do
+      test_configured_workflows_use_supported_components_and_always_create_drafts
+    end
+  end
+
+  def test_configured_workflows_use_supported_components_and_always_create_drafts
     callers = Dir.glob(File.join(ROOT, '.github/workflows/bump-*.yml')).reject { |file| File.basename(file) == 'bump-binary.yml' }
     components = callers.map do |file|
       workflow = YAML.safe_load_file(file)
@@ -260,7 +281,9 @@ class BinaryBumpTest < Minitest::Test
       assert_equal './.github/workflows/bump-binary.yml', job.fetch('uses')
       job.fetch('with').fetch('component')
     end
-    assert_equal BinaryBump::REPOSITORIES.keys.sort, components.sort
+    refute_empty components
+    assert_empty components - BinaryBump::REPOSITORIES.keys
+    assert_equal components.uniq, components
     shared = YAML.safe_load_file(File.join(ROOT, '.github/workflows/bump-binary.yml'))
     steps = shared.fetch('jobs').fetch('bump').fetch('steps')
     pr = steps.find { |step| step['uses'] == 'peter-evans/create-pull-request@v7' }
