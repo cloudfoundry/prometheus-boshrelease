@@ -1,0 +1,13 @@
+name: Bump cf_exporter
+'on':
+  schedule:
+    - cron: '4 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  bump:
+    uses: ./.github/workflows/bump-binary.yml
+    with:
+      component: cf_exporter

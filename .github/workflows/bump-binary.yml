@@ -1,0 +1,74 @@
+name: Bump binary (shared)
+
+'on':
+  workflow_call:
+    inputs:
+      component:
+        description: Binary package to update
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bump-binary-${{ inputs.component }}
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Install BOSH CLI
+        env:
+          BOSH_CLI_VERSION: 7.11.2
+          BOSH_CLI_SHA256: 839a92403901639e0e1f3130e4138c912bfd217bd1579277048fcd6bf5dee28c
+        run: |
+          mkdir -p "$RUNNER_TEMP/bosh-cli"
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/cloudfoundry/bosh-cli/releases/download/v${BOSH_CLI_VERSION}/bosh-cli-${BOSH_CLI_VERSION}-linux-amd64" \
+            --output "$RUNNER_TEMP/bosh-cli/bosh"
+          echo "$BOSH_CLI_SHA256  $RUNNER_TEMP/bosh-cli/bosh" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/bosh-cli/bosh"
+          echo "$RUNNER_TEMP/bosh-cli" >> "$GITHUB_PATH"
+      - name: Prepare binary update (no blob upload)
+        id: bump
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMPONENT: ${{ inputs.component }}
+          ARTIFACT_DIR: ${{ runner.temp }}/blob-bump/${{ inputs.component }}
+        run: ruby ci/scripts/bump-binary.rb "$COMPONENT" "$ARTIFACT_DIR"
+      - name: Retain binary for manual blob upload
+        if: steps.bump.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.component }}-${{ steps.bump.outputs.version }}
+          path: ${{ steps.bump.outputs.artifact_dir }}
+          if-no-files-found: error
+          retention-days: 30
+      - name: Create or update draft PR
+        if: steps.bump.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          branch: bump/${{ inputs.component }}
+          base: ${{ github.event.repository.default_branch }}
+          draft: always-true
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          title: Bump ${{ inputs.component }} to ${{ steps.bump.outputs.version }} (blob upload pending)
+          commit-message: |
+            Bump ${{ inputs.component }} to ${{ steps.bump.outputs.version }}
+          body-path: ${{ steps.bump.outputs.artifact_dir }}/pr-body.md
+          add-paths: |
+            config/blobs.yml
+            packages/${{ inputs.component }}/spec
+            packages/${{ inputs.component }}/packaging
+            VERSIONS.md
