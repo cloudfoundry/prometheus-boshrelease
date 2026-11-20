@@ -1,0 +1,75 @@
+<%
+job_dir = "/var/vcap/jobs/bosh_exporter"
+
+args = [
+  "--bosh.url=#{p('bosh_exporter.bosh.url')}",
+  "--metrics.environment=#{p('bosh_exporter.metrics.environment')}",
+  "--sd.filename=/var/vcap/store/bosh_exporter/bosh_target_groups.json",
+  "--web.listen-address=:#{p('bosh_exporter.web.port')}",
+]
+
+flagMap = {
+  "bosh_exporter.bosh.username"        => "--bosh.username",
+  "bosh_exporter.bosh.uaa.client_id"   => "--bosh.uaa.client-id",
+  "bosh_exporter.bosh.log_level"       => "--bosh.log-level",
+  "bosh_exporter.filter.deployments"   => "--filter.deployments",
+  "bosh_exporter.filter.azs"           => "--filter.azs",
+  "bosh_exporter.filter.collectors"    => "--filter.collectors",
+  "bosh_exporter.filter.cidrs"         => "--filter.cidrs",
+  "bosh_exporter.log_format"           => "--log.format",
+  "bosh_exporter.log_level"            => "--log.level",
+  "bosh_exporter.metrics.namespace"    => "--metrics.namespace",
+  "bosh_exporter.sd.processes_regexp"  => "--sd.processes_regexp",
+  "bosh_exporter.web.telemetry_path"   => "--web.telemetry-path",
+  "bosh_exporter.web.auth_username"    => "--web.auth.username",
+}
+flagMap.each do |specKey, flag|
+  if_p(specKey) do |value|
+    args << "#{flag}=#{value}"
+  end
+end
+
+if_p("bosh_exporter.bosh.ca_cert") do
+  args << "--bosh.ca-cert-file=#{job_dir}/config/bosh_ca_cert.pem"
+end
+
+if_p("bosh_exporter.web.tls_cert", "bosh_exporter.web.tls_key") do
+  args << "--web.tls.cert_file=#{job_dir}/config/web_tls_cert.pem"
+  args << "--web.tls.key_file=#{job_dir}/config/web_tls_key.pem"
+end
+
+# secrets are passed via env to keep them out of the process table
+env = {}
+envMap = {
+  "bosh_exporter.bosh.password"          => "BOSH_EXPORTER_BOSH_PASSWORD",
+  "bosh_exporter.bosh.uaa.client_secret" => "BOSH_EXPORTER_BOSH_UAA_CLIENT_SECRET",
+  "bosh_exporter.web.auth_password"      => "BOSH_EXPORTER_WEB_AUTH_PASSWORD",
+}
+envMap.each do |specKey, envKey|
+  if_p(specKey) do |value|
+    env[envKey] = value
+  end
+end
+
+[ "http", "https", "no" ].each do |key|
+  name = "#{key}_proxy"
+  if_p("env.#{name}") do |val|
+    env[name.upcase] = val
+    env[name] = val
+  end
+end
+
+config = {
+  "processes" => [
+    {
+      "name"            => "bosh_exporter",
+      "executable"      => "/var/vcap/packages/bosh_exporter/bin/bosh_exporter",
+      "args"            => args,
+      "env"             => env,
+      "persistent_disk" => true,
+    }
+  ]
+}
+%>
+
+<%= YAML.dump(config) %>

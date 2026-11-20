@@ -14,6 +14,12 @@
         metrics:
           environment: "((metrics_environment))"
 
+- type: replace
+  path: /instance_groups/name=prometheus/jobs/name=bpm?
+  value:
+    name: bpm
+    release: bpm
+
 # Prometheus Alerts
 - type: replace
   path: /instance_groups/name=prometheus/jobs/name=bosh_alerts?/release
